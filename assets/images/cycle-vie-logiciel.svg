@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 320" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <style>
+    .phase { stroke:#2c3e50; stroke-width:2; rx:10; }
+    .lbl { font-size:15px; fill:#1b2631; text-anchor:middle; font-weight:600; }
+    .arrow { stroke:#333; stroke-width:2.5; fill:none; marker-end:url(#arrow1); }
+    .loop { stroke:#c0392b; stroke-width:2.5; fill:none; stroke-dasharray:6,4; marker-end:url(#arrow1); }
+    .looplbl { font-size:13px; fill:#c0392b; text-anchor:middle; }
+  </style>
+
+  <!-- Phase boxes -->
+  <g>
+    <rect class="phase" x="20"  y="110" width="130" height="70" fill="#aed6f1"/>
+    <text class="lbl" x="85"  y="150">Analyse des<tspan x="85" dy="16">besoins</tspan></text>
+
+    <rect class="phase" x="180" y="110" width="130" height="70" fill="#a9dfbf"/>
+    <text class="lbl" x="245" y="150">Conception</text>
+
+    <rect class="phase" x="340" y="110" width="130" height="70" fill="#f9e79f"/>
+    <text class="lbl" x="405" y="150">Implémen-<tspan x="405" dy="16">tation</tspan></text>
+
+    <rect class="phase" x="500" y="110" width="130" height="70" fill="#f5b7b1"/>
+    <text class="lbl" x="565" y="150">Tests</text>
+
+    <rect class="phase" x="660" y="110" width="120" height="70" fill="#d2b4de"/>
+    <text class="lbl" x="720" y="150">Déploiement</text>
+
+    <rect class="phase" x="800" y="80" width="110" height="90" fill="#f0b27a"/>
+    <text class="lbl" x="855" y="115">Maintenance</text>
+    <text class="looplbl" x="855" y="145">(corrective,</text>
+    <text class="looplbl" x="855" y="160">adaptative,</text>
+    <text class="looplbl" x="855" y="175">perfective,</text>
+    <text class="looplbl" x="855" y="190">préventive)</text>
+  </g>
+
+  <!-- Sequential arrows -->
+  <path class="arrow" d="M150,145 L178,145"/>
+  <path class="arrow" d="M310,145 L338,145"/>
+  <path class="arrow" d="M470,145 L498,145"/>
+  <path class="arrow" d="M630,145 L658,145"/>
+  <path class="arrow" d="M780,145 L798,125"/>
+
+  <!-- Feedback loop back to Analyse -->
+  <path class="loop" d="M855,170 C 855,260 85,260 85,182"/>
+  <text class="looplbl" x="470" y="280" font-size="14">Rétroaction : la maintenance déclenche souvent un nouveau cycle d'analyse</text>
+
+  <text x="460" y="30" text-anchor="middle" font-size="18" font-weight="700" fill="#1b2631">Cycle de vie d'un logiciel</text>
+</svg>

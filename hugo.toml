@@ -2,6 +2,7 @@ baseURL = 'https://cegepmv.github.io/420-515/'
 languageCode = 'fr-ca'
 title = 'Maintenance de logiciel'
 theme = 'hugo-theme-relearn'
+enableEmoji = true
 [params]
   # Change default color scheme with a variant one. Can be empty, "red", "blue", "green".
   themeVariant = "green"
@@ -18,4 +19,9 @@ theme = 'hugo-theme-relearn'
   # Hide Next and Previous page buttons normally displayed full height beside content
   disableNextPrev = true
 #comment
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
 

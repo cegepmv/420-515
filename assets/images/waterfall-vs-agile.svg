@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+  <style>
+    .box { stroke:#2c3e50; stroke-width:2; }
+    .lbl { font-size:14px; fill:#1b2631; text-anchor:middle; font-weight:600; }
+    .arrow { stroke:#333; stroke-width:2.5; fill:none; marker-end:url(#arrow2); }
+    .title { font-size:18px; font-weight:700; fill:#1b2631; text-anchor:middle; }
+    .sub { font-size:13px; fill:#555; text-anchor:middle; font-style:italic; }
+  </style>
+
+  <text class="title" x="220" y="30">Waterfall (cascade)</text>
+  <text class="sub" x="220" y="50">Séquentiel — une seule passe, chaque phase terminée avant la suivante</text>
+
+  <!-- Waterfall boxes -->
+  <rect class="box" x="120" y="70"  width="200" height="50" fill="#aed6f1"/>
+  <text class="lbl" x="220" y="100">Exigences</text>
+  <rect class="box" x="120" y="140" width="200" height="50" fill="#a9dfbf"/>
+  <text class="lbl" x="220" y="170">Conception</text>
+  <rect class="box" x="120" y="210" width="200" height="50" fill="#f9e79f"/>
+  <text class="lbl" x="220" y="240">Implémentation</text>
+  <rect class="box" x="120" y="280" width="200" height="50" fill="#f5b7b1"/>
+  <text class="lbl" x="220" y="310">Tests</text>
+  <rect class="box" x="120" y="350" width="200" height="50" fill="#d2b4de"/>
+  <text class="lbl" x="220" y="380">Déploiement</text>
+  <rect class="box" x="120" y="420" width="200" height="50" fill="#f0b27a"/>
+  <text class="lbl" x="220" y="450">Maintenance</text>
+
+  <path class="arrow" d="M220,120 L220,138"/>
+  <path class="arrow" d="M220,190 L220,208"/>
+  <path class="arrow" d="M220,260 L220,278"/>
+  <path class="arrow" d="M220,330 L220,348"/>
+  <path class="arrow" d="M220,400 L220,418"/>
+
+  <text class="sub" x="220" y="500">Retour en arrière coûteux : un problème découvert</text>
+  <text class="sub" x="220" y="516">tard en test peut remettre en cause l'analyse initiale</text>
+
+  <!-- Agile side -->
+  <text class="title" x="680" y="30">Agile</text>
+  <text class="sub" x="680" y="50">Itératif — sprints courts et répétés, rétroaction continue</text>
+
+  <g>
+    <rect class="box" x="605" y="90"  width="150" height="46" fill="#aed6f1"/>
+    <text class="lbl" x="680" y="118">Planifier</text>
+
+    <rect class="box" x="770" y="230" width="150" height="46" fill="#a9dfbf"/>
+    <text class="lbl" x="845" y="258">Développer</text>
+
+    <rect class="box" x="605" y="370" width="150" height="46" fill="#f5b7b1"/>
+    <text class="lbl" x="680" y="398">Tester / Revoir</text>
+
+    <rect class="box" x="440" y="230" width="150" height="46" fill="#d2b4de"/>
+    <text class="lbl" x="515" y="258">Livrer</text>
+  </g>
+
+  <path class="arrow" d="M755,105 C 830,140 855,190 850,225"/>
+  <path class="arrow" d="M845,280 C 830,330 760,365 755,378"/>
+  <path class="arrow" d="M605,390 C 540,360 515,310 515,280"/>
+  <path class="arrow" d="M515,228 C 540,180 610,130 640,110"/>
+
+  <text class="sub" x="680" y="450">Chaque sprint (1-4 semaines) livre un incrément</text>
+  <text class="sub" x="680" y="466">fonctionnel, testé avec les utilisateurs</text>
+</svg>

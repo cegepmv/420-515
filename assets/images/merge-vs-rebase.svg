@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 420" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .commit { stroke:#2c3e50; stroke-width:2; }
+    .lbl { font-size:12px; fill:#1b2631; text-anchor:middle; font-weight:600; }
+    .line { stroke:#555; stroke-width:2.5; fill:none; }
+    .title { font-size:17px; font-weight:700; fill:#1b2631; text-anchor:middle; }
+    .sub { font-size:12px; fill:#555; text-anchor:middle; font-style:italic; }
+  </style>
+
+  <!-- MERGE side -->
+  <text class="title" x="210" y="28">git merge</text>
+
+  <!-- main line -->
+  <path class="line" d="M40,120 L360,120"/>
+  <circle class="commit" cx="60"  cy="120" r="12" fill="#aed6f1"/><text class="lbl" x="60" y="124">A</text>
+  <circle class="commit" cx="140" cy="120" r="12" fill="#aed6f1"/><text class="lbl" x="140" y="124">B</text>
+  <circle class="commit" cx="220" cy="120" r="12" fill="#aed6f1"/><text class="lbl" x="220" y="124">C</text>
+
+  <!-- feature branch -->
+  <path class="line" d="M140,120 C 180,170 220,190 260,210"/>
+  <circle class="commit" cx="260" cy="210" r="12" fill="#f9e79f"/><text class="lbl" x="260" y="214">D</text>
+  <path class="line" d="M260,210 L330,210"/>
+  <circle class="commit" cx="330" cy="210" r="12" fill="#f9e79f"/><text class="lbl" x="330" y="214">E</text>
+
+  <!-- merge commit -->
+  <path class="line" d="M220,120 C 280,140 320,150 360,120"/>
+  <path class="line" d="M330,210 C 350,180 355,150 360,120"/>
+  <circle class="commit" cx="360" cy="120" r="14" fill="#d2b4de"/><text class="lbl" x="360" y="124">F</text>
+  <text class="sub" x="210" y="270">Un commit de fusion (F) est créé,</text>
+  <text class="sub" x="210" y="286">l'historique réel des deux branches est conservé</text>
+
+  <!-- REBASE side -->
+  <text class="title" x="610" y="28">git rebase</text>
+
+  <path class="line" d="M440,120 L760,120"/>
+  <circle class="commit" cx="460" cy="120" r="12" fill="#aed6f1"/><text class="lbl" x="460" y="124">A</text>
+  <circle class="commit" cx="540" cy="120" r="12" fill="#aed6f1"/><text class="lbl" x="540" y="124">B</text>
+  <circle class="commit" cx="620" cy="120" r="12" fill="#aed6f1"/><text class="lbl" x="620" y="124">C</text>
+  <circle class="commit" cx="700" cy="120" r="12" fill="#f9e79f"/><text class="lbl" x="700" y="124">D'</text>
+  <circle class="commit" cx="770" cy="120" r="12" fill="#f9e79f"/><text class="lbl" x="770" y="124">E'</text>
+
+  <!-- ghost original commits (before rebase) -->
+  <circle class="commit" cx="600" cy="210" r="10" fill="#eee" stroke-dasharray="3,2"/><text class="lbl" x="600" y="214" fill="#999">D</text>
+  <circle class="commit" cx="660" cy="210" r="10" fill="#eee" stroke-dasharray="3,2"/><text class="lbl" x="660" y="214" fill="#999">E</text>
+  <path class="line" d="M540,120 C 560,160 580,190 600,210" stroke-dasharray="3,3" stroke="#bbb"/>
+  <path class="line" d="M600,210 L660,210" stroke-dasharray="3,3" stroke="#bbb"/>
+
+  <text class="sub" x="610" y="270">D et E sont rejoués (D', E') par-dessus C :</text>
+  <text class="sub" x="610" y="286">historique linéaire, aucun commit de fusion</text>
+
+  <text x="410" y="380" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="600">
+    ⚠️ Ne jamais rebaser une branche déjà partagée avec d'autres personnes
+  </text>
+</svg>

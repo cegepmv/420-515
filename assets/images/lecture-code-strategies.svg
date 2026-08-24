@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow6" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#2980b9"/>
+    </marker>
+    <marker id="arrow7" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#27ae60"/>
+    </marker>
+  </defs>
+  <style>
+    .box { stroke:#2c3e50; stroke-width:2; }
+    .lbl { font-size:14px; fill:#1b2631; text-anchor:middle; font-weight:700; }
+    .title { font-size:17px; font-weight:700; fill:#1b2631; text-anchor:middle; }
+    .down { stroke:#2980b9; stroke-width:3; fill:none; marker-end:url(#arrow6); }
+    .up { stroke:#27ae60; stroke-width:3; fill:none; marker-end:url(#arrow7); }
+    .caption { font-size:12px; text-anchor:middle; font-weight:600; }
+  </style>
+
+  <text class="title" x="320" y="26">Stratégies de lecture de code</text>
+
+  <rect class="box" x="200" y="60"  width="240" height="55" fill="#aed6f1"/>
+  <text class="lbl" x="320" y="92">Contrôleur (API)</text>
+
+  <rect class="box" x="200" y="140" width="240" height="55" fill="#a9dfbf"/>
+  <text class="lbl" x="320" y="172">Service</text>
+
+  <rect class="box" x="200" y="220" width="240" height="55" fill="#f9e79f"/>
+  <text class="lbl" x="320" y="252">Repository</text>
+
+  <rect class="box" x="200" y="300" width="240" height="55" fill="#f5b7b1"/>
+  <text class="lbl" x="320" y="332">Modèle / Entités</text>
+
+  <!-- top-down arrow -->
+  <path class="down" d="M150,80 C 100,150 100,280 150,330"/>
+  <text class="caption" x="70" y="205" fill="#2980b9">Top-down</text>
+
+  <!-- bottom-up arrow -->
+  <path class="up" d="M490,330 C 540,260 540,130 490,85"/>
+  <text class="caption" x="565" y="205" fill="#27ae60">Bottom-up</text>
+
+  <text x="320" y="390" text-anchor="middle" font-size="12" fill="#555" font-style="italic">
+    Top-down : partir des endpoints vers les détails — Bottom-up : partir du modèle de données
+  </text>
+</svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 320" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow5" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#c0392b"/>
+    </marker>
+  </defs>
+  <style>
+    .commit { stroke:#2c3e50; stroke-width:2; }
+    .lbl { font-size:12px; fill:#1b2631; text-anchor:middle; font-weight:600; }
+    .line { stroke:#555; stroke-width:2.5; fill:none; }
+    .title { font-size:17px; font-weight:700; fill:#1b2631; text-anchor:middle; }
+    .sub { font-size:12px; fill:#555; text-anchor:middle; font-style:italic; }
+    .pick { stroke:#c0392b; stroke-width:2.5; stroke-dasharray:6,4; fill:none; marker-end:url(#arrow5); }
+  </style>
+
+  <text class="title" x="350" y="28">git cherry-pick</text>
+
+  <!-- main branch -->
+  <text class="sub" x="80" y="90">main</text>
+  <path class="line" d="M60,110 L400,110"/>
+  <circle class="commit" cx="80"  cy="110" r="12" fill="#aed6f1"/><text class="lbl" x="80" y="114">A</text>
+  <circle class="commit" cx="160" cy="110" r="12" fill="#aed6f1"/><text class="lbl" x="160" y="114">B</text>
+  <circle class="commit" cx="380" cy="110" r="14" fill="#f0b27a"/><text class="lbl" x="380" y="114">X'</text>
+
+  <!-- feature branch -->
+  <text class="sub" x="80" y="220">ma-branche-travail</text>
+  <path class="line" d="M160,110 C 200,150 220,180 240,210"/>
+  <circle class="commit" cx="240" cy="210" r="12" fill="#f9e79f"/><text class="lbl" x="240" y="214">C</text>
+  <path class="line" d="M240,210 L320,210"/>
+  <circle class="commit" cx="320" cy="210" r="14" fill="#f0b27a" stroke="#c0392b"/><text class="lbl" x="320" y="214">X</text>
+  <path class="line" d="M320,210 L400,210"/>
+  <circle class="commit" cx="400" cy="210" r="12" fill="#f9e79f"/><text class="lbl" x="400" y="214">Y</text>
+
+  <path class="pick" d="M320,196 C 340,160 360,140 375,124"/>
+
+  <text class="sub" x="350" y="270">Seul le commit X (pas C ni Y) est copié sur main,</text>
+  <text class="sub" x="350" y="286">sans fusionner toute la branche</text>
+</svg>

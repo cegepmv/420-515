@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 520" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .box { stroke:#2c3e50; stroke-width:2; }
+    .lbl { font-size:18px; fill:#1b2631; text-anchor:middle; font-weight:700; }
+    .sub { font-size:12px; fill:#333; text-anchor:middle; }
+    .axis { font-size:14px; fill:#1b2631; text-anchor:middle; font-weight:600; }
+    .title { font-size:18px; font-weight:700; fill:#1b2631; text-anchor:middle; }
+  </style>
+
+  <text class="title" x="330" y="28">Les 4 types de maintenance (vision à 2 axes)</text>
+
+  <!-- Column headers -->
+  <text class="axis" x="210" y="60">Réactif</text>
+  <text class="axis" x="450" y="60">Proactif</text>
+  <!-- Row headers -->
+  <text class="axis" x="90" y="180" transform="rotate(-90 90 180)">Correction</text>
+  <text class="axis" x="90" y="380" transform="rotate(-90 90 380)">Amélioration</text>
+
+  <!-- Grid -->
+  <rect x="120" y="80"  width="220" height="220" fill="#f5b7b1" class="box"/>
+  <rect x="340" y="80"  width="220" height="220" fill="#f0b27a" class="box"/>
+  <rect x="120" y="300" width="220" height="220" fill="#a9dfbf" class="box"/>
+  <rect x="340" y="300" width="220" height="220" fill="#d2b4de" class="box"/>
+
+  <text class="lbl" x="230" y="175">🔧 Corrective</text>
+  <text class="sub" x="230" y="200">On répare un défaut déjà</text>
+  <text class="sub" x="230" y="216">présent, signalé par un</text>
+  <text class="sub" x="230" y="232">incident ou un bogue</text>
+
+  <text class="lbl" x="450" y="175">🛡️ Préventive</text>
+  <text class="sub" x="450" y="200">On agit avant qu'un</text>
+  <text class="sub" x="450" y="216">défaut ne survienne</text>
+  <text class="sub" x="450" y="232">(dette technique, audit)</text>
+
+  <text class="lbl" x="230" y="395">🔄 Adaptative</text>
+  <text class="sub" x="230" y="420">L'environnement externe</text>
+  <text class="sub" x="230" y="436">a changé (OS, langage,</text>
+  <text class="sub" x="230" y="452">réglementation)</text>
+
+  <text class="lbl" x="450" y="395">✨ Perfective</text>
+  <text class="sub" x="450" y="420">On améliore sans</text>
+  <text class="sub" x="450" y="436">nécessité : performance,</text>
+  <text class="sub" x="450" y="452">lisibilité, fonctionnalités</text>
+
+  <text x="330" y="500" text-anchor="middle" font-size="12" fill="#555" font-style="italic">
+    Classification à deux dimensions : Correction vs Amélioration, Réactif vs Proactif
+  </text>
+</svg>

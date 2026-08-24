@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 460" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+  <style>
+    .box { stroke:#2c3e50; stroke-width:2; }
+    .lbl { font-size:16px; fill:#1b2631; text-anchor:middle; font-weight:700; }
+    .sub { font-size:12px; fill:#333; text-anchor:middle; }
+    .arrow { stroke:#333; stroke-width:2.5; fill:none; marker-end:url(#arrow3); }
+    .title { font-size:18px; font-weight:700; fill:#1b2631; text-anchor:middle; }
+  </style>
+
+  <text class="title" x="350" y="28">Architecture en couches typique</text>
+
+  <rect class="box" x="150" y="50"  width="300" height="70" fill="#aed6f1"/>
+  <text class="lbl" x="300" y="78">Contrôleur (API)</text>
+  <text class="sub" x="300" y="98">Points d'entrée HTTP (endpoints)</text>
+
+  <rect class="box" x="150" y="150" width="300" height="70" fill="#a9dfbf"/>
+  <text class="lbl" x="300" y="178">Service</text>
+  <text class="sub" x="300" y="198">Logique métier, règles, validations</text>
+
+  <rect class="box" x="150" y="250" width="300" height="70" fill="#f9e79f"/>
+  <text class="lbl" x="300" y="278">Repository</text>
+  <text class="sub" x="300" y="298">Accès aux données (persistance)</text>
+
+  <rect class="box" x="150" y="350" width="300" height="70" fill="#f5b7b1"/>
+  <text class="lbl" x="300" y="378">Base de données</text>
+
+  <path class="arrow" d="M300,120 L300,148"/>
+  <path class="arrow" d="M300,220 L300,248"/>
+  <path class="arrow" d="M300,320 L300,348"/>
+
+  <!-- Model spanning all layers -->
+  <rect class="box" x="500" y="50" width="150" height="370" fill="#d2b4de"/>
+  <text class="lbl" x="575" y="80" transform="rotate(0)">Modèle</text>
+  <text class="sub" x="575" y="230">Entités utilisées</text>
+  <text class="sub" x="575" y="246">par toutes les</text>
+  <text class="sub" x="575" y="262">couches</text>
+
+  <text x="350" y="440" text-anchor="middle" font-size="12" fill="#555" font-style="italic">
+    Séparer les responsabilités facilite la maintenance, les tests et l'évolution indépendante de chaque couche
+  </text>
+</svg>

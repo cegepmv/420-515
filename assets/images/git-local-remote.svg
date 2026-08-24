@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 380" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow4" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+  <style>
+    .box { stroke:#2c3e50; stroke-width:2; }
+    .lbl { font-size:15px; fill:#1b2631; text-anchor:middle; font-weight:700; }
+    .sub { font-size:12px; fill:#333; text-anchor:middle; }
+    .arrow { stroke:#333; stroke-width:2.2; fill:none; marker-end:url(#arrow4); }
+    .cmd { font-size:12px; fill:#8e44ad; text-anchor:middle; font-family: Consolas, monospace; }
+    .title { font-size:18px; font-weight:700; fill:#1b2631; text-anchor:middle; }
+  </style>
+
+  <text class="title" x="360" y="28">Dépôt local vs dépôt distant (remote)</text>
+
+  <!-- Working directory -->
+  <rect class="box" x="30" y="70" width="180" height="70" fill="#aed6f1"/>
+  <text class="lbl" x="120" y="100">Répertoire de</text>
+  <text class="lbl" x="120" y="118">travail</text>
+
+  <!-- Staging area -->
+  <rect class="box" x="30" y="190" width="180" height="70" fill="#f9e79f"/>
+  <text class="lbl" x="120" y="220">Zone de staging</text>
+  <text class="sub" x="120" y="238">(index)</text>
+
+  <!-- Local repo -->
+  <rect class="box" x="270" y="130" width="180" height="70" fill="#a9dfbf"/>
+  <text class="lbl" x="360" y="160">Dépôt local</text>
+  <text class="sub" x="360" y="178">(.git)</text>
+
+  <!-- Remote repo -->
+  <rect class="box" x="510" y="130" width="180" height="70" fill="#f5b7b1"/>
+  <text class="lbl" x="600" y="160">Dépôt distant</text>
+  <text class="sub" x="600" y="178">(remote / GitHub)</text>
+
+  <path class="arrow" d="M118,140 L118,188"/>
+  <text class="cmd" x="230" y="118">git add</text>
+
+  <path class="arrow" d="M210,220 L268,180"/>
+  <text class="cmd" x="245" y="195">git commit</text>
+
+  <path class="arrow" d="M450,150 L508,150"/>
+  <text class="cmd" x="480" y="140">git push</text>
+
+  <path class="arrow" d="M508,175 L450,175"/>
+  <text class="cmd" x="480" y="196">git pull / fetch</text>
+
+  <text x="360" y="330" text-anchor="middle" font-size="12" fill="#555" font-style="italic">
+    Git est décentralisé : chaque personne possède une copie complète de l'historique en local
+  </text>
+</svg>
