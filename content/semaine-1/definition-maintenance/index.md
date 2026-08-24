@@ -14,12 +14,22 @@ d'exister (ou presque) une fois la session terminée.
 > sous pression, avec une documentation incomplète, sur un système qu'on ne peut pas se permettre
 > d'arrêter.
 
-C'est ce qu'on appelle du **code legacy** (ou « code hérité ») : du code déjà en production,
-généralement plus vieux, souvent écrit avec des technologies, des versions de langage ou des
-pratiques dépassées par rapport à ce qui se fait aujourd'hui — mais qui doit continuer à fonctionner
-et à évoluer. Ce n'est pas seulement « du code que quelqu'un d'autre a écrit » : même du code que
-vous avez écrit vous-même peut devenir « legacy » quelques années plus tard, une fois les
-technologies utilisées dépassées et le contexte d'origine oublié. Bienvenue en
+C'est ce qu'on appelle de la **maintenance logicielle**. Un malentendu fréquent : on associe
+souvent la maintenance uniquement au « vieux code legacy ». En réalité, la maintenance commence
+dès qu'une **première version d'un logiciel est livrée** à un client ou mise en production —
+même si le code a été écrit hier. Une équipe qui livre la version 1.0 d'une application neuve
+devra, dès le lendemain, corriger les bogues rapportés, l'adapter à un nouvel environnement, ou
+répondre aux demandes d'amélioration : c'est déjà de la maintenance, même si le code n'a rien de
+« vieux » ou de « legacy » au sens strict.
+
+On appelle plus spécifiquement **code legacy** (ou « code hérité ») du code déjà en production
+depuis un certain temps, généralement écrit avec des technologies, des versions de langage ou des
+pratiques dépassées par rapport à ce qui se fait aujourd'hui — mais qui doit continuer à
+fonctionner et à évoluer. Ce n'est pas seulement « du code que quelqu'un d'autre a écrit » : même
+du code que vous avez écrit vous-même peut devenir « legacy » quelques années plus tard, une fois
+les technologies utilisées dépassées et le contexte d'origine oublié. Le code legacy est donc un
+**cas particulier**, souvent le plus délicat, de code à maintenir — mais la maintenance
+elle-même s'applique à **tout logiciel livré**, jeune ou vieux. Bienvenue en
 **maintenance logicielle**. 🎓
 
 ### 🆚 Ce qui change par rapport à vos cours précédents
