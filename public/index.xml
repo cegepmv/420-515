@@ -12,7 +12,7 @@
       <link>http://localhost:1313/420-515/intro/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/420-515/intro/index.html</guid>
-      <description>Bienvenue au cours 420-515-MV — Maintenance de logiciel Ce chapitre regroupe les notes de cours semaine par semaine. Vous y trouverez les concepts vus en classe ainsi que les activités pratiques associées à chaque semaine.</description>
+      <description>🏠 Page d’accueil du cours&#xD;Retrouvez le plan de cours, l’horaire et la pondération des évaluations sur la page d’accueil du site.&#xA;Bienvenue au cours 420-515-MV — Maintenance de logiciel Ce chapitre regroupe les notes de cours semaine par semaine. Vous y trouverez les concepts vus en classe ainsi que les activités pratiques associées à chaque semaine.</description>
     </item>
     <item>
       <title>Semaine 1 — Bienvenue en maintenance logicielle</title>
@@ -26,7 +26,7 @@
       <link>http://localhost:1313/420-515/semaine-2/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/420-515/semaine-2/index.html</guid>
-      <description>🎯 Objectifs d’apprentissage de la semaine À la fin de cette semaine, vous devriez être capable de :&#xA;Appliquer des stratégies de lecture de code (top-down vs bottom-up) pour comprendre un programme écrit par quelqu’un d’autre. Utiliser les tests existants comme documentation vivante. Repérer des indices de code smells à l’aide d’une grille de lecture simple. Ouvrir et gérer une Pull Request, effectuer une revue de code. Distinguer merge et rebase, ainsi que revert et reset. Utiliser git cherry-pick pour appliquer un commit précis d’une branche à une autre. 🔍 Accroche « N’importe qui peut écrire du code. Peu de gens savent le LIRE efficacement. C’est une compétence distincte, presque un sixième sens qu’on développe. Aujourd’hui, on l’entraîne. »</description>
+      <description>🎯 Objectifs d’apprentissage de la semaine À la fin de cette semaine, vous devriez être capable de :&#xA;Appliquer des stratégies de lecture de code (top-down vs bottom-up) pour comprendre un programme écrit par quelqu’un d’autre. Utiliser les tests existants comme documentation vivante. Repérer des indices de code smells à l’aide d’une grille de lecture simple. Reproduire et isoler un bogue de façon fiable avant de tenter de le corriger. Lire une pile d’appels (stack trace) pour localiser la cause d’une exception, y compris sa cause racine (Caused by:). Formuler et tester des hypothèses de cause, plutôt que de corriger « à l’aveugle ». Ouvrir et gérer une Pull Request, effectuer une revue de code. Distinguer merge et rebase, ainsi que revert et reset. Utiliser git cherry-pick pour appliquer un commit précis d’une branche à une autre. 🔍 Accroche « N’importe qui peut écrire du code. Peu de gens savent le LIRE efficacement. C’est une compétence distincte, presque un sixième sens qu’on développe. Aujourd’hui, on l’entraîne. »</description>
     </item>
   </channel>
 </rss>

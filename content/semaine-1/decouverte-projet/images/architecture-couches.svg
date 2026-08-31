@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" font-family="Segoe UI, Arial, sans-serif">
+  <text x="300" y="28" font-size="18" font-weight="bold" text-anchor="middle" fill="#222">Architecture en couches</text>
+
+  <rect x="150" y="50" width="300" height="55" rx="8" fill="#e8f0fe" stroke="#3b6fd6" stroke-width="2"/>
+  <text x="300" y="83" font-size="14" font-weight="bold" text-anchor="middle" fill="#1a3a75">Contrôleur (API REST)</text>
+
+  <rect x="150" y="130" width="300" height="55" rx="8" fill="#e6f5ea" stroke="#2e9e4f" stroke-width="2"/>
+  <text x="300" y="163" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e6b34">Service (logique métier)</text>
+
+  <rect x="150" y="210" width="300" height="55" rx="8" fill="#fdf3e3" stroke="#d69a1f" stroke-width="2"/>
+  <text x="300" y="243" font-size="14" font-weight="bold" text-anchor="middle" fill="#8a5a00">Accès aux données (repository)</text>
+
+  <rect x="150" y="290" width="300" height="0" fill="none"/>
+  <ellipse cx="300" cy="300" rx="150" ry="15" fill="#eee6fb" stroke="#7a4fd6" stroke-width="2"/>
+  <text x="300" y="305" font-size="13" font-weight="bold" text-anchor="middle" fill="#43208a">Base de données</text>
+
+  <defs>
+    <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+  </defs>
+  <g stroke="#555" stroke-width="2" marker-end="url(#a3)">
+    <line x1="300" y1="105" x2="300" y2="128"/>
+    <line x1="300" y1="185" x2="300" y2="208"/>
+    <line x1="300" y1="265" x2="300" y2="285"/>
+  </g>
+</svg>

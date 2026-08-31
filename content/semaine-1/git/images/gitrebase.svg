@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 300" font-family="Segoe UI, Arial, sans-serif">
+  <text x="350" y="28" font-size="18" font-weight="bold" text-anchor="middle" fill="#222">Git Rebase</text>
+
+  <!-- Before -->
+  <text x="20" y="60" font-size="14" font-weight="bold" fill="#444">Avant le rebase</text>
+  <!-- main line -->
+  <line x1="40" y1="90" x2="300" y2="90" stroke="#555" stroke-width="2"/>
+  <circle cx="60" cy="90" r="8" fill="#3b6fd6"/>
+  <circle cx="140" cy="90" r="8" fill="#3b6fd6"/>
+  <circle cx="220" cy="90" r="8" fill="#3b6fd6"/>
+  <text x="40" y="112" font-size="11" fill="#333">main</text>
+  <!-- feature branch off of first commit -->
+  <line x1="60" y1="90" x2="60" y2="150" stroke="#555" stroke-width="2"/>
+  <line x1="60" y1="150" x2="260" y2="150" stroke="#2e9e4f" stroke-width="2"/>
+  <circle cx="140" cy="150" r="8" fill="#2e9e4f"/>
+  <circle cx="220" cy="150" r="8" fill="#2e9e4f"/>
+  <text x="270" y="154" font-size="11" fill="#1e6b34">feature</text>
+
+  <!-- Arrow -->
+  <line x1="330" y1="120" x2="380" y2="120" stroke="#555" stroke-width="2" marker-end="url(#a1)"/>
+  <defs>
+    <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+  </defs>
+  <text x="355" y="105" font-size="12" fill="#555" text-anchor="middle">rebase</text>
+
+  <!-- After -->
+  <text x="420" y="60" font-size="14" font-weight="bold" fill="#444">Après le rebase</text>
+  <line x1="440" y1="120" x2="660" y2="120" stroke="#555" stroke-width="2"/>
+  <circle cx="460" cy="120" r="8" fill="#3b6fd6"/>
+  <circle cx="520" cy="120" r="8" fill="#3b6fd6"/>
+  <circle cx="580" cy="120" r="8" fill="#3b6fd6"/>
+  <circle cx="620" cy="120" r="8" fill="#2e9e4f"/>
+  <circle cx="650" cy="120" r="8" fill="#2e9e4f"/>
+  <text x="440" y="142" font-size="11" fill="#333">main</text>
+  <text x="600" y="105" font-size="11" fill="#1e6b34">feature (rejoué)</text>
+
+  <text x="350" y="230" font-size="12" fill="#555" text-anchor="middle">
+    Le rebase déplace la base de la branche « feature » vers le dernier commit de « main »,
+  </text>
+  <text x="350" y="248" font-size="12" fill="#555" text-anchor="middle">
+    donnant l'illusion que ses commits ont été créés à partir de ce nouveau point de départ.
+  </text>
+</svg>

@@ -1,11 +1,22 @@
 +++
 title = "Git 2/2 — notions avancées"
-weight = 2
+weight = 6
 +++
 
 Cette semaine, on poursuit l'introduction à Git amorcée en semaine 1, avec les notions
 nécessaires pour collaborer efficacement en équipe : Pull Request, choix entre `merge` et
 `rebase`, retour en arrière sécuritaire, et récupération sélective de commits.
+
+## 🎬 Mise en situation
+
+Imaginez : vous et un coéquipier travaillez chacun sur une branche différente pour corriger deux
+bogues différents dans le même fichier. Vendredi 16h, vous voulez tout fusionner dans `main` avant
+la fin de semaine. Votre coéquipier a *déjà* poussé sa branche. Vous, vous avez 5 commits « oups »,
+« correction », « oups2 », « ça devrait marcher », « non attends » sur votre branche.
+
+Que faites-vous ? Nettoyez-vous votre historique avant d'ouvrir une PR ? Fusionnez-vous ou
+rebasez-vous ? Et si un conflit apparaît ? Toutes les notions ci-dessous existent pour répondre
+précisément à ce genre de situation — pas juste pour le plaisir de mémoriser des commandes.
 
 ---
 
@@ -227,3 +238,14 @@ git merge --abort
 | `git branch -a` | Lister les branches locales et distantes |
 | `git switch <branche>` | Changer de branche (alternative moderne à `checkout`) |
 | `git add -p` | Mettre en attente ses changements par morceaux (staging partiel) |
+| `git stash` | Mettre de côté temporairement des changements non commités (ex. pour changer de branche rapidement) |
+| `git stash pop` | Réappliquer les changements mis de côté avec `git stash` |
+
+---
+
+## 🧪 À pratiquer
+
+La théorie ne suffit pas : voir le [Défi Git — semaine 2]({{< relref "/semaine-2/exercice-git-avance" >}})
+pour un exercice guidé, en équipe de 2, qui vous fait provoquer et résoudre un vrai conflit de
+merge, ouvrir une Pull Request, comparer `merge`/`rebase`, tester `revert`/`reset` et pratiquer
+`cherry-pick` — directement dans le projet legacy du cours.

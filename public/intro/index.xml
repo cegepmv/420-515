@@ -3,7 +3,7 @@
   <channel>
     <title>Intro :: Maintenance de logiciel</title>
     <link>http://localhost:1313/420-515/intro/index.html</link>
-    <description>Bienvenue au cours 420-515-MV — Maintenance de logiciel Ce chapitre regroupe les notes de cours semaine par semaine. Vous y trouverez les concepts vus en classe ainsi que les activités pratiques associées à chaque semaine.</description>
+    <description>🏠 Page d’accueil du cours&#xD;Retrouvez le plan de cours, l’horaire et la pondération des évaluations sur la page d’accueil du site.&#xA;Bienvenue au cours 420-515-MV — Maintenance de logiciel Ce chapitre regroupe les notes de cours semaine par semaine. Vous y trouverez les concepts vus en classe ainsi que les activités pratiques associées à chaque semaine.</description>
     <generator>Hugo</generator>
     <language>fr-ca</language>
     <atom:link href="http://localhost:1313/420-515/intro/index.xml" rel="self" type="application/rss+xml" />

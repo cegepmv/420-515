@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 480" font-family="Segoe UI, Arial, sans-serif">
+  <text x="280" y="28" font-size="18" font-weight="bold" text-anchor="middle" fill="#222">Les 4 types de maintenance (ISO/IEC 14764)</text>
+
+  <!-- axes -->
+  <line x1="280" y1="60" x2="280" y2="420" stroke="#999" stroke-width="1.5"/>
+  <line x1="60" y1="240" x2="500" y2="240" stroke="#999" stroke-width="1.5"/>
+  <text x="280" y="52" font-size="12" text-anchor="middle" fill="#555">Problème existant</text>
+  <text x="280" y="438" font-size="12" text-anchor="middle" fill="#555">Anticipation d'un risque</text>
+  <text x="52" y="244" font-size="12" text-anchor="end" fill="#555">Environnement</text>
+  <text x="508" y="244" font-size="12" text-anchor="start" fill="#555">Utilisateur / équipe</text>
+
+  <!-- quadrants -->
+  <rect x="60" y="60" width="220" height="180" fill="#fde8e8" stroke="#c0392b" stroke-width="2"/>
+  <text x="170" y="140" font-size="15" font-weight="bold" text-anchor="middle" fill="#8a1f16">🔧 Corrective</text>
+  <text x="170" y="160" font-size="11" text-anchor="middle" fill="#333">Corriger un bogue existant</text>
+
+  <rect x="280" y="60" width="220" height="180" fill="#e6f5ea" stroke="#2e9e4f" stroke-width="2"/>
+  <text x="390" y="140" font-size="15" font-weight="bold" text-anchor="middle" fill="#1e6b34">✨ Perfective</text>
+  <text x="390" y="160" font-size="11" text-anchor="middle" fill="#333">Améliorer / ajouter une fonctionnalité</text>
+
+  <rect x="60" y="240" width="220" height="180" fill="#e8f0fe" stroke="#3b6fd6" stroke-width="2"/>
+  <text x="170" y="320" font-size="15" font-weight="bold" text-anchor="middle" fill="#1a3a75">🔄 Adaptative</text>
+  <text x="170" y="340" font-size="11" text-anchor="middle" fill="#333">S'adapter à l'environnement</text>
+
+  <rect x="280" y="240" width="220" height="180" fill="#eee6fb" stroke="#7a4fd6" stroke-width="2"/>
+  <text x="390" y="320" font-size="15" font-weight="bold" text-anchor="middle" fill="#43208a">🛡️ Préventive</text>
+  <text x="390" y="340" font-size="11" text-anchor="middle" fill="#333">Réduire un risque futur</text>
+
+  <text x="280" y="465" font-size="12" text-anchor="middle" fill="#555">
+    Répartition typique : Perfective ≈ 50-65 % · Adaptative ≈ 20-25 % · Corrective ≈ 15-20 % · Préventive ≈ 5 %
+  </text>
+</svg>

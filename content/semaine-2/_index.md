@@ -3,7 +3,6 @@ title = "Semaine 2 — Lire le code des autres"
 type = "chapter"
 weight = 3
 draft = false
-hidden = true
 +++
 
 ## 🎯 Objectifs d'apprentissage de la semaine
@@ -14,6 +13,10 @@ hidden = true
   écrit par quelqu'un d'autre.
 - Utiliser les tests existants comme documentation vivante.
 - Repérer des indices de code smells à l'aide d'une grille de lecture simple.
+- Reproduire et isoler un bogue de façon fiable avant de tenter de le corriger.
+- Lire une pile d'appels (stack trace) pour localiser la cause d'une exception, y compris sa
+  cause racine (`Caused by:`).
+- Formuler et tester des hypothèses de cause, plutôt que de corriger « à l'aveugle ».
 - Ouvrir et gérer une Pull Request, effectuer une revue de code.
 - Distinguer `merge` et `rebase`, ainsi que `revert` et `reset`.
 - Utiliser `git cherry-pick` pour appliquer un commit précis d'une branche à une autre.

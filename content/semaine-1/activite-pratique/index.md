@@ -12,9 +12,8 @@ weight = 5
    indices que quelque chose semble anormal ou mal conçu : noms de variables cryptiques (`e`, `tmp`,
    `x1`), méthodes qui font plus de 20-30 lignes, blocs de code qui se ressemblent étrangement
    d'un fichier à l'autre (duplication), commentaires qui ne correspondent plus au code en dessous...
-4. **Ne corrigez rien encore** — l'objectif aujourd'hui est seulement d'observer et de documenter
-   vos trouvailles dans un fichier `NOTES.md` à la racine de votre branche (une ligne par
-   observation, avec le nom du fichier et une courte explication).
+4. **Ne corrigez rien encore** — l'objectif aujourd'hui est seulement d'observer et de discuter en
+   équipe de vos trouvailles (le nom du fichier concerné et une courte explication pour chacune).
 5. On **ne nomme pas encore** les smells avec le vocabulaire officiel de Fowler (*Long Method*,
    *Duplicated Code*, etc.) — ce vocabulaire sera introduit formellement en **semaine 5**.
    Aujourd'hui, l'objectif est seulement d'entraîner votre œil à repérer que « quelque chose sent
@@ -44,5 +43,5 @@ Avant la prochaine séance, assurez-vous d'être capable de répondre "oui" à c
 - [ ] J'ai testé au moins un endpoint de l'API et obtenu une réponse JSON.
 - [ ] Je sais expliquer, dans mes mots, la différence entre maintenance corrective, adaptative,
       perfective et préventive.
-- [ ] J'ai identifié et noté dans `NOTES.md` au moins 2-3 endroits du code qui me semblent
-      « louches », même sans savoir pourquoi exactement.
+- [ ] J'ai identifié, en équipe, au moins 2-3 endroits du code qui me semblent « louches », même
+      sans savoir pourquoi exactement.

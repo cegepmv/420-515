@@ -13,13 +13,10 @@
     <loc>http://localhost:1313/420-515/semaine-1/cycle-de-vie/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-2/git-avance/index.html</loc>
+    <loc>http://localhost:1313/420-515/semaine-2/exercice-lecture-de-code/index.html</loc>
   </url>
   <url>
     <loc>http://localhost:1313/420-515/semaine-1/index.html</loc>
-  </url>
-  <url>
-    <loc>http://localhost:1313/420-515/semaine-2/activite-pratique/index.html</loc>
   </url>
   <url>
     <loc>http://localhost:1313/420-515/semaine-1/decouverte-projet/index.html</loc>
@@ -28,10 +25,34 @@
     <loc>http://localhost:1313/420-515/semaine-2/index.html</loc>
   </url>
   <url>
+    <loc>http://localhost:1313/420-515/semaine-2/debogage/index.html</loc>
+  </url>
+  <url>
+    <loc>http://localhost:1313/420-515/semaine-2/exercice-stack-trace/index.html</loc>
+  </url>
+  <url>
     <loc>http://localhost:1313/420-515/semaine-1/git/index.html</loc>
   </url>
   <url>
     <loc>http://localhost:1313/420-515/semaine-1/activite-pratique/index.html</loc>
+  </url>
+  <url>
+    <loc>http://localhost:1313/420-515/semaine-1/exercices-classroom/index.html</loc>
+  </url>
+  <url>
+    <loc>http://localhost:1313/420-515/semaine-2/git-avance/index.html</loc>
+  </url>
+  <url>
+    <loc>http://localhost:1313/420-515/semaine-2/exercice-git-avance/index.html</loc>
+  </url>
+  <url>
+    <loc>http://localhost:1313/420-515/semaine-1/exercice-types-maintenance/index.html</loc>
+  </url>
+  <url>
+    <loc>http://localhost:1313/420-515/semaine-2/activite-pratique/index.html</loc>
+  </url>
+  <url>
+    <loc>http://localhost:1313/420-515/semaine-1/exercice-git-premiers-pas/index.html</loc>
   </url>
   <url>
     <loc>http://localhost:1313/420-515/categories/index.html</loc>
