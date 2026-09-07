@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="Cette semaine, on poursuit l’introduction à Git amorcée en semaine 1, avec les notions nécessaires pour collaborer efficacement en équipe : Pull Request, choix entre merge et rebase, retour en arrière sécuritaire, et récupération sélective de commits.
+🎬 Mise en situation Imaginez : vous et un coéquipier travaillez chacun sur une branche différente pour corriger deux bogues différents dans le même fichier. Vendredi 16h, vous voulez tout fusionner dans main avant la fin de semaine. Votre coéquipier a déjà poussé sa branche. Vous, vous avez 5 commits « oups », « correction », « oups2 », « ça devrait marcher », « non attends » sur votre branche.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Git 2/2 — notions avancées :: Maintenance de logiciel">
+    <meta name="twitter:description" content="Cette semaine, on poursuit l’introduction à Git amorcée en semaine 1, avec les notions nécessaires pour collaborer efficacement en équipe : Pull Request, choix entre merge et rebase, retour en arrière sécuritaire, et récupération sélective de commits.
+🎬 Mise en situation Imaginez : vous et un coéquipier travaillez chacun sur une branche différente pour corriger deux bogues différents dans le même fichier. Vendredi 16h, vous voulez tout fusionner dans main avant la fin de semaine. Votre coéquipier a déjà poussé sa branche. Vous, vous avez 5 commits « oups », « correction », « oups2 », « ça devrait marcher », « non attends » sur votre branche.">
+    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-2/git-avance/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Git 2/2 — notions avancées :: Maintenance de logiciel">
+    <meta property="og:description" content="Cette semaine, on poursuit l’introduction à Git amorcée en semaine 1, avec les notions nécessaires pour collaborer efficacement en équipe : Pull Request, choix entre merge et rebase, retour en arrière sécuritaire, et récupération sélective de commits.
+🎬 Mise en situation Imaginez : vous et un coéquipier travaillez chacun sur une branche différente pour corriger deux bogues différents dans le même fichier. Vendredi 16h, vous voulez tout fusionner dans main avant la fin de semaine. Votre coéquipier a déjà poussé sa branche. Vous, vous avez 5 commits « oups », « correction », « oups2 », « ça devrait marcher », « non attends » sur votre branche.">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 2 — Lire le code des autres">
+    <meta itemprop="name" content="Git 2/2 — notions avancées :: Maintenance de logiciel">
+    <meta itemprop="description" content="Cette semaine, on poursuit l’introduction à Git amorcée en semaine 1, avec les notions nécessaires pour collaborer efficacement en équipe : Pull Request, choix entre merge et rebase, retour en arrière sécuritaire, et récupération sélective de commits.
+🎬 Mise en situation Imaginez : vous et un coéquipier travaillez chacun sur une branche différente pour corriger deux bogues différents dans le même fichier. Vendredi 16h, vous voulez tout fusionner dans main avant la fin de semaine. Votre coéquipier a déjà poussé sa branche. Vous, vous avez 5 commits « oups », « correction », « oups2 », « ça devrait marcher », « non attends » sur votre branche.">
+    <meta itemprop="wordCount" content="1227">
+    <title>Git 2/2 — notions avancées :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788765660" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788765660";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1788765660" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/semaine-2\/git-avance\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-2/git-avance/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-2/index.html"><span itemprop="name">Semaine 2 — Lire le code des autres</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Git 2/2 — notions avancées</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-2" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="git-22--notions-avancées">Git 2/2 — notions avancées</h1>
+
+<p>Cette semaine, on poursuit l&rsquo;introduction à Git amorcée en semaine 1, avec les notions
+nécessaires pour collaborer efficacement en équipe : Pull Request, choix entre <code>merge</code> et
+<code>rebase</code>, retour en arrière sécuritaire, et récupération sélective de commits.</p>
+<h2 id="-mise-en-situation">🎬 Mise en situation</h2>
+<p>Imaginez : vous et un coéquipier travaillez chacun sur une branche différente pour corriger deux
+bogues différents dans le même fichier. Vendredi 16h, vous voulez tout fusionner dans <code>main</code> avant
+la fin de semaine. Votre coéquipier a <em>déjà</em> poussé sa branche. Vous, vous avez 5 commits « oups »,
+« correction », « oups2 », « ça devrait marcher », « non attends » sur votre branche.</p>
+<p>Que faites-vous ? Nettoyez-vous votre historique avant d&rsquo;ouvrir une PR ? Fusionnez-vous ou
+rebasez-vous ? Et si un conflit apparaît ? Toutes les notions ci-dessous existent pour répondre
+précisément à ce genre de situation — pas juste pour le plaisir de mémoriser des commandes.</p>
+<hr>
+<h2 id="cycle-de-vie-dev--test--prod-et-git-pull---rebase">Cycle de vie dev / test / prod et <code>git pull --rebase</code></h2>
+<p>Dans un vrai projet, plusieurs environnements coexistent (développement local, intégration/test,
+production), et plusieurs personnes travaillent en parallèle sur le même dépôt. Avant de pousser
+votre travail, il faut d&rsquo;abord récupérer l&rsquo;état le plus à jour de la branche distante.</p>
+<h3 id="astuce--1-ligne-magique-">Astuce « 1 ligne magique »</h3>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git pull --rebase</span></span></code></pre></div>
+<p>Cette commande combine en une seule ligne :</p>
+<ul>
+<li>la récupération des commits distants (<code>fetch</code>);</li>
+<li>le rebase de vos commits locaux par-dessus (au lieu d&rsquo;un <code>merge</code>, qui créerait un commit de
+fusion supplémentaire).</li>
+</ul>
+<p>Résultat : un historique <strong>linéaire</strong>, plus facile à lire, sans commits de fusion inutiles.</p>
+<hr>
+<h2 id="pull-request-et-revue-de-code">Pull Request et revue de code</h2>
+<p>Une <strong>Pull Request</strong> (PR) est une demande d&rsquo;intégrer les changements d&rsquo;une branche vers une autre
+(généralement vers la branche principale), accompagnée d&rsquo;une revue de code par une autre personne
+avant la fusion. C&rsquo;est la pratique standard en industrie pour :</p>
+<ul>
+<li>s&rsquo;assurer qu&rsquo;au moins une autre paire d&rsquo;yeux valide le changement avant qu&rsquo;il n&rsquo;entre dans le
+code partagé;</li>
+<li>documenter <em>pourquoi</em> un changement a été fait, pas seulement <em>quoi</em>;</li>
+<li>déclencher automatiquement les vérifications d&rsquo;un pipeline CI (build, tests, analyse de qualité)
+avant la fusion.</li>
+</ul>
+<p><strong>Bonnes pratiques pour une PR</strong> :</p>
+<ul>
+<li>Une description claire du problème résolu ou de la fonctionnalité ajoutée.</li>
+<li>Des tests qui démontrent que le changement fonctionne (et ne casse rien d&rsquo;autre).</li>
+<li>Une taille raisonnable — une PR de 2000 lignes est presque impossible à bien réviser.</li>
+</ul>
+<hr>
+<h2 id="merge-vs-rebase"><code>merge</code> vs <code>rebase</code></h2>
+<p>Les deux commandes permettent d&rsquo;intégrer les changements d&rsquo;une branche dans une autre, mais elles
+ne produisent pas le même historique :</p>
+<table>
+	<thead>
+			<tr>
+					<th></th>
+					<th><code>git merge</code></th>
+					<th><code>git rebase</code></th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Historique résultant</td>
+					<td>Conserve l&rsquo;historique réel, y compris un commit de fusion</td>
+					<td>Réécrit l&rsquo;historique pour le rendre linéaire, comme si les commits avaient été faits l&rsquo;un après l&rsquo;autre</td>
+			</tr>
+			<tr>
+					<td>Sécurité</td>
+					<td>Sûr sur une branche déjà partagée</td>
+					<td>À éviter sur une branche déjà partagée avec d&rsquo;autres personnes (réécrit les commits, donc change leurs identifiants)</td>
+			</tr>
+			<tr>
+					<td>Cas d&rsquo;usage typique</td>
+					<td>Fusionner une branche de fonctionnalité terminée dans <code>main</code></td>
+					<td>Nettoyer/aligner sa propre branche de travail avant d&rsquo;ouvrir une PR</td>
+			</tr>
+	</tbody>
+</table>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># merge : fusionner une branche dans une autre</span>
+</span></span><span style="display:flex;"><span>git checkout main
+</span></span><span style="display:flex;"><span>git merge ma-branche-travail
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># rebase : rejouer les commits d&#39;une branche par-dessus une autre</span>
+</span></span><span style="display:flex;"><span>git checkout ma-branche-travail
+</span></span><span style="display:flex;"><span>git rebase main</span></span></code></pre></div>
+<p><a href="#R-image-18caa3951d5404f03458e26db11e54b1" class="lightbox-link"><img alt="Comparaison merge vs rebase" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/merge-vs-rebase.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-18caa3951d5404f03458e26db11e54b1"><img alt="Comparaison merge vs rebase" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/merge-vs-rebase.svg"></a></p>
+<p><a href="#R-image-1dd3679a76b4d0251cd2c64c34153feb" class="lightbox-link"><img alt="Schéma d&rsquo;un rebase" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/gitrebase.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-1dd3679a76b4d0251cd2c64c34153feb"><img alt="Schéma d&rsquo;un rebase" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/gitrebase.svg"></a></p>
+<blockquote>
+<p>⚠️ <strong>Règle d&rsquo;or</strong> : ne jamais faire de rebase sur une branche que d&rsquo;autres personnes ont déjà
+récupérée (<code>pull</code>) — cela réécrit l&rsquo;historique et complique la vie de toute l&rsquo;équipe.</p>
+</blockquote>
+<h3 id="rebase-interactif">Rebase interactif</h3>
+<p>Le rebase interactif permet de réécrire l&rsquo;historique de vos propres commits avant de les partager :
+regrouper (squash), renommer (reword), modifier (edit) ou même supprimer (drop) des commits.</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git rebase -i HEAD~3</span></span></code></pre></div>
+<p>Un fichier s&rsquo;ouvre alors, listant les derniers commits :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>pick abc123 ajout ligne1
+pick def456 ajout ligne2
+pick ghi789 correction typo</code></pre></div>
+<p>On peut modifier le mot-clé devant chaque commit :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Mot-clé</th>
+					<th>Effet</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>pick</code></td>
+					<td>Garder le commit tel quel</td>
+			</tr>
+			<tr>
+					<td><code>reword</code></td>
+					<td>Garder le commit, mais modifier son message</td>
+			</tr>
+			<tr>
+					<td><code>edit</code></td>
+					<td>S&rsquo;arrêter sur ce commit pour le modifier</td>
+			</tr>
+			<tr>
+					<td><code>squash</code></td>
+					<td>Fusionner ce commit avec le précédent (en gardant les deux messages)</td>
+			</tr>
+			<tr>
+					<td><code>fixup</code></td>
+					<td>Fusionner ce commit avec le précédent (en jetant son message)</td>
+			</tr>
+			<tr>
+					<td><code>exec</code></td>
+					<td>Exécuter une commande shell à cette étape</td>
+			</tr>
+			<tr>
+					<td><code>drop</code></td>
+					<td>Supprimer complètement ce commit</td>
+			</tr>
+	</tbody>
+</table>
+<p>Exemple : fusionner un commit de correction de coquille dans le commit précédent, pour garder un
+historique propre avant d&rsquo;ouvrir une PR :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>pick abc123 ajout ligne1
+squash def456 ajout ligne2
+fixup ghi789 correction typo</code></pre></div>
+<hr>
+<h2 id="rollback--revert-vs-reset">Rollback : <code>revert</code> vs <code>reset</code></h2>
+<p>Deux façons différentes d&rsquo;annuler des changements, avec des implications très différentes :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Commande</th>
+					<th>Effet</th>
+					<th>Sécurité</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>git revert &lt;commit&gt;</code></td>
+					<td>Crée un <strong>nouveau</strong> commit qui annule les changements d&rsquo;un commit précédent, sans réécrire l&rsquo;historique</td>
+					<td>✅ Sûr, même sur une branche déjà partagée/poussée</td>
+			</tr>
+			<tr>
+					<td><code>git reset --soft HEAD~1</code></td>
+					<td>Supprime le dernier commit, mais garde les changements en attente (staged)</td>
+					<td>⚠️ Réécrit l&rsquo;historique local</td>
+			</tr>
+			<tr>
+					<td><code>git reset --hard HEAD~1</code></td>
+					<td>Supprime le dernier commit <strong>et</strong> ses changements, sans possibilité de récupération facile</td>
+					<td>⚠️⚠️ Dangereux — perte de travail possible</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>📌 En règle générale : préférez <code>revert</code> sur une branche déjà partagée/poussée (comme <code>main</code>), et
+réservez <code>reset</code> à votre travail strictement local, pas encore partagé.</p>
+</blockquote>
+<hr>
+<h2 id="cherry-pick">Cherry-pick</h2>
+<p><code>git cherry-pick</code> permet d&rsquo;appliquer un commit précis d&rsquo;une branche sur une autre, <strong>sans fusionner
+toute la branche</strong> — utile quand un seul correctif intéressant se trouve au milieu de commits non
+désirés.</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git checkout main
+</span></span><span style="display:flex;"><span>git log --oneline ma-branche-travail   <span style="color:#75715e"># repérer le commit voulu</span>
+</span></span><span style="display:flex;"><span>git cherry-pick &lt;hash-du-commit&gt;</span></span></code></pre></div>
+<p><a href="#R-image-4d0bb38082f5f431275b2583a3daafb3" class="lightbox-link"><img alt="Schéma du cherry-pick" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/cherry-pick.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-4d0bb38082f5f431275b2583a3daafb3"><img alt="Schéma du cherry-pick" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/cherry-pick.svg"></a></p>
+<hr>
+<h2 id="résolution-de-conflits-de-merge">Résolution de conflits de merge</h2>
+<h3 id="quand-survient-un-conflit">Quand survient un conflit</h3>
+<p>Git ne peut pas fusionner automatiquement deux branches lorsque <strong>les mêmes lignes d&rsquo;un fichier ont
+été modifiées différemment</strong> dans chacune. Git marque alors le(s) fichier(s) en conflit avec des
+marqueurs spéciaux :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+contenu de notre branche
+=======
+contenu de l&#39;autre branche
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; ma-branche-travail</code></pre></div>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git status   <span style="color:#75715e"># voir les fichiers en conflit</span></span></span></code></pre></div>
+<h3 id="options-pour-résoudre-un-conflit">Options pour résoudre un conflit</h3>
+<p><strong>a) Résolution manuelle</strong></p>
+<ol>
+<li>Ouvrir le fichier et choisir ce qu&rsquo;on garde.</li>
+<li>Supprimer les marqueurs <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>.</li>
+<li>Marquer le fichier comme résolu, puis terminer la fusion :</li>
+</ol>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git add &lt;fichier&gt;
+</span></span><span style="display:flex;"><span>git commit</span></span></code></pre></div>
+<p><strong>b) Accepter une version entière</strong></p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># garder notre version</span>
+</span></span><span style="display:flex;"><span>git checkout --ours &lt;fichier&gt;
+</span></span><span style="display:flex;"><span>git add &lt;fichier&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># garder la version de l&#39;autre branche</span>
+</span></span><span style="display:flex;"><span>git checkout --theirs &lt;fichier&gt;
+</span></span><span style="display:flex;"><span>git add &lt;fichier&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>git commit</span></span></code></pre></div>
+<p><strong>c) Outil visuel</strong></p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git mergetool</span></span></code></pre></div>
+<p><strong>d) Abandonner le merge en cours</strong></p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git merge --abort</span></span></code></pre></div>
+<h3 id="résumé-rapide">Résumé rapide</h3>
+<table>
+	<thead>
+			<tr>
+					<th>Situation</th>
+					<th>Commande</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Prendre notre version</td>
+					<td><code>git checkout --ours &lt;fichier&gt;</code></td>
+			</tr>
+			<tr>
+					<td>Prendre leur version</td>
+					<td><code>git checkout --theirs &lt;fichier&gt;</code></td>
+			</tr>
+			<tr>
+					<td>Ouvrir un outil visuel</td>
+					<td><code>git mergetool</code></td>
+			</tr>
+			<tr>
+					<td>Annuler le merge</td>
+					<td><code>git merge --abort</code></td>
+			</tr>
+			<tr>
+					<td>Marquer un fichier résolu</td>
+					<td><code>git add &lt;fichier&gt;</code></td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 Pour limiter les conflits futurs : privilégiez <code>git pull --rebase</code>, communiquez avec l&rsquo;équipe
+sur les modules touchés, et faites des commits plus petits et plus fréquents.</p>
+</blockquote>
+<hr>
+<h2 id="commandes-utiles-à-connaître">Commandes utiles à connaître</h2>
+<table>
+	<thead>
+			<tr>
+					<th>Commande</th>
+					<th>Description</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>git log --oneline --graph --all</code></td>
+					<td>Historique graphique de toutes les branches</td>
+			</tr>
+			<tr>
+					<td><code>git diff</code></td>
+					<td>Voir les différences non commitées</td>
+			</tr>
+			<tr>
+					<td><code>git show &lt;commit&gt;</code></td>
+					<td>Voir le détail d&rsquo;un commit précis</td>
+			</tr>
+			<tr>
+					<td><code>git branch -a</code></td>
+					<td>Lister les branches locales et distantes</td>
+			</tr>
+			<tr>
+					<td><code>git switch &lt;branche&gt;</code></td>
+					<td>Changer de branche (alternative moderne à <code>checkout</code>)</td>
+			</tr>
+			<tr>
+					<td><code>git add -p</code></td>
+					<td>Mettre en attente ses changements par morceaux (staging partiel)</td>
+			</tr>
+			<tr>
+					<td><code>git stash</code></td>
+					<td>Mettre de côté temporairement des changements non commités (ex. pour changer de branche rapidement)</td>
+			</tr>
+			<tr>
+					<td><code>git stash pop</code></td>
+					<td>Réappliquer les changements mis de côté avec <code>git stash</code></td>
+			</tr>
+	</tbody>
+</table>
+<hr>
+<h2 id="-à-pratiquer">🧪 À pratiquer</h2>
+<p>La théorie ne suffit pas : voir le <a href="/420-515/semaine-2/exercice-git-avance/">Défi Git — semaine 2</a>
+pour un exercice guidé, en équipe de 2, qui vous fait provoquer et résoudre un vrai conflit de
+merge, ouvrir une Pull Request, comparer <code>merge</code>/<code>rebase</code>, tester <code>revert</code>/<code>reset</code> et pratiquer
+<code>cherry-pick</code> — directement dans le projet legacy du cours.</p>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu">
+            <li class="" data-nav-id="/420-515/semaine-2/lecture-de-code/index.html"><a class="padding" href="/420-515/semaine-2/lecture-de-code/index.html">Lire le code des autres</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/exercice-lecture-de-code/index.html"><a class="padding" href="/420-515/semaine-2/exercice-lecture-de-code/index.html">Exercices approfondis — lecture de code</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/debogage/index.html"><a class="padding" href="/420-515/semaine-2/debogage/index.html">Techniques de débogage (1/2)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/exercice-stack-trace/index.html"><a class="padding" href="/420-515/semaine-2/exercice-stack-trace/index.html">Exercice : lire une stack trace</a></li>
+            <li class="active " data-nav-id="/420-515/semaine-2/git-avance/index.html"><a class="padding" href="/420-515/semaine-2/git-avance/index.html">Git 2/2 — notions avancées</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/exercice-git-avance/index.html"><a class="padding" href="/420-515/semaine-2/exercice-git-avance/index.html">Défi Git — semaine 2 (avancé)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-2/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788765660" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788765660" defer></script>
+    <script src="/420-515/js/theme.min.js?1788765660" defer></script>
+  </body>
+</html>

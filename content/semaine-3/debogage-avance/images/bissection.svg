@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+  </defs>
+
+  <text x="450" y="28" font-size="18" font-weight="bold" text-anchor="middle" fill="#222">Bissection : diviser pour localiser la cause</text>
+
+  <!-- Range bar representing commits or lines of code -->
+  <g font-size="12" text-anchor="middle">
+    <rect x="60" y="55" width="780" height="30" fill="#e8f0fe" stroke="#3b6fd6" stroke-width="2"/>
+    <text x="90" y="75" fill="#1a3a75" font-weight="bold">✅ BON</text>
+    <text x="810" y="75" fill="#c0392b" font-weight="bold">❌ MAUVAIS</text>
+    <text x="450" y="48" fill="#333">Étape 1 — tout l'intervalle suspect (ex. 16 commits, ou tout un fichier)</text>
+  </g>
+
+  <!-- Step 2 -->
+  <g font-size="12" text-anchor="middle">
+    <rect x="60" y="120" width="390" height="26" fill="#e6f5ea" stroke="#2e9e4f" stroke-width="2"/>
+    <rect x="450" y="120" width="390" height="26" fill="#fdeaf1" stroke="#c8447a" stroke-width="2" stroke-dasharray="4,3"/>
+    <text x="450" y="112" fill="#333">Étape 2 — tester le milieu → mauvais ici, donc la cause est dans cette moitié</text>
+    <text x="255" y="138" fill="#1e6b34">bon</text>
+    <text x="645" y="138" fill="#8a1f4d">mauvais (on continue ici)</text>
+  </g>
+
+  <!-- Step 3 -->
+  <g font-size="12" text-anchor="middle">
+    <rect x="450" y="170" width="195" height="24" fill="#e6f5ea" stroke="#2e9e4f" stroke-width="2"/>
+    <rect x="645" y="170" width="195" height="24" fill="#fdeaf1" stroke="#c8447a" stroke-width="2" stroke-dasharray="4,3"/>
+    <text x="450" y="163" fill="#333">Étape 3 — on redivise seulement la moitié restante...</text>
+  </g>
+
+  <!-- Step 4 : single element found -->
+  <g font-size="12" text-anchor="middle">
+    <rect x="645" y="215" width="97" height="22" fill="#e6f5ea" stroke="#2e9e4f" stroke-width="2"/>
+    <rect x="742" y="215" width="98" height="22" fill="#fdf3e3" stroke="#d69a1f" stroke-width="3"/>
+    <text x="645" y="208" fill="#333">Étape 4 — jusqu'à isoler UN SEUL élément fautif</text>
+    <text x="791" y="256" fill="#8a5a00" font-weight="bold">🎯 cause trouvée !</text>
+  </g>
+
+  <!-- Arrows -->
+  <g stroke="#555" stroke-width="1.5" marker-end="url(#arrow)" fill="none">
+    <path d="M645 85 L645 118"/>
+    <path d="M742 146 L742 168"/>
+    <path d="M791 194 L791 213"/>
+  </g>
+
+  <text x="450" y="300" font-size="13" fill="#333" text-anchor="middle">Chaque test élimine la MOITIÉ des suspects restants — log₂(n) tests suffisent au lieu de n.</text>
+  <text x="450" y="320" font-size="12" fill="#555" text-anchor="middle">Exemple : 1000 commits → seulement ~10 tests pour trouver le commit fautif avec <tspan font-family="Consolas, monospace">git bisect</tspan>.</text>
+</svg>

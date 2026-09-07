@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" font-family="Segoe UI, Arial, sans-serif">
+  <text x="250" y="28" font-size="18" font-weight="bold" text-anchor="middle" fill="#222">Cycle de vie d'un logiciel</text>
+
+  <!-- circle path -->
+  <circle cx="250" cy="260" r="170" fill="none" stroke="#ccc" stroke-width="2" stroke-dasharray="4,4"/>
+
+  <!-- 6 phases around circle -->
+  <!-- angles: -90,-30,30,90,150,210 (deg) -->
+  <g font-size="13" text-anchor="middle">
+    <circle cx="250" cy="90" r="45" fill="#e8f0fe" stroke="#3b6fd6" stroke-width="2"/>
+    <text x="250" y="86" font-weight="bold" fill="#1a3a75">Analyse des</text>
+    <text x="250" y="100" font-weight="bold" fill="#1a3a75">besoins</text>
+
+    <circle cx="397" cy="175" r="45" fill="#e6f5ea" stroke="#2e9e4f" stroke-width="2"/>
+    <text x="397" y="171" font-weight="bold" fill="#1e6b34">Conception</text>
+
+    <circle cx="397" cy="345" r="45" fill="#fdf3e3" stroke="#d69a1f" stroke-width="2"/>
+    <text x="397" y="341" font-weight="bold" fill="#8a5a00">Implémen-</text>
+    <text x="397" y="355" font-weight="bold" fill="#8a5a00">tation</text>
+
+    <circle cx="250" cy="430" r="45" fill="#fdeaf1" stroke="#c8447a" stroke-width="2"/>
+    <text x="250" y="434" font-weight="bold" fill="#8a1f4d">Tests</text>
+
+    <circle cx="103" cy="345" r="45" fill="#eee6fb" stroke="#7a4fd6" stroke-width="2"/>
+    <text x="103" y="341" font-weight="bold" fill="#43208a">Déploie-</text>
+    <text x="103" y="355" font-weight="bold" fill="#43208a">ment</text>
+
+    <circle cx="103" cy="175" r="50" fill="#fde8e8" stroke="#c0392b" stroke-width="3"/>
+    <text x="103" y="167" font-weight="bold" fill="#8a1f16">Maintenance</text>
+    <text x="103" y="183" font-size="11" fill="#8a1f16">(corrective, adaptative,</text>
+    <text x="103" y="196" font-size="11" fill="#8a1f16">perfective, préventive)</text>
+  </g>
+
+  <!-- arrows along the circle -->
+  <defs>
+    <marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888"/>
+    </marker>
+  </defs>
+  <g fill="none" stroke="#888" stroke-width="2" marker-end="url(#a4)">
+    <path d="M 288 100 A 170 170 0 0 1 380 140"/>
+    <path d="M 415 213 A 170 170 0 0 1 415 310"/>
+    <path d="M 375 380 A 170 170 0 0 1 285 420"/>
+    <path d="M 215 425 A 170 170 0 0 1 130 385"/>
+    <path d="M 100 305 A 170 170 0 0 1 100 220"/>
+    <path d="M 135 135 A 170 170 0 0 1 215 100"/>
+  </g>
+
+  <text x="250" y="480" font-size="12" text-anchor="middle" fill="#555">
+    La maintenance redéclenche fréquemment un nouveau petit cycle complet.
+  </text>
+</svg>

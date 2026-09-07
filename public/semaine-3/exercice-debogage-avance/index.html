@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="🎯 Objectif Mettre en pratique, sur votre propre projet, les 4 outils vus dans Techniques de débogage (2/2) : débogueur pas à pas, breakpoint conditionnel, journalisation stratégique, bissection.
+👥 En équipe. Chaque partie peut être faite par une personne différente, puis partagée en équipe — l’objectif est que tout le monde ait manipulé chaque outil au moins une fois.
+🧩 Partie 1 — Débogueur pas à pas Choisissez une méthode de votre projet qui contient une boucle ou une condition non triviale. Posez un breakpoint au début de cette méthode, démarrez en mode Debug, et déclenchez-la réellement (appel API, test, ou exécution de l’application). Utilisez Step Over pour avancer ligne par ligne, et Step Into au moins une fois pour entrer dans une méthode appelée. Notez : une valeur de variable qui vous a surpris, et le nom exact de la classe concrète affichée par le débogueur si une interface est impliquée. 🎯 Partie 2 — Breakpoint conditionnel Repérez une collection ou une boucle qui traite plusieurs éléments (ex. une liste retournée par un endpoint, ou une boucle for sur un tableau). Posez un breakpoint conditionnel qui ne s’arrête que sur un élément précis (par identifiant, par une valeur nulle, ou par une valeur hors de l’intervalle attendu). Vérifiez que le programme s’exécute normalement jusqu’à ce cas précis, sans s’arrêter avant. ❓ QuestionPourquoi un breakpoint conditionnel est-il particulièrement utile pour un bogue qui ne se produit que sur certaines données, plutôt qu’un breakpoint classique ?">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Exercice : outils de débogage :: Maintenance de logiciel">
+    <meta name="twitter:description" content="🎯 Objectif Mettre en pratique, sur votre propre projet, les 4 outils vus dans Techniques de débogage (2/2) : débogueur pas à pas, breakpoint conditionnel, journalisation stratégique, bissection.
+👥 En équipe. Chaque partie peut être faite par une personne différente, puis partagée en équipe — l’objectif est que tout le monde ait manipulé chaque outil au moins une fois.
+🧩 Partie 1 — Débogueur pas à pas Choisissez une méthode de votre projet qui contient une boucle ou une condition non triviale. Posez un breakpoint au début de cette méthode, démarrez en mode Debug, et déclenchez-la réellement (appel API, test, ou exécution de l’application). Utilisez Step Over pour avancer ligne par ligne, et Step Into au moins une fois pour entrer dans une méthode appelée. Notez : une valeur de variable qui vous a surpris, et le nom exact de la classe concrète affichée par le débogueur si une interface est impliquée. 🎯 Partie 2 — Breakpoint conditionnel Repérez une collection ou une boucle qui traite plusieurs éléments (ex. une liste retournée par un endpoint, ou une boucle for sur un tableau). Posez un breakpoint conditionnel qui ne s’arrête que sur un élément précis (par identifiant, par une valeur nulle, ou par une valeur hors de l’intervalle attendu). Vérifiez que le programme s’exécute normalement jusqu’à ce cas précis, sans s’arrêter avant. ❓ QuestionPourquoi un breakpoint conditionnel est-il particulièrement utile pour un bogue qui ne se produit que sur certaines données, plutôt qu’un breakpoint classique ?">
+    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-3/exercice-debogage-avance/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Exercice : outils de débogage :: Maintenance de logiciel">
+    <meta property="og:description" content="🎯 Objectif Mettre en pratique, sur votre propre projet, les 4 outils vus dans Techniques de débogage (2/2) : débogueur pas à pas, breakpoint conditionnel, journalisation stratégique, bissection.
+👥 En équipe. Chaque partie peut être faite par une personne différente, puis partagée en équipe — l’objectif est que tout le monde ait manipulé chaque outil au moins une fois.
+🧩 Partie 1 — Débogueur pas à pas Choisissez une méthode de votre projet qui contient une boucle ou une condition non triviale. Posez un breakpoint au début de cette méthode, démarrez en mode Debug, et déclenchez-la réellement (appel API, test, ou exécution de l’application). Utilisez Step Over pour avancer ligne par ligne, et Step Into au moins une fois pour entrer dans une méthode appelée. Notez : une valeur de variable qui vous a surpris, et le nom exact de la classe concrète affichée par le débogueur si une interface est impliquée. 🎯 Partie 2 — Breakpoint conditionnel Repérez une collection ou une boucle qui traite plusieurs éléments (ex. une liste retournée par un endpoint, ou une boucle for sur un tableau). Posez un breakpoint conditionnel qui ne s’arrête que sur un élément précis (par identifiant, par une valeur nulle, ou par une valeur hors de l’intervalle attendu). Vérifiez que le programme s’exécute normalement jusqu’à ce cas précis, sans s’arrêter avant. ❓ QuestionPourquoi un breakpoint conditionnel est-il particulièrement utile pour un bogue qui ne se produit que sur certaines données, plutôt qu’un breakpoint classique ?">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 3 — Débogage outillé et Maven">
+    <meta itemprop="name" content="Exercice : outils de débogage :: Maintenance de logiciel">
+    <meta itemprop="description" content="🎯 Objectif Mettre en pratique, sur votre propre projet, les 4 outils vus dans Techniques de débogage (2/2) : débogueur pas à pas, breakpoint conditionnel, journalisation stratégique, bissection.
+👥 En équipe. Chaque partie peut être faite par une personne différente, puis partagée en équipe — l’objectif est que tout le monde ait manipulé chaque outil au moins une fois.
+🧩 Partie 1 — Débogueur pas à pas Choisissez une méthode de votre projet qui contient une boucle ou une condition non triviale. Posez un breakpoint au début de cette méthode, démarrez en mode Debug, et déclenchez-la réellement (appel API, test, ou exécution de l’application). Utilisez Step Over pour avancer ligne par ligne, et Step Into au moins une fois pour entrer dans une méthode appelée. Notez : une valeur de variable qui vous a surpris, et le nom exact de la classe concrète affichée par le débogueur si une interface est impliquée. 🎯 Partie 2 — Breakpoint conditionnel Repérez une collection ou une boucle qui traite plusieurs éléments (ex. une liste retournée par un endpoint, ou une boucle for sur un tableau). Posez un breakpoint conditionnel qui ne s’arrête que sur un élément précis (par identifiant, par une valeur nulle, ou par une valeur hors de l’intervalle attendu). Vérifiez que le programme s’exécute normalement jusqu’à ce cas précis, sans s’arrêter avant. ❓ QuestionPourquoi un breakpoint conditionnel est-il particulièrement utile pour un bogue qui ne se produit que sur certaines données, plutôt qu’un breakpoint classique ?">
+    <meta itemprop="wordCount" content="596">
+    <title>Exercice : outils de débogage :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788765660" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788765660";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1788765660" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/semaine-3\/exercice-debogage-avance\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-3/exercice-debogage-avance/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-3/index.html"><span itemprop="name">Semaine 3 — Débogage outillé et Maven</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Exercice : outils de débogage</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-3" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="exercice--outils-de-débogage">Exercice : outils de débogage</h1>
+
+<h2 id="-objectif">🎯 Objectif</h2>
+<p>Mettre en pratique, sur votre propre projet, les 4 outils vus dans
+<a href="/420-515/semaine-3/debogage-avance/">Techniques de débogage (2/2)</a> : débogueur pas à pas,
+breakpoint conditionnel, journalisation stratégique, bissection.</p>
+<blockquote>
+<p>👥 <strong>En équipe.</strong> Chaque partie peut être faite par une personne différente, puis partagée en
+équipe — l&rsquo;objectif est que tout le monde ait manipulé chaque outil au moins une fois.</p>
+</blockquote>
+<hr>
+<h2 id="-partie-1--débogueur-pas-à-pas">🧩 Partie 1 — Débogueur pas à pas</h2>
+<ol>
+<li>Choisissez une méthode de votre projet qui contient une boucle ou une condition non triviale.</li>
+<li>Posez un breakpoint au début de cette méthode, démarrez en mode Debug, et déclenchez-la
+réellement (appel API, test, ou exécution de l&rsquo;application).</li>
+<li>Utilisez <em>Step Over</em> pour avancer ligne par ligne, et <em>Step Into</em> au moins une fois pour entrer
+dans une méthode appelée.</li>
+<li>Notez : une valeur de variable qui vous a surpris, et le nom exact de la classe concrète
+affichée par le débogueur si une interface est impliquée.</li>
+</ol>
+<hr>
+<h2 id="-partie-2--breakpoint-conditionnel">🎯 Partie 2 — Breakpoint conditionnel</h2>
+<ol>
+<li>Repérez une collection ou une boucle qui traite plusieurs éléments (ex. une liste retournée par
+un endpoint, ou une boucle <code>for</code> sur un tableau).</li>
+<li>Posez un breakpoint conditionnel qui ne s&rsquo;arrête que sur un élément précis (par identifiant, par
+une valeur nulle, ou par une valeur hors de l&rsquo;intervalle attendu).</li>
+<li>Vérifiez que le programme s&rsquo;exécute normalement jusqu&rsquo;à ce cas précis, sans s&rsquo;arrêter avant.</li>
+</ol>
+<details>
+<summary>❓ Question</summary>
+<p>Pourquoi un breakpoint conditionnel est-il particulièrement utile pour un bogue qui <strong>ne se produit
+que sur certaines données</strong>, plutôt qu&rsquo;un breakpoint classique ?</p>
+<p><strong>Réponse</strong> : un breakpoint classique s&rsquo;arrête à <strong>chaque</strong> itération, ce qui est trop lent quand
+seule une itération précise (parmi des centaines) est en cause. Le breakpoint conditionnel filtre
+automatiquement pour vous amener directement au bon endroit.</p>
+</details>
+<hr>
+<h2 id="-partie-3--de-println-à-la-journalisation">📝 Partie 3 — De <code>println</code> à la journalisation</h2>
+<ol>
+<li>Trouvez (ou ajoutez temporairement) un <code>System.out.println</code> de débogage dans votre projet.</li>
+<li>Remplacez-le par un appel à un logger (<code>logger.debug(...)</code> ou équivalent dans votre langage),
+avec un message qui inclut le contexte utile (identifiants, valeurs pertinentes).</li>
+<li>Vérifiez que le message apparaît bien dans la console/les logs au niveau <code>DEBUG</code>.</li>
+</ol>
+<blockquote>
+<p>💡 Si votre langage/framework n&rsquo;utilise pas SLF4J (ex. Python, JavaScript), utilisez l&rsquo;équivalent
+local (<code>logging</code> en Python, un logger structuré en Node.js) — le principe des niveaux reste le
+même.</p>
+</blockquote>
+<hr>
+<h2 id="-partie-4--bissection">🔍 Partie 4 — Bissection</h2>
+<p><strong>Option A — dans le code</strong> : sur un comportement que vous ne comprenez pas bien, commentez la
+moitié d&rsquo;un bloc suspect, relancez le scénario, et notez si le comportement change. Répétez sur la
+moitié restante.</p>
+<p><strong>Option B — dans l&rsquo;historique (<code>git bisect</code>)</strong> : sur votre projet, identifiez un ancien commit où
+un comportement précis était différent d&rsquo;aujourd&rsquo;hui (ex. un test qui passait avant et échoue
+maintenant, ou l&rsquo;inverse). Utilisez <code>git bisect start</code>, <code>git bisect good</code>/<code>bad</code> pour retrouver le
+commit exact où le comportement a changé.</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git bisect start
+</span></span><span style="display:flex;"><span>git bisect bad                 <span style="color:#75715e"># HEAD (ou un commit récent) présente le problème</span>
+</span></span><span style="display:flex;"><span>git bisect good &lt;ancien-hash&gt;  <span style="color:#75715e"># ce commit ne présentait pas le problème</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># testez à chaque arrêt, puis :</span>
+</span></span><span style="display:flex;"><span>git bisect good   <span style="color:#75715e"># ou</span>
+</span></span><span style="display:flex;"><span>git bisect bad
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ... jusqu&#39;au commit fautif</span>
+</span></span><span style="display:flex;"><span>git bisect reset</span></span></code></pre></div>
+<hr>
+<h2 id="-auto-vérification">✅ Auto-vérification</h2>
+<ul>
+<li><input disabled="" type="checkbox"> J&rsquo;ai utilisé <em>Step Over</em> et <em>Step Into</em> au moins une fois chacun sur du vrai code.</li>
+<li><input disabled="" type="checkbox"> Un breakpoint conditionnel m&rsquo;a permis d&rsquo;atteindre directement un cas précis dans une
+collection, sans m&rsquo;arrêter à chaque itération.</li>
+<li><input disabled="" type="checkbox"> J&rsquo;ai remplacé au moins un <code>println</code> par un appel de logger avec le bon niveau.</li>
+<li><input disabled="" type="checkbox"> J&rsquo;ai réduit un espace de recherche par bissection (code ou <code>git bisect</code>) jusqu&rsquo;à isoler une
+seule cause.</li>
+</ul>
+<blockquote>
+<p>💡 Gardez vos notes de cette pratique — elles pourront être utiles pour un travail pratique à
+venir.</p>
+</blockquote>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu">
+            <li class="" data-nav-id="/420-515/semaine-3/debogage-avance/index.html"><a class="padding" href="/420-515/semaine-3/debogage-avance/index.html">Techniques de débogage (2/2)</a></li>
+            <li class="active " data-nav-id="/420-515/semaine-3/exercice-debogage-avance/index.html"><a class="padding" href="/420-515/semaine-3/exercice-debogage-avance/index.html">Exercice : outils de débogage</a></li>
+            <li class="" data-nav-id="/420-515/semaine-3/maven/index.html"><a class="padding" href="/420-515/semaine-3/maven/index.html">Maven (1/2) — pom.xml, dépendances, plugins</a></li>
+            <li class="" data-nav-id="/420-515/semaine-3/exercice-maven/index.html"><a class="padding" href="/420-515/semaine-3/exercice-maven/index.html">Exercice : manipuler pom.xml</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788765660" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788765660" defer></script>
+    <script src="/420-515/js/theme.min.js?1788765660" defer></script>
+  </body>
+</html>

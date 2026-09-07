@@ -19,7 +19,7 @@ type = "home"
 |Nom de l'évaluation|Pondération|Date de l'évaluation|
 |:---:|:---:|:---:|
 |7 quiz de révision (5 meilleures notes)| 15 % |Semaines 3 à 13|
-|TP 1| 10 % |Semaine 2|
+|TP 1| 10 % |Semaine 3|
 |TP 2| 10 % |Semaine 6|
 |TP 3| 15 % |Semaine 9|
 |TP 4| 15 % |Semaine 12|

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="Ce que veut dire « comprendre » du code Avant de voir les stratégies concrètes, clarifions ce qu’on cherche à construire quand on lit du code : un modèle mental — une compréhension du fonctionnement du système et des raisons qui expliquent ses choix de conception. Ce n’est pas juste “avoir lu les lignes”, c’est être capable d’expliquer et de prédire le comportement du code sans le relire.
+Pour construire ce modèle mental, deux types de connaissances entrent en jeu :">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Lire le code des autres :: Maintenance de logiciel">
+    <meta name="twitter:description" content="Ce que veut dire « comprendre » du code Avant de voir les stratégies concrètes, clarifions ce qu’on cherche à construire quand on lit du code : un modèle mental — une compréhension du fonctionnement du système et des raisons qui expliquent ses choix de conception. Ce n’est pas juste “avoir lu les lignes”, c’est être capable d’expliquer et de prédire le comportement du code sans le relire.
+Pour construire ce modèle mental, deux types de connaissances entrent en jeu :">
+    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-2/lecture-de-code/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Lire le code des autres :: Maintenance de logiciel">
+    <meta property="og:description" content="Ce que veut dire « comprendre » du code Avant de voir les stratégies concrètes, clarifions ce qu’on cherche à construire quand on lit du code : un modèle mental — une compréhension du fonctionnement du système et des raisons qui expliquent ses choix de conception. Ce n’est pas juste “avoir lu les lignes”, c’est être capable d’expliquer et de prédire le comportement du code sans le relire.
+Pour construire ce modèle mental, deux types de connaissances entrent en jeu :">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 2 — Lire le code des autres">
+    <meta itemprop="name" content="Lire le code des autres :: Maintenance de logiciel">
+    <meta itemprop="description" content="Ce que veut dire « comprendre » du code Avant de voir les stratégies concrètes, clarifions ce qu’on cherche à construire quand on lit du code : un modèle mental — une compréhension du fonctionnement du système et des raisons qui expliquent ses choix de conception. Ce n’est pas juste “avoir lu les lignes”, c’est être capable d’expliquer et de prédire le comportement du code sans le relire.
+Pour construire ce modèle mental, deux types de connaissances entrent en jeu :">
+    <meta itemprop="wordCount" content="2987">
+    <title>Lire le code des autres :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788765660" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788765660";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1788765660" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/semaine-2\/lecture-de-code\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-2/lecture-de-code/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-2/index.html"><span itemprop="name">Semaine 2 — Lire le code des autres</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Lire le code des autres</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-2" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="lire-le-code-des-autres">Lire le code des autres</h1>
+
+<h2 id="ce-que-veut-dire--comprendre--du-code">Ce que veut dire « comprendre » du code</h2>
+<p>Avant de voir les stratégies concrètes, clarifions ce qu&rsquo;on cherche à construire quand on lit du
+code : un <strong>modèle mental</strong> — une compréhension du fonctionnement du système et des raisons qui
+expliquent ses choix de conception. Ce n&rsquo;est pas juste &ldquo;avoir lu les lignes&rdquo;, c&rsquo;est être capable
+d&rsquo;expliquer et de prédire le comportement du code sans le relire.</p>
+<p>Pour construire ce modèle mental, deux types de connaissances entrent en jeu :</p>
+<ul>
+<li><strong>La connaissance de programmation</strong> (<em>programming knowledge</em>) : les concepts généraux,
+indépendants du projet — comment fonctionne une boucle, un design pattern, une injection de
+dépendances, une API REST. C&rsquo;est ce que votre formation vous donne déjà.</li>
+<li><strong>La connaissance du domaine/du système</strong> (<em>domain/system knowledge</em>) : les connaissances
+spécifiques à <em>votre</em> projet — ce que représentent ses entités métier dans le domaine qu&rsquo;il
+couvre, et comment ses couches en particulier sont organisées (nommage des packages, découpage
+contrôleur/service/accès aux données, conventions maison).</li>
+</ul>
+<p>La recherche montre qu&rsquo;un bon mélange des deux, et pas seulement une expertise générale en
+programmation, est associé à une meilleure compréhension de code inconnu. C&rsquo;est pourquoi lire
+<em>seulement</em> le code, sans jamais consulter la documentation disponible (README, spécification
+d&rsquo;API, tickets liés), limite votre compréhension — combiner les deux est plus efficace que l&rsquo;un ou
+l&rsquo;autre isolément.</p>
+<p>Votre <strong>niveau d&rsquo;expertise</strong> influence aussi la stratégie la plus efficace : les novices ont
+tendance à lire plus séquentiellement, ligne par ligne, pendant que les programmeurs expérimentés
+reconnaissent des motifs familiers (structures de contrôle, patterns d&rsquo;architecture) et peuvent
+« sauter » directement aux parties pertinentes. Ne soyez donc pas surpris·e si une stratégie
+top-down très efficace pour un développeur expérimenté du projet vous demande, à vous, plus
+d&rsquo;aller-retours au début — c&rsquo;est normal, et ça s&rsquo;améliore avec la pratique.</p>
+<h2 id="stratégies-de-lecture-de-code">Stratégies de lecture de code</h2>
+<p>Lire du code écrit par quelqu&rsquo;un d&rsquo;autre est une compétence à part entière, distincte de l&rsquo;écriture
+de code. On ne lit pas du code existant comme on lirait un roman, du début à la fin — on choisit
+une <strong>stratégie d&rsquo;attaque</strong> selon ce qu&rsquo;on cherche à comprendre. Voici quatre stratégies
+complémentaires, que vous pouvez combiner selon la situation — d&rsquo;ailleurs, la recherche montre que
+les programmeurs expérimentés ne suivent presque jamais une seule stratégie de façon rigide : ils
+naviguent de façon <strong>opportuniste</strong> entre elles selon les indices disponibles (c&rsquo;est le cœur du
+modèle intégré de von Mayrhauser &amp; Vans, voir la section Références plus bas).</p>
+<p>Ces quatre stratégies s&rsquo;appliquent à <strong>n&rsquo;importe quel projet, dans n&rsquo;importe quel langage</strong> — Java,
+C#, Python, JavaScript, etc. Adaptez simplement les outils concrets (raccourcis d&rsquo;IDE, commandes de
+recherche) à votre environnement.</p>
+<h3 id="1-lecture-top-down-depuis-les-points-dentrée">1. Lecture top-down (depuis les points d&rsquo;entrée)</h3>
+<p>On part des <strong>points d&rsquo;entrée</strong> du programme — les endpoints d&rsquo;une API, les contrôleurs, ou
+l&rsquo;interface utilisateur — et on descend progressivement vers les détails d&rsquo;implémentation
+(service, puis accès aux données).</p>
+<ul>
+<li>
+<p><strong>Quand l&rsquo;utiliser ?</strong> Quand vous voulez comprendre <em>ce que fait</em> le système dans son ensemble,
+avant de vous soucier <em>comment</em> il le fait. C&rsquo;est la stratégie naturelle quand on découvre un
+projet pour la première fois, ou quand on doit ajouter une nouvelle fonctionnalité accessible
+depuis l&rsquo;extérieur (ex. un nouvel endpoint).</p>
+</li>
+<li>
+<p><strong>Comment procéder concrètement ?</strong> Repérez d&rsquo;abord un point de repère textuel qui identifie
+précisément la fonctionnalité qui vous intéresse — un chemin d&rsquo;URL, un libellé affiché à
+l&rsquo;écran, un message d&rsquo;erreur, une clé de configuration — puis faites une <strong>recherche globale</strong>
+de ce texte dans tout le projet (recherche « Find in Path » de votre IDE, ou <code>grep -r</code> en ligne
+de commande). Cette technique — chercher un « point de repère » plutôt que de lire le code
+séquentiellement — est documentée par Michael Feathers dans <em>Working Effectively with Legacy
+Code</em> comme l&rsquo;une des façons les plus fiables de s&rsquo;orienter dans du code inconnu, quel que soit
+le langage ou le framework.</p>
+<p>Une fois le point d&rsquo;entrée repéré (un contrôleur, un gestionnaire de requête, une fonction
+d&rsquo;interface), suivez chaque appel vers la couche suivante (le service métier, puis l&rsquo;accès aux
+données) jusqu&rsquo;à atteindre la source de la donnée (base de données, fichier, appel externe).</p>
+<p>⚠️ <strong>Attention aux frameworks qui génèrent du code</strong> : certains projets définissent leurs
+endpoints dans un fichier de spécification (ex. une spécification OpenAPI/Swagger, un fichier de
+routage déclaratif) plutôt que directement par annotation sur chaque méthode. Si une recherche
+de mots-clés d&rsquo;annotation habituels (ex. les annotations de routage de votre framework) ne donne
+rien dans le contrôleur, vérifiez s&rsquo;il existe un fichier de spécification ou de configuration
+central qui décrit les routes — c&rsquo;est souvent là que se trouve la correspondance exacte entre
+une méthode et son verbe HTTP/chemin.</p>
+</li>
+<li>
+<p><strong>Risque à éviter</strong> : s&rsquo;arrêter au premier niveau sans descendre assez loin, et se faire une
+fausse idée du comportement réel (ex. croire qu&rsquo;une validation existe au contrôleur alors
+qu&rsquo;elle est en fait dans le service, ou l&rsquo;inverse).</p>
+</li>
+</ul>
+<p>💡 <strong>Aller plus loin — lire par hypothèses, avec des &ldquo;beacons&rdquo;</strong> : Ruven Brooks (1983) propose un
+modèle plus général de la lecture top-down : on part d&rsquo;une <strong>hypothèse de haut niveau</strong> sur ce que
+fait le code (ex. « cette méthode doit lister les éléments disponibles »), puis on la <strong>vérifie</strong>
+en cherchant des <em>beacons</em> — des indices reconnaissables dans le code qui confirment ou infirment
+l&rsquo;hypothèse. Si un <em>beacon</em> attendu est absent, c&rsquo;est le signal qu&rsquo;il faut creuser plus
+profondément ou reformuler l&rsquo;hypothèse.</p>
+<p><strong>Les beacons ne sont pas tous du même type</strong> — apprendre à les reconnaître accélère beaucoup la
+lecture :</p>
+<ul>
+<li><strong>Beacons sémantiques (nommage)</strong> : le nom d&rsquo;une classe, d&rsquo;une méthode ou d&rsquo;une variable révèle
+son intention. <code>getResources</code>, <code>findAllResources</code>, <code>isValid</code>, <code>hasExpired</code> sont des beacons
+sémantiques — ils vous disent <em>quoi</em> sans que vous ayez à lire le corps. Un mauvais nommage
+(<code>process()</code>, <code>doStuff()</code>, <code>data2</code>) prive le lecteur de ce signal, ce qui est d&rsquo;ailleurs l&rsquo;une des
+raisons pour lesquelles un mauvais nommage est considéré comme un <em>code smell</em>.</li>
+<li><strong>Beacons structurels (patrons de code reconnaissables)</strong> : une forme de code familière suggère
+un algorithme ou un patron connu, même sans commentaire — deux boucles imbriquées avec un
+échange suggèrent un tri; une fonction qui s&rsquo;appelle elle-même avec un cas de base suggère de la
+récursion; un <code>try/catch</code> autour d&rsquo;un seul appel suivi d&rsquo;un retour de valeur par défaut suggère
+une stratégie de gestion d&rsquo;erreur « best effort ».</li>
+<li><strong>Beacons de framework (annotations, conventions)</strong> : dans les frameworks modernes, des
+annotations ou des conventions de nommage jouent aussi le rôle de beacons — <code>@GetMapping</code> révèle
+qu&rsquo;une méthode répond à une requête HTTP GET, un nom de classe se terminant par <code>...Repository</code>
+ou <code>...Controller</code> révèle son rôle architectural même avant d&rsquo;en lire le contenu.</li>
+<li><strong>Beacons discursifs (documentation)</strong> : commentaires, Javadoc/docstrings, messages de commit et
+README. Utiles quand ils existent et sont à jour — mais rappelez-vous (section précédente) que
+la documentation peut mentir ou devenir obsolète, alors que le code, lui, est toujours exécuté
+tel qu&rsquo;il est écrit.</li>
+</ul>
+<p><strong>Exemple concret.</strong> Prenons une méthode typique d&rsquo;un contrôleur qui expose une liste de
+ressources :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@GetMapping</span>(<span style="color:#e6db74">&#34;/resources&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> ResponseEntity<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>ResourceDto<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">getResources</span>() {
+</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Resource<span style="color:#f92672">&gt;</span> resources <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">service</span>.<span style="color:#a6e22e">findAllResources</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (resources.<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ResponseEntity<span style="color:#f92672">&lt;&gt;</span>(HttpStatus.<span style="color:#a6e22e">NOT_FOUND</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ResponseEntity<span style="color:#f92672">&lt;&gt;</span>(mapper.<span style="color:#a6e22e">toDtoCollection</span>(resources), HttpStatus.<span style="color:#a6e22e">OK</span>);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Vos <em>beacons</em> ici : le nom <code>getResources</code> + <code>@GetMapping</code> confirment l&rsquo;hypothèse « cette méthode
+liste des ressources ». L&rsquo;appel à <code>findAllResources()</code> confirme que le contrôleur délègue au
+service. Le <code>mapper</code> confirme la séparation entre modèle interne (<code>Resource</code>) et format exposé
+(<code>ResourceDto</code>).</p>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Un utilisateur signale que l&rsquo;API retourne toujours <code>404</code>, même si vous êtes certain·e qu&rsquo;il y a des
+données en base. En lisant seulement cette méthode, à quelle couche chercheriez-vous en priorité :
+contrôleur, service, ou accès aux données ? Pourquoi ?</p>
+<p><strong>Réponse</strong> : le contrôleur ne fait que réagir à ce que <code>findAllResources()</code> lui retourne — le
+bogue est donc soit dans le service (une logique de filtrage trop stricte), soit encore plus bas,
+dans l&rsquo;accès aux données (une requête mal construite). Le contrôleur lui-même est le suspect le
+moins probable ici, puisqu&rsquo;il ne contient aucune logique métier.</p>
+</details>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer — sur votre projet
+  </summary>
+  <div class="box-content">
+<p>Choisissez <strong>une fonctionnalité réelle</strong> de votre projet (un endpoint, une commande, un écran).
+Repérez son point d&rsquo;entrée, puis descendez la chaîne d&rsquo;appels jusqu&rsquo;à la source de la donnée.
+Notez en 4-5 lignes : le point d&rsquo;entrée trouvé, les <em>beacons</em> qui ont confirmé chaque étape, et la
+couche où finit vraiment le traitement (base de données, fichier, appel externe, calcul en
+mémoire&hellip;). Combien de fichiers avez-vous dû ouvrir ?</p>
+  </div>
+</details>
+<p><a href="#R-image-6bf5e6644c1e7430bc9f8fa4cd657325" class="lightbox-link"><img alt="Stratégies de lecture de code" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-2/lecture-de-code/images/lecture-code-strategies.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-6bf5e6644c1e7430bc9f8fa4cd657325"><img alt="Stratégies de lecture de code" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-2/lecture-de-code/images/lecture-code-strategies.svg"></a></p>
+<h3 id="2-lecture-bottom-up-depuis-le-modèle-de-données">2. Lecture bottom-up (depuis le modèle de données)</h3>
+<p>On part des <strong>entités/du modèle de données</strong> (les classes qui représentent les objets métier,
+souvent dans un dossier <code>model/</code> ou équivalent) et on remonte progressivement vers les couches
+supérieures (accès aux données → service → contrôleur) en cherchant partout où chaque classe/champ
+est utilisé.</p>
+<ul>
+<li>
+<p><strong>Quand l&rsquo;utiliser ?</strong> Quand vous cherchez à comprendre une <strong>structure de données précise</strong> ou
+une <strong>règle métier</strong> (ex. « comment ce champ est-il validé et utilisé dans tout le système ? »),
+ou quand vous devez <strong>ajouter un nouvel attribut</strong> à une entité existante et devez retracer tous
+les endroits qu&rsquo;il faut mettre à jour en conséquence.</p>
+</li>
+<li>
+<p><strong>Comment procéder concrètement ?</strong> Ouvrez la classe modèle qui vous intéresse, notez ses champs
+et méthodes, puis utilisez la recherche de votre IDE (« Find Usages ») sur la classe pour voir
+<strong>tous les endroits du projet</strong> qui l&rsquo;utilisent.</p>
+<p>⚠️ <strong>Attention aux implémentations multiples</strong> : certains projets (surtout des projets
+pédagogiques ou en transition technologique) contiennent <strong>plusieurs implémentations
+concurrentes</strong> d&rsquo;une même interface (ex. plusieurs façons d&rsquo;accéder aux données), dont une seule
+est réellement active selon un fichier ou une variable de configuration (profil actif,
+variable d&rsquo;environnement, indicateur de fonctionnalité). Avant de remonter depuis une entité,
+<strong>vérifiez toujours quelle implémentation est réellement active</strong> dans la configuration du
+projet — sans quoi vous risquez de lire (et de modifier !) du code mort.</p>
+</li>
+<li>
+<p><strong>Risque à éviter</strong> : oublier un endroit d&rsquo;utilisation (ex. un objet de transfert ou un mapper
+qui duplique un champ) et introduire une incohérence entre la donnée interne et ce qui est
+exposée à l&rsquo;extérieur ; ou, comme ci-dessus, perdre du temps sur une implémentation qui n&rsquo;est
+même pas active.</p>
+</li>
+</ul>
+<p><strong>Exemple concret.</strong> Vous ajoutez un champ à une entité existante :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Resource</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String description;  <span style="color:#75715e">// ← nouveau champ</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// getters/setters...</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Une recherche « Find Usages » sur <code>Resource</code> révèle typiquement 3-4 endroits à mettre à jour : la
+requête d&rsquo;accès aux données (si elle liste explicitement des colonnes), le DTO exposé à
+l&rsquo;extérieur, le mapper qui convertit l&rsquo;un vers l&rsquo;autre, et les tests qui vérifient le tout.</p>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Après avoir ajouté <code>description</code>, le test du <strong>mapper</strong> échoue, mais celui du <strong>contrôleur</strong>
+continue de passer. Qu&rsquo;est-ce que cela vous apprend sur l&rsquo;endroit où se situe l&rsquo;oubli ?</p>
+<p><strong>Réponse</strong> : le mapper ne transfère probablement pas encore le nouveau champ vers le DTO. Le test
+du contrôleur passe quand même parce qu&rsquo;il ne vérifie sans doute pas ce champ précis — un succès
+« trompeur » qui illustre bien pourquoi une suite de tests incomplète peut masquer un oubli.</p>
+</details>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer — sur votre projet
+  </summary>
+  <div class="box-content">
+<p>Choisissez <strong>une entité/un modèle de données</strong> central de votre projet. Sans encore modifier le
+code, faites un « Find Usages » dessus et dressez la liste de tous les fichiers qui l&rsquo;utilisent
+(requêtes, DTO, mapper, tests&hellip;). Si vous ajoutiez réellement un champ, combien de ces fichiers
+faudrait-il modifier ? Y a-t-il un endroit que vous auriez pu oublier si vous n&rsquo;aviez pas fait cette
+recherche systématique ?</p>
+  </div>
+</details>
+<h3 id="3-utiliser-les-tests-existants-comme-documentation-vivante">3. Utiliser les tests existants comme documentation vivante</h3>
+<p>Un bon test unitaire ou d&rsquo;intégration montre souvent, <strong>mieux qu&rsquo;un commentaire ou qu&rsquo;un README</strong>,
+ce que le code est censé faire — y compris les cas limites (valeurs nulles, listes vides, erreurs
+attendues) qu&rsquo;un commentaire mentionne rarement. Michael Feathers appelle ce type de test un
+<em>characterization test</em> : un test qui documente le comportement <strong>réel</strong> du code existant, plutôt
+que son comportement souhaité.</p>
+<ul>
+<li>
+<p><strong>Quand l&rsquo;utiliser ?</strong> Avant même d&rsquo;ouvrir le code de production, quand une classe de test
+existe déjà pour la classe qui vous intéresse. C&rsquo;est particulièrement utile pour comprendre le
+comportement <em>attendu</em> d&rsquo;une méthode sans avoir à déchiffrer son implémentation interne.</p>
+</li>
+<li>
+<p><strong>Comment procéder concrètement ?</strong> Ouvrez le fichier de test correspondant à la classe qui vous
+intéresse, et lisez <strong>seulement les noms des méthodes de test et leurs assertions principales</strong>
+avant de lire l&rsquo;implémentation. Un bon nom de test (ex. suivant une convention du type
+<code>&lt;action&gt;_&lt;condition&gt;_&lt;résultat attendu&gt;</code>) dit déjà beaucoup à lui seul : quel scénario est
+testé, et quel comportement est attendu en sortie (succès, erreur, valeur précise).</p>
+<p>Exemple générique de ce qu&rsquo;on peut apprendre de deux tests, sans lire une seule ligne du code de
+production correspondant :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getResource_existant_retourne200EtLesDonnees</span>() { <span style="color:#75715e">/* ... */</span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">getResource_inexistant_retourne404</span>() { <span style="color:#75715e">/* ... */</span> }</span></span></code></pre></div>
+<p>Ces deux seuls noms de méthode vous apprennent déjà : le comportement attendu sur succès (<code>200</code></p>
+<ul>
+<li>données) et sur échec (<code>404</code> si la ressource n&rsquo;existe pas) — sans avoir lu l&rsquo;implémentation.</li>
+</ul>
+</li>
+<li>
+<p><strong>Risque à éviter</strong> : une suite de tests incomplète ou obsolète peut aussi <strong>mentir</strong> — les tests
+documentent ce qui est <em>vérifié</em>, pas nécessairement tout ce que fait réellement le code.
+Restez critique : un test qui n&rsquo;existe pas ne veut pas dire « ce cas n&rsquo;existe pas », seulement
+« ce cas n&rsquo;est pas protégé ».</p>
+</li>
+</ul>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer — sur votre projet
+  </summary>
+  <div class="box-content">
+<p>Trouvez une classe de test de votre projet. Lisez <strong>seulement les noms des méthodes</strong> (cachez ou
+ignorez le corps) et écrivez sur papier ce que vous pensez que chaque test vérifie. Ouvrez ensuite
+le corps des tests : aviez-vous raison ? Repérez un cas limite (erreur, valeur nulle, liste vide)
+qu&rsquo;un simple README n&rsquo;aurait probablement pas mentionné.</p>
+  </div>
+</details>
+<h3 id="4-suivre-un-flux-dexécution-réel-avec-le-débogueur">4. Suivre un flux d&rsquo;exécution réel avec le débogueur</h3>
+<p>Plutôt que de deviner en lisant seulement le code statique, on pose un <strong>point d&rsquo;arrêt</strong>
+(<em>breakpoint</em>) et on observe l&rsquo;état réel des variables pendant que le programme s&rsquo;exécute — souvent
+plus rapide et plus fiable que de « lire dans sa tête » un enchaînement d&rsquo;appels complexe.</p>
+<ul>
+<li><strong>Quand l&rsquo;utiliser ?</strong> Quand le chemin d&rsquo;exécution est difficile à suivre juste en lisant (trop
+de couches, de conditions, de polymorphisme), ou quand vous n&rsquo;êtes pas certain·e que le code lu
+correspond réellement à ce qui s&rsquo;exécute (ex. plusieurs implémentations possibles d&rsquo;une même
+interface selon une configuration active — voir la mise en garde de la lecture bottom-up
+ci-dessus).</li>
+<li><strong>Comment procéder concrètement ?</strong> Posez un point d&rsquo;arrêt à l&rsquo;endroit du contrôleur (ou
+équivalent) où l&rsquo;appel vers la couche service commence, démarrez l&rsquo;application en mode <strong>Debug</strong>,
+puis déclenchez une vraie requête (via l&rsquo;interface de test intégrée du framework, <code>curl</code>, ou un
+client REST comme Postman/Insomnia). Utilisez ensuite <em>Step Into</em> pour entrer dans chaque couche
+successive (service, puis accès aux données). Le panneau <strong>Variables</strong> de votre débogueur permet
+d&rsquo;inspecter l&rsquo;état réel des objets à chaque étape — et, surtout, de voir la <strong>vraie classe
+concrète</strong> derrière une interface (survolez la variable ou regardez le type affiché entre
+parenthèses). C&rsquo;est souvent le seul moyen fiable de confirmer laquelle des implémentations est
+réellement branchée, quand une simple lecture du code ne suffit pas.</li>
+<li><strong>Risque à éviter</strong> : s&rsquo;arrêter uniquement à observer sans noter ce qu&rsquo;on apprend — gardez une
+trace de vos observations (même sur papier), sinon il faut tout refaire la prochaine fois.</li>
+</ul>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer — sur votre projet
+  </summary>
+  <div class="box-content">
+<p>Posez un point d&rsquo;arrêt à l&rsquo;entrée d&rsquo;une fonctionnalité de votre projet, lancez-la en mode Debug, et
+déclenchez-la réellement (appel API, clic, commande&hellip;). Faites <em>Step Into</em> d&rsquo;une couche à l&rsquo;autre
+et notez : le nom de la vraie classe concrète derrière chaque interface, une valeur de variable qui
+vous a surpris, et un endroit où le code fait autre chose que ce que vous aviez deviné en le
+lisant seulement.</p>
+  </div>
+</details>
+<hr>
+<h2 id="premier-repérage-guidé-de-code-smells">Premier repérage guidé de code smells</h2>
+<p>Sans encore utiliser le vocabulaire officiel (il sera présenté en détail plus tard dans la
+session), voici une grille de lecture simple à utiliser en équipe sur quelques classes de votre
+projet :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Question à se poser en lisant</th>
+					<th>Smell potentiel</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Cette méthode fait-elle plus de 20-30 lignes ?</td>
+					<td><em>Long Method</em></td>
+			</tr>
+			<tr>
+					<td>Est-ce que je vois le même bloc de code ailleurs dans le projet ?</td>
+					<td><em>Duplicate Code</em></td>
+			</tr>
+			<tr>
+					<td>Cette méthode a-t-elle plus de 4 paramètres ?</td>
+					<td><em>Long Parameter List</em></td>
+			</tr>
+			<tr>
+					<td>Est-ce que je dois ouvrir 3-4 fichiers différents pour comprendre UNE fonctionnalité ?</td>
+					<td>Faible cohésion / logique éparpillée</td>
+			</tr>
+			<tr>
+					<td>Le nom de la méthode/variable dit-il vraiment ce qu&rsquo;elle fait ?</td>
+					<td>Mauvais nommage (base de tout refactoring)</td>
+			</tr>
+	</tbody>
+</table>
+<p>⚠️ <strong>Précision importante</strong> : « devoir ouvrir plusieurs fichiers pour <em>comprendre</em> une
+fonctionnalité » n&rsquo;est <strong>pas</strong> la définition du smell <em>Shotgun Surgery</em> — c&rsquo;est le symptôme d&rsquo;une
+<strong>faible cohésion</strong> (une logique éparpillée entre plusieurs classes). <em>Shotgun Surgery</em> est un smell
+qui se manifeste plus précisément au moment de <strong>modifier</strong> le code : un seul changement conceptuel
+vous oblige à faire de petites retouches dans un grand nombre de classes différentes. En pratique,
+une logique éparpillée que vous avez du mal à <em>lire</em> aujourd&rsquo;hui est souvent le signe avant-coureur
+d&rsquo;un futur <em>Shotgun Surgery</em> le jour où il faudra la <em>modifier</em> — mais les deux ne sont pas
+synonymes. On y reviendra en détail avec le vocabulaire officiel plus tard dans la session.</p>
+<p>Consignez vos observations en équipe — ce sera la matière première réutilisée plus tard dans la
+session lors de l&rsquo;introduction formelle du catalogue des code smells et du réusinage.</p>
+<hr>
+<h2 id="-références">📚 Références</h2>
+<ul>
+<li>Ruven Brooks (1983), <em>Towards a theory of the comprehension of computer programs</em>, International
+Journal of Man-Machine Studies — le modèle des hypothèses et des <em>beacons</em> en lecture top-down.</li>
+<li>A. von Mayrhauser &amp; A.M. Vans (1995), <em>Program comprehension during software maintenance and
+evolution</em>, IEEE Computer — le modèle intégré de compréhension de code, combinant les stratégies
+top-down, bottom-up et par reconnaissance de motifs de façon opportuniste.</li>
+<li>Michael Feathers (2004), <em>Working Effectively with Legacy Code</em>, Prentice Hall — techniques
+d&rsquo;orientation dans du code inconnu (points de repère textuels, <em>characterization tests</em>).</li>
+</ul>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu">
+            <li class="active " data-nav-id="/420-515/semaine-2/lecture-de-code/index.html"><a class="padding" href="/420-515/semaine-2/lecture-de-code/index.html">Lire le code des autres</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/exercice-lecture-de-code/index.html"><a class="padding" href="/420-515/semaine-2/exercice-lecture-de-code/index.html">Exercices approfondis — lecture de code</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/debogage/index.html"><a class="padding" href="/420-515/semaine-2/debogage/index.html">Techniques de débogage (1/2)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/exercice-stack-trace/index.html"><a class="padding" href="/420-515/semaine-2/exercice-stack-trace/index.html">Exercice : lire une stack trace</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/git-avance/index.html"><a class="padding" href="/420-515/semaine-2/git-avance/index.html">Git 2/2 — notions avancées</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/exercice-git-avance/index.html"><a class="padding" href="/420-515/semaine-2/exercice-git-avance/index.html">Défi Git — semaine 2 (avancé)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-2/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788765660" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788765660" defer></script>
+    <script src="/420-515/js/theme.min.js?1788765660" defer></script>
+  </body>
+</html>

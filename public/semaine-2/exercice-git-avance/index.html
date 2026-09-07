@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="🎯 Objectif Avant de vous lancer dans le TP1, vous allez pratiquer, sans enjeu de note, les réflexes de Git 2/2 — merge vs rebase, Pull Request, revert vs reset, cherry-pick et stash — directement dans le vrai projet legacy (spring-petclinic-rest-legacy-a26) que vous explorez depuis la semaine
+Pour éviter tout risque d’interférer avec le vrai code source (que vous devrez corriger plus tard dans la session), toutes les manipulations ci-dessous se font dans un seul fichier d’entraînement à la racine du projet : PRATIQUE-GIT.md. 👥 En équipe de 2. Si vous êtes seul·e, simulez les deux rôles (« Personne A » / « Personne B ») avec deux clones locaux du même dépôt (deux dossiers), ou en changeant temporairement l’identité Git entre vos commits :">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Défi Git — semaine 2 (avancé) :: Maintenance de logiciel">
+    <meta name="twitter:description" content="🎯 Objectif Avant de vous lancer dans le TP1, vous allez pratiquer, sans enjeu de note, les réflexes de Git 2/2 — merge vs rebase, Pull Request, revert vs reset, cherry-pick et stash — directement dans le vrai projet legacy (spring-petclinic-rest-legacy-a26) que vous explorez depuis la semaine
+Pour éviter tout risque d’interférer avec le vrai code source (que vous devrez corriger plus tard dans la session), toutes les manipulations ci-dessous se font dans un seul fichier d’entraînement à la racine du projet : PRATIQUE-GIT.md. 👥 En équipe de 2. Si vous êtes seul·e, simulez les deux rôles (« Personne A » / « Personne B ») avec deux clones locaux du même dépôt (deux dossiers), ou en changeant temporairement l’identité Git entre vos commits :">
+    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-2/exercice-git-avance/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Défi Git — semaine 2 (avancé) :: Maintenance de logiciel">
+    <meta property="og:description" content="🎯 Objectif Avant de vous lancer dans le TP1, vous allez pratiquer, sans enjeu de note, les réflexes de Git 2/2 — merge vs rebase, Pull Request, revert vs reset, cherry-pick et stash — directement dans le vrai projet legacy (spring-petclinic-rest-legacy-a26) que vous explorez depuis la semaine
+Pour éviter tout risque d’interférer avec le vrai code source (que vous devrez corriger plus tard dans la session), toutes les manipulations ci-dessous se font dans un seul fichier d’entraînement à la racine du projet : PRATIQUE-GIT.md. 👥 En équipe de 2. Si vous êtes seul·e, simulez les deux rôles (« Personne A » / « Personne B ») avec deux clones locaux du même dépôt (deux dossiers), ou en changeant temporairement l’identité Git entre vos commits :">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 2 — Lire le code des autres">
+    <meta itemprop="name" content="Défi Git — semaine 2 (avancé) :: Maintenance de logiciel">
+    <meta itemprop="description" content="🎯 Objectif Avant de vous lancer dans le TP1, vous allez pratiquer, sans enjeu de note, les réflexes de Git 2/2 — merge vs rebase, Pull Request, revert vs reset, cherry-pick et stash — directement dans le vrai projet legacy (spring-petclinic-rest-legacy-a26) que vous explorez depuis la semaine
+Pour éviter tout risque d’interférer avec le vrai code source (que vous devrez corriger plus tard dans la session), toutes les manipulations ci-dessous se font dans un seul fichier d’entraînement à la racine du projet : PRATIQUE-GIT.md. 👥 En équipe de 2. Si vous êtes seul·e, simulez les deux rôles (« Personne A » / « Personne B ») avec deux clones locaux du même dépôt (deux dossiers), ou en changeant temporairement l’identité Git entre vos commits :">
+    <meta itemprop="wordCount" content="1005">
+    <title>Défi Git — semaine 2 (avancé) :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788765660" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788765660";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1788765660" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/semaine-2\/exercice-git-avance\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-2/exercice-git-avance/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-2/index.html"><span itemprop="name">Semaine 2 — Lire le code des autres</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Défi Git — semaine 2 (avancé)</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-2" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="défi-git--semaine-2-avancé">Défi Git — semaine 2 (avancé)</h1>
+
+<h2 id="-objectif">🎯 Objectif</h2>
+<p>Avant de vous lancer dans le <strong>TP1</strong>, vous allez
+pratiquer, sans enjeu de note, les réflexes de <a href="/420-515/semaine-2/git-avance/">Git 2/2</a> —
+<code>merge</code> vs <code>rebase</code>, Pull Request, <code>revert</code> vs <code>reset</code>, <code>cherry-pick</code> et <code>stash</code> — directement dans
+le <strong>vrai projet legacy</strong> (<code>spring-petclinic-rest-legacy-a26</code>) que vous explorez depuis la semaine</p>
+<ol>
+<li>Pour éviter tout risque d&rsquo;interférer avec le vrai code source (que vous devrez corriger plus
+tard dans la session), toutes les manipulations ci-dessous se font dans un seul fichier
+d&rsquo;entraînement à la racine du projet : <code>PRATIQUE-GIT.md</code>.</li>
+</ol>
+<blockquote>
+<p>👥 <strong>En équipe de 2.</strong> Si vous êtes seul·e, simulez les deux rôles (« Personne A » / « Personne
+B ») avec deux clones locaux du même dépôt (deux dossiers), ou en changeant temporairement
+l&rsquo;identité Git entre vos commits :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git commit -m <span style="color:#e6db74">&#34;message&#34;</span> --author<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Personne B &lt;personneb@example.com&gt;&#34;</span></span></span></code></pre></div>
+</blockquote>
+<hr>
+<h2 id="-partie-1--provoquer-et-résoudre-un-vrai-conflit-de-merge">🧩 Partie 1 — Provoquer et résoudre un vrai conflit de merge</h2>
+<ol>
+<li>À partir de <code>main</code>, créez le fichier d&rsquo;entraînement (une seule personne le fait, puis le pousse) :
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git checkout main
+</span></span><span style="display:flex;"><span>git pull
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;# Pratique Git — semaine 2&#34;</span> &gt; PRATIQUE-GIT.md
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Ligne de base.&#34;</span> &gt;&gt; PRATIQUE-GIT.md
+</span></span><span style="display:flex;"><span>git add PRATIQUE-GIT.md
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#e6db74">&#34;Ajout du fichier de pratique Git&#34;</span>
+</span></span><span style="display:flex;"><span>git push</span></span></code></pre></div>
+</li>
+<li><strong>Personne A</strong> crée une branche et modifie la même ligne :
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git checkout -b conflit-a</span></span></code></pre></div>
+Remplacez la ligne 2 par <code>Modification de la personne A.</code>, puis committez et poussez.</li>
+<li><strong>Personne B</strong> crée sa propre branche <strong>à partir de <code>main</code></strong> (pas de <code>conflit-a</code>) et modifie la
+<strong>même ligne</strong> différemment :
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git checkout main
+</span></span><span style="display:flex;"><span>git checkout -b conflit-b</span></span></code></pre></div>
+Remplacez la ligne 2 par <code>Modification de la personne B.</code>, puis committez et poussez.</li>
+<li>Fusionnez <code>conflit-a</code> dans <code>main</code> (via une Pull Request — voir Partie 2), puis tentez de fusionner
+<code>conflit-b</code> :
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git checkout main
+</span></span><span style="display:flex;"><span>git pull
+</span></span><span style="display:flex;"><span>git merge conflit-b</span></span></code></pre></div>
+Vous devriez obtenir un <strong>conflit</strong>. Résolvez-le manuellement (choisissez une version, combinez
+les deux, ou utilisez <code>git checkout --ours</code>/<code>--theirs</code>), puis terminez :
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git add PRATIQUE-GIT.md
+</span></span><span style="display:flex;"><span>git commit</span></span></code></pre></div>
+</li>
+</ol>
+<details>
+<summary>❓ Question — pourquoi le conflit apparaît-il ici et pas ailleurs dans le projet ?</summary>
+<p>Parce que <strong>les deux branches modifient exactement la même ligne</strong> du même fichier depuis le même
+point de départ. Git sait fusionner automatiquement des changements sur des lignes différentes,
+mais pas deux changements incompatibles sur la même ligne — il vous laisse trancher.</p>
+</details>
+<hr>
+<h2 id="-partie-2--pull-request-et-revue-de-code-croisée">🔀 Partie 2 — Pull Request et revue de code croisée</h2>
+<ol>
+<li>Ouvrez une Pull Request sur GitHub pour <code>conflit-a</code> (ou <code>conflit-b</code>) vers <code>main</code>, avec une
+description claire de ce qui a été changé et pourquoi.</li>
+<li>Demandez à votre coéquipier·ère (ou à une autre équipe, si vous êtes seul·e) de <strong>réviser</strong> la
+PR : au moins un commentaire, puis l&rsquo;approbation avant la fusion.</li>
+<li>Fusionnez la PR depuis l&rsquo;interface GitHub.</li>
+</ol>
+<hr>
+<h2 id="-partie-3--même-scénario-mais-avec-rebase">🪃 Partie 3 — Même scénario, mais avec <code>rebase</code></h2>
+<p>Reproduisez un scénario similaire à la Partie 1, mais cette fois en gardant un historique linéaire :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git checkout main
+</span></span><span style="display:flex;"><span>git pull
+</span></span><span style="display:flex;"><span>git checkout -b rebase-pratique
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># faites 2-3 commits sur PRATIQUE-GIT.md</span>
+</span></span><span style="display:flex;"><span>git checkout main
+</span></span><span style="display:flex;"><span>git pull            <span style="color:#75715e"># si main a bougé entretemps</span>
+</span></span><span style="display:flex;"><span>git checkout rebase-pratique
+</span></span><span style="display:flex;"><span>git rebase main</span></span></code></pre></div>
+<p>Comparez <code>git log --oneline --graph --all</code> <strong>avant</strong> et <strong>après</strong> le rebase. Si un conflit survient
+pendant le rebase, résolvez-le fichier par fichier, puis :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git add PRATIQUE-GIT.md
+</span></span><span style="display:flex;"><span>git rebase --continue</span></span></code></pre></div>
+<blockquote>
+<p>⚠️ Ne poussez jamais un <code>git push --force</code> sur une branche que quelqu&rsquo;un d&rsquo;autre a déjà récupérée
+— ici, <code>rebase-pratique</code> reste une branche personnelle, donc c&rsquo;est sécuritaire.</p>
+</blockquote>
+<hr>
+<h2 id="-partie-4--revert-vs-reset">⏪ Partie 4 — <code>revert</code> vs <code>reset</code></h2>
+<ol>
+<li>Sur votre branche, faites un commit <strong>volontairement mauvais</strong> (ex. une faute qui casse une
+phrase dans <code>PRATIQUE-GIT.md</code>), poussez-le.</li>
+<li>Corrigez-le de façon <strong>sûre</strong>, sans réécrire l&rsquo;historique déjà partagé :
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git revert HEAD
+</span></span><span style="display:flex;"><span>git push</span></span></code></pre></div>
+</li>
+<li>Faites un <strong>deuxième</strong> commit mauvais, mais <strong>ne le poussez pas</strong> cette fois. Annulez-le
+localement avec :
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git reset --soft HEAD~1     <span style="color:#75715e"># garde les changements en attente</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ou</span>
+</span></span><span style="display:flex;"><span>git reset --hard HEAD~1     <span style="color:#75715e"># supprime aussi les changements — à utiliser avec prudence !</span></span></span></code></pre></div>
+</li>
+</ol>
+<details>
+<summary>❓ Question — pourquoi utiliser <code>revert</code> plutôt que <code>reset --hard</code> une fois le commit poussé ?</summary>
+<p>Parce que <code>reset --hard</code> <strong>réécrit l&rsquo;historique</strong> : si quelqu&rsquo;un d&rsquo;autre a déjà récupéré (<code>pull</code>)
+ce commit, son historique local ne correspondra plus au vôtre après un <code>push --force</code>, ce qui
+casse la collaboration. <code>revert</code> ajoute un nouveau commit qui annule les changements, sans jamais
+réécrire ce qui a déjà été partagé.</p>
+</details>
+<hr>
+<h2 id="-partie-5--cherry-pick">🍒 Partie 5 — Cherry-pick</h2>
+<ol>
+<li><strong>Personne A</strong> crée une branche avec <strong>trois commits</strong> sur <code>PRATIQUE-GIT.md</code> : un commit utile
+(ex. une section « Glossaire Git » à ajouter), et deux commits « bruit » (ex. des notes
+personnelles de brouillon sans intérêt pour l&rsquo;équipe).
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git checkout -b brouillon-a
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># commit 1 : section utile</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># commit 2 : bruit</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># commit 3 : bruit</span>
+</span></span><span style="display:flex;"><span>git push -u origin brouillon-a</span></span></code></pre></div>
+</li>
+<li><strong>Personne B</strong> récupère uniquement le commit utile, <strong>sans fusionner toute la branche</strong> :
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git checkout main
+</span></span><span style="display:flex;"><span>git pull
+</span></span><span style="display:flex;"><span>git log --oneline brouillon-a      <span style="color:#75715e"># repérer le hash du commit utile</span>
+</span></span><span style="display:flex;"><span>git cherry-pick &lt;hash-du-commit-utile&gt;
+</span></span><span style="display:flex;"><span>git push</span></span></code></pre></div>
+</li>
+</ol>
+<hr>
+<h2 id="-partie-6-bonus--git-stash">📦 Partie 6 (bonus) — <code>git stash</code></h2>
+<p>Simulez une interruption : vous modifiez <code>PRATIQUE-GIT.md</code> sans avoir encore committé, et on vous
+demande de changer de branche en urgence pour regarder autre chose.</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git stash                 <span style="color:#75715e"># met de côté vos changements non commités</span>
+</span></span><span style="display:flex;"><span>git checkout main         <span style="color:#75715e"># ou une autre branche, sans perdre votre travail en cours</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ... votre urgence ...</span>
+</span></span><span style="display:flex;"><span>git checkout rebase-pratique
+</span></span><span style="display:flex;"><span>git stash pop             <span style="color:#75715e"># récupère vos changements mis de côté</span></span></span></code></pre></div>
+<hr>
+<h2 id="-auto-vérification-en-équipe">✅ Auto-vérification en équipe</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Un vrai conflit de merge a été provoqué <strong>et</strong> résolu manuellement sur <code>PRATIQUE-GIT.md</code>.</li>
+<li><input disabled="" type="checkbox"> Au moins une Pull Request a été ouverte, révisée par une autre personne, puis fusionnée.</li>
+<li><input disabled="" type="checkbox"> Le scénario a été refait avec <code>rebase</code>, et l&rsquo;historique linéaire a été observé avec
+<code>git log --oneline --graph --all</code>.</li>
+<li><input disabled="" type="checkbox"> <code>git revert</code> a été utilisé sur un commit déjà poussé, et <code>git reset</code> sur un commit encore
+local seulement.</li>
+<li><input disabled="" type="checkbox"> <code>git cherry-pick</code> a permis de récupérer un seul commit utile sans fusionner toute une branche.</li>
+<li><input disabled="" type="checkbox"> (Bonus) <code>git stash</code> / <code>git stash pop</code> ont été testés.</li>
+</ul>
+<blockquote>
+<p>💡 Gardez ces branches d&rsquo;entraînement (<code>conflit-a</code>, <code>conflit-b</code>, <code>rebase-pratique</code>,
+<code>brouillon-a</code>) — elles pourront être supprimées une fois l&rsquo;exercice validé, sans affecter le vrai
+code du projet.</p>
+</blockquote>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu">
+            <li class="" data-nav-id="/420-515/semaine-2/lecture-de-code/index.html"><a class="padding" href="/420-515/semaine-2/lecture-de-code/index.html">Lire le code des autres</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/exercice-lecture-de-code/index.html"><a class="padding" href="/420-515/semaine-2/exercice-lecture-de-code/index.html">Exercices approfondis — lecture de code</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/debogage/index.html"><a class="padding" href="/420-515/semaine-2/debogage/index.html">Techniques de débogage (1/2)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/exercice-stack-trace/index.html"><a class="padding" href="/420-515/semaine-2/exercice-stack-trace/index.html">Exercice : lire une stack trace</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/git-avance/index.html"><a class="padding" href="/420-515/semaine-2/git-avance/index.html">Git 2/2 — notions avancées</a></li>
+            <li class="active " data-nav-id="/420-515/semaine-2/exercice-git-avance/index.html"><a class="padding" href="/420-515/semaine-2/exercice-git-avance/index.html">Défi Git — semaine 2 (avancé)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-2/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788765660" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788765660" defer></script>
+    <script src="/420-515/js/theme.min.js?1788765660" defer></script>
+  </body>
+</html>

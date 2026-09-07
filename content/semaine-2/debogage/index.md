@@ -40,9 +40,9 @@ disponible, avant même d'avoir ouvert un seul fichier.
 ### Anatomie d'une stack trace Java
 
 ```
-java.lang.NullPointerException: Cannot invoke "String.length()" because "client.getNom()" is null
-    at ca.cegepmv.legacy.service.ClientService.validerNom(ClientService.java:42)
-    at ca.cegepmv.legacy.service.ClientService.creerClient(ClientService.java:27)
+ca.cegepmv.legacy.exception.ClientPersistanceException: Échec de l'insertion du client en base
+    at ca.cegepmv.legacy.repository.ClientRepository.insert(ClientRepository.java:58)
+    at ca.cegepmv.legacy.service.ClientService.creerClient(ClientService.java:30)
     at ca.cegepmv.legacy.controller.ClientController.creer(ClientController.java:18)
     at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
     ...
@@ -53,11 +53,31 @@ Caused by: java.sql.SQLException: Column 'nom' cannot be null
 
 | Élément | Ce qu'il signifie |
 |---|---|
-| Première ligne (`java.lang.NullPointerException: ...`) | Le type d'exception + un message souvent très utile (ici, Java moderne indique même **quelle expression** était `null`) |
+| Première ligne (`ClientPersistanceException: ...`) | Le type d'exception + un message — ici, une exception « maison » qui **enveloppe** une erreur de plus bas niveau |
 | Chaque ligne `at ...` | Une méthode « empilée » au moment du crash — la **première** ligne `at` est l'endroit exact où l'exception a été levée |
 | Ordre des lignes | De la plus **récente** (haut, là où ça a explosé) vers la plus **ancienne** (bas, l'appelant d'origine) |
-| `Caused by:` | Une **cause racine** différente, souvent plus utile que l'exception du dessus, qui n'était qu'une conséquence |
+| `Caused by:` | La **cause racine** : ici, `ClientRepository.insert` a intercepté un `SQLException` (colonne `nom` interdite de `null` en base) et l'a relancé sous forme d'exception « maison », souvent avec un message plus parlant que l'erreur SQL brute |
 | `... 12 more` | Le reste de la pile est identique à l'exception précédente — Java l'abrège pour ne pas la répéter |
+
+> 💡 **Repère important** : les deux lignes `at ClientRepository.insert(...)` (58 et 55) pointent
+> vers la **même méthode** — c'est cohérent, puisque c'est justement *dans* cette méthode qu'un
+> bloc `try/catch` a intercepté le `SQLException` pour le relancer sous une autre forme. Si un
+> `Caused by:` pointait vers une méthode qui n'a **aucun lien d'appel logique** avec l'exception du
+> dessus (ex. une méthode jamais appelée avant celle où l'exception de haut niveau a été levée),
+> ce serait un signe que la stack trace a été mal recopiée ou mal comprise.
+
+Java moderne (14+) rend aussi les `NullPointerException` beaucoup plus faciles à lire, même sans
+`Caused by:` — le message indique directement quelle expression était `null` :
+
+```
+java.lang.NullPointerException: Cannot invoke "String.length()" because "client.getNom()" is null
+    at ca.cegepmv.legacy.service.ClientService.validerNom(ClientService.java:42)
+    at ca.cegepmv.legacy.service.ClientService.creerClient(ClientService.java:27)
+    at ca.cegepmv.legacy.controller.ClientController.creer(ClientController.java:18)
+```
+
+Ici, pas besoin de `Caused by:` : le message suffit à savoir exactement quoi corriger (`getNom()`
+retourne `null`, ce qui n'était pas prévu).
 
 ### 🎯 Stratégie de lecture
 

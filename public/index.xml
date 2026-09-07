@@ -2,31 +2,38 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Maintenance de logiciel</title>
-    <link>http://localhost:1313/420-515/index.html</link>
-    <description>Plan de cours 📋 Plan de cours : Plan de cours&#xA;Horaire et disponibilités des enseignants ✔️ Horaire : Lien vers mon horaire et mes disponibilités&#xA;Nom de l’évaluation Pondération Date de l’évaluation 7 quiz de révision (5 meilleures notes) 15 % Semaines 3 à 13 TP 1 10 % Semaine 2 TP 2 10 % Semaine 6 TP 3 15 % Semaine 9 TP 4 15 % Semaine 12 Épreuve finale 35 % Semaines 14 à 15</description>
+    <link>https://cegepmv.github.io/420-515/index.html</link>
+    <description>Plan de cours 📋 Plan de cours : Plan de cours&#xA;Horaire et disponibilités des enseignants ✔️ Horaire : Lien vers mon horaire et mes disponibilités&#xA;Nom de l’évaluation Pondération Date de l’évaluation 7 quiz de révision (5 meilleures notes) 15 % Semaines 3 à 13 TP 1 10 % Semaine 3 TP 2 10 % Semaine 6 TP 3 15 % Semaine 9 TP 4 15 % Semaine 12 Épreuve finale 35 % Semaines 14 à 15</description>
     <generator>Hugo</generator>
     <language>fr-ca</language>
-    <atom:link href="http://localhost:1313/420-515/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://cegepmv.github.io/420-515/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Intro</title>
-      <link>http://localhost:1313/420-515/intro/index.html</link>
+      <link>https://cegepmv.github.io/420-515/intro/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/420-515/intro/index.html</guid>
+      <guid>https://cegepmv.github.io/420-515/intro/index.html</guid>
       <description>🏠 Page d’accueil du cours&#xD;Retrouvez le plan de cours, l’horaire et la pondération des évaluations sur la page d’accueil du site.&#xA;Bienvenue au cours 420-515-MV — Maintenance de logiciel Ce chapitre regroupe les notes de cours semaine par semaine. Vous y trouverez les concepts vus en classe ainsi que les activités pratiques associées à chaque semaine.</description>
     </item>
     <item>
       <title>Semaine 1 — Bienvenue en maintenance logicielle</title>
-      <link>http://localhost:1313/420-515/semaine-1/index.html</link>
+      <link>https://cegepmv.github.io/420-515/semaine-1/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/420-515/semaine-1/index.html</guid>
+      <guid>https://cegepmv.github.io/420-515/semaine-1/index.html</guid>
       <description>🎯 Objectifs d’apprentissage de la semaine À la fin de cette semaine, vous devriez être capable de :&#xA;Expliquer ce qu’est la maintenance logicielle et nommer ses 4 types (ISO/IEC 14764). Expliquer pourquoi la maintenance représente la majorité du coût de vie d’un logiciel. Cloner, configurer et démarrer localement un projet existant. Expliquer ce qu’est une API REST. Utiliser les commandes Git de base (clone, checkout, add, commit, push, pull) pour gérer votre propre copie du code. Repérer, à l’œil, qu’un bout de code « sent mauvais » — sans nécessairement savoir encore le nommer formellement. 🗺️ Aperçu de tout ce qui sera couvert cette session Avant de plonger dans le contenu d’aujourd’hui, voici une vue d’ensemble de tout le parcours de la session. Gardez cette page en référence — vous pourrez y revenir chaque semaine pour voir où vous en êtes rendu·e dans le grand portrait.</description>
     </item>
     <item>
       <title>Semaine 2 — Lire le code des autres</title>
-      <link>http://localhost:1313/420-515/semaine-2/index.html</link>
+      <link>https://cegepmv.github.io/420-515/semaine-2/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/420-515/semaine-2/index.html</guid>
+      <guid>https://cegepmv.github.io/420-515/semaine-2/index.html</guid>
       <description>🎯 Objectifs d’apprentissage de la semaine À la fin de cette semaine, vous devriez être capable de :&#xA;Appliquer des stratégies de lecture de code (top-down vs bottom-up) pour comprendre un programme écrit par quelqu’un d’autre. Utiliser les tests existants comme documentation vivante. Repérer des indices de code smells à l’aide d’une grille de lecture simple. Reproduire et isoler un bogue de façon fiable avant de tenter de le corriger. Lire une pile d’appels (stack trace) pour localiser la cause d’une exception, y compris sa cause racine (Caused by:). Formuler et tester des hypothèses de cause, plutôt que de corriger « à l’aveugle ». Ouvrir et gérer une Pull Request, effectuer une revue de code. Distinguer merge et rebase, ainsi que revert et reset. Utiliser git cherry-pick pour appliquer un commit précis d’une branche à une autre. 🔍 Accroche « N’importe qui peut écrire du code. Peu de gens savent le LIRE efficacement. C’est une compétence distincte, presque un sixième sens qu’on développe. Aujourd’hui, on l’entraîne. »</description>
+    </item>
+    <item>
+      <title>Semaine 3 — Débogage outillé et Maven</title>
+      <link>https://cegepmv.github.io/420-515/semaine-3/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://cegepmv.github.io/420-515/semaine-3/index.html</guid>
+      <description>🎯 Objectifs d’apprentissage de la semaine À la fin de cette semaine, vous devriez être capable de :&#xA;Utiliser un débogueur pas à pas (breakpoints, step over/into/out, inspection des variables). Poser un breakpoint conditionnel pour cibler une itération précise sans tout parcourir manuellement. Remplacer un System.out.println de débogage par une journalisation structurée, avec le bon niveau. Appliquer une recherche par bissection (« diviser pour localiser ») pour isoler la cause d’un bogue, dans le code comme dans l’historique Git (git bisect). Lire et modifier un pom.xml : coordonnées Maven, dépendances et leur scope, plugins. Expliquer les grandes étapes du cycle de vie Maven (validate → … → install) et utiliser mvn dependency:tree pour diagnostiquer un conflit de versions. 🔍 Accroche « La semaine dernière, vous avez appris la méthode : reproduire, isoler, formuler une hypothèse. Cette semaine, on ajoute les outils qui rendent cette méthode rapide en pratique — et on ouvre le capot d’un projet Java réel : comment mvn sait quoi compiler, quoi tester, et d’où viennent toutes ces dépendances dans votre pom.xml. »</description>
     </item>
   </channel>
 </rss>

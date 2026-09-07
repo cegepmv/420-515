@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="Cette semaine, on entame la première moitié d’un cycle en deux temps sur le débogage méthodique — la suite (semaine 3) approfondira l’utilisation du débogueur pas à pas. Ici, on pose les bases : comment aborder un bogue de façon systématique plutôt qu’en devinant au hasard.
+🐞 Déboguer, ce n’est pas deviner Face à un bogue dans du code que vous n’avez pas écrit, la tentation est grande de changer une ligne « pour voir si ça règle le problème ». C’est rarement efficace, et ça peut même injecter un nouveau bogue sans qu’on comprenne pourquoi. Le débogage méthodique suit plutôt une démarche proche de la méthode scientifique, popularisée par Andreas Zeller dans Why Programs Fail: A Guide to Systematic Debugging — une référence de fond en génie logiciel sur le sujet.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Techniques de débogage (1/2) :: Maintenance de logiciel">
+    <meta name="twitter:description" content="Cette semaine, on entame la première moitié d’un cycle en deux temps sur le débogage méthodique — la suite (semaine 3) approfondira l’utilisation du débogueur pas à pas. Ici, on pose les bases : comment aborder un bogue de façon systématique plutôt qu’en devinant au hasard.
+🐞 Déboguer, ce n’est pas deviner Face à un bogue dans du code que vous n’avez pas écrit, la tentation est grande de changer une ligne « pour voir si ça règle le problème ». C’est rarement efficace, et ça peut même injecter un nouveau bogue sans qu’on comprenne pourquoi. Le débogage méthodique suit plutôt une démarche proche de la méthode scientifique, popularisée par Andreas Zeller dans Why Programs Fail: A Guide to Systematic Debugging — une référence de fond en génie logiciel sur le sujet.">
+    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-2/debogage/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Techniques de débogage (1/2) :: Maintenance de logiciel">
+    <meta property="og:description" content="Cette semaine, on entame la première moitié d’un cycle en deux temps sur le débogage méthodique — la suite (semaine 3) approfondira l’utilisation du débogueur pas à pas. Ici, on pose les bases : comment aborder un bogue de façon systématique plutôt qu’en devinant au hasard.
+🐞 Déboguer, ce n’est pas deviner Face à un bogue dans du code que vous n’avez pas écrit, la tentation est grande de changer une ligne « pour voir si ça règle le problème ». C’est rarement efficace, et ça peut même injecter un nouveau bogue sans qu’on comprenne pourquoi. Le débogage méthodique suit plutôt une démarche proche de la méthode scientifique, popularisée par Andreas Zeller dans Why Programs Fail: A Guide to Systematic Debugging — une référence de fond en génie logiciel sur le sujet.">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 2 — Lire le code des autres">
+    <meta itemprop="name" content="Techniques de débogage (1/2) :: Maintenance de logiciel">
+    <meta itemprop="description" content="Cette semaine, on entame la première moitié d’un cycle en deux temps sur le débogage méthodique — la suite (semaine 3) approfondira l’utilisation du débogueur pas à pas. Ici, on pose les bases : comment aborder un bogue de façon systématique plutôt qu’en devinant au hasard.
+🐞 Déboguer, ce n’est pas deviner Face à un bogue dans du code que vous n’avez pas écrit, la tentation est grande de changer une ligne « pour voir si ça règle le problème ». C’est rarement efficace, et ça peut même injecter un nouveau bogue sans qu’on comprenne pourquoi. Le débogage méthodique suit plutôt une démarche proche de la méthode scientifique, popularisée par Andreas Zeller dans Why Programs Fail: A Guide to Systematic Debugging — une référence de fond en génie logiciel sur le sujet.">
+    <meta itemprop="wordCount" content="1876">
+    <title>Techniques de débogage (1/2) :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788765660" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788765660";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1788765660" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/semaine-2\/debogage\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-2/debogage/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-2/index.html"><span itemprop="name">Semaine 2 — Lire le code des autres</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Techniques de débogage (1/2)</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-2" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="techniques-de-débogage-12">Techniques de débogage (1/2)</h1>
+
+<p>Cette semaine, on entame la première moitié d&rsquo;un cycle en deux temps sur le débogage
+méthodique — la suite (semaine 3) approfondira l&rsquo;utilisation du débogueur pas à pas. Ici, on pose
+les bases : comment aborder un bogue de façon systématique plutôt qu&rsquo;en devinant au hasard.</p>
+<h3 id="-déboguer-ce-nest-pas-deviner">🐞 Déboguer, ce n&rsquo;est pas deviner</h3>
+<p>Face à un bogue dans du code que vous n&rsquo;avez pas écrit, la tentation est grande de changer une
+ligne « pour voir si ça règle le problème ». C&rsquo;est rarement efficace, et ça peut même <strong>injecter
+un nouveau bogue</strong> sans qu&rsquo;on comprenne pourquoi. Le débogage méthodique suit plutôt une démarche
+proche de la <strong>méthode scientifique</strong>, popularisée par Andreas Zeller dans <em>Why Programs Fail: A
+Guide to Systematic Debugging</em> — une référence de fond en génie logiciel sur le sujet.</p>
+<p>Il n&rsquo;y a <strong>pas une seule marche à suivre obligatoire</strong> — deux stratégies d&rsquo;investigation
+complémentaires existent, et vous choisissez celle qui convient selon le cas (on peut aussi
+passer de l&rsquo;une à l&rsquo;autre en cours de route) :</p>
+<ol>
+<li><strong>Lire la pile d&rsquo;appels</strong> (stack trace), quand il y en a une, pour localiser où le problème se
+manifeste.</li>
+<li><strong>Investiguer</strong> — soit en <strong>lisant le code et en suivant le flot mentalement</strong> (débogage
+<em>statique</em>), soit en <strong>reproduisant et isolant</strong> le bogue en l&rsquo;exécutant (débogage
+<em>dynamique</em>) — selon ce qui est le plus rapide et le plus fiable dans votre situation.</li>
+<li><strong>Formuler et tester des hypothèses</strong> sur la cause réelle, jusqu&rsquo;à confirmation.</li>
+</ol>
+<p><a href="#R-image-fdf11ad2caaedf3a1876d6bd0a67168a" class="lightbox-link"><img alt="Démarche méthodique de débogage" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-2/debogage/images/demarche-debogage.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-fdf11ad2caaedf3a1876d6bd0a67168a"><img alt="Démarche méthodique de débogage" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-2/debogage/images/demarche-debogage.svg"></a></p>
+<hr>
+<h2 id="1-lire-la-pile-dappels-stack-trace">1️⃣ Lire la pile d&rsquo;appels (stack trace)</h2>
+<p>Quand une exception n&rsquo;est pas gérée, le programme affiche une <strong>pile d&rsquo;appels</strong> (stack trace) :
+la liste des méthodes qui étaient en train de s&rsquo;exécuter, de la plus récente (en haut) à la plus
+ancienne (en bas), au moment où l&rsquo;erreur est survenue. C&rsquo;est souvent le tout premier indice
+disponible, avant même d&rsquo;avoir ouvert un seul fichier.</p>
+<h3 id="anatomie-dune-stack-trace-java">Anatomie d&rsquo;une stack trace Java</h3>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>ca.cegepmv.legacy.exception.ClientPersistanceException: Échec de l&#39;insertion du client en base
+    at ca.cegepmv.legacy.repository.ClientRepository.insert(ClientRepository.java:58)
+    at ca.cegepmv.legacy.service.ClientService.creerClient(ClientService.java:30)
+    at ca.cegepmv.legacy.controller.ClientController.creer(ClientController.java:18)
+    at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    ...
+Caused by: java.sql.SQLException: Column &#39;nom&#39; cannot be null
+    at ca.cegepmv.legacy.repository.ClientRepository.insert(ClientRepository.java:55)
+    ... 12 more</code></pre></div>
+<table>
+	<thead>
+			<tr>
+					<th>Élément</th>
+					<th>Ce qu&rsquo;il signifie</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Première ligne (<code>ClientPersistanceException: ...</code>)</td>
+					<td>Le type d&rsquo;exception + un message — ici, une exception « maison » qui <strong>enveloppe</strong> une erreur de plus bas niveau</td>
+			</tr>
+			<tr>
+					<td>Chaque ligne <code>at ...</code></td>
+					<td>Une méthode « empilée » au moment du crash — la <strong>première</strong> ligne <code>at</code> est l&rsquo;endroit exact où l&rsquo;exception a été levée</td>
+			</tr>
+			<tr>
+					<td>Ordre des lignes</td>
+					<td>De la plus <strong>récente</strong> (haut, là où ça a explosé) vers la plus <strong>ancienne</strong> (bas, l&rsquo;appelant d&rsquo;origine)</td>
+			</tr>
+			<tr>
+					<td><code>Caused by:</code></td>
+					<td>La <strong>cause racine</strong> : ici, <code>ClientRepository.insert</code> a intercepté un <code>SQLException</code> (colonne <code>nom</code> interdite de <code>null</code> en base) et l&rsquo;a relancé sous forme d&rsquo;exception « maison », souvent avec un message plus parlant que l&rsquo;erreur SQL brute</td>
+			</tr>
+			<tr>
+					<td><code>... 12 more</code></td>
+					<td>Le reste de la pile est identique à l&rsquo;exception précédente — Java l&rsquo;abrège pour ne pas la répéter</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>Repère important</strong> : les deux lignes <code>at ClientRepository.insert(...)</code> (58 et 55) pointent
+vers la <strong>même méthode</strong> — c&rsquo;est cohérent, puisque c&rsquo;est justement <em>dans</em> cette méthode qu&rsquo;un
+bloc <code>try/catch</code> a intercepté le <code>SQLException</code> pour le relancer sous une autre forme. Si un
+<code>Caused by:</code> pointait vers une méthode qui n&rsquo;a <strong>aucun lien d&rsquo;appel logique</strong> avec l&rsquo;exception du
+dessus (ex. une méthode jamais appelée avant celle où l&rsquo;exception de haut niveau a été levée),
+ce serait un signe que la stack trace a été mal recopiée ou mal comprise.</p>
+</blockquote>
+<p>Java moderne (14+) rend aussi les <code>NullPointerException</code> beaucoup plus faciles à lire, même sans
+<code>Caused by:</code> — le message indique directement quelle expression était <code>null</code> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>java.lang.NullPointerException: Cannot invoke &#34;String.length()&#34; because &#34;client.getNom()&#34; is null
+    at ca.cegepmv.legacy.service.ClientService.validerNom(ClientService.java:42)
+    at ca.cegepmv.legacy.service.ClientService.creerClient(ClientService.java:27)
+    at ca.cegepmv.legacy.controller.ClientController.creer(ClientController.java:18)</code></pre></div>
+<p>Ici, pas besoin de <code>Caused by:</code> : le message suffit à savoir exactement quoi corriger (<code>getNom()</code>
+retourne <code>null</code>, ce qui n&rsquo;était pas prévu).</p>
+<h3 id="-stratégie-de-lecture">🎯 Stratégie de lecture</h3>
+<ol>
+<li><strong>Ne paniquez pas devant un mur de texte.</strong> Cherchez d&rsquo;abord s&rsquo;il y a un <code>Caused by:</code> — c&rsquo;est
+souvent <strong>la vraie cause</strong>, pas la première ligne affichée.</li>
+<li>Repérez la <strong>première ligne <code>at</code> qui appartient à votre propre code</strong> (pas à une bibliothèque
+ou au JDK) — c&rsquo;est généralement le point de départ le plus utile pour investiguer.</li>
+<li>Lisez le <strong>message</strong> de l&rsquo;exception, pas seulement son type : <code>NullPointerException</code> seul ne
+dit pas grand-chose, mais « <code>client.getNom()</code> is null » vous dit exactement quelle valeur
+manquait.</li>
+<li>Notez le <strong>fichier et le numéro de ligne</strong> (<code>ClientService.java:42</code>) — c&rsquo;est votre point
+d&rsquo;entrée, que vous choisissiez ensuite de le lire statiquement ou d&rsquo;ouvrir le débogueur
+(approfondi la semaine prochaine).</li>
+</ol>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer
+  </summary>
+  <div class="box-content">
+<p>Mettez cette lecture en pratique tout de suite : l&rsquo;exercice
+<a href="/420-515/semaine-2/exercice-stack-trace/">Lire une stack trace</a> vous fait décortiquer
+quelques piles d&rsquo;appels réalistes et en tirer des hypothèses.</p>
+  </div>
+</details>
+<hr>
+<h2 id="2-investiguer--lecture-statique-ou-reproduction-dynamique">2️⃣ Investiguer : lecture statique ou reproduction dynamique</h2>
+<p>Une fois le point d&rsquo;entrée repéré (la ligne suspecte), il reste à comprendre <strong>pourquoi</strong> le
+problème survient. Deux stratégies complémentaires existent — ni l&rsquo;une ni l&rsquo;autre n&rsquo;est
+« la bonne façon obligatoire » de faire; l&rsquo;expérience vous aide à choisir la plus efficace selon
+le cas.</p>
+<h3 id="lecture-statique-suivre-le-flot-mentalement">Lecture statique (suivre le flot mentalement)</h3>
+<p>Beaucoup de bogues se résolvent <strong>sans jamais exécuter le programme</strong> : vous lisez le code à
+partir de la ligne suspecte, vous suivez les appels vers le haut ou vers le bas, et vous repérez
+la cause directement (une condition inversée, un <code>null</code> évident, un oubli manifeste). C&rsquo;est
+souvent la façon la plus rapide de procéder — surtout pour un·e développeur·se expérimenté·e du
+projet — et elle réutilise directement les stratégies vues dans
+<a href="/420-515/semaine-2/lecture-de-code/">Lire le code des autres</a> (lecture top-down,
+bottom-up, tests comme documentation).</p>
+<p><strong>Quand elle suffit généralement</strong> : la stack trace pointe déjà une ligne précise, le code à cet
+endroit est simple à suivre, et une seule cause plausible saute aux yeux.</p>
+<h3 id="reproduction-et-isolation-dynamique">Reproduction et isolation dynamique</h3>
+<p>Dans d&rsquo;autres cas, la lecture seule ne suffit pas à trancher — il faut <strong>exécuter</strong> le programme
+pour observer son comportement réel.</p>
+<ul>
+<li><strong>Quand la reproduction devient nécessaire</strong> :
+<ul>
+<li>le comportement <strong>dépend du contexte</strong> (données spécifiques, ordre d&rsquo;appels, concurrence,
+timing, configuration) et une lecture statique ne permet pas de confirmer la cause avec
+certitude;</li>
+<li>la lecture du code fait émerger <strong>plusieurs hypothèses plausibles</strong> et il faut trancher entre
+elles;</li>
+<li>vous devez <strong>prouver que votre correctif règle vraiment le problème</strong> — un bogue « corrigé »
+sans jamais avoir pu le reproduire n&rsquo;est qu&rsquo;une supposition non testée.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Reproduire</strong> :</p>
+<ul>
+<li>Notez les <strong>étapes exactes</strong> qui mènent au problème (quelle requête, quelles données, quel
+ordre d&rsquo;opérations).</li>
+<li>Notez l&rsquo;<strong>environnement</strong> : version du logiciel, système d&rsquo;exploitation, données en base,
+configuration.</li>
+<li>Un bogue rapporté par un·e utilisateur·rice (« ça ne marche pas ») est presque toujours
+incomplet au départ — la première tâche est souvent de poser des questions pour compléter ces
+informations manquantes.</li>
+</ul>
+<p><strong>Isoler (réduire au minimum)</strong> — une fois le bogue reproductible, on cherche à <strong>réduire</strong> le
+scénario à sa plus simple expression, ce que Zeller appelle la <em>simplification</em> d&rsquo;un cas d&rsquo;échec :</p>
+<ul>
+<li>Retirer, une à une, les étapes ou les données qui ne sont pas nécessaires pour que le bogue se
+manifeste encore.</li>
+<li>Se demander : <em>le bogue apparaît-il aussi avec une seule donnée au lieu de 50 ? Avec un seul
+utilisateur au lieu de plusieurs en concurrence ?</em></li>
+<li>Un scénario réduit au minimum est beaucoup plus facile à transformer en <strong>test automatisé de
+régression</strong> (on reverra ce lien avec les tests en semaine 4-5).</li>
+</ul>
+<blockquote>
+<p>💡 Un bogue isolé à une seule méthode, avec une seule entrée précise qui le déclenche, est déjà
+à moitié résolu.</p>
+</blockquote>
+<p><strong>Exemple concret.</strong> Un bogue rapporté ainsi : <em>« L&rsquo;export en lot plante parfois, mais pas
+toujours. »</em></p>
+<ol>
+<li><strong>Reproduire</strong> : en posant des questions, on découvre que ça plante seulement quand la liste à
+exporter contient plus de 200 éléments <em>et</em> qu&rsquo;au moins un élément a un champ optionnel vide.</li>
+<li><strong>Isoler</strong> : on réduit la liste à 2 éléments (un normal, un avec le champ vide) — le bogue se
+manifeste encore. On a maintenant un cas minimal, reproductible en quelques secondes, au lieu
+d&rsquo;attendre l&rsquo;export complet de 200+ éléments à chaque essai.</li>
+</ol>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Pourquoi est-ce important d&rsquo;avoir réduit le cas à 2 éléments plutôt que de continuer à déboguer
+directement avec les 200+ éléments d&rsquo;origine ?</p>
+<p><strong>Réponse</strong> : un cas minimal est plus rapide à ré-exécuter à chaque hypothèse testée (secondes vs
+minutes), plus facile à transformer en test automatisé de régression, et élimine le « bruit » — si
+un seul élément avec un champ vide suffit à déclencher le bogue, on sait que la taille de la liste
+n&rsquo;est probablement pas la vraie cause.</p>
+</details>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer — sur votre projet
+  </summary>
+  <div class="box-content">
+<p>Trouvez (ou provoquez) un petit bogue dans votre propre projet. Notez les étapes exactes pour le
+reproduire, puis essayez de <strong>réduire</strong> le scénario au minimum (moins de données, un seul appel
+au lieu de plusieurs, une seule condition à la fois). Combien d&rsquo;étapes avez-vous pu retirer sans
+que le bogue disparaisse ?</p>
+  </div>
+</details>
+<blockquote>
+<p>🤝 <strong>Les deux se combinent naturellement</strong> : on lit souvent le code d&rsquo;abord pour se faire une
+première idée, puis on reproduit pour confirmer une hypothèse ambiguë — ou l&rsquo;inverse, on
+reproduit d&rsquo;abord pour capturer un scénario, puis on le lit pour comprendre la cause.</p>
+</blockquote>
+<hr>
+<h2 id="3-formuler-et-tester-des-hypothèses">3️⃣ Formuler et tester des hypothèses</h2>
+<p>Une fois le bogue isolé et la pile d&rsquo;appels lue, on entre dans la partie la plus proche de la
+démarche scientifique — le cœur de l&rsquo;approche de Zeller, mais qu&rsquo;on retrouve aussi, sous une forme
+plus généraliste, dans <em>Software Engineering</em> de Sommerville lorsqu&rsquo;il aborde la localisation des
+défauts (<em>fault location</em>) :</p>
+<ol>
+<li><strong>Observer</strong> les faits disponibles (message d&rsquo;erreur, ligne de code, données en entrée).</li>
+<li><strong>Formuler une hypothèse</strong> précise et vérifiable : <em>« Je pense que <code>getNom()</code> retourne <code>null</code>
+parce que le champ <code>nom</code> n&rsquo;est jamais rempli lors de la création d&rsquo;un client importé en
+lot. »</em></li>
+<li><strong>Tester l&rsquo;hypothèse</strong> de la façon la plus rapide possible : un point d&rsquo;arrêt, un <code>log</code>
+temporaire, un test unitaire ciblé, une valeur affichée dans la console.</li>
+<li><strong>Confirmer ou réfuter</strong>, puis raffiner l&rsquo;hypothèse si elle était fausse — sans jamais
+« corriger à l&rsquo;aveugle » avant d&rsquo;avoir confirmé la cause.</li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>Piège classique</strong> : corriger le <strong>symptôme</strong> (ex. ajouter un <code>if (nom != null)</code> pour éviter
+le crash) sans corriger la <strong>cause réelle</strong> (pourquoi <code>nom</code> est <code>null</code> en premier lieu) ne fait
+que déplacer le bogue ailleurs — ou le cacher, ce qui est souvent pire.</p>
+</blockquote>
+<h3 id="-petit-résumé-de-la-démarche">🧭 Petit résumé de la démarche</h3>
+<table>
+	<thead>
+			<tr>
+					<th>Étape</th>
+					<th>Question à se poser</th>
+					<th>Outil typique</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Lire la stack trace</td>
+					<td>Où exactement l&rsquo;exception a-t-elle été levée ? Y a-t-il un <code>Caused by</code> ?</td>
+					<td>Logs, console, IDE</td>
+			</tr>
+			<tr>
+					<td>Lecture statique</td>
+					<td>Est-ce que je peux suivre le flot et trouver la cause juste en lisant ?</td>
+					<td>Lecture du code, stratégies vues plus tôt</td>
+			</tr>
+			<tr>
+					<td>Reproduction dynamique</td>
+					<td>Sinon : puis-je déclencher le bogue à volonté, puis le réduire au minimum ?</td>
+					<td>Étapes documentées, données de test, élimination progressive</td>
+			</tr>
+			<tr>
+					<td>Hypothèse</td>
+					<td>Pourquoi cela se produit-il, précisément ?</td>
+					<td>Points d&rsquo;arrêt, logs temporaires, tests ciblés</td>
+			</tr>
+			<tr>
+					<td>Vérifier</td>
+					<td>Mon hypothèse est-elle confirmée ?</td>
+					<td>Ré-exécution du scénario réduit ou nouvelle lecture ciblée</td>
+			</tr>
+	</tbody>
+</table>
+<p>📚 <strong>Références</strong></p>
+<ul>
+<li>Andreas Zeller (2009), <em>Why Programs Fail: A Guide to Systematic Debugging</em>, 2ᵉ édition, Morgan
+Kaufmann — la démarche « reproduire → isoler/simplifier → formuler une hypothèse → tester » de
+cette page en est directement inspirée.</li>
+<li>Ian Sommerville, <em>Software Engineering</em>, chapitre sur la maintenance logicielle et la
+localisation des défauts.</li>
+</ul>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu">
+            <li class="" data-nav-id="/420-515/semaine-2/lecture-de-code/index.html"><a class="padding" href="/420-515/semaine-2/lecture-de-code/index.html">Lire le code des autres</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/exercice-lecture-de-code/index.html"><a class="padding" href="/420-515/semaine-2/exercice-lecture-de-code/index.html">Exercices approfondis — lecture de code</a></li>
+            <li class="active " data-nav-id="/420-515/semaine-2/debogage/index.html"><a class="padding" href="/420-515/semaine-2/debogage/index.html">Techniques de débogage (1/2)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/exercice-stack-trace/index.html"><a class="padding" href="/420-515/semaine-2/exercice-stack-trace/index.html">Exercice : lire une stack trace</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/git-avance/index.html"><a class="padding" href="/420-515/semaine-2/git-avance/index.html">Git 2/2 — notions avancées</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/exercice-git-avance/index.html"><a class="padding" href="/420-515/semaine-2/exercice-git-avance/index.html">Défi Git — semaine 2 (avancé)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-2/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788765660" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788765660" defer></script>
+    <script src="/420-515/js/theme.min.js?1788765660" defer></script>
+  </body>
+</html>

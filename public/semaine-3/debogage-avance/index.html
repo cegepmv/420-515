@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="En semaine 2, vous avez appris la méthode : reproduire, isoler, lire la stack trace, formuler une hypothèse. Cette semaine ajoute les outils qui rendent chaque étape rapide : le débogueur pas à pas, les breakpoints conditionnels, une journalisation propre, et la bissection pour localiser une cause sans tout lire ligne par ligne.
+1️⃣ Le débogueur pas à pas Un breakpoint (point d’arrêt) suspend l’exécution à une ligne précise; vous inspectez alors l’état réel du programme (variables, pile d’appels) au lieu de le deviner. La documentation officielle d’IntelliJ IDEA résume la démarche générale en 3 étapes, peu importe l’IDE utilisé :">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Techniques de débogage (2/2) :: Maintenance de logiciel">
+    <meta name="twitter:description" content="En semaine 2, vous avez appris la méthode : reproduire, isoler, lire la stack trace, formuler une hypothèse. Cette semaine ajoute les outils qui rendent chaque étape rapide : le débogueur pas à pas, les breakpoints conditionnels, une journalisation propre, et la bissection pour localiser une cause sans tout lire ligne par ligne.
+1️⃣ Le débogueur pas à pas Un breakpoint (point d’arrêt) suspend l’exécution à une ligne précise; vous inspectez alors l’état réel du programme (variables, pile d’appels) au lieu de le deviner. La documentation officielle d’IntelliJ IDEA résume la démarche générale en 3 étapes, peu importe l’IDE utilisé :">
+    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-3/debogage-avance/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Techniques de débogage (2/2) :: Maintenance de logiciel">
+    <meta property="og:description" content="En semaine 2, vous avez appris la méthode : reproduire, isoler, lire la stack trace, formuler une hypothèse. Cette semaine ajoute les outils qui rendent chaque étape rapide : le débogueur pas à pas, les breakpoints conditionnels, une journalisation propre, et la bissection pour localiser une cause sans tout lire ligne par ligne.
+1️⃣ Le débogueur pas à pas Un breakpoint (point d’arrêt) suspend l’exécution à une ligne précise; vous inspectez alors l’état réel du programme (variables, pile d’appels) au lieu de le deviner. La documentation officielle d’IntelliJ IDEA résume la démarche générale en 3 étapes, peu importe l’IDE utilisé :">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 3 — Débogage outillé et Maven">
+    <meta itemprop="name" content="Techniques de débogage (2/2) :: Maintenance de logiciel">
+    <meta itemprop="description" content="En semaine 2, vous avez appris la méthode : reproduire, isoler, lire la stack trace, formuler une hypothèse. Cette semaine ajoute les outils qui rendent chaque étape rapide : le débogueur pas à pas, les breakpoints conditionnels, une journalisation propre, et la bissection pour localiser une cause sans tout lire ligne par ligne.
+1️⃣ Le débogueur pas à pas Un breakpoint (point d’arrêt) suspend l’exécution à une ligne précise; vous inspectez alors l’état réel du programme (variables, pile d’appels) au lieu de le deviner. La documentation officielle d’IntelliJ IDEA résume la démarche générale en 3 étapes, peu importe l’IDE utilisé :">
+    <meta itemprop="wordCount" content="1626">
+    <title>Techniques de débogage (2/2) :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788765660" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788765660";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1788765660" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/semaine-3\/debogage-avance\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-3/debogage-avance/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-3/index.html"><span itemprop="name">Semaine 3 — Débogage outillé et Maven</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Techniques de débogage (2/2)</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-3" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="techniques-de-débogage-22">Techniques de débogage (2/2)</h1>
+
+<p>En semaine 2, vous avez appris la <strong>méthode</strong> : reproduire, isoler, lire la stack trace, formuler
+une hypothèse. Cette semaine ajoute les <strong>outils</strong> qui rendent chaque étape rapide : le débogueur
+pas à pas, les breakpoints conditionnels, une journalisation propre, et la bissection pour localiser
+une cause sans tout lire ligne par ligne.</p>
+<hr>
+<h2 id="1-le-débogueur-pas-à-pas">1️⃣ Le débogueur pas à pas</h2>
+<p>Un <strong>breakpoint</strong> (point d&rsquo;arrêt) suspend l&rsquo;exécution à une ligne précise; vous inspectez alors
+l&rsquo;état réel du programme (variables, pile d&rsquo;appels) au lieu de le deviner. La documentation
+officielle d&rsquo;IntelliJ IDEA résume la démarche générale en 3 étapes, peu importe l&rsquo;IDE utilisé :</p>
+<ol>
+<li><strong>Définir où le programme doit s&rsquo;arrêter</strong> — un ou plusieurs breakpoints.</li>
+<li><strong>Lancer le programme en mode Debug</strong> (application, test unitaire, ou tout code exécutable).</li>
+<li><strong>Examiner l&rsquo;état du programme suspendu</strong>, puis avancer pas à pas (<em>stepping</em>) pour observer
+comment cet état évolue à chaque ligne.</li>
+</ol>
+<table>
+	<thead>
+			<tr>
+					<th>Action</th>
+					<th>IntelliJ IDEA</th>
+					<th>VS Code</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Poser/retirer un breakpoint</td>
+					<td>Clic dans la marge, ou <code>Ctrl+F8</code></td>
+					<td>Clic dans la marge, ou <code>F9</code></td>
+			</tr>
+			<tr>
+					<td>Démarrer en mode Debug</td>
+					<td><code>Shift+F9</code></td>
+					<td><code>F5</code></td>
+			</tr>
+			<tr>
+					<td><em>Step Over</em> (ligne suivante, sans entrer dans les méthodes appelées)</td>
+					<td><code>F8</code></td>
+					<td><code>F10</code></td>
+			</tr>
+			<tr>
+					<td><em>Step Into</em> (entrer dans la méthode appelée)</td>
+					<td><code>F7</code></td>
+					<td><code>F11</code></td>
+			</tr>
+			<tr>
+					<td><em>Step Out</em> (sortir de la méthode courante)</td>
+					<td><code>Shift+F8</code></td>
+					<td><code>Shift+F11</code></td>
+			</tr>
+			<tr>
+					<td>Reprendre l&rsquo;exécution normale</td>
+					<td><code>F9</code></td>
+					<td><code>F5</code></td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>Exemple.</strong> Un calcul de total sur une liste retourne une valeur inattendue :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">calculerTotal</span>(List<span style="color:#f92672">&lt;</span>Item<span style="color:#f92672">&gt;</span> items) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> total <span style="color:#f92672">=</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (Item item : items) {
+</span></span><span style="display:flex;"><span>        total <span style="color:#f92672">+=</span> item.<span style="color:#a6e22e">getPrix</span>() <span style="color:#f92672">*</span> item.<span style="color:#a6e22e">getQuantite</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> total;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Démarche : posez un breakpoint sur la ligne <code>total += ...</code>, démarrez en Debug, puis <em>Step Over</em> à
+chaque itération en observant <code>total</code>, <code>item.getPrix()</code> et <code>item.getQuantite()</code> dans le panneau
+<strong>Variables</strong>. Vous verrez précisément à <strong>quelle itération</strong> la valeur dévie de ce qui est attendu.</p>
+<blockquote>
+<p>💡 <strong>Watches et Evaluate Expression</strong> — deux fonctionnalités à connaître au-delà du panneau
+Variables : un <strong>Watch</strong> garde une expression précise sous surveillance en permanence pendant
+toute la session (ex. <code>total / items.size()</code>, même si ce calcul n&rsquo;existe pas dans le code) ;
+<strong>Evaluate Expression</strong> (<code>Alt+F8</code>) exécute une expression arbitraire <em>pendant</em> la pause, sans
+modifier le code — utile pour tester une hypothèse (« est-ce que <code>item.getPrix() &lt; 0</code> est vrai
+ici ? ») sans ajouter puis retirer une ligne de code.</p>
+</blockquote>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Le total final est plus élevé que prévu, mais seulement légèrement. Utiliseriez-vous <em>Step Over</em>
+ou <em>Step Into</em> sur la ligne <code>total += item.getPrix() * item.getQuantite();</code> ? Pourquoi ?</p>
+<p><strong>Réponse</strong> : <em>Step Over</em> d&rsquo;abord — le bogue est probablement dans les <strong>données</strong> (un prix ou une
+quantité incorrecte à une itération précise), pas dans la logique interne de <code>getPrix()</code>/
+<code>getQuantite()</code>. <em>Step Into</em> ne serait utile que si vous suspectiez un calcul erroné <strong>à l&rsquo;intérieur</strong>
+de l&rsquo;un de ces getters (ex. une conversion de devise cachée).</p>
+</details>
+<hr>
+<h2 id="2-breakpoints-conditionnels">2️⃣ Breakpoints conditionnels</h2>
+<p>Poser un breakpoint classique sur une boucle de 500 éléments oblige à cliquer « continuer » des
+centaines de fois avant d&rsquo;atteindre le cas qui vous intéresse. Un <strong>breakpoint conditionnel</strong> ne
+s&rsquo;arrête que lorsqu&rsquo;une expression booléenne est vraie.</p>
+<p><strong>Comment faire</strong> (IntelliJ et VS Code) : clic droit sur un breakpoint existant → un champ
+« Condition » apparaît → entrez une expression Java valide à cet endroit du code.</p>
+<p><strong>Exemple</strong> : dans la boucle ci-dessus, si vous soupçonnez que l&rsquo;item avec <code>id == 42</code> est en cause :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>Condition : item.getId() == 42</code></pre></div>
+<p>Le programme s&rsquo;exécute normalement pour les 41 premiers éléments, puis s&rsquo;arrête <strong>exactement</strong> sur
+celui qui vous intéresse.</p>
+<blockquote>
+<p>💡 Autre usage fréquent : arrêter seulement quand une valeur devient <code>null</code> ou négative
+(<code>item.getQuantite() &lt; 0</code>) — utile pour attraper un cas limite rare, sans savoir à l&rsquo;avance à
+quelle itération il se produit.</p>
+</blockquote>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer — sur votre projet
+  </summary>
+  <div class="box-content">
+<p>Trouvez une boucle ou une collection dans votre projet (ex. une liste retournée par un endpoint).
+Posez un breakpoint conditionnel qui ne s&rsquo;arrête que sur un élément précis (par identifiant, ou par
+une valeur inhabituelle d&rsquo;un champ). Combien de clics « continuer » avez-vous évités par rapport à
+un breakpoint classique ?</p>
+  </div>
+</details>
+<hr>
+<h2 id="3-journalisation-stratégique--arrêter-dutiliser-println">3️⃣ Journalisation stratégique : arrêter d&rsquo;utiliser <code>println</code></h2>
+<p><code>System.out.println(&quot;ici&quot;)</code> est tentant, mais pose 3 problèmes en production :</p>
+<ol>
+<li><strong>Aucun niveau de gravité</strong> — impossible de l&rsquo;activer/désactiver sans modifier le code.</li>
+<li><strong>Aucun contexte automatique</strong> — pas d&rsquo;horodatage, pas de nom de classe, pas de thread.</li>
+<li><strong>On oublie de le retirer</strong> — il pollue les logs de production, ou pire, révèle des données
+sensibles.</li>
+</ol>
+<p>Un <strong>framework de journalisation</strong> (SLF4J + Logback en Java, le standard de l&rsquo;industrie) règle ces
+trois problèmes avec des <strong>niveaux</strong> :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Niveau</th>
+					<th>Usage typique</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>TRACE</code></td>
+					<td>Détail extrême, désactivé presque toujours (ex. contenu complet d&rsquo;une requête)</td>
+			</tr>
+			<tr>
+					<td><code>DEBUG</code></td>
+					<td>Informations utiles seulement pendant le développement/débogage</td>
+			</tr>
+			<tr>
+					<td><code>INFO</code></td>
+					<td>Événements normaux notables (ex. « commande #123 créée »)</td>
+			</tr>
+			<tr>
+					<td><code>WARN</code></td>
+					<td>Quelque chose d&rsquo;anormal mais non bloquant (ex. valeur par défaut utilisée)</td>
+			</tr>
+			<tr>
+					<td><code>ERROR</code></td>
+					<td>Une opération a échoué et nécessite attention</td>
+			</tr>
+	</tbody>
+</table>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger logger <span style="color:#f92672">=</span> LoggerFactory.<span style="color:#a6e22e">getLogger</span>(FactureService.<span style="color:#a6e22e">class</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">calculerTotal</span>(List<span style="color:#f92672">&lt;</span>Item<span style="color:#f92672">&gt;</span> items) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> total <span style="color:#f92672">=</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (Item item : items) {
+</span></span><span style="display:flex;"><span>        logger.<span style="color:#a6e22e">debug</span>(<span style="color:#e6db74">&#34;Item {} : prix={}, quantite={}&#34;</span>, item.<span style="color:#a6e22e">getId</span>(), item.<span style="color:#a6e22e">getPrix</span>(), item.<span style="color:#a6e22e">getQuantite</span>());
+</span></span><span style="display:flex;"><span>        total <span style="color:#f92672">+=</span> item.<span style="color:#a6e22e">getPrix</span>() <span style="color:#f92672">*</span> item.<span style="color:#a6e22e">getQuantite</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    logger.<span style="color:#a6e22e">info</span>(<span style="color:#e6db74">&#34;Total calculé : {}&#34;</span>, total);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> total;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<ul>
+<li>Le <code>{}</code> évite la concaténation de chaînes coûteuse quand le niveau <code>DEBUG</code> est désactivé.</li>
+<li>En production, on configure typiquement <code>INFO</code> ou <code>WARN</code> — les lignes <code>debug()</code> restent dans le
+code, prêtes à être réactivées sans redéployer, mais n&rsquo;encombrent pas les logs normalement.</li>
+</ul>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Pourquoi <code>logger.debug(...)</code> est-il préférable à <code>System.out.println(...)</code> même si, au final, les
+deux affichent une ligne dans la console pendant que vous déboguez localement ?</p>
+<p><strong>Réponse</strong> : <code>logger.debug</code> peut être <strong>désactivé globalement</strong> en production sans toucher au
+code (juste la configuration), inclut automatiquement classe/horodatage, et peut être redirigé
+(fichier, système centralisé) — <code>println</code> ne peut faire aucune de ces trois choses.</p>
+</details>
+<hr>
+<h2 id="4-bissection--diviser-pour-localiser">4️⃣ Bissection : diviser pour localiser</h2>
+<p>Quand un bogue est « quelque part dans ces 300 lignes » ou « apparu à un moment donné dans les 40
+derniers commits », lire séquentiellement est lent. La <strong>bissection</strong> (recherche binaire) élimine
+la moitié des suspects à chaque test.</p>
+<p><a href="#R-image-83edb6b12c8bc0321c3fb25211f08596" class="lightbox-link"><img alt="Bissection : diviser pour localiser la cause" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-3/debogage-avance/images/bissection.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-83edb6b12c8bc0321c3fb25211f08596"><img alt="Bissection : diviser pour localiser la cause" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-3/debogage-avance/images/bissection.svg"></a></p>
+<h3 id="bissection-dans-le-code">Bissection dans le code</h3>
+<p>Commentez/désactivez la <strong>moitié</strong> du code suspect, relancez le scénario reproductible (semaine 2) :</p>
+<ul>
+<li>Le bogue disparaît → la cause est dans la moitié désactivée.</li>
+<li>Le bogue persiste → la cause est dans l&rsquo;autre moitié.</li>
+</ul>
+<p>Répétez sur la moitié restante jusqu&rsquo;à isoler une seule ligne ou méthode.</p>
+<h3 id="bissection-dans-lhistorique-git--git-bisect">Bissection dans l&rsquo;historique Git — <code>git bisect</code></h3>
+<p>Quand un bogue est apparu « à un moment donné » sans qu&rsquo;on sache dans quel commit, <code>git bisect</code>
+automatise exactement la même logique sur l&rsquo;historique :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git bisect start
+</span></span><span style="display:flex;"><span>git bisect bad                <span style="color:#75715e"># le commit actuel (HEAD) est mauvais</span>
+</span></span><span style="display:flex;"><span>git bisect good v1.2.0         <span style="color:#75715e"># ce tag/commit connu était bon</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Git se place automatiquement au commit du MILIEU</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># → testez, puis répondez :</span>
+</span></span><span style="display:flex;"><span>git bisect good                <span style="color:#75715e"># si le bogue N&#39;EST PAS présent ici</span>
+</span></span><span style="display:flex;"><span>git bisect bad                 <span style="color:#75715e"># si le bogue EST présent ici</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ... Git répète la division par 2 jusqu&#39;à trouver LE commit fautif</span>
+</span></span><span style="display:flex;"><span>git bisect reset               <span style="color:#75715e"># termine et revient à votre branche de départ</span></span></span></code></pre></div>
+<p>Sur 1000 commits, <code>git bisect</code> trouve le coupable en environ <strong>10 tests</strong> (log₂ 1000 ≈ 10), au lieu
+de tester chaque commit un à un.</p>
+<blockquote>
+<p>💡 <strong>Bonus automatisation</strong> : <code>git bisect run ./test-du-bogue.sh</code> exécute un script qui retourne
+un code de sortie 0 (bon) ou différent de 0 (mauvais) — Git bisecte alors <strong>tout seul</strong>, sans
+intervention manuelle à chaque étape.</p>
+</blockquote>
+<p>Ce principe — diviser un espace de recherche en deux pour converger en <code>log(n)</code> étapes — est
+formalisé par Andreas Zeller sous le nom de <em>delta debugging</em> dans <em>Why Programs Fail</em> (déjà vu en
+semaine 2) : <code>git bisect</code> en est une application directe, appliquée à l&rsquo;historique des commits
+plutôt qu&rsquo;aux données d&rsquo;entrée.</p>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer — sur votre projet
+  </summary>
+  <div class="box-content">
+<p>Choisissez un fichier avec plusieurs commits d&rsquo;historique. Simulez un <code>git bisect</code> : identifiez un
+commit « bon » ancien et le commit actuel comme point de départ, puis parcourez manuellement (ou
+avec <code>git bisect start</code>) pour retrouver un commit précis où un comportement a changé.</p>
+  </div>
+</details>
+<hr>
+<h2 id="-actualité-de-lindustrie">📰 Actualité de l&rsquo;industrie</h2>
+<ul>
+<li><strong>Débogage assisté par IA</strong> : les IDE modernes (GitHub Copilot, IntelliJ AI Assistant) peuvent
+maintenant expliquer une stack trace ou suggérer une hypothèse de cause directement dans la
+session de débogage — un gain de temps, mais qui <strong>remplace rarement</strong> la nécessité de vérifier
+l&rsquo;hypothèse vous-même (elle peut se tromper avec assurance).</li>
+<li><strong>Observabilité en production</strong> : des outils comme <strong>Sentry</strong>, <strong>Datadog</strong> ou <strong>New Relic</strong>
+appliquent la même logique « reproduire → isoler → hypothèse » à grande échelle, en capturant
+automatiquement stack traces, variables et contexte au moment d&rsquo;un crash en production — sans
+breakpoint possible sur un serveur en direct.</li>
+<li>Plusieurs études sur les pratiques de développement (dont le rapport <em>Developer Coefficient</em>,
+Stripe, 2018) estiment qu&rsquo;une part importante du temps des développeur·euse·s est consacrée à la
+correction de bogues et de dette technique plutôt qu&rsquo;à écrire du nouveau code — un rappel
+concret de l&rsquo;importance de maîtriser ces outils tôt dans votre formation.</li>
+</ul>
+<hr>
+<h2 id="-petit-résumé--quel-outil-pour-quelle-situation-">🧭 Petit résumé — quel outil pour quelle situation ?</h2>
+<table>
+	<thead>
+			<tr>
+					<th>Situation</th>
+					<th>Outil à privilégier</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Suivre un flux d&rsquo;exécution précis, étape par étape</td>
+					<td>Débogueur, <em>step over/into</em></td>
+			</tr>
+			<tr>
+					<td>Un cas précis au milieu d&rsquo;une grande collection/boucle</td>
+					<td>Breakpoint conditionnel</td>
+			</tr>
+			<tr>
+					<td>Comportement à observer sur plusieurs exécutions, ou en production</td>
+					<td>Journalisation (<code>logger.debug</code>/<code>info</code>)</td>
+			</tr>
+			<tr>
+					<td>Cause « quelque part » dans beaucoup de code ou de commits</td>
+					<td>Bissection (manuelle ou <code>git bisect</code>)</td>
+			</tr>
+	</tbody>
+</table>
+<h2 id="-références">📚 Références</h2>
+<ul>
+<li>Andreas Zeller (2009), <em>Why Programs Fail: A Guide to Systematic Debugging</em>, 2ᵉ édition, Morgan
+Kaufmann — le concept de <em>delta debugging</em> qui fonde la bissection.</li>
+<li>Documentation officielle JetBrains —
+<a href="https://www.jetbrains.com/help/idea/debugging-code.html" rel="external" target="_blank">Debug code (IntelliJ IDEA)</a> : la
+démarche générale de débogage (breakpoints → run in debug → examiner l&rsquo;état → stepping) ainsi
+que les Watches et <em>Evaluate Expression</em> présentés plus haut en sont directement tirés.</li>
+<li>Documentation officielle Git — <a href="https://git-scm.com/docs/git-bisect" rel="external" target="_blank"><code>git bisect</code></a>.</li>
+<li>Documentation SLF4J — <a href="https://www.slf4j.org/manual.html" rel="external" target="_blank">niveaux de journalisation</a>.</li>
+</ul>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu">
+            <li class="active " data-nav-id="/420-515/semaine-3/debogage-avance/index.html"><a class="padding" href="/420-515/semaine-3/debogage-avance/index.html">Techniques de débogage (2/2)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-3/exercice-debogage-avance/index.html"><a class="padding" href="/420-515/semaine-3/exercice-debogage-avance/index.html">Exercice : outils de débogage</a></li>
+            <li class="" data-nav-id="/420-515/semaine-3/maven/index.html"><a class="padding" href="/420-515/semaine-3/maven/index.html">Maven (1/2) — pom.xml, dépendances, plugins</a></li>
+            <li class="" data-nav-id="/420-515/semaine-3/exercice-maven/index.html"><a class="padding" href="/420-515/semaine-3/exercice-maven/index.html">Exercice : manipuler pom.xml</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788765660" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788765660" defer></script>
+    <script src="/420-515/js/theme.min.js?1788765660" defer></script>
+  </body>
+</html>

@@ -1,66 +1,81 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/420-515/semaine-1/definition-maintenance/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-1/definition-maintenance/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/intro/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/intro/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-2/lecture-de-code/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-2/lecture-de-code/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-1/cycle-de-vie/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-3/debogage-avance/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-2/exercice-lecture-de-code/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-1/cycle-de-vie/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-1/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-3/exercice-debogage-avance/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-1/decouverte-projet/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-2/exercice-lecture-de-code/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-2/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-1/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-2/debogage/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-1/decouverte-projet/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-2/exercice-stack-trace/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-3/maven/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-1/git/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-2/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-1/activite-pratique/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-2/debogage/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-1/exercices-classroom/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-2/exercice-stack-trace/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-2/git-avance/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-3/exercice-maven/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-2/exercice-git-avance/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-1/git/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-1/exercice-types-maintenance/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-3/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-2/activite-pratique/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-1/activite-pratique/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/semaine-1/exercice-git-premiers-pas/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-1/exercices-classroom/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/categories/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-2/git-avance/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-2/exercice-git-avance/index.html</loc>
   </url>
   <url>
-    <loc>http://localhost:1313/420-515/tags/index.html</loc>
+    <loc>https://cegepmv.github.io/420-515/semaine-1/exercice-types-maintenance/index.html</loc>
+  </url>
+  <url>
+    <loc>https://cegepmv.github.io/420-515/semaine-2/activite-pratique/index.html</loc>
+  </url>
+  <url>
+    <loc>https://cegepmv.github.io/420-515/semaine-1/exercice-git-premiers-pas/index.html</loc>
+  </url>
+  <url>
+    <loc>https://cegepmv.github.io/420-515/categories/index.html</loc>
+  </url>
+  <url>
+    <loc>https://cegepmv.github.io/420-515/index.html</loc>
+  </url>
+  <url>
+    <loc>https://cegepmv.github.io/420-515/tags/index.html</loc>
   </url>
 </urlset>

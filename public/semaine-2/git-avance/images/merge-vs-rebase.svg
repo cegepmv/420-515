@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 320" font-family="Segoe UI, Arial, sans-serif">
+  <text x="350" y="28" font-size="18" font-weight="bold" text-anchor="middle" fill="#222">git merge vs git rebase</text>
+
+  <!-- Merge side -->
+  <text x="170" y="55" font-size="14" font-weight="bold" text-anchor="middle" fill="#444">git merge</text>
+  <line x1="30" y1="90" x2="310" y2="90" stroke="#555" stroke-width="2"/>
+  <circle cx="50" cy="90" r="7" fill="#3b6fd6"/>
+  <circle cx="130" cy="90" r="7" fill="#3b6fd6"/>
+  <circle cx="290" cy="90" r="9" fill="#c0392b"/>
+  <text x="30" y="112" font-size="11" fill="#333">main</text>
+  <text x="300" y="86" font-size="10" fill="#8a1f16">commit de fusion</text>
+
+  <line x1="50" y1="90" x2="50" y2="150" stroke="#555" stroke-width="2"/>
+  <line x1="50" y1="150" x2="210" y2="150" stroke="#2e9e4f" stroke-width="2"/>
+  <circle cx="130" cy="150" r="7" fill="#2e9e4f"/>
+  <circle cx="210" cy="150" r="7" fill="#2e9e4f"/>
+  <line x1="210" y1="150" x2="290" y2="90" stroke="#555" stroke-width="2"/>
+  <text x="215" y="164" font-size="11" fill="#1e6b34">feature</text>
+
+  <text x="170" y="200" font-size="11" text-anchor="middle" fill="#555">Historique réel conservé,</text>
+  <text x="170" y="216" font-size="11" text-anchor="middle" fill="#555">y compris le commit de fusion</text>
+
+  <!-- Rebase side -->
+  <text x="530" y="55" font-size="14" font-weight="bold" text-anchor="middle" fill="#444">git rebase</text>
+  <line x1="390" y1="120" x2="670" y2="120" stroke="#555" stroke-width="2"/>
+  <circle cx="410" cy="120" r="7" fill="#3b6fd6"/>
+  <circle cx="480" cy="120" r="7" fill="#3b6fd6"/>
+  <circle cx="550" cy="120" r="7" fill="#2e9e4f"/>
+  <circle cx="620" cy="120" r="7" fill="#2e9e4f"/>
+  <text x="390" y="142" font-size="11" fill="#333">main</text>
+  <text x="560" y="106" font-size="11" fill="#1e6b34">feature (rejouée)</text>
+
+  <text x="530" y="200" font-size="11" text-anchor="middle" fill="#555">Historique réécrit et linéaire,</text>
+  <text x="530" y="216" font-size="11" text-anchor="middle" fill="#555">sans commit de fusion</text>
+
+  <text x="350" y="280" font-size="12" text-anchor="middle" fill="#c0392b" font-weight="bold">
+    ⚠️ Ne jamais rebaser une branche déjà partagée avec d'autres personnes.
+  </text>
+</svg>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="Vous avez passé vos sessions précédentes à écrire des projets — parfois seul·e, parfois en équipe — mais toujours sur du code neuf, démarré from scratch pour les besoins d’un TP, et qui cessait d’exister (ou presque) une fois la session terminée.
+À partir d’aujourd’hui, vous entrez dans le monde réel du développement logiciel :
+80 % de la carrière d’un·e développeur·euse, ce n’est pas écrire du nouveau code — c’est comprendre, réparer et faire évoluer du code déjà en place depuis longtemps, souvent sous pression, avec une documentation incomplète, sur un système qu’on ne peut pas se permettre d’arrêter.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Définition et présentation du concept de maintenance :: Maintenance de logiciel">
+    <meta name="twitter:description" content="Vous avez passé vos sessions précédentes à écrire des projets — parfois seul·e, parfois en équipe — mais toujours sur du code neuf, démarré from scratch pour les besoins d’un TP, et qui cessait d’exister (ou presque) une fois la session terminée.
+À partir d’aujourd’hui, vous entrez dans le monde réel du développement logiciel :
+80 % de la carrière d’un·e développeur·euse, ce n’est pas écrire du nouveau code — c’est comprendre, réparer et faire évoluer du code déjà en place depuis longtemps, souvent sous pression, avec une documentation incomplète, sur un système qu’on ne peut pas se permettre d’arrêter.">
+    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-1/definition-maintenance/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Définition et présentation du concept de maintenance :: Maintenance de logiciel">
+    <meta property="og:description" content="Vous avez passé vos sessions précédentes à écrire des projets — parfois seul·e, parfois en équipe — mais toujours sur du code neuf, démarré from scratch pour les besoins d’un TP, et qui cessait d’exister (ou presque) une fois la session terminée.
+À partir d’aujourd’hui, vous entrez dans le monde réel du développement logiciel :
+80 % de la carrière d’un·e développeur·euse, ce n’est pas écrire du nouveau code — c’est comprendre, réparer et faire évoluer du code déjà en place depuis longtemps, souvent sous pression, avec une documentation incomplète, sur un système qu’on ne peut pas se permettre d’arrêter.">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 1 — Bienvenue en maintenance logicielle">
+    <meta itemprop="name" content="Définition et présentation du concept de maintenance :: Maintenance de logiciel">
+    <meta itemprop="description" content="Vous avez passé vos sessions précédentes à écrire des projets — parfois seul·e, parfois en équipe — mais toujours sur du code neuf, démarré from scratch pour les besoins d’un TP, et qui cessait d’exister (ou presque) une fois la session terminée.
+À partir d’aujourd’hui, vous entrez dans le monde réel du développement logiciel :
+80 % de la carrière d’un·e développeur·euse, ce n’est pas écrire du nouveau code — c’est comprendre, réparer et faire évoluer du code déjà en place depuis longtemps, souvent sous pression, avec une documentation incomplète, sur un système qu’on ne peut pas se permettre d’arrêter.">
+    <meta itemprop="wordCount" content="1460">
+    <title>Définition et présentation du concept de maintenance :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788765660" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788765660";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1788765660" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/semaine-1\/definition-maintenance\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-1/definition-maintenance/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-1/index.html"><span itemprop="name">Semaine 1 — Bienvenue en maintenance logicielle</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Définition et présentation du concept de maintenance</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-1" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="définition-et-présentation-du-concept-de-maintenance">Définition et présentation du concept de maintenance</h1>
+
+<p>Vous avez passé vos sessions précédentes à écrire des projets — parfois seul·e, parfois en équipe —
+mais toujours sur du code neuf, démarré from scratch pour les besoins d&rsquo;un TP, et qui cessait
+d&rsquo;exister (ou presque) une fois la session terminée.</p>
+<p>À partir d&rsquo;aujourd&rsquo;hui, vous entrez dans le monde réel du développement logiciel :</p>
+<blockquote>
+<p>80 % de la carrière d&rsquo;un·e développeur·euse, ce n&rsquo;est <strong>pas</strong> écrire du nouveau code — c&rsquo;est
+comprendre, réparer et faire évoluer du code déjà en place depuis longtemps, souvent
+sous pression, avec une documentation incomplète, sur un système qu&rsquo;on ne peut pas se permettre
+d&rsquo;arrêter.</p>
+</blockquote>
+<p>C&rsquo;est ce qu&rsquo;on appelle de la <strong>maintenance logicielle</strong>. Un malentendu fréquent : on associe
+souvent la maintenance uniquement au « vieux code legacy ». En réalité, la maintenance commence
+dès qu&rsquo;une <strong>première version d&rsquo;un logiciel est livrée</strong> à un client ou mise en production —
+même si le code a été écrit hier. Une équipe qui livre la version 1.0 d&rsquo;une application neuve
+devra, dès le lendemain, corriger les bogues rapportés, l&rsquo;adapter à un nouvel environnement, ou
+répondre aux demandes d&rsquo;amélioration : c&rsquo;est déjà de la maintenance, même si le code n&rsquo;a rien de
+« vieux » ou de « legacy » au sens strict.</p>
+<p>On appelle plus spécifiquement <strong>code legacy</strong> (ou « code hérité ») du code déjà en production
+depuis un certain temps, généralement écrit avec des technologies, des versions de langage ou des
+pratiques dépassées par rapport à ce qui se fait aujourd&rsquo;hui — mais qui doit continuer à
+fonctionner et à évoluer. Ce n&rsquo;est pas seulement « du code que quelqu&rsquo;un d&rsquo;autre a écrit » : même
+du code que vous avez écrit vous-même peut devenir « legacy » quelques années plus tard, une fois
+les technologies utilisées dépassées et le contexte d&rsquo;origine oublié. Le code legacy est donc un
+<strong>cas particulier</strong>, souvent le plus délicat, de code à maintenir — mais la maintenance
+elle-même s&rsquo;applique à <strong>tout logiciel livré</strong>, jeune ou vieux. Bienvenue en
+<strong>maintenance logicielle</strong>. 🎓</p>
+<h3 id="-ce-qui-change-par-rapport-à-vos-cours-précédents">🆚 Ce qui change par rapport à vos cours précédents</h3>
+<table>
+	<thead>
+			<tr>
+					<th>Avant (projets de A à Z)</th>
+					<th>Maintenant (maintenance)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Le projet démarre de zéro à chaque TP</td>
+					<td>Vous héritez de milliers de lignes déjà écrites, parfois avec des technologies vieillissantes</td>
+			</tr>
+			<tr>
+					<td>Le code est récent et suit les pratiques enseignées</td>
+					<td>Le code peut dater de plusieurs années et suivre des pratiques dépassées</td>
+			</tr>
+			<tr>
+					<td>L&rsquo;intention derrière le code est fraîche dans la mémoire de l&rsquo;équipe</td>
+					<td>L&rsquo;intention originale est parfois perdue ou mal documentée</td>
+			</tr>
+			<tr>
+					<td>Le projet dure quelques semaines</td>
+					<td>Le projet peut vivre des années, voire des décennies</td>
+			</tr>
+			<tr>
+					<td>Peu ou pas de conséquences si vous cassez quelque chose</td>
+					<td>Casser une fonctionnalité peut affecter de vrais utilisateurs</td>
+			</tr>
+	</tbody>
+</table>
+<hr>
+<h2 id="-les-4-types-de-maintenance-norme-isoiec-14764">📚 Les 4 types de maintenance (norme ISO/IEC 14764)</h2>
+<p>La norme internationale ISO/IEC 14764 (héritière de l&rsquo;ancienne norme IEEE 1219) définit 4
+catégories de maintenance logicielle. C&rsquo;est la classification de référence en génie logiciel : on
+la retrouve dans la plupart des ouvrages (dont <em>Software Engineering</em> de Sommerville) et dans les
+processus qualité des entreprises (ITIL, CMMI&hellip;). Il est important de bien les distinguer, car
+elles reviendront tout au long de la session (et à l&rsquo;épreuve finale !).</p>
+<p>Un même changement dans un vrai projet peut d&rsquo;ailleurs mélanger plusieurs types à la fois — par
+exemple, corriger un bogue de sécurité (corrective) peut aussi être vu comme une action préventive
+si on en profite pour éliminer toute une famille de bogues similaires. Ne cherchez pas une réponse
+« parfaitement pure » à chaque fois : l&rsquo;important est de comprendre <em>l&rsquo;intention dominante</em> du
+changement.</p>
+<table>
+	<thead>
+			<tr>
+					<th>Type</th>
+					<th>Définition</th>
+					<th>Ce qui déclenche le changement</th>
+					<th>Exemple générique</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>🔧 <strong>Corrective</strong></td>
+					<td>Corriger un défaut/bogue déjà présent dans le logiciel — le comportement observé ne correspond pas au comportement attendu ou documenté</td>
+					<td>Un rapport de bogue, un incident en production, un test qui échoue</td>
+					<td>Un site de commerce en ligne calcule mal la taxe de vente sur certaines commandes; on corrige la formule pour qu&rsquo;elle reflète le comportement attendu</td>
+			</tr>
+			<tr>
+					<td>🔄 <strong>Adaptative</strong></td>
+					<td>Adapter le logiciel à un changement de son <strong>environnement</strong> (nouvel OS, nouvelle version d&rsquo;un langage/framework, nouvelle base de données, nouvelle réglementation&hellip;) sans changer la fonctionnalité offerte à l&rsquo;utilisateur</td>
+					<td>Une dépendance externe change, devient obsolète, ou n&rsquo;est plus supportée</td>
+					<td>Une application mobile doit être adaptée parce qu&rsquo;Apple ou Google exige une nouvelle version minimale du système d&rsquo;exploitation pour rester publiable sur le magasin d&rsquo;applications</td>
+			</tr>
+			<tr>
+					<td>✨ <strong>Perfective</strong></td>
+					<td>Améliorer le logiciel à la demande des utilisateurs ou de l&rsquo;équipe — meilleure performance, meilleure lisibilité, meilleure structure interne (sans changer le comportement observable), <strong>ou</strong> ajout de fonctionnalités demandées (qui, elles, changent le comportement observable)</td>
+					<td>Une demande d&rsquo;amélioration, un problème de performance, ou simplement le désir de rendre le code plus facile à maintenir</td>
+					<td>Réusiner (refactoriser) une classe de 2000 lignes en plusieurs classes plus petites et mieux nommées, sans changer ce que le programme fait pour l&rsquo;utilisateur final</td>
+			</tr>
+			<tr>
+					<td>🛡️ <strong>Préventive</strong></td>
+					<td>Modifier le logiciel <em>avant</em> qu&rsquo;un problème ne survienne, pour réduire un risque futur (souvent invisible pour l&rsquo;utilisateur final)</td>
+					<td>Une analyse de risque, un audit de sécurité, ou une revue de dette technique</td>
+					<td>Mettre à jour une bibliothèque tierce dès qu&rsquo;une vulnérabilité de sécurité connue (CVE) est publiée à son sujet, avant qu&rsquo;elle ne soit exploitée</td>
+			</tr>
+	</tbody>
+</table>
+<p><a href="#R-image-4cbaad0b31dea5ac7745753198ccddfd" class="lightbox-link"><img alt="Quadrant illustrant les 4 types de maintenance" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-1/definition-maintenance/images/types-maintenance-quadrant.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-4cbaad0b31dea5ac7745753198ccddfd"><img alt="Quadrant illustrant les 4 types de maintenance" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-1/definition-maintenance/images/types-maintenance-quadrant.svg"></a></p>
+<p>📊 <strong>Répartition typique observée en industrie</strong> (proportions couramment citées dans la
+littérature, ex. Lientz &amp; Swanson, l&rsquo;étude qui a popularisé cette répartition) :</p>
+<ul>
+<li>Perfective ≈ 50-65 % — la plus grosse part, contrairement à l&rsquo;intuition de plusieurs! On
+maintient surtout pour <em>améliorer</em>, pas seulement pour réparer.</li>
+<li>Adaptative ≈ 20-25 %</li>
+<li>Corrective ≈ 15-20 %</li>
+<li>Préventive ≈ 5 % — souvent la plus négligée, alors qu&rsquo;elle coûte le moins cher à long terme.</li>
+</ul>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer
+  </summary>
+  <div class="box-content">
+<p>Avant de continuer, mettez ces définitions en pratique : l&rsquo;exercice
+<a href="/420-515/semaine-1/exercice-types-maintenance/">Étiqueter les types de maintenance</a>
+vous fait classifier 6 scénarios réalistes, directement sur cette page.</p>
+  </div>
+</details>
+<details>
+<summary>🧠 Petit truc mnémotechnique pour ne pas les confondre</summary>
+<ul>
+<li><strong>Corrective</strong> = il y a déjà un <strong>bogue</strong> → je répare quelque chose de <strong>cassé</strong>.</li>
+<li><strong>Adaptative</strong> = le <strong>monde extérieur change</strong> (OS, langage, matériel, loi) → je m&rsquo;adapte.</li>
+<li><strong>Perfective</strong> = <strong>rien n&rsquo;est cassé</strong>, mais je rends le code <strong>meilleur</strong> (lisibilité, performance,
+structure interne — sans changer le comportement observable), <strong>ou</strong> j&rsquo;ajoute une fonctionnalité
+demandée par les utilisateurs (ce qui, cette fois, change bel et bien le comportement observable).</li>
+<li><strong>Préventive</strong> = je répare quelque chose qui <strong>n&rsquo;est PAS encore cassé</strong>, pour éviter que ça le
+devienne plus tard (comme une vidange d&rsquo;huile avant que le moteur ne brise).</li>
+</ul>
+</details>
+<details>
+<summary>🤔 Testez votre compréhension : à quel type appartient chacun de ces changements ?</summary>
+<ol>
+<li>Une banque met à jour son application pour se conformer à une nouvelle loi sur la protection des
+données personnelles. → <strong>Adaptative</strong> (changement de l&rsquo;environnement réglementaire).</li>
+<li>Une application de messagerie plante systématiquement quand un message dépasse 1000 caractères.
+On corrige le bogue. → <strong>Corrective</strong>.</li>
+<li>Une équipe ajoute des tests automatisés supplémentaires sur un module critique qui n&rsquo;en avait
+aucun, sans changer son comportement, pour réduire le risque de futures régressions. →
+<strong>Préventive</strong>.</li>
+<li>Une entreprise simplifie l&rsquo;architecture interne de son système de facturation pour que les
+futures modifications soient plus rapides à réaliser, sans que les clients ne remarquent de
+différence. → <strong>Perfective</strong>.</li>
+</ol>
+</details>
+<hr>
+<h2 id="-pourquoi-la-maintenance-coûte-t-elle-si-cher-">💡 Pourquoi la maintenance coûte-t-elle si cher ?</h2>
+<p>Statistique classique à retenir : jusqu&rsquo;à <strong>60-80 %</strong> du coût total d&rsquo;un logiciel se dépense
+<strong>après</strong> sa première mise en production (Sommerville, <em>Software Engineering</em>). Autrement dit,
+écrire la première version du logiciel n&rsquo;est souvent que la partie la moins chère de son cycle de
+vie complet !</p>
+<p>Pourquoi un coût aussi élevé ?</p>
+<ul>
+<li>🧠 <strong>Perte de connaissance</strong> : les personnes qui ont écrit le code original quittent
+l&rsquo;entreprise, changent d&rsquo;équipe, ou oublient simplement leurs décisions de design après quelques
+mois.</li>
+<li>📉 <strong>Dette technique qui s&rsquo;accumule</strong> : chaque raccourci pris « pour aller plus vite » aujourd&rsquo;hui
+ralentit un peu plus chaque modification future (on reverra ce concept en détail en semaine 5).</li>
+<li>🌀 <strong>Complexité qui grandit</strong> : plus un logiciel vit longtemps, plus il accumule de
+fonctionnalités, d&rsquo;exceptions, de cas particuliers — chaque ajout rend le suivant un peu plus
+difficile.</li>
+<li>📄 <strong>Documentation incomplète ou périmée</strong> : rarement mise à jour au même rythme que le code.</li>
+</ul>
+<p>Même en développement Agile, la maintenance est souvent perçue comme la phase la moins
+« glamour » — mais c&rsquo;est justement celle qui bâtit la réputation d&rsquo;un·e développeur·euse senior :
+n&rsquo;importe qui peut écrire du code neuf sur une page blanche, peu de gens savent réparer et faire
+évoluer un système vivant sans le casser. 💪</p>
+<hr>
+<h2 id="-petit-glossaire-de-la-semaine">📖 Petit glossaire de la semaine</h2>
+<table>
+	<thead>
+			<tr>
+					<th>Terme</th>
+					<th>Définition courte</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>Code legacy</strong></td>
+					<td>Code existant, déjà en production, écrit par quelqu&rsquo;un d&rsquo;autre (ou par vous, il y a longtemps)</td>
+			</tr>
+			<tr>
+					<td><strong>Dette technique</strong></td>
+					<td>L&rsquo;ensemble des raccourcis/compromis pris dans le code, qui ralentiront les changements futurs</td>
+			</tr>
+			<tr>
+					<td><strong>Code smell</strong></td>
+					<td>Un indice visuel/structurel qu&rsquo;une partie du code pourrait poser problème, sans être nécessairement un bogue</td>
+			</tr>
+	</tbody>
+</table>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="parent " data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu">
+            <li class="active " data-nav-id="/420-515/semaine-1/definition-maintenance/index.html"><a class="padding" href="/420-515/semaine-1/definition-maintenance/index.html">Définition et présentation du concept de maintenance</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/cycle-de-vie/index.html"><a class="padding" href="/420-515/semaine-1/cycle-de-vie/index.html">Cycle de vie du logiciel et méthodologies</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/decouverte-projet/index.html"><a class="padding" href="/420-515/semaine-1/decouverte-projet/index.html">Découverte du projet du cours</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/git/index.html"><a class="padding" href="/420-515/semaine-1/git/index.html">Introduction à Git (1/2)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-1/activite-pratique/index.html">Activité pratique et récapitulatif</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/exercices-classroom/index.html"><a class="padding" href="/420-515/semaine-1/exercices-classroom/index.html">Exercices pratiques</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/exercice-types-maintenance/index.html"><a class="padding" href="/420-515/semaine-1/exercice-types-maintenance/index.html">Exercice : étiqueter les types de maintenance</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/exercice-git-premiers-pas/index.html"><a class="padding" href="/420-515/semaine-1/exercice-git-premiers-pas/index.html">Défi Git — semaine 1</a></li></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788765660" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788765660" defer></script>
+    <script src="/420-515/js/theme.min.js?1788765660" defer></script>
+  </body>
+</html>

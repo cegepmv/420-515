@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="🎯 Objectif Un exercice distinct pour chacune des quatre stratégies de lecture de code vues dans Lire le code des autres. Chaque partie se termine par une vraie petite modification à apporter à votre projet legacy — rien de comparable en ampleur au TP1 : ce sont des modifications additives, à faible risque
+👥 En équipe. Travaillez chaque partie sur sa propre branche (ex. lecture-topdown, lecture-bottomup, etc.), avec un commit et une petite Pull Request à la fin — une belle occasion de réutiliser vos réflexes de la page Git 2/2. Ces branches d’exercice n’ont pas besoin d’être conservées après validation en équipe.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Exercices approfondis — lecture de code :: Maintenance de logiciel">
+    <meta name="twitter:description" content="🎯 Objectif Un exercice distinct pour chacune des quatre stratégies de lecture de code vues dans Lire le code des autres. Chaque partie se termine par une vraie petite modification à apporter à votre projet legacy — rien de comparable en ampleur au TP1 : ce sont des modifications additives, à faible risque
+👥 En équipe. Travaillez chaque partie sur sa propre branche (ex. lecture-topdown, lecture-bottomup, etc.), avec un commit et une petite Pull Request à la fin — une belle occasion de réutiliser vos réflexes de la page Git 2/2. Ces branches d’exercice n’ont pas besoin d’être conservées après validation en équipe.">
+    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-2/exercice-lecture-de-code/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Exercices approfondis — lecture de code :: Maintenance de logiciel">
+    <meta property="og:description" content="🎯 Objectif Un exercice distinct pour chacune des quatre stratégies de lecture de code vues dans Lire le code des autres. Chaque partie se termine par une vraie petite modification à apporter à votre projet legacy — rien de comparable en ampleur au TP1 : ce sont des modifications additives, à faible risque
+👥 En équipe. Travaillez chaque partie sur sa propre branche (ex. lecture-topdown, lecture-bottomup, etc.), avec un commit et une petite Pull Request à la fin — une belle occasion de réutiliser vos réflexes de la page Git 2/2. Ces branches d’exercice n’ont pas besoin d’être conservées après validation en équipe.">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 2 — Lire le code des autres">
+    <meta itemprop="name" content="Exercices approfondis — lecture de code :: Maintenance de logiciel">
+    <meta itemprop="description" content="🎯 Objectif Un exercice distinct pour chacune des quatre stratégies de lecture de code vues dans Lire le code des autres. Chaque partie se termine par une vraie petite modification à apporter à votre projet legacy — rien de comparable en ampleur au TP1 : ce sont des modifications additives, à faible risque
+👥 En équipe. Travaillez chaque partie sur sa propre branche (ex. lecture-topdown, lecture-bottomup, etc.), avec un commit et une petite Pull Request à la fin — une belle occasion de réutiliser vos réflexes de la page Git 2/2. Ces branches d’exercice n’ont pas besoin d’être conservées après validation en équipe.">
+    <meta itemprop="wordCount" content="1321">
+    <title>Exercices approfondis — lecture de code :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788765660" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/search.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788765660";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788765660" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1788765660" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1788765660" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/semaine-2\/exercice-lecture-de-code\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-2/exercice-lecture-de-code/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-2/index.html"><span itemprop="name">Semaine 2 — Lire le code des autres</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Exercices approfondis — lecture de code</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-2" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="exercices-approfondis--lecture-de-code">Exercices approfondis — lecture de code</h1>
+
+<h2 id="-objectif">🎯 Objectif</h2>
+<p>Un exercice distinct pour chacune des quatre stratégies de lecture de code vues dans
+<a href="/420-515/semaine-2/lecture-de-code/">Lire le code des autres</a>. Chaque partie se termine
+par une <strong>vraie petite modification</strong> à apporter à votre projet legacy — rien de comparable en
+ampleur au TP1 : ce sont des modifications additives, à faible risque</p>
+<blockquote>
+<p>👥 <strong>En équipe.</strong> Travaillez chaque partie sur sa propre branche (ex. <code>lecture-topdown</code>,
+<code>lecture-bottomup</code>, etc.), avec un commit et une petite Pull Request à la fin — une belle
+occasion de réutiliser vos réflexes de la page <a href="/420-515/semaine-2/git-avance/">Git 2/2</a>.
+Ces branches d&rsquo;exercice n&rsquo;ont pas besoin d&rsquo;être conservées après validation en équipe.</p>
+<p>💡 Ces consignes sont volontairement <strong>génériques</strong> : à vous d&rsquo;adapter chaque étape aux
+ressources, entités et conventions réelles de votre projet. Si un détail technique mentionné
+(ex. génération de code, profils de configuration, mappers) ne s&rsquo;applique pas à votre projet,
+ignorez-le simplement.</p>
+</blockquote>
+<hr>
+<h2 id="1-lecture-top-down--ajouter-un-endpoint-de-comptage">1️⃣ Lecture top-down — ajouter un endpoint de comptage</h2>
+<p><strong>Mise en pratique de la stratégie « depuis les points d&rsquo;entrée ».</strong></p>
+<ol>
+<li>
+<p>Choisissez un contrôleur simple exposant une liste de ressources dans votre projet.</p>
+</li>
+<li>
+<p><strong>Formulez une hypothèse</strong> avant de lire le détail : d&rsquo;après le nom du contrôleur et de la
+méthode, que devrait faire cette méthode ? Repérez ensuite 2-3 <strong>&ldquo;beacons&rdquo;</strong> (indices dans le
+code qui confirment votre hypothèse sans qu&rsquo;il faille tout lire — ex. le nom de la méthode
+appelée sur le service, le type de retour, la présence ou l&rsquo;absence d&rsquo;un tri).</p>
+</li>
+<li>
+<p>Repérez la méthode qui répond à la requête <code>GET</code> de liste et <strong>descendez</strong> l&rsquo;appel couche par
+couche : quelle méthode du service appelle-t-elle ? Quelle méthode d&rsquo;accès aux données
+(repository, DAO, ORM) est finalement invoquée ?</p>
+</li>
+<li>
+<p>Schématisez (sur papier ou dans vos notes d&rsquo;équipe) la chaîne complète : <code>Contrôleur → Service → Accès aux données</code>, avec le nom exact de chaque méthode traversée.</p>
+</li>
+<li>
+<p><strong>Modification à réaliser</strong> : ajoutez un nouvel endpoint qui retourne uniquement le <strong>nombre</strong>
+d&rsquo;éléments de cette ressource (ex. <code>{&quot;count&quot;: 6}</code>), en réutilisant la méthode de liste déjà
+comprise plutôt qu&rsquo;en réinventant une requête. Ajoutez au moins un test qui vérifie que le
+compte retourné correspond au nombre d&rsquo;éléments existants.</p>
+<p>⚠️ <strong>Si votre projet génère son code d&rsquo;API à partir d&rsquo;une spécification</strong> (ex. contract-first
+avec OpenAPI/Swagger) : les endpoints ne s&rsquo;ajoutent pas en annotant directement une méthode du
+contrôleur, mais en modifiant d&rsquo;abord le fichier de spécification, puis en relançant un build
+pour régénérer l&rsquo;interface/le squelette de code, avant d&rsquo;implémenter la méthode dans le
+contrôleur. Repérez si c&rsquo;est le cas de votre projet avant de commencer.</p>
+</li>
+</ol>
+<details>
+<summary>❓ Question de vérification</summary>
+<p>Si vous deviez ajouter une <strong>validation</strong> sur le corps d&rsquo;une requête <code>POST</code> pour cette même
+ressource, à quelle couche l&rsquo;ajouteriez-vous en priorité (contrôleur, service ou accès aux
+données) ? Pourquoi ? Et : un de vos <em>beacons</em> attendus était-il absent ou trompeur ? Qu&rsquo;est-ce que
+cela vous a appris ?</p>
+</details>
+<hr>
+<h2 id="2-lecture-bottom-up--ajouter-un-attribut-à-une-entité">2️⃣ Lecture bottom-up — ajouter un attribut à une entité</h2>
+<p><strong>Mise en pratique de la stratégie « depuis le modèle de données ».</strong></p>
+<ol>
+<li>
+<p>Choisissez une entité simple dans votre projet (peu de champs, peu de logique).</p>
+</li>
+<li>
+<p>Avant de modifier quoi que ce soit, utilisez la recherche d&rsquo;utilisations de votre IDE (« Find
+Usages ») sur la classe entière : listez <strong>tous</strong> les fichiers qui la référencent (accès aux
+données, objets de transfert/DTO, mapper, contrôleur, tests).</p>
+<p>⚠️ <strong>Si votre projet contient plusieurs implémentations concurrentes</strong> de l&rsquo;accès aux données
+pour une même entité (ex. plusieurs technologies de persistance illustrées en parallèle), avant
+d&rsquo;aller plus loin, repérez dans la configuration du projet <strong>laquelle est réellement active</strong>
+(profil actif, variable d&rsquo;environnement, indicateur de configuration). Ne perdez pas de temps
+sur les implémentations inactives.</p>
+</li>
+<li>
+<p><strong>Modification à réaliser</strong> : ajoutez un nouveau champ simple à cette entité (ex. un champ texte
+optionnel). En remontant depuis l&rsquo;entité, mettez à jour, dans l&rsquo;ordre : l&rsquo;implémentation
+d&rsquo;accès aux données <strong>active</strong> (identifiée à l&rsquo;étape 2) si une requête explicite liste les
+colonnes ; le schéma ou l&rsquo;objet de transfert exposé à l&rsquo;extérieur (DTO) — attention, si votre
+projet <strong>génère</strong> ce DTO automatiquement à partir d&rsquo;une spécification (ex. OpenAPI), ce n&rsquo;est
+pas un fichier à modifier directement : il faut modifier la spécification source puis
+régénérer ; puis le mapper (s&rsquo;il y en a un), qui doit être mis à jour pour transférer le
+nouveau champ entre l&rsquo;entité et l&rsquo;objet exposé.</p>
+</li>
+<li>
+<p>Relancez un build si nécessaire pour régénérer le code généré, démarrez l&rsquo;application et
+vérifiez avec l&rsquo;interface de test de l&rsquo;API (Swagger UI ou équivalent) ou <code>curl</code> que le nouveau
+champ apparaît dans la réponse.</p>
+</li>
+</ol>
+<details>
+<summary>❓ Question de vérification</summary>
+<p>Combien de fichiers avez-vous dû modifier au total pour que ce seul nouveau champ soit visible de
+bout en bout ? Qu&rsquo;est-ce que ce nombre vous apprend sur le couplage entre les couches de ce projet ?</p>
+</details>
+<hr>
+<h2 id="3-tests-existants-comme-documentation-vivante">3️⃣ Tests existants comme documentation vivante</h2>
+<p><strong>Mise en pratique de la stratégie « les tests avant le code ».</strong></p>
+<ol>
+<li>Choisissez une classe de tests <strong>complète</strong> que vous n&rsquo;avez pas encore explorée.</li>
+<li><strong>Sans regarder l&rsquo;implémentation</strong>, lisez seulement les noms de méthodes de test et leurs
+assertions. Pour chaque test, écrivez une phrase en français décrivant le comportement attendu
+(ex. « Quand on demande une ressource qui n&rsquo;existe pas, l&rsquo;API répond 404 »).</li>
+<li>Allez ensuite lire la classe de production correspondante et vérifiez si votre hypothèse était
+juste.</li>
+<li><strong>Modification à réaliser</strong> : identifiez, avec votre équipe, <strong>un cas limite qui n&rsquo;est
+actuellement couvert par aucun test</strong> (ex. liste vide, paramètre manquant, valeur limite).
+Écrivez ce nouveau test. S&rsquo;il échoue, implémentez le changement minimal nécessaire dans le code
+de production pour le faire passer, en respectant le style déjà utilisé dans la classe (s&rsquo;il
+passe déjà du premier coup, documentez simplement pourquoi dans un commentaire de test).</li>
+</ol>
+<details>
+<summary>❓ Question de vérification</summary>
+<p>Un test qui n&rsquo;existe pas pour un cas donné veut-il dire que ce cas est forcément buggé ? Pourquoi
+faut-il rester prudent face à une suite de tests incomplète ?</p>
+</details>
+<hr>
+<h2 id="4-suivre-lexécution-avec-le-débogueur">4️⃣ Suivre l&rsquo;exécution avec le débogueur</h2>
+<p><strong>Mise en pratique de la stratégie « observer plutôt que deviner ».</strong></p>
+<ol>
+<li>Choisissez un endpoint qui traverse plusieurs couches avec un peu de logique (récupération d&rsquo;un
+élément précis par identifiant, ou une recherche avec un critère).</li>
+<li>Posez un point d&rsquo;arrêt dans la méthode du contrôleur, démarrez l&rsquo;application en mode <strong>Debug</strong>
+(🐞), puis déclenchez une vraie requête via l&rsquo;interface de test de l&rsquo;API, Postman ou <code>curl</code>.</li>
+<li>Utilisez <em>Step Into</em> pour entrer dans le service, puis dans la couche d&rsquo;accès aux données. À
+chaque étape, notez la valeur réelle d&rsquo;au moins une variable clé, <strong>et vérifiez le type
+concret</strong> affiché par le débogueur pour l&rsquo;objet d&rsquo;accès aux données injecté : si plusieurs
+implémentations existent dans votre projet, seule celle correspondant à la configuration active
+s&rsquo;exécute réellement.</li>
+<li><strong>Modification à réaliser</strong> : à partir de ce que vous avez observé en direct (et non deviné en
+lisant le code), identifiez et implémentez <strong>une petite amélioration justifiée par
+l&rsquo;observation</strong> — par exemple, exposer dans la réponse un champ déjà présent dans l&rsquo;entité ou le
+résultat intermédiaire observé dans le débogueur, mais absent de l&rsquo;objet retourné au client
+(rappel : comme à l&rsquo;exercice 2, si cet objet est généré automatiquement, il faut d&rsquo;abord
+modifier la source de génération).</li>
+<li>Fournissez une capture d&rsquo;écran du panneau <strong>Variables</strong> du débogueur au moment clé de votre
+observation, en plus du code modifié.</li>
+</ol>
+<details>
+<summary>❓ Question de vérification</summary>
+<p>Y a-t-il eu un moment où l&rsquo;état réel observé dans le débogueur <strong>différait</strong> de ce que vous aviez
+anticipé en lisant seulement le code ? Qu&rsquo;est-ce que cela vous apprend sur les limites de la
+lecture statique seule ?</p>
+</details>
+<hr>
+<h2 id="-auto-vérification-en-équipe">✅ Auto-vérification en équipe</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Les quatre exercices ont chacun donné lieu à une petite modification livrée (branche + commit).</li>
+<li><input disabled="" type="checkbox"> Chaque modification est <strong>additive</strong> et n&rsquo;a pas touché aux fichiers déjà identifiés comme
+contenant des bogues intentionnels réservés aux semaines suivantes.</li>
+<li><input disabled="" type="checkbox"> Les quatre questions de vérification ont été discutées en équipe, pas seulement lues.</li>
+<li><input disabled="" type="checkbox"> Chaque équipe a une trace écrite des observations faites pendant chaque exercice
+(schémas de chaîne d&rsquo;appels, hypothèses de test, captures du débogueur).</li>
+</ul>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu">
+            <li class="" data-nav-id="/420-515/semaine-2/lecture-de-code/index.html"><a class="padding" href="/420-515/semaine-2/lecture-de-code/index.html">Lire le code des autres</a></li>
+            <li class="active " data-nav-id="/420-515/semaine-2/exercice-lecture-de-code/index.html"><a class="padding" href="/420-515/semaine-2/exercice-lecture-de-code/index.html">Exercices approfondis — lecture de code</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/debogage/index.html"><a class="padding" href="/420-515/semaine-2/debogage/index.html">Techniques de débogage (1/2)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/exercice-stack-trace/index.html"><a class="padding" href="/420-515/semaine-2/exercice-stack-trace/index.html">Exercice : lire une stack trace</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/git-avance/index.html"><a class="padding" href="/420-515/semaine-2/git-avance/index.html">Git 2/2 — notions avancées</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/exercice-git-avance/index.html"><a class="padding" href="/420-515/semaine-2/exercice-git-avance/index.html">Défi Git — semaine 2 (avancé)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-2/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-2/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788765660" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788765660" defer></script>
+    <script src="/420-515/js/theme.min.js?1788765660" defer></script>
+  </body>
+</html>
