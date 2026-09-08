@@ -23,28 +23,28 @@
     <meta itemprop="name" content="Techniques de débogage (2/2) :: Maintenance de logiciel">
     <meta itemprop="description" content="En semaine 2, vous avez appris la méthode : reproduire, isoler, lire la stack trace, formuler une hypothèse. Cette semaine ajoute les outils qui rendent chaque étape rapide : le débogueur pas à pas, les breakpoints conditionnels, une journalisation propre, et la bissection pour localiser une cause sans tout lire ligne par ligne.
 1️⃣ Le débogueur pas à pas Un breakpoint (point d’arrêt) suspend l’exécution à une ligne précise; vous inspectez alors l’état réel du programme (variables, pile d’appels) au lieu de le deviner. La documentation officielle d’IntelliJ IDEA résume la démarche générale en 3 étapes, peu importe l’IDE utilisé :">
-    <meta itemprop="wordCount" content="1934">
+    <meta itemprop="wordCount" content="2330">
     <title>Techniques de débogage (2/2) :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788837676" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788837676" defer></script>
-    <script src="/420-515/js/search-lunr.min.js?1788837676" defer></script>
-    <script src="/420-515/js/search.min.js?1788837676" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788841018" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788841018" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1788841018" defer></script>
+    <script src="/420-515/js/search.min.js?1788841018" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1788837676";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788841018";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1788837676" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788837676" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1788837676" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1788837676" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788841018" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788841018" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788841018" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788841018" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788837676" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788837676" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788837676" rel="stylesheet">
-    <link href="/420-515/css/theme.min.css?1788837676" rel="stylesheet">
-    <link href="/420-515/css/format-html.min.css?1788837676" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788841018" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788841018" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788841018" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1788841018" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1788841018" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -231,7 +231,46 @@ reçues en entrée (le JSON envoyé par le test). <em>Step Over</em> suffirait s
 confirmer que <code>pet</code> est non-null après l&rsquo;appel, sans creuser comment il a été construit.</p>
 </details>
 <hr>
-<h2 id="2-breakpoints-conditionnels">2️⃣ Breakpoints conditionnels</h2>
+<h2 id="2-déboguer-un-test-lancé-via-maven-mvn-test">2️⃣ Déboguer un test lancé via Maven (<code>mvn test</code>)</h2>
+<p>Poser un breakpoint dans un test et lancer <code>mvn test</code> en ligne de commande <strong>ne s&rsquo;arrête jamais</strong>
+sur ce breakpoint — même si le même test, lancé directement depuis l&rsquo;IDE, fonctionne très bien
+avec le débogueur.</p>
+<p><strong>Pourquoi</strong> : quand Maven exécute vos tests, il le fait dans <strong>un autre processus</strong> que celui de
+votre IDE. Votre débogueur ne surveille que le processus de l&rsquo;IDE — il ne « voit » donc jamais ce
+qui se passe dans ce processus séparé lancé par Maven, et vos breakpoints ne se déclenchent pas.</p>
+<p>Si le but est simplement de déboguer un test précis, la solution la plus simple reste de le
+lancer <strong>directement depuis l&rsquo;IDE</strong> (clic droit sur la méthode → <strong>Debug</strong>) plutôt que via <code>mvn</code> —
+ça évite complètement le problème. Avec une version récente d&rsquo;IntelliJ, cette option fonctionne
+normalement; avec une version plus ancienne, il arrive qu&rsquo;elle échoue et qu&rsquo;on doive alors passer
+par la ligne de commande. Si le test doit <strong>impérativement</strong> être lancé via Maven (ex. pour
+reproduire un comportement qui dépend d&rsquo;options passées en ligne de commande), voici la démarche à
+suivre :</p>
+<ol>
+<li>Démarrez Maven en mode debug — le processus se lance puis <strong>attend</strong> qu&rsquo;un débogueur s&rsquo;y
+connecte avant de continuer :
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>.\mvnw.cmd test <span style="color:#e6db74">&#34;-Dmaven.surefire.debug&#34;</span> <span style="color:#e6db74">&#34;-Dtest=NomDeLaClasse#nomDeLaMéthode&#34;</span></span></span></code></pre></div>
+</li>
+<li>La console affiche un message du genre :
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>Listening for transport dt_socket at address: 8000</code></pre></div>
+</li>
+<li>Attachez le débogueur au processus en attente : dans IntelliJ, menu <strong>Run → Attach to
+Process…</strong> → repérez dans la liste le processus qui correspond à ce test Maven → cliquez
+dessus.</li>
+<li>Une fois attaché, le processus Maven reprend son exécution et <strong>s&rsquo;arrête normalement</strong> sur vos
+breakpoints.</li>
+</ol>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Vous posez un breakpoint dans une méthode de test, puis lancez <code>mvn test</code> normalement (sans mode
+debug) depuis un terminal. Le programme s&rsquo;exécute jusqu&rsquo;au bout sans jamais s&rsquo;arrêter. Pourquoi, et
+que devriez-vous faire différemment ?</p>
+<p><strong>Réponse</strong> : Maven exécute les tests dans un processus séparé de celui de l&rsquo;IDE, donc aucun
+débogueur n&rsquo;y est attaché — le breakpoint est ignoré, pas « manqué ». Il faut soit lancer le
+test directement depuis l&rsquo;IDE, soit démarrer Maven en mode debug
+(<code>-Dmaven.surefire.debug</code>) et attacher le débogueur à ce processus (<strong>Attach to Process</strong>).</p>
+</details>
+<hr>
+<h2 id="3-breakpoints-conditionnels">3️⃣ Breakpoints conditionnels</h2>
 <p>Poser un breakpoint classique sur une boucle qui itère sur une grande collection oblige à cliquer
 « continuer » de nombreuses fois avant d&rsquo;atteindre le cas qui vous intéresse. Un <strong>breakpoint
 conditionnel</strong> ne s&rsquo;arrête que lorsqu&rsquo;une expression booléenne est vraie.</p>
@@ -277,7 +316,7 @@ un breakpoint classique ?</p>
   </div>
 </details>
 <hr>
-<h2 id="3-journalisation-stratégique--arrêter-dutiliser-println">3️⃣ Journalisation stratégique : arrêter d&rsquo;utiliser <code>println</code></h2>
+<h2 id="4-journalisation-stratégique--arrêter-dutiliser-println">4️⃣ Journalisation stratégique : arrêter d&rsquo;utiliser <code>println</code></h2>
 <p><code>System.out.println(&quot;ici&quot;)</code> est tentant, mais pose 3 problèmes en production :</p>
 <ol>
 <li><strong>Aucun niveau de gravité</strong> — impossible de l&rsquo;activer/désactiver sans modifier le code.</li>
@@ -404,12 +443,12 @@ code (juste la configuration), inclut automatiquement classe/horodatage, et peut
 (fichier, système centralisé) — <code>println</code> ne peut faire aucune de ces trois choses.</p>
 </details>
 <hr>
-<h2 id="4-bissection--diviser-pour-localiser">4️⃣ Bissection : diviser pour localiser</h2>
+<h2 id="5-bissection--diviser-pour-localiser">5️⃣ Bissection : diviser pour localiser</h2>
 <p>Quand un bogue est « quelque part dans ces 300 lignes » ou « apparu à un moment donné dans les 40
 derniers commits », lire séquentiellement est lent. La <strong>bissection</strong> (recherche binaire) élimine
 la moitié des suspects à chaque test.</p>
-<p><a href="#R-image-1893f4a0b0aeb2730ec81d8b0fbddcfb" class="lightbox-link"><img alt="Bissection : diviser pour localiser la cause" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-3/debogage-avance/images/bissection.svg" style=" height: auto; width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-1893f4a0b0aeb2730ec81d8b0fbddcfb"><img alt="Bissection : diviser pour localiser la cause" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-3/debogage-avance/images/bissection.svg"></a></p>
+<p><a href="#R-image-e60d0577ae03e05bb57f973b065ed8a2" class="lightbox-link"><img alt="Bissection : diviser pour localiser la cause" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-3/debogage-avance/images/bissection.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-e60d0577ae03e05bb57f973b065ed8a2"><img alt="Bissection : diviser pour localiser la cause" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-3/debogage-avance/images/bissection.svg"></a></p>
 <h3 id="bissection-dans-le-code">Bissection dans le code</h3>
 <p>Commentez/désactivez la <strong>moitié</strong> du code suspect, relancez le scénario reproductible (semaine 2) :</p>
 <ul>
@@ -482,6 +521,10 @@ avec <code>git bisect start</code>) pour retrouver un commit précis où un comp
 			<tr>
 					<td>Cause « quelque part » dans beaucoup de code ou de commits</td>
 					<td>Bissection (manuelle ou <code>git bisect</code>)</td>
+			</tr>
+			<tr>
+					<td>Un breakpoint ne s&rsquo;arrête jamais quand le test est lancé via <code>mvn test</code></td>
+					<td>Attacher le débogueur au processus Maven (<code>-Dmaven.surefire.debug</code> + Attach to Process)</td>
 			</tr>
 	</tbody>
 </table>
@@ -585,8 +628,8 @@ que les Watches et <em>Evaluate Expression</em> présentés plus haut en sont di
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1788837676" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788837676" defer></script>
-    <script src="/420-515/js/theme.min.js?1788837676" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788841018" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788841018" defer></script>
+    <script src="/420-515/js/theme.min.js?1788841018" defer></script>
   </body>
 </html>

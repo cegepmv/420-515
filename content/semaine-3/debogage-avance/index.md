@@ -82,7 +82,55 @@ confirmer que `pet` est non-null après l'appel, sans creuser comment il a été
 
 ---
 
-## 2️⃣ Breakpoints conditionnels
+## 2️⃣ Déboguer un test lancé via Maven (`mvn test`)
+
+Poser un breakpoint dans un test et lancer `mvn test` en ligne de commande **ne s'arrête jamais**
+sur ce breakpoint — même si le même test, lancé directement depuis l'IDE, fonctionne très bien
+avec le débogueur.
+
+**Pourquoi** : quand Maven exécute vos tests, il le fait dans **un autre processus** que celui de
+votre IDE. Votre débogueur ne surveille que le processus de l'IDE — il ne « voit » donc jamais ce
+qui se passe dans ce processus séparé lancé par Maven, et vos breakpoints ne se déclenchent pas.
+
+Si le but est simplement de déboguer un test précis, la solution la plus simple reste de le
+lancer **directement depuis l'IDE** (clic droit sur la méthode → **Debug**) plutôt que via `mvn` —
+ça évite complètement le problème. Avec une version récente d'IntelliJ, cette option fonctionne
+normalement; avec une version plus ancienne, il arrive qu'elle échoue et qu'on doive alors passer
+par la ligne de commande. Si le test doit **impérativement** être lancé via Maven (ex. pour
+reproduire un comportement qui dépend d'options passées en ligne de commande), voici la démarche à
+suivre :
+
+1. Démarrez Maven en mode debug — le processus se lance puis **attend** qu'un débogueur s'y
+   connecte avant de continuer :
+   ```powershell
+   .\mvnw.cmd test "-Dmaven.surefire.debug" "-Dtest=NomDeLaClasse#nomDeLaMéthode"
+   ```
+2. La console affiche un message du genre :
+   ```
+   Listening for transport dt_socket at address: 8000
+   ```
+3. Attachez le débogueur au processus en attente : dans IntelliJ, menu **Run → Attach to
+   Process…** → repérez dans la liste le processus qui correspond à ce test Maven → cliquez
+   dessus.
+4. Une fois attaché, le processus Maven reprend son exécution et **s'arrête normalement** sur vos
+   breakpoints.
+
+<details>
+<summary>🤔 Testez-vous</summary>
+
+Vous posez un breakpoint dans une méthode de test, puis lancez `mvn test` normalement (sans mode
+debug) depuis un terminal. Le programme s'exécute jusqu'au bout sans jamais s'arrêter. Pourquoi, et
+que devriez-vous faire différemment ?
+
+**Réponse** : Maven exécute les tests dans un processus séparé de celui de l'IDE, donc aucun
+débogueur n'y est attaché — le breakpoint est ignoré, pas « manqué ». Il faut soit lancer le
+test directement depuis l'IDE, soit démarrer Maven en mode debug
+(`-Dmaven.surefire.debug`) et attacher le débogueur à ce processus (**Attach to Process**).
+</details>
+
+---
+
+## 3️⃣ Breakpoints conditionnels
 
 Poser un breakpoint classique sur une boucle qui itère sur une grande collection oblige à cliquer
 « continuer » de nombreuses fois avant d'atteindre le cas qui vous intéresse. Un **breakpoint
@@ -135,7 +183,7 @@ un breakpoint classique ?
 
 ---
 
-## 3️⃣ Journalisation stratégique : arrêter d'utiliser `println`
+## 4️⃣ Journalisation stratégique : arrêter d'utiliser `println`
 
 `System.out.println("ici")` est tentant, mais pose 3 problèmes en production :
 
@@ -260,7 +308,7 @@ code (juste la configuration), inclut automatiquement classe/horodatage, et peut
 
 ---
 
-## 4️⃣ Bissection : diviser pour localiser
+## 5️⃣ Bissection : diviser pour localiser
 
 Quand un bogue est « quelque part dans ces 300 lignes » ou « apparu à un moment donné dans les 40
 derniers commits », lire séquentiellement est lent. La **bissection** (recherche binaire) élimine
@@ -328,6 +376,7 @@ avec `git bisect start`) pour retrouver un commit précis où un comportement a 
 | Un cas précis au milieu d'une grande collection/boucle | Breakpoint conditionnel |
 | Comportement à observer sur plusieurs exécutions, ou en production | Journalisation (`logger.debug`/`info`) |
 | Cause « quelque part » dans beaucoup de code ou de commits | Bissection (manuelle ou `git bisect`) |
+| Un breakpoint ne s'arrête jamais quand le test est lancé via `mvn test` | Attacher le débogueur au processus Maven (`-Dmaven.surefire.debug` + Attach to Process) |
 
 ## 📚 Références
 
