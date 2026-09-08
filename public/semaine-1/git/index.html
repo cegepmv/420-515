@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
-  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="generator" content="Hugo 0.165.0">
@@ -12,7 +12,7 @@ Qu’est-ce que Git ? Git est un logiciel de contrôle de version. Il permet de 
     <meta name="twitter:title" content="Introduction à Git (1/2) :: Maintenance de logiciel">
     <meta name="twitter:description" content="Git est le logiciel de contrôle de version que vous avez déjà utilisé dans vos cours précédents. Cette semaine, on en fait un rappel complet.
 Qu’est-ce que Git ? Git est un logiciel de contrôle de version. Il permet de gérer des fichiers et leur évolution dans le temps. Il permet de retracer l’origine de chaque modification, de rétablir des versions précédentes, et permet l’intégration de modifications effectuées en parallèle.">
-    <meta property="og:url" content="http://localhost:1313/420-515/semaine-1/git/index.html">
+    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-1/git/index.html">
     <meta property="og:site_name" content="Maintenance de logiciel">
     <meta property="og:title" content="Introduction à Git (1/2) :: Maintenance de logiciel">
     <meta property="og:description" content="Git est le logiciel de contrôle de version que vous avez déjà utilisé dans vos cours précédents. Cette semaine, on en fait un rappel complet.
@@ -25,34 +25,34 @@ Qu’est-ce que Git ? Git est un logiciel de contrôle de version. Il permet de 
 Qu’est-ce que Git ? Git est un logiciel de contrôle de version. Il permet de gérer des fichiers et leur évolution dans le temps. Il permet de retracer l’origine de chaque modification, de rétablir des versions précédentes, et permet l’intégration de modifications effectuées en parallèle.">
     <meta itemprop="wordCount" content="1339">
     <title>Introduction à Git (1/2) :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788824106" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788824106" defer></script>
-    <script src="/420-515/js/search-lunr.js?1788824106" defer></script>
-    <script src="/420-515/js/search.js?1788824106" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788835986" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788835986" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1788835986" defer></script>
+    <script src="/420-515/js/search.min.js?1788835986" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1788824106";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788835986";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1788824106" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788824106" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1788824106" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1788824106" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788835986" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788835986" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788835986" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788835986" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788824106" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788824106" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788824106" rel="stylesheet">
-    <link href="/420-515/css/theme.css?1788824106" rel="stylesheet">
-    <link href="/420-515/css/format-html.css?1788824106" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788835986" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788835986" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788835986" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1788835986" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1788835986" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
-      window.relearn.min = ``;
+      window.relearn.min = `.min`;
       window.relearn.path='\/semaine-1\/git\/index.html';
       window.relearn.relBasePath='..\/..';
       window.relearn.relBaseUri='..\/..\/..';
-      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
+      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
       window.relearn.disableAnchorCopy=false;
       window.relearn.disableAnchorScrolling=false;
       window.relearn.disableInlineCopyToClipboard=true;
@@ -146,8 +146,8 @@ est ajoutée une suite de modifications.</p>
 <strong>pousse</strong> (push) celle-ci vers le dépôt. Le dépôt garde la trace avec un identifiant unique.</p>
 <p>Git est en fait un gestionnaire de version <strong>décentralisé</strong>. Il y a 2 dépôts : remote et local. De
 plus, il maintient une version brouillon (staged, sandbox) sur le poste local.</p>
-<p><a href="#R-image-079f111011b7377d7d5cf3e783a76e06" class="lightbox-link"><img alt="Dépôt local vs dépôt distant" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-1/git/images/git-local-remote.svg" style=" height: auto; width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-079f111011b7377d7d5cf3e783a76e06"><img alt="Dépôt local vs dépôt distant" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-1/git/images/git-local-remote.svg"></a></p>
+<p><a href="#R-image-007fb0c580d4b46a3bed8289587988fc" class="lightbox-link"><img alt="Dépôt local vs dépôt distant" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-1/git/images/git-local-remote.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-007fb0c580d4b46a3bed8289587988fc"><img alt="Dépôt local vs dépôt distant" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-1/git/images/git-local-remote.svg"></a></p>
 <h3 id="git-clone">Git clone</h3>
 <p>Lorsque vous devez récupérer le code de votre repository (dépôt remote) :</p>
 <div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/&lt;votre-org&gt;/&lt;votre-projet&gt;.git</span></span></code></pre></div>
@@ -203,8 +203,8 @@ l&rsquo;opération n&rsquo;est pas effectuée avec soin, il peut y avoir <strong
 <h3 id="git-rebase">Git Rebase</h3>
 <p>Le rebase consiste à changer la base de votre branche d&rsquo;un commit vers un autre, donnant
 l&rsquo;illusion que vous avez créé votre branche à partir d&rsquo;un commit différent.</p>
-<p><a href="#R-image-438f1a6015d62c804cbcf7df607402a8" class="lightbox-link"><img alt="image" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-1/git/images/gitrebase.svg" style=" height: auto; width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-438f1a6015d62c804cbcf7df607402a8"><img alt="image" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-1/git/images/gitrebase.svg"></a></p>
+<p><a href="#R-image-575b7816ab1c9d4d1b743123c0f63689" class="lightbox-link"><img alt="image" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-1/git/images/gitrebase.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-575b7816ab1c9d4d1b743123c0f63689"><img alt="image" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-1/git/images/gitrebase.svg"></a></p>
 <div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git rebase &lt;base&gt;</span></span></code></pre></div>
 <h3 id="git-stash">Git stash</h3>
 <p>Lorsque vous voulez sauvegarder l&rsquo;état actuel de votre répertoire de travail, c&rsquo;est possible de le
@@ -375,8 +375,8 @@ TP1 : Correction du bogue de comparaison sur les identifiants de client</code></
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1788824106" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788824106" defer></script>
-    <script src="/420-515/js/theme.js?1788824106" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788835986" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788835986" defer></script>
+    <script src="/420-515/js/theme.min.js?1788835986" defer></script>
   </body>
 </html>

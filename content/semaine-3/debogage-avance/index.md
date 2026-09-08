@@ -30,65 +30,101 @@ officielle d'IntelliJ IDEA résume la démarche générale en 3 étapes, peu imp
 | *Step Out* (sortir de la méthode courante) | `Shift+F8` | `Shift+F11` |
 | Reprendre l'exécution normale | `F9` | `F5` |
 
-**Exemple.** Un calcul de total sur une liste retourne une valeur inattendue :
+**Exemple — tiré du projet `spring-petclinic-rest`.** `OwnerRestControllerV1.addPetToOwner`
+construit un `Pet` à partir du JSON reçu (`PetFieldsDto`), puis le transmet au service :
 
 ```java
-public double calculerTotal(List<Item> items) {
-    double total = 0;
-    for (Item item : items) {
-        total += item.getPrix() * item.getQuantite();
-    }
-    return total;
+// OwnerRestControllerV1.java
+@Override
+public ResponseEntity<PetDto> addPetToOwner(Integer ownerId, PetFieldsDto petFieldsDto) {
+    Owner owner = this.clinicService.findOwnerById(ownerId);
+    ...
+    Pet pet = petMapper.toPet(petFieldsDto);
+    owner.setId(ownerId);
+    pet.setOwner(owner);
+    pet.getType().setName(null);
+    this.clinicService.savePet(pet);
+    ...
 }
 ```
 
-Démarche : posez un breakpoint sur la ligne `total += ...`, démarrez en Debug, puis *Step Over* à
-chaque itération en observant `total`, `item.getPrix()` et `item.getQuantite()` dans le panneau
-**Variables**. Vous verrez précisément à **quelle itération** la valeur dévie de ce qui est attendu.
+Dans ce test, `ClinicService` est remplacé par un **mock** (`@MockitoBean`) : seul le code du
+contrôleur ci-dessus s'exécute réellement — l'appel `this.clinicService.savePet(pet)` ne fait rien
+(le mock l'intercepte). C'est donc dans le contrôleur qu'il faut poser le breakpoint pour observer
+`pet`.
+
+Démarche : posez un breakpoint sur la ligne `pet.getType().setName(null);`, démarrez le test
+`OwnerRestControllerV1Tests#testCreatePetSuccess` en Debug, puis *Step Over* pour observer `pet`
+dans le panneau **Variables** : dépliez-le pour voir son champ `type` (un `PetType`), qui contient
+l'`id` transmis par le JSON du test. C'est exactement ce genre d'observation — inspecter l'état
+réel d'un objet reçu, champ par champ — que le débogueur rend immédiat, sans avoir à ajouter de
+logs temporaires.
 
 > 💡 **Watches et Evaluate Expression** — deux fonctionnalités à connaître au-delà du panneau
 > Variables : un **Watch** garde une expression précise sous surveillance en permanence pendant
-> toute la session (ex. `total / items.size()`, même si ce calcul n'existe pas dans le code) ;
+> toute la session (ex. `pet.getName()`, même après plusieurs *Step Over*) ;
 > **Evaluate Expression** (`Alt+F8`) exécute une expression arbitraire *pendant* la pause, sans
-> modifier le code — utile pour tester une hypothèse (« est-ce que `item.getPrix() < 0` est vrai
-> ici ? ») sans ajouter puis retirer une ligne de code.
+> modifier le code — utile pour tester une hypothèse (« est-ce que `pet.getOwner()` est bien
+> réassigné ? ») sans ajouter puis retirer une ligne de code.
 
 <details>
 <summary>🤔 Testez-vous</summary>
 
+Vous voulez savoir si `petMapper.toPet(petFieldsDto)` construit correctement le `Pet` à partir du
+JSON reçu (nom, date de naissance, type). Utiliseriez-vous *Step Over* ou *Step Into* sur la ligne
+`Pet pet = petMapper.toPet(petFieldsDto);` pour investiguer ?
 
-Le total final est plus élevé que prévu, mais seulement légèrement. Utiliseriez-vous *Step Over*
-ou *Step Into* sur la ligne `total += item.getPrix() * item.getQuantite();` ? Pourquoi ?
-
-**Réponse** : *Step Over* d'abord — le bogue est probablement dans les **données** (un prix ou une
-quantité incorrecte à une itération précise), pas dans la logique interne de `getPrix()`/
-`getQuantite()`. *Step Into* ne serait utile que si vous suspectiez un calcul erroné **à l'intérieur**
-de l'un de ces getters (ex. une conversion de devise cachée).
+**Réponse** : *Step Into* — le problème est vraisemblablement **dans la logique de mapping**
+elle-même (comment `petMapper` traduit chaque champ du DTO vers l'entité), pas dans les données
+reçues en entrée (le JSON envoyé par le test). *Step Over* suffirait si vous vouliez seulement
+confirmer que `pet` est non-null après l'appel, sans creuser comment il a été construit.
 </details>
 
 ---
 
 ## 2️⃣ Breakpoints conditionnels
 
-Poser un breakpoint classique sur une boucle de 500 éléments oblige à cliquer « continuer » des
-centaines de fois avant d'atteindre le cas qui vous intéresse. Un **breakpoint conditionnel** ne
-s'arrête que lorsqu'une expression booléenne est vraie.
+Poser un breakpoint classique sur une boucle qui itère sur une grande collection oblige à cliquer
+« continuer » de nombreuses fois avant d'atteindre le cas qui vous intéresse. Un **breakpoint
+conditionnel** ne s'arrête que lorsqu'une expression booléenne est vraie.
 
 **Comment faire** (IntelliJ et VS Code) : clic droit sur un breakpoint existant → un champ
 « Condition » apparaît → entrez une expression Java valide à cet endroit du code.
 
-**Exemple** : dans la boucle ci-dessus, si vous soupçonnez que l'item avec `id == 42` est en cause :
+**Exemple — tiré du projet.** `Owner.getPet(String name, boolean ignoreNew)` parcourt tous les
+animaux d'un propriétaire à la recherche d'un nom précis :
+
+```java
+// Owner.java
+public Pet getPet(String name, boolean ignoreNew) {
+    name = name.toLowerCase();
+    for (Pet pet : getPetsInternal()) {
+        if (!ignoreNew || !pet.isNew()) {
+            String compName = pet.getName();
+            compName = compName.toLowerCase();
+            if (compName.equals(name)) {
+                return pet;
+            }
+        }
+    }
+    return null;
+}
+```
+
+Sur un propriétaire avec plusieurs animaux, poser un breakpoint classique sur `String compName =
+pet.getName();` s'arrête à **chaque** itération de la boucle. Un breakpoint conditionnel ne
+s'arrête que sur l'animal qui vous intéresse :
 
 ```
-Condition : item.getId() == 42
+Condition : pet.getName().equalsIgnoreCase("Leo")
 ```
 
-Le programme s'exécute normalement pour les 41 premiers éléments, puis s'arrête **exactement** sur
-celui qui vous intéresse.
+Le programme s'exécute normalement pour tous les autres animaux, puis s'arrête **exactement** sur
+celui nommé « Leo ».
 
-> 💡 Autre usage fréquent : arrêter seulement quand une valeur devient `null` ou négative
-> (`item.getQuantite() < 0`) — utile pour attraper un cas limite rare, sans savoir à l'avance à
-> quelle itération il se produit.
+> 💡 Autre usage fréquent avec ce même code : arrêter seulement quand `pet.isNew()` est vrai — utile
+> pour observer un cas limite précis (un animal pas encore persisté) sans savoir à l'avance à
+> quelle itération il apparaît dans l'ensemble `getPetsInternal()`.
 
 {{% notice tip "🧪 À vous de jouer — sur votre projet" %}}
 Trouvez une boucle ou une collection dans votre projet (ex. une liste retournée par un endpoint).
@@ -120,16 +156,20 @@ trois problèmes avec des **niveaux** :
 | `ERROR` | Une opération a échoué et nécessite attention |
 
 ```java
-private static final Logger logger = LoggerFactory.getLogger(FactureService.class);
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public double calculerTotal(List<Item> items) {
-    double total = 0;
-    for (Item item : items) {
-        logger.debug("Item {} : prix={}, quantite={}", item.getId(), item.getPrix(), item.getQuantite());
-        total += item.getPrix() * item.getQuantite();
-    }
-    logger.info("Total calculé : {}", total);
-    return total;
+// ...
+
+private static final Logger logger = LoggerFactory.getLogger(ClinicServiceImpl.class);
+
+@Override
+@Transactional
+public void savePet(Pet pet) throws DataAccessException {
+    logger.debug("Association du PetType id={} au Pet id={}", pet.getType().getId(), pet.getId());
+    pet.setType(findPetTypeById(pet.getType().getId()));
+    petRepository.save(pet);
+    logger.info("Pet id={} sauvegardé avec succès", pet.getId());
 }
 ```
 
@@ -196,14 +236,14 @@ Ce fichier crée (ou complète) `logs/application.log` à chaque démarrage, en 
 mêmes logs dans la console — pratique pour consulter l'historique après coup, ou pour partager un
 extrait de log sans capture d'écran.
 
-> 💡 **Projet Spring Boot** : pas besoin de `logback.xml` pour un cas simple — ajoutez directement
-> dans `application.properties` :
+> 💡 **Projet Spring Boot** (c'est le cas de `spring-petclinic-rest`) : pas besoin de
+> `logback.xml` pour un cas simple — ajoutez directement dans `application.properties` :
 > ```properties
 > logging.level.root=INFO
-> logging.level.ca.cegepmv.legacy=DEBUG
+> logging.level.org.springframework.samples.petclinic=DEBUG
 > logging.file.name=logs/application.log
 > ```
-> La deuxième ligne montre comment activer `DEBUG` **seulement** pour votre propre code (par
+> La deuxième ligne montre comment activer `DEBUG` **seulement** pour le code du projet (par
 > paquetage), en gardant les librairies tierces à `INFO` — évite d'être noyé sous des logs qui ne
 > vous concernent pas.
 
@@ -258,7 +298,14 @@ de tester chaque commit un à un.
 
 > 💡 **Bonus automatisation** : `git bisect run ./test-du-bogue.sh` exécute un script qui retourne
 > un code de sortie 0 (bon) ou différent de 0 (mauvais) — Git bisecte alors **tout seul**, sans
-> intervention manuelle à chaque étape.
+> intervention manuelle à chaque étape. Dans un projet Maven comme `spring-petclinic-rest`, ce
+> script peut être aussi simple que :
+> ```bash
+> #!/bin/bash
+> ./mvnw test -Dtest=OwnerRestControllerV1Tests#testCreatePetSuccess
+> ```
+> (le code de sortie de `mvnw` est déjà 0 si le test passe, différent de 0 s'il échoue — rien
+> d'autre à écrire).
 
 Ce principe — diviser un espace de recherche en deux pour converger en `log(n)` étapes — est
 formalisé par Andreas Zeller sous le nom de *delta debugging* dans *Why Programs Fail* (déjà vu en

@@ -15,30 +15,31 @@ d'entreprise.
 
 ## 1️⃣ Anatomie du `pom.xml`
 
+**Exemple — extrait réel du `pom.xml` de `spring-petclinic-rest`** (le projet utilisé dans ce
+cours) :
+
 ```xml
-<project xmlns="http://maven.apache.org/POM/4.0.0">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ca.cegepmv.legacy</groupId>
-    <artifactId>mon-projet</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <groupId>org.springframework.samples</groupId>
+    <artifactId>spring-petclinic-rest</artifactId>
+    <version>4.0.2</version>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-    </properties>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.1.0</version>
+        <relativePath/> <!-- lookup parent from Maven repository -->
+    </parent>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
+        <!-- ... autres dépendances ... -->
     </dependencies>
 
     <build>
@@ -46,6 +47,7 @@ d'entreprise.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <!-- ... -->
             </plugin>
         </plugins>
     </build>
@@ -54,13 +56,96 @@ d'entreprise.
 
 | Élément | Rôle |
 |---|---|
-| `groupId` | Identifiant de l'organisation/projet (convention : nom de domaine inversé) |
-| `artifactId` | Nom du module/projet lui-même |
-| `version` | Version du projet — `SNAPSHOT` signifie « en développement, pas figée » |
-| `packaging` | Type de livrable produit (`jar`, `war`, `pom` pour un module parent) |
-| `properties` | Variables réutilisables ailleurs dans le fichier (ex. version de Java) |
+| `groupId` | Identifiant de l'organisation/projet (convention : nom de domaine inversé) — ici `org.springframework.samples` |
+| `artifactId` | Nom du module/projet lui-même — ici `spring-petclinic-rest` |
+| `version` | Version du projet — ici `4.0.2` (figée, contrairement à un `-SNAPSHOT` « en développement ») |
+| `parent` | Un `pom.xml` **parent** dont on hérite (versions de dépendances, plugins, configuration commune) — ici `spring-boot-starter-parent`, le parent standard de tout projet Spring Boot |
 | `dependencies` | Librairies externes requises |
 | `build > plugins` | Outils qui interviennent pendant le build (compiler, tester, empaqueter...) |
+
+> 💡 Grâce au `parent` (`spring-boot-starter-parent`), la plupart des dépendances Spring n'ont
+> **pas besoin** de préciser leur `<version>` : c'est le parent qui l'impose, pour garantir que
+> toutes les librairies Spring d'un même projet sont compatibles entre elles. C'est pourquoi vous
+> ne voyez aucune balise `<version>` sur `spring-boot-starter-actuator` ci-dessus.
+
+### Autres `pom.xml` réels — le cas du **multi-module**
+
+Le `pom.xml` de `spring-petclinic-rest` ci-dessus est un `pom.xml` **de module unique**
+(`packaging` implicite : `jar`). Beaucoup de projets Java réels sont plutôt organisés en
+**plusieurs modules** qui partagent un `pom.xml` **parent** commun. Deux exemples réels et
+largement utilisés en production :
+
+**[Gson](https://github.com/google/gson)** (bibliothèque JSON de Google, des milliards
+d'utilisations) — extrait réel de son `pom.xml` racine :
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" ...>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.google.code.gson</groupId>
+    <artifactId>gson-parent</artifactId>
+    <version>2.14.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>gson</module>
+        <module>test-jpms</module>
+        <module>extras</module>
+        <module>metrics</module>
+        <module>proto</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13.2</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
+```
+
+**[Apache Maven](https://github.com/apache/maven)** lui-même (l'outil que vous utilisez est
+construit... avec Maven) — même structure, avec en plus un `parent` :
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" ...>
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.apache.maven</groupId>
+        <artifactId>maven-parent</artifactId>
+        <version>49</version>
+        <relativePath/>
+    </parent>
+
+    <artifactId>maven</artifactId>
+    <version>4.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>api</module>
+        <module>impl</module>
+        <module>compat</module>
+        <module>apache-maven</module>
+    </modules>
+</project>
+```
+
+Ce qui change par rapport à `spring-petclinic-rest` :
+
+| Élément | Rôle dans un `pom.xml` parent multi-module |
+|---|---|
+| `<packaging>pom</packaging>` | Ce `pom.xml` **n'est pas un module compilable** — c'est un « chef d'orchestre » qui agrège d'autres modules. Sans cette balise, `packaging` vaudrait `jar` par défaut, ce qui n'a pas de sens pour un module qui ne contient aucun code. |
+| `<modules>` | Liste des sous-dossiers (chacun avec son propre `pom.xml`) que Maven doit construire, dans l'ordre déterminé automatiquement par leurs dépendances entre eux. Une commande `mvn install` lancée à la racine construit **tous** les modules listés. |
+| `<dependencyManagement>` | Centralise les **versions** de dépendances pour tous les modules enfants, sans forcer chaque module à les redéclarer — chaque module enfant peut alors écrire `<dependency>` sans `<version>`, exactement comme `spring-petclinic-rest` le fait pour ses dépendances Spring (héritées de `spring-boot-starter-parent`). |
+
+> 💡 Un `pom.xml` avec `<parent>` **et** un projet Spring Boot comme le vôtre utilisent le même
+> mécanisme d'héritage — la seule différence est qui joue le rôle de parent : `spring-boot-starter-parent`
+> (fourni par Spring) contre `maven-parent`/`gson-parent` (défini par le projet lui-même dans un
+> multi-module).
 
 ---
 
@@ -68,12 +153,20 @@ d'entreprise.
 
 Le `scope` d'une dépendance détermine **quand** elle est disponible :
 
-| Scope | Disponible pour... | Exemple typique |
-|---|---|---|
-| `compile` *(défaut)* | Compilation ET exécution ET tests | Une librairie utilisée partout (ex. Spring) |
-| `test` | Seulement la compilation/exécution des tests | JUnit, Mockito |
-| `provided` | Compilation, mais fournie par l'environnement d'exécution (pas empaquetée) | API Servlet sur un serveur qui la fournit déjà |
-| `runtime` | Exécution seulement, pas nécessaire pour compiler | Un pilote JDBC |
+| Scope | Disponible pour... | Exemple typique | Exemple réel dans `spring-petclinic-rest` |
+|---|---|---|---|
+| `compile` *(défaut)* | Compilation ET exécution ET tests | Une librairie utilisée partout (ex. Spring) | `spring-boot-starter-actuator` (pas de `<scope>` = `compile`) |
+| `test` | Seulement la compilation/exécution des tests | JUnit, Mockito | `mockito-core`, `spring-boot-starter-security-test` |
+| `provided` | Compilation, mais fournie par l'environnement d'exécution (pas empaquetée) | API Servlet sur un serveur qui la fournit déjà | — |
+| `runtime` | Exécution seulement, pas nécessaire pour compiler | Un pilote JDBC | `h2`, `hsqldb`, `mysql-connector-j`, `postgresql` — **quatre** pilotes de base de données différents, tous en `runtime` |
+
+> 💡 Pourquoi `spring-petclinic-rest` déclare-t-il **quatre** pilotes de base de données
+> (`h2`, `hsqldb`, `mysql-connector-j`, `postgresql`) ? Parce que l'application peut être lancée
+> avec différents profils Spring (`h2`, `hsqldb`, `mysql`, `postgres`) selon la base de données
+> réellement utilisée en production ou en local. Chaque pilote est en scope `runtime` : le code
+> compile sans eux (on ne référence jamais directement une classe `org.postgresql.*` dans le
+> code métier — c'est le driver JDBC générique qui s'en charge), mais un seul sera nécessaire *à
+> l'exécution*, selon le profil actif.
 
 > ⚠️ Une erreur fréquente : mettre une dépendance de test (ex. JUnit) en `compile` par défaut —
 > elle se retrouve alors inutilement empaquetée dans le livrable final.
@@ -89,18 +182,41 @@ version déclarée le plus près de votre propre `pom.xml` l'emporte.
 mvn dependency:tree
 ```
 
+Extrait réel (raccourci) de la sortie sur `spring-petclinic-rest` :
+
 ```
-[INFO] ca.cegepmv.legacy:mon-projet:jar:1.0.0-SNAPSHOT
-[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:3.3.0:compile
-[INFO] |  \- com.fasterxml.jackson.core:jackson-databind:jar:2.17.1:compile
-[INFO] \- com.mabibliotheque:validation-utils:jar:2.0:compile
-[INFO]    \- com.fasterxml.jackson.core:jackson-databind:jar:2.15.0:compile (omitted for conflict)
+[INFO] org.springframework.samples:spring-petclinic-rest:jar:4.0.2
+[INFO] +- org.springframework.boot:spring-boot-starter-actuator:jar:4.1.0:compile
+[INFO] +- com.h2database:h2:jar:2.4.240:runtime
+[INFO] +- org.hsqldb:hsqldb:jar:2.7.3:runtime
+[INFO] +- com.mysql:mysql-connector-j:jar:9.7.0:runtime
+[INFO] +- org.postgresql:postgresql:jar:42.7.11:runtime
+[INFO] \- org.springframework.data:spring-data-jdbc-core:jar:1.2.1.RELEASE:compile
+[INFO]    \- (org.springframework:* omitted : exclu explicitement par le pom.xml)
 ```
 
-Ici, `jackson-databind` est demandé en **deux versions différentes** (2.17.1 et 2.15.0) par deux
-chemins différents — Maven a choisi 2.17.1 (la plus proche) et **ignoré** 2.15.0
-(`omitted for conflict`). `mvn dependency:tree` est l'outil de diagnostic à réflexe immédiat
-devant tout comportement inattendu lié à une librairie.
+Le dernier bloc illustre une **exclusion explicite** : `spring-data-jdbc-core` dépend
+transitivement de plusieurs artefacts `org.springframework:*`, mais le `pom.xml` du projet les
+exclut délibérément (via `<exclusions>`) pour éviter qu'ils entrent en conflit avec les versions
+déjà imposées par `spring-boot-starter-parent` :
+
+```xml
+<dependency>
+    <groupId>org.springframework.data</groupId>
+    <artifactId>spring-data-jdbc-core</artifactId>
+    <version>${spring-data-jdbc.version}</version>
+    <exclusions>
+        <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>*</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+```
+
+`mvn dependency:tree` est l'outil de diagnostic à réflexe immédiat devant tout comportement
+inattendu lié à une librairie — que ce soit un conflit de version « nearest wins » ou une
+dépendance transitive indésirable qu'il faut exclure explicitement.
 
 {{% notice tip "🧪 À vous de jouer — sur votre projet" %}}
 Lancez `mvn dependency:tree` sur votre projet. Trouvez une dépendance transitive (une ligne

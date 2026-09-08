@@ -1,58 +1,58 @@
 <!DOCTYPE html>
 <html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
-  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="generator" content="Hugo 0.165.0">
     <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
     <meta name="description" content="Pourquoi un outil de build ? Compiler, gérer les librairies externes et empaqueter un projet Java « à la main » devient vite ingérable : chaque librairie a ses propres dépendances (dépendances transitives), parfois en conflit de version entre elles. Maven standardise tout ça avec un fichier de configuration unique — pom.xml — et une convention commune, reconnue dans la quasi-totalité des projets Java d’entreprise.
-1️⃣ Anatomie du pom.xml &lt;project xmlns=&#34;http://maven.apache.org/POM/4.0.0&#34;&gt; &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt; &lt;groupId&gt;ca.cegepmv.legacy&lt;/groupId&gt; &lt;artifactId&gt;mon-projet&lt;/artifactId&gt; &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt; &lt;packaging&gt;jar&lt;/packaging&gt; &lt;properties&gt; &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt; &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt; &lt;/properties&gt; &lt;dependencies&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt; &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt; &lt;scope&gt;test&lt;/scope&gt; &lt;/dependency&gt; &lt;/dependencies&gt; &lt;build&gt; &lt;plugins&gt; &lt;plugin&gt; &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt; &lt;/plugin&gt; &lt;/plugins&gt; &lt;/build&gt; &lt;/project&gt;Élément Rôle groupId Identifiant de l’organisation/projet (convention : nom de domaine inversé) artifactId Nom du module/projet lui-même version Version du projet — SNAPSHOT signifie « en développement, pas figée » packaging Type de livrable produit (jar, war, pom pour un module parent) properties Variables réutilisables ailleurs dans le fichier (ex. version de Java) dependencies Librairies externes requises build &gt; plugins Outils qui interviennent pendant le build (compiler, tester, empaqueter…) 2️⃣ Dépendances et scope Le scope d’une dépendance détermine quand elle est disponible :">
+1️⃣ Anatomie du pom.xml Exemple — extrait réel du pom.xml de spring-petclinic-rest (le projet utilisé dans ce cours) :">
     <meta name="author" content="">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Maven (1/2) — pom.xml, dépendances, plugins :: Maintenance de logiciel">
     <meta name="twitter:description" content="Pourquoi un outil de build ? Compiler, gérer les librairies externes et empaqueter un projet Java « à la main » devient vite ingérable : chaque librairie a ses propres dépendances (dépendances transitives), parfois en conflit de version entre elles. Maven standardise tout ça avec un fichier de configuration unique — pom.xml — et une convention commune, reconnue dans la quasi-totalité des projets Java d’entreprise.
-1️⃣ Anatomie du pom.xml &lt;project xmlns=&#34;http://maven.apache.org/POM/4.0.0&#34;&gt; &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt; &lt;groupId&gt;ca.cegepmv.legacy&lt;/groupId&gt; &lt;artifactId&gt;mon-projet&lt;/artifactId&gt; &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt; &lt;packaging&gt;jar&lt;/packaging&gt; &lt;properties&gt; &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt; &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt; &lt;/properties&gt; &lt;dependencies&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt; &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt; &lt;scope&gt;test&lt;/scope&gt; &lt;/dependency&gt; &lt;/dependencies&gt; &lt;build&gt; &lt;plugins&gt; &lt;plugin&gt; &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt; &lt;/plugin&gt; &lt;/plugins&gt; &lt;/build&gt; &lt;/project&gt;Élément Rôle groupId Identifiant de l’organisation/projet (convention : nom de domaine inversé) artifactId Nom du module/projet lui-même version Version du projet — SNAPSHOT signifie « en développement, pas figée » packaging Type de livrable produit (jar, war, pom pour un module parent) properties Variables réutilisables ailleurs dans le fichier (ex. version de Java) dependencies Librairies externes requises build &gt; plugins Outils qui interviennent pendant le build (compiler, tester, empaqueter…) 2️⃣ Dépendances et scope Le scope d’une dépendance détermine quand elle est disponible :">
-    <meta property="og:url" content="http://localhost:1313/420-515/semaine-3/maven/index.html">
+1️⃣ Anatomie du pom.xml Exemple — extrait réel du pom.xml de spring-petclinic-rest (le projet utilisé dans ce cours) :">
+    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-3/maven/index.html">
     <meta property="og:site_name" content="Maintenance de logiciel">
     <meta property="og:title" content="Maven (1/2) — pom.xml, dépendances, plugins :: Maintenance de logiciel">
     <meta property="og:description" content="Pourquoi un outil de build ? Compiler, gérer les librairies externes et empaqueter un projet Java « à la main » devient vite ingérable : chaque librairie a ses propres dépendances (dépendances transitives), parfois en conflit de version entre elles. Maven standardise tout ça avec un fichier de configuration unique — pom.xml — et une convention commune, reconnue dans la quasi-totalité des projets Java d’entreprise.
-1️⃣ Anatomie du pom.xml &lt;project xmlns=&#34;http://maven.apache.org/POM/4.0.0&#34;&gt; &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt; &lt;groupId&gt;ca.cegepmv.legacy&lt;/groupId&gt; &lt;artifactId&gt;mon-projet&lt;/artifactId&gt; &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt; &lt;packaging&gt;jar&lt;/packaging&gt; &lt;properties&gt; &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt; &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt; &lt;/properties&gt; &lt;dependencies&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt; &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt; &lt;scope&gt;test&lt;/scope&gt; &lt;/dependency&gt; &lt;/dependencies&gt; &lt;build&gt; &lt;plugins&gt; &lt;plugin&gt; &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt; &lt;/plugin&gt; &lt;/plugins&gt; &lt;/build&gt; &lt;/project&gt;Élément Rôle groupId Identifiant de l’organisation/projet (convention : nom de domaine inversé) artifactId Nom du module/projet lui-même version Version du projet — SNAPSHOT signifie « en développement, pas figée » packaging Type de livrable produit (jar, war, pom pour un module parent) properties Variables réutilisables ailleurs dans le fichier (ex. version de Java) dependencies Librairies externes requises build &gt; plugins Outils qui interviennent pendant le build (compiler, tester, empaqueter…) 2️⃣ Dépendances et scope Le scope d’une dépendance détermine quand elle est disponible :">
+1️⃣ Anatomie du pom.xml Exemple — extrait réel du pom.xml de spring-petclinic-rest (le projet utilisé dans ce cours) :">
     <meta property="og:locale" content="fr_ca">
     <meta property="og:type" content="article">
     <meta property="article:section" content="Semaine 3 — Débogage outillé et Maven">
     <meta itemprop="name" content="Maven (1/2) — pom.xml, dépendances, plugins :: Maintenance de logiciel">
     <meta itemprop="description" content="Pourquoi un outil de build ? Compiler, gérer les librairies externes et empaqueter un projet Java « à la main » devient vite ingérable : chaque librairie a ses propres dépendances (dépendances transitives), parfois en conflit de version entre elles. Maven standardise tout ça avec un fichier de configuration unique — pom.xml — et une convention commune, reconnue dans la quasi-totalité des projets Java d’entreprise.
-1️⃣ Anatomie du pom.xml &lt;project xmlns=&#34;http://maven.apache.org/POM/4.0.0&#34;&gt; &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt; &lt;groupId&gt;ca.cegepmv.legacy&lt;/groupId&gt; &lt;artifactId&gt;mon-projet&lt;/artifactId&gt; &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt; &lt;packaging&gt;jar&lt;/packaging&gt; &lt;properties&gt; &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt; &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt; &lt;/properties&gt; &lt;dependencies&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt; &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt; &lt;scope&gt;test&lt;/scope&gt; &lt;/dependency&gt; &lt;/dependencies&gt; &lt;build&gt; &lt;plugins&gt; &lt;plugin&gt; &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt; &lt;/plugin&gt; &lt;/plugins&gt; &lt;/build&gt; &lt;/project&gt;Élément Rôle groupId Identifiant de l’organisation/projet (convention : nom de domaine inversé) artifactId Nom du module/projet lui-même version Version du projet — SNAPSHOT signifie « en développement, pas figée » packaging Type de livrable produit (jar, war, pom pour un module parent) properties Variables réutilisables ailleurs dans le fichier (ex. version de Java) dependencies Librairies externes requises build &gt; plugins Outils qui interviennent pendant le build (compiler, tester, empaqueter…) 2️⃣ Dépendances et scope Le scope d’une dépendance détermine quand elle est disponible :">
-    <meta itemprop="wordCount" content="1495">
+1️⃣ Anatomie du pom.xml Exemple — extrait réel du pom.xml de spring-petclinic-rest (le projet utilisé dans ce cours) :">
+    <meta itemprop="wordCount" content="2064">
     <title>Maven (1/2) — pom.xml, dépendances, plugins :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788824106" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788824106" defer></script>
-    <script src="/420-515/js/search-lunr.js?1788824106" defer></script>
-    <script src="/420-515/js/search.js?1788824106" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788835986" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788835986" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1788835986" defer></script>
+    <script src="/420-515/js/search.min.js?1788835986" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1788824106";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788835986";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1788824106" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788824106" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1788824106" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1788824106" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788835986" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788835986" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788835986" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788835986" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788824106" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788824106" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788824106" rel="stylesheet">
-    <link href="/420-515/css/theme.css?1788824106" rel="stylesheet">
-    <link href="/420-515/css/format-html.css?1788824106" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788835986" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788835986" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788835986" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1788835986" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1788835986" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
-      window.relearn.min = ``;
+      window.relearn.min = `.min`;
       window.relearn.path='\/semaine-3\/maven\/index.html';
       window.relearn.relBasePath='..\/..';
       window.relearn.relBaseUri='..\/..\/..';
-      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
+      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
       window.relearn.disableAnchorCopy=false;
       window.relearn.disableAnchorScrolling=false;
       window.relearn.disableInlineCopyToClipboard=true;
@@ -140,29 +140,29 @@ unique — <code>pom.xml</code> — et une convention commune, reconnue dans la 
 d&rsquo;entreprise.</p>
 <hr>
 <h2 id="1-anatomie-du-pomxml">1️⃣ Anatomie du <code>pom.xml</code></h2>
-<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span><span style="color:#f92672">&gt;</span>
+<p><strong>Exemple — extrait réel du <code>pom.xml</code> de <code>spring-petclinic-rest</code></strong> (le projet utilisé dans ce
+cours) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&#34;</span><span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;modelVersion&gt;</span>4.0.0<span style="color:#f92672">&lt;/modelVersion&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>ca.cegepmv.legacy<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>mon-projet<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>1.0.0-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;packaging&gt;</span>jar<span style="color:#f92672">&lt;/packaging&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.samples<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-petclinic-rest<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>4.0.2<span style="color:#f92672">&lt;/version&gt;</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;properties&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;maven.compiler.source&gt;</span>17<span style="color:#f92672">&lt;/maven.compiler.source&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;maven.compiler.target&gt;</span>17<span style="color:#f92672">&lt;/maven.compiler.target&gt;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/properties&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;parent&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-parent<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>4.1.0<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;relativePath/&gt;</span> <span style="color:#75715e">&lt;!-- lookup parent from Maven repository --&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/parent&gt;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependencies&gt;</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;dependency&gt;</span>
 </span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-web<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-actuator<span style="color:#f92672">&lt;/artifactId&gt;</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/dependency&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;dependency&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;groupId&gt;</span>org.junit.jupiter<span style="color:#f92672">&lt;/groupId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;artifactId&gt;</span>junit-jupiter<span style="color:#f92672">&lt;/artifactId&gt;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">&lt;!-- ... autres dépendances ... --&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependencies&gt;</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;build&gt;</span>
@@ -170,6 +170,7 @@ d&rsquo;entreprise.</p>
 </span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;plugin&gt;</span>
 </span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
 </span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;artifactId&gt;</span>maven-compiler-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">&lt;!-- ... --&gt;</span>
 </span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/plugin&gt;</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/plugins&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/build&gt;</span>
@@ -184,23 +185,19 @@ d&rsquo;entreprise.</p>
 	<tbody>
 			<tr>
 					<td><code>groupId</code></td>
-					<td>Identifiant de l&rsquo;organisation/projet (convention : nom de domaine inversé)</td>
+					<td>Identifiant de l&rsquo;organisation/projet (convention : nom de domaine inversé) — ici <code>org.springframework.samples</code></td>
 			</tr>
 			<tr>
 					<td><code>artifactId</code></td>
-					<td>Nom du module/projet lui-même</td>
+					<td>Nom du module/projet lui-même — ici <code>spring-petclinic-rest</code></td>
 			</tr>
 			<tr>
 					<td><code>version</code></td>
-					<td>Version du projet — <code>SNAPSHOT</code> signifie « en développement, pas figée »</td>
+					<td>Version du projet — ici <code>4.0.2</code> (figée, contrairement à un <code>-SNAPSHOT</code> « en développement »)</td>
 			</tr>
 			<tr>
-					<td><code>packaging</code></td>
-					<td>Type de livrable produit (<code>jar</code>, <code>war</code>, <code>pom</code> pour un module parent)</td>
-			</tr>
-			<tr>
-					<td><code>properties</code></td>
-					<td>Variables réutilisables ailleurs dans le fichier (ex. version de Java)</td>
+					<td><code>parent</code></td>
+					<td>Un <code>pom.xml</code> <strong>parent</strong> dont on hérite (versions de dépendances, plugins, configuration commune) — ici <code>spring-boot-starter-parent</code>, le parent standard de tout projet Spring Boot</td>
 			</tr>
 			<tr>
 					<td><code>dependencies</code></td>
@@ -212,6 +209,97 @@ d&rsquo;entreprise.</p>
 			</tr>
 	</tbody>
 </table>
+<blockquote>
+<p>💡 Grâce au <code>parent</code> (<code>spring-boot-starter-parent</code>), la plupart des dépendances Spring n&rsquo;ont
+<strong>pas besoin</strong> de préciser leur <code>&lt;version&gt;</code> : c&rsquo;est le parent qui l&rsquo;impose, pour garantir que
+toutes les librairies Spring d&rsquo;un même projet sont compatibles entre elles. C&rsquo;est pourquoi vous
+ne voyez aucune balise <code>&lt;version&gt;</code> sur <code>spring-boot-starter-actuator</code> ci-dessus.</p>
+</blockquote>
+<h3 id="autres-pomxml-réels--le-cas-du-multi-module">Autres <code>pom.xml</code> réels — le cas du <strong>multi-module</strong></h3>
+<p>Le <code>pom.xml</code> de <code>spring-petclinic-rest</code> ci-dessus est un <code>pom.xml</code> <strong>de module unique</strong>
+(<code>packaging</code> implicite : <code>jar</code>). Beaucoup de projets Java réels sont plutôt organisés en
+<strong>plusieurs modules</strong> qui partagent un <code>pom.xml</code> <strong>parent</strong> commun. Deux exemples réels et
+largement utilisés en production :</p>
+<p><strong><a href="https://github.com/google/gson" rel="external" target="_blank">Gson</a></strong> (bibliothèque JSON de Google, des milliards
+d&rsquo;utilisations) — extrait réel de son <code>pom.xml</code> racine :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#960050;background-color:#1e0010">...</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;modelVersion&gt;</span>4.0.0<span style="color:#f92672">&lt;/modelVersion&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>com.google.code.gson<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>gson-parent<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>2.14.1-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;packaging&gt;</span>pom<span style="color:#f92672">&lt;/packaging&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;modules&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;module&gt;</span>gson<span style="color:#f92672">&lt;/module&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;module&gt;</span>test-jpms<span style="color:#f92672">&lt;/module&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;module&gt;</span>extras<span style="color:#f92672">&lt;/module&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;module&gt;</span>metrics<span style="color:#f92672">&lt;/module&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;module&gt;</span>proto<span style="color:#f92672">&lt;/module&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/modules&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependencyManagement&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;groupId&gt;</span>junit<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;artifactId&gt;</span>junit<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;version&gt;</span>4.13.2<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependencyManagement&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;</span></span></span></code></pre></div>
+<p><strong><a href="https://github.com/apache/maven" rel="external" target="_blank">Apache Maven</a></strong> lui-même (l&rsquo;outil que vous utilisez est
+construit&hellip; avec Maven) — même structure, avec en plus un <code>parent</code> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;project</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#960050;background-color:#1e0010">...</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;modelVersion&gt;</span>4.0.0<span style="color:#f92672">&lt;/modelVersion&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;parent&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-parent<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>49<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;relativePath/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/parent&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>maven<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>4.1.0-SNAPSHOT<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;packaging&gt;</span>pom<span style="color:#f92672">&lt;/packaging&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;modules&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;module&gt;</span>api<span style="color:#f92672">&lt;/module&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;module&gt;</span>impl<span style="color:#f92672">&lt;/module&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;module&gt;</span>compat<span style="color:#f92672">&lt;/module&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;module&gt;</span>apache-maven<span style="color:#f92672">&lt;/module&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/modules&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/project&gt;</span></span></span></code></pre></div>
+<p>Ce qui change par rapport à <code>spring-petclinic-rest</code> :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Élément</th>
+					<th>Rôle dans un <code>pom.xml</code> parent multi-module</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>&lt;packaging&gt;pom&lt;/packaging&gt;</code></td>
+					<td>Ce <code>pom.xml</code> <strong>n&rsquo;est pas un module compilable</strong> — c&rsquo;est un « chef d&rsquo;orchestre » qui agrège d&rsquo;autres modules. Sans cette balise, <code>packaging</code> vaudrait <code>jar</code> par défaut, ce qui n&rsquo;a pas de sens pour un module qui ne contient aucun code.</td>
+			</tr>
+			<tr>
+					<td><code>&lt;modules&gt;</code></td>
+					<td>Liste des sous-dossiers (chacun avec son propre <code>pom.xml</code>) que Maven doit construire, dans l&rsquo;ordre déterminé automatiquement par leurs dépendances entre eux. Une commande <code>mvn install</code> lancée à la racine construit <strong>tous</strong> les modules listés.</td>
+			</tr>
+			<tr>
+					<td><code>&lt;dependencyManagement&gt;</code></td>
+					<td>Centralise les <strong>versions</strong> de dépendances pour tous les modules enfants, sans forcer chaque module à les redéclarer — chaque module enfant peut alors écrire <code>&lt;dependency&gt;</code> sans <code>&lt;version&gt;</code>, exactement comme <code>spring-petclinic-rest</code> le fait pour ses dépendances Spring (héritées de <code>spring-boot-starter-parent</code>).</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 Un <code>pom.xml</code> avec <code>&lt;parent&gt;</code> <strong>et</strong> un projet Spring Boot comme le vôtre utilisent le même
+mécanisme d&rsquo;héritage — la seule différence est qui joue le rôle de parent : <code>spring-boot-starter-parent</code>
+(fourni par Spring) contre <code>maven-parent</code>/<code>gson-parent</code> (défini par le projet lui-même dans un
+multi-module).</p>
+</blockquote>
 <hr>
 <h2 id="2-dépendances-et-scope">2️⃣ Dépendances et <em>scope</em></h2>
 <p>Le <code>scope</code> d&rsquo;une dépendance détermine <strong>quand</strong> elle est disponible :</p>
@@ -221,6 +309,7 @@ d&rsquo;entreprise.</p>
 					<th>Scope</th>
 					<th>Disponible pour&hellip;</th>
 					<th>Exemple typique</th>
+					<th>Exemple réel dans <code>spring-petclinic-rest</code></th>
 			</tr>
 	</thead>
 	<tbody>
@@ -228,24 +317,37 @@ d&rsquo;entreprise.</p>
 					<td><code>compile</code> <em>(défaut)</em></td>
 					<td>Compilation ET exécution ET tests</td>
 					<td>Une librairie utilisée partout (ex. Spring)</td>
+					<td><code>spring-boot-starter-actuator</code> (pas de <code>&lt;scope&gt;</code> = <code>compile</code>)</td>
 			</tr>
 			<tr>
 					<td><code>test</code></td>
 					<td>Seulement la compilation/exécution des tests</td>
 					<td>JUnit, Mockito</td>
+					<td><code>mockito-core</code>, <code>spring-boot-starter-security-test</code></td>
 			</tr>
 			<tr>
 					<td><code>provided</code></td>
 					<td>Compilation, mais fournie par l&rsquo;environnement d&rsquo;exécution (pas empaquetée)</td>
 					<td>API Servlet sur un serveur qui la fournit déjà</td>
+					<td>—</td>
 			</tr>
 			<tr>
 					<td><code>runtime</code></td>
 					<td>Exécution seulement, pas nécessaire pour compiler</td>
 					<td>Un pilote JDBC</td>
+					<td><code>h2</code>, <code>hsqldb</code>, <code>mysql-connector-j</code>, <code>postgresql</code> — <strong>quatre</strong> pilotes de base de données différents, tous en <code>runtime</code></td>
 			</tr>
 	</tbody>
 </table>
+<blockquote>
+<p>💡 Pourquoi <code>spring-petclinic-rest</code> déclare-t-il <strong>quatre</strong> pilotes de base de données
+(<code>h2</code>, <code>hsqldb</code>, <code>mysql-connector-j</code>, <code>postgresql</code>) ? Parce que l&rsquo;application peut être lancée
+avec différents profils Spring (<code>h2</code>, <code>hsqldb</code>, <code>mysql</code>, <code>postgres</code>) selon la base de données
+réellement utilisée en production ou en local. Chaque pilote est en scope <code>runtime</code> : le code
+compile sans eux (on ne référence jamais directement une classe <code>org.postgresql.*</code> dans le
+code métier — c&rsquo;est le driver JDBC générique qui s&rsquo;en charge), mais un seul sera nécessaire <em>à
+l&rsquo;exécution</em>, selon le profil actif.</p>
+</blockquote>
 <blockquote>
 <p>⚠️ Une erreur fréquente : mettre une dépendance de test (ex. JUnit) en <code>compile</code> par défaut —
 elle se retrouve alors inutilement empaquetée dans le livrable final.</p>
@@ -256,15 +358,33 @@ elle se retrouve alors inutilement empaquetée dans le livrable final.</p>
 utilise-t-il ? Maven applique la règle du <strong>plus proche dans l&rsquo;arbre</strong> (<em>nearest wins</em>) : la
 version déclarée le plus près de votre propre <code>pom.xml</code> l&rsquo;emporte.</p>
 <div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mvn dependency:tree</span></span></code></pre></div>
-<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>[INFO] ca.cegepmv.legacy:mon-projet:jar:1.0.0-SNAPSHOT
-[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:3.3.0:compile
-[INFO] |  \- com.fasterxml.jackson.core:jackson-databind:jar:2.17.1:compile
-[INFO] \- com.mabibliotheque:validation-utils:jar:2.0:compile
-[INFO]    \- com.fasterxml.jackson.core:jackson-databind:jar:2.15.0:compile (omitted for conflict)</code></pre></div>
-<p>Ici, <code>jackson-databind</code> est demandé en <strong>deux versions différentes</strong> (2.17.1 et 2.15.0) par deux
-chemins différents — Maven a choisi 2.17.1 (la plus proche) et <strong>ignoré</strong> 2.15.0
-(<code>omitted for conflict</code>). <code>mvn dependency:tree</code> est l&rsquo;outil de diagnostic à réflexe immédiat
-devant tout comportement inattendu lié à une librairie.</p>
+<p>Extrait réel (raccourci) de la sortie sur <code>spring-petclinic-rest</code> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>[INFO] org.springframework.samples:spring-petclinic-rest:jar:4.0.2
+[INFO] +- org.springframework.boot:spring-boot-starter-actuator:jar:4.1.0:compile
+[INFO] +- com.h2database:h2:jar:2.4.240:runtime
+[INFO] +- org.hsqldb:hsqldb:jar:2.7.3:runtime
+[INFO] +- com.mysql:mysql-connector-j:jar:9.7.0:runtime
+[INFO] +- org.postgresql:postgresql:jar:42.7.11:runtime
+[INFO] \- org.springframework.data:spring-data-jdbc-core:jar:1.2.1.RELEASE:compile
+[INFO]    \- (org.springframework:* omitted : exclu explicitement par le pom.xml)</code></pre></div>
+<p>Le dernier bloc illustre une <strong>exclusion explicite</strong> : <code>spring-data-jdbc-core</code> dépend
+transitivement de plusieurs artefacts <code>org.springframework:*</code>, mais le <code>pom.xml</code> du projet les
+exclut délibérément (via <code>&lt;exclusions&gt;</code>) pour éviter qu&rsquo;ils entrent en conflit avec les versions
+déjà imposées par <code>spring-boot-starter-parent</code> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.data<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-data-jdbc-core<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>${spring-data-jdbc.version}<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;exclusions&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;exclusion&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;artifactId&gt;</span>*<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/exclusion&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/exclusions&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span></span></span></code></pre></div>
+<p><code>mvn dependency:tree</code> est l&rsquo;outil de diagnostic à réflexe immédiat devant tout comportement
+inattendu lié à une librairie — que ce soit un conflit de version « nearest wins » ou une
+dépendance transitive indésirable qu&rsquo;il faut exclure explicitement.</p>
 
 <details open class=" box cstyle notices tip">
   <summary class="box-label" tabindex="-1">
@@ -309,8 +429,8 @@ omniprésents :</p>
 </table>
 <hr>
 <h2 id="4-cycle-de-vie-maven">4️⃣ Cycle de vie Maven</h2>
-<p><a href="#R-image-64d1a33af32be98065d8a38c388d18d5" class="lightbox-link"><img alt="Cycle de vie Maven" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-3/maven/images/cycle-vie-maven.svg" style=" height: auto; width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-64d1a33af32be98065d8a38c388d18d5"><img alt="Cycle de vie Maven" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-3/maven/images/cycle-vie-maven.svg"></a></p>
+<p><a href="#R-image-233f5be0f083a4ae91d0ef8af52165dd" class="lightbox-link"><img alt="Cycle de vie Maven" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-3/maven/images/cycle-vie-maven.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-233f5be0f083a4ae91d0ef8af52165dd"><img alt="Cycle de vie Maven" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-3/maven/images/cycle-vie-maven.svg"></a></p>
 <table>
 	<thead>
 			<tr>
@@ -570,8 +690,8 @@ cycle de vie du build.</li>
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1788824106" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788824106" defer></script>
-    <script src="/420-515/js/theme.js?1788824106" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788835986" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788835986" defer></script>
+    <script src="/420-515/js/theme.min.js?1788835986" defer></script>
   </body>
 </html>
