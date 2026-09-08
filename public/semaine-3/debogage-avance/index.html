@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
-  <head>
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="generator" content="Hugo 0.165.0">
@@ -12,7 +12,7 @@
     <meta name="twitter:title" content="Techniques de débogage (2/2) :: Maintenance de logiciel">
     <meta name="twitter:description" content="En semaine 2, vous avez appris la méthode : reproduire, isoler, lire la stack trace, formuler une hypothèse. Cette semaine ajoute les outils qui rendent chaque étape rapide : le débogueur pas à pas, les breakpoints conditionnels, une journalisation propre, et la bissection pour localiser une cause sans tout lire ligne par ligne.
 1️⃣ Le débogueur pas à pas Un breakpoint (point d’arrêt) suspend l’exécution à une ligne précise; vous inspectez alors l’état réel du programme (variables, pile d’appels) au lieu de le deviner. La documentation officielle d’IntelliJ IDEA résume la démarche générale en 3 étapes, peu importe l’IDE utilisé :">
-    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-3/debogage-avance/index.html">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-3/debogage-avance/index.html">
     <meta property="og:site_name" content="Maintenance de logiciel">
     <meta property="og:title" content="Techniques de débogage (2/2) :: Maintenance de logiciel">
     <meta property="og:description" content="En semaine 2, vous avez appris la méthode : reproduire, isoler, lire la stack trace, formuler une hypothèse. Cette semaine ajoute les outils qui rendent chaque étape rapide : le débogueur pas à pas, les breakpoints conditionnels, une journalisation propre, et la bissection pour localiser une cause sans tout lire ligne par ligne.
@@ -23,36 +23,36 @@
     <meta itemprop="name" content="Techniques de débogage (2/2) :: Maintenance de logiciel">
     <meta itemprop="description" content="En semaine 2, vous avez appris la méthode : reproduire, isoler, lire la stack trace, formuler une hypothèse. Cette semaine ajoute les outils qui rendent chaque étape rapide : le débogueur pas à pas, les breakpoints conditionnels, une journalisation propre, et la bissection pour localiser une cause sans tout lire ligne par ligne.
 1️⃣ Le débogueur pas à pas Un breakpoint (point d’arrêt) suspend l’exécution à une ligne précise; vous inspectez alors l’état réel du programme (variables, pile d’appels) au lieu de le deviner. La documentation officielle d’IntelliJ IDEA résume la démarche générale en 3 étapes, peu importe l’IDE utilisé :">
-    <meta itemprop="wordCount" content="1626">
+    <meta itemprop="wordCount" content="1728">
     <title>Techniques de débogage (2/2) :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788765660" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788765660" defer></script>
-    <script src="/420-515/js/search-lunr.min.js?1788765660" defer></script>
-    <script src="/420-515/js/search.min.js?1788765660" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788824106" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788824106" defer></script>
+    <script src="/420-515/js/search-lunr.js?1788824106" defer></script>
+    <script src="/420-515/js/search.js?1788824106" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1788765660";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788824106";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1788765660" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788765660" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1788765660" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788824106" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788824106" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788824106" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788824106" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788765660" rel="stylesheet">
-    <link href="/420-515/css/theme.min.css?1788765660" rel="stylesheet">
-    <link href="/420-515/css/format-html.min.css?1788765660" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788824106" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788824106" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788824106" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1788824106" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1788824106" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
-      window.relearn.min = `.min`;
+      window.relearn.min = ``;
       window.relearn.path='\/semaine-3\/debogage-avance\/index.html';
       window.relearn.relBasePath='..\/..';
       window.relearn.relBaseUri='..\/..\/..';
-      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
       window.relearn.disableAnchorCopy=false;
       window.relearn.disableAnchorScrolling=false;
       window.relearn.disableInlineCopyToClipboard=true;
@@ -302,6 +302,64 @@ trois problèmes avec des <strong>niveaux</strong> :</p>
 <li>En production, on configure typiquement <code>INFO</code> ou <code>WARN</code> — les lignes <code>debug()</code> restent dans le
 code, prêtes à être réactivées sans redéployer, mais n&rsquo;encombrent pas les logs normalement.</li>
 </ul>
+<h3 id="ajouter-slf4j-au-projet-pomxml">Ajouter SLF4J au projet (<code>pom.xml</code>)</h3>
+<p>Si votre projet est déjà un projet <strong>Spring Boot</strong>, SLF4J + Logback sont <strong>déjà inclus
+automatiquement</strong> (via <code>spring-boot-starter-web</code> ou tout autre starter) — rien à ajouter, l&rsquo;import
+<code>org.slf4j.Logger</code> fonctionne directement.</p>
+<p>Pour un projet Java <strong>sans</strong> Spring Boot, ajoutez ces deux dépendances dans <code>pom.xml</code> (réinvestit
+la lecture de <code>pom.xml</code> vue plus haut cette semaine) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependencies&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>org.slf4j<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>slf4j-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>2.0.13<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;groupId&gt;</span>ch.qos.logback<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;artifactId&gt;</span>logback-classic<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;version&gt;</span>1.5.6<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependencies&gt;</span></span></span></code></pre></div>
+<ul>
+<li><code>slf4j-api</code> : l&rsquo;interface (<code>Logger</code>, <code>LoggerFactory</code>) utilisée dans votre code.</li>
+<li><code>logback-classic</code> : l&rsquo;<strong>implémentation</strong> qui fait le travail réel (écrire dans la console, un
+fichier, etc.) — SLF4J n&rsquo;est qu&rsquo;une façade, il faut toujours une implémentation derrière.</li>
+</ul>
+<h3 id="rediriger-les-logs-vers-un-fichier">Rediriger les logs vers un fichier</h3>
+<p>Par défaut, les logs s&rsquo;affichent seulement dans la console. Pour les écrire <strong>aussi</strong> dans un
+fichier, ajoutez un fichier de configuration <code>src/main/resources/logback.xml</code> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;configuration&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;FICHIER&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.FileAppender&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;file&gt;</span>logs/application.log<span style="color:#f92672">&lt;/file&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;encoder&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;pattern&gt;</span>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n<span style="color:#f92672">&lt;/pattern&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/encoder&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/appender&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;appender</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;CONSOLE&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;ch.qos.logback.core.ConsoleAppender&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;encoder&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;pattern&gt;</span>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n<span style="color:#f92672">&lt;/pattern&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/encoder&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/appender&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;root</span> <span style="color:#a6e22e">level=</span><span style="color:#e6db74">&#34;INFO&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;appender-ref</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;CONSOLE&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;appender-ref</span> <span style="color:#a6e22e">ref=</span><span style="color:#e6db74">&#34;FICHIER&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/root&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/configuration&gt;</span></span></span></code></pre></div>
+<p>Ce fichier crée (ou complète) <code>logs/application.log</code> à chaque démarrage, en plus d&rsquo;afficher les
+mêmes logs dans la console — pratique pour consulter l&rsquo;historique après coup, ou pour partager un
+extrait de log sans capture d&rsquo;écran.</p>
+<blockquote>
+<p>💡 <strong>Projet Spring Boot</strong> : pas besoin de <code>logback.xml</code> pour un cas simple — ajoutez directement
+dans <code>application.properties</code> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-properties" data-lang="properties"><span style="display:flex;"><span><span style="color:#a6e22e">logging.level.root</span><span style="color:#f92672">=</span><span style="color:#e6db74">INFO</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">logging.level.ca.cegepmv.legacy</span><span style="color:#f92672">=</span><span style="color:#e6db74">DEBUG</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">logging.file.name</span><span style="color:#f92672">=</span><span style="color:#e6db74">logs/application.log</span></span></span></code></pre></div>
+<p>La deuxième ligne montre comment activer <code>DEBUG</code> <strong>seulement</strong> pour votre propre code (par
+paquetage), en gardant les librairies tierces à <code>INFO</code> — évite d&rsquo;être noyé sous des logs qui ne
+vous concernent pas.</p>
+</blockquote>
 <details>
 <summary>🤔 Testez-vous</summary>
 <p>Pourquoi <code>logger.debug(...)</code> est-il préférable à <code>System.out.println(...)</code> même si, au final, les
@@ -315,8 +373,8 @@ code (juste la configuration), inclut automatiquement classe/horodatage, et peut
 <p>Quand un bogue est « quelque part dans ces 300 lignes » ou « apparu à un moment donné dans les 40
 derniers commits », lire séquentiellement est lent. La <strong>bissection</strong> (recherche binaire) élimine
 la moitié des suspects à chaque test.</p>
-<p><a href="#R-image-83edb6b12c8bc0321c3fb25211f08596" class="lightbox-link"><img alt="Bissection : diviser pour localiser la cause" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-3/debogage-avance/images/bissection.svg" style=" height: auto; width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-83edb6b12c8bc0321c3fb25211f08596"><img alt="Bissection : diviser pour localiser la cause" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-3/debogage-avance/images/bissection.svg"></a></p>
+<p><a href="#R-image-4ac9ee954e604d327861322e6c1d22ba" class="lightbox-link"><img alt="Bissection : diviser pour localiser la cause" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-3/debogage-avance/images/bissection.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-4ac9ee954e604d327861322e6c1d22ba"><img alt="Bissection : diviser pour localiser la cause" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-3/debogage-avance/images/bissection.svg"></a></p>
 <h3 id="bissection-dans-le-code">Bissection dans le code</h3>
 <p>Commentez/désactivez la <strong>moitié</strong> du code suspect, relancez le scénario reproductible (semaine 2) :</p>
 <ul>
@@ -359,22 +417,6 @@ commit « bon » ancien et le commit actuel comme point de départ, puis parcour
 avec <code>git bisect start</code>) pour retrouver un commit précis où un comportement a changé.</p>
   </div>
 </details>
-<hr>
-<h2 id="-actualité-de-lindustrie">📰 Actualité de l&rsquo;industrie</h2>
-<ul>
-<li><strong>Débogage assisté par IA</strong> : les IDE modernes (GitHub Copilot, IntelliJ AI Assistant) peuvent
-maintenant expliquer une stack trace ou suggérer une hypothèse de cause directement dans la
-session de débogage — un gain de temps, mais qui <strong>remplace rarement</strong> la nécessité de vérifier
-l&rsquo;hypothèse vous-même (elle peut se tromper avec assurance).</li>
-<li><strong>Observabilité en production</strong> : des outils comme <strong>Sentry</strong>, <strong>Datadog</strong> ou <strong>New Relic</strong>
-appliquent la même logique « reproduire → isoler → hypothèse » à grande échelle, en capturant
-automatiquement stack traces, variables et contexte au moment d&rsquo;un crash en production — sans
-breakpoint possible sur un serveur en direct.</li>
-<li>Plusieurs études sur les pratiques de développement (dont le rapport <em>Developer Coefficient</em>,
-Stripe, 2018) estiment qu&rsquo;une part importante du temps des développeur·euse·s est consacrée à la
-correction de bogues et de dette technique plutôt qu&rsquo;à écrire du nouveau code — un rappel
-concret de l&rsquo;importance de maîtriser ces outils tôt dans votre formation.</li>
-</ul>
 <hr>
 <h2 id="-petit-résumé--quel-outil-pour-quelle-situation-">🧭 Petit résumé — quel outil pour quelle situation ?</h2>
 <table>
@@ -503,8 +545,8 @@ que les Watches et <em>Evaluate Expression</em> présentés plus haut en sont di
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1788765660" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788765660" defer></script>
-    <script src="/420-515/js/theme.min.js?1788765660" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788824106" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788824106" defer></script>
+    <script src="/420-515/js/theme.js?1788824106" defer></script>
   </body>
 </html>

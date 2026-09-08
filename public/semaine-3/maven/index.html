@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
-  <head>
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="generator" content="Hugo 0.165.0">
@@ -12,7 +12,7 @@
     <meta name="twitter:title" content="Maven (1/2) — pom.xml, dépendances, plugins :: Maintenance de logiciel">
     <meta name="twitter:description" content="Pourquoi un outil de build ? Compiler, gérer les librairies externes et empaqueter un projet Java « à la main » devient vite ingérable : chaque librairie a ses propres dépendances (dépendances transitives), parfois en conflit de version entre elles. Maven standardise tout ça avec un fichier de configuration unique — pom.xml — et une convention commune, reconnue dans la quasi-totalité des projets Java d’entreprise.
 1️⃣ Anatomie du pom.xml &lt;project xmlns=&#34;http://maven.apache.org/POM/4.0.0&#34;&gt; &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt; &lt;groupId&gt;ca.cegepmv.legacy&lt;/groupId&gt; &lt;artifactId&gt;mon-projet&lt;/artifactId&gt; &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt; &lt;packaging&gt;jar&lt;/packaging&gt; &lt;properties&gt; &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt; &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt; &lt;/properties&gt; &lt;dependencies&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt; &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt; &lt;scope&gt;test&lt;/scope&gt; &lt;/dependency&gt; &lt;/dependencies&gt; &lt;build&gt; &lt;plugins&gt; &lt;plugin&gt; &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt; &lt;/plugin&gt; &lt;/plugins&gt; &lt;/build&gt; &lt;/project&gt;Élément Rôle groupId Identifiant de l’organisation/projet (convention : nom de domaine inversé) artifactId Nom du module/projet lui-même version Version du projet — SNAPSHOT signifie « en développement, pas figée » packaging Type de livrable produit (jar, war, pom pour un module parent) properties Variables réutilisables ailleurs dans le fichier (ex. version de Java) dependencies Librairies externes requises build &gt; plugins Outils qui interviennent pendant le build (compiler, tester, empaqueter…) 2️⃣ Dépendances et scope Le scope d’une dépendance détermine quand elle est disponible :">
-    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-3/maven/index.html">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-3/maven/index.html">
     <meta property="og:site_name" content="Maintenance de logiciel">
     <meta property="og:title" content="Maven (1/2) — pom.xml, dépendances, plugins :: Maintenance de logiciel">
     <meta property="og:description" content="Pourquoi un outil de build ? Compiler, gérer les librairies externes et empaqueter un projet Java « à la main » devient vite ingérable : chaque librairie a ses propres dépendances (dépendances transitives), parfois en conflit de version entre elles. Maven standardise tout ça avec un fichier de configuration unique — pom.xml — et une convention commune, reconnue dans la quasi-totalité des projets Java d’entreprise.
@@ -23,36 +23,36 @@
     <meta itemprop="name" content="Maven (1/2) — pom.xml, dépendances, plugins :: Maintenance de logiciel">
     <meta itemprop="description" content="Pourquoi un outil de build ? Compiler, gérer les librairies externes et empaqueter un projet Java « à la main » devient vite ingérable : chaque librairie a ses propres dépendances (dépendances transitives), parfois en conflit de version entre elles. Maven standardise tout ça avec un fichier de configuration unique — pom.xml — et une convention commune, reconnue dans la quasi-totalité des projets Java d’entreprise.
 1️⃣ Anatomie du pom.xml &lt;project xmlns=&#34;http://maven.apache.org/POM/4.0.0&#34;&gt; &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt; &lt;groupId&gt;ca.cegepmv.legacy&lt;/groupId&gt; &lt;artifactId&gt;mon-projet&lt;/artifactId&gt; &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt; &lt;packaging&gt;jar&lt;/packaging&gt; &lt;properties&gt; &lt;maven.compiler.source&gt;17&lt;/maven.compiler.source&gt; &lt;maven.compiler.target&gt;17&lt;/maven.compiler.target&gt; &lt;/properties&gt; &lt;dependencies&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt; &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt; &lt;scope&gt;test&lt;/scope&gt; &lt;/dependency&gt; &lt;/dependencies&gt; &lt;build&gt; &lt;plugins&gt; &lt;plugin&gt; &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt; &lt;/plugin&gt; &lt;/plugins&gt; &lt;/build&gt; &lt;/project&gt;Élément Rôle groupId Identifiant de l’organisation/projet (convention : nom de domaine inversé) artifactId Nom du module/projet lui-même version Version du projet — SNAPSHOT signifie « en développement, pas figée » packaging Type de livrable produit (jar, war, pom pour un module parent) properties Variables réutilisables ailleurs dans le fichier (ex. version de Java) dependencies Librairies externes requises build &gt; plugins Outils qui interviennent pendant le build (compiler, tester, empaqueter…) 2️⃣ Dépendances et scope Le scope d’une dépendance détermine quand elle est disponible :">
-    <meta itemprop="wordCount" content="939">
+    <meta itemprop="wordCount" content="1495">
     <title>Maven (1/2) — pom.xml, dépendances, plugins :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788765660" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788765660" defer></script>
-    <script src="/420-515/js/search-lunr.min.js?1788765660" defer></script>
-    <script src="/420-515/js/search.min.js?1788765660" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788824106" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788824106" defer></script>
+    <script src="/420-515/js/search-lunr.js?1788824106" defer></script>
+    <script src="/420-515/js/search.js?1788824106" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1788765660";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788824106";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1788765660" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788765660" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1788765660" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788824106" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788824106" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788824106" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788824106" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788765660" rel="stylesheet">
-    <link href="/420-515/css/theme.min.css?1788765660" rel="stylesheet">
-    <link href="/420-515/css/format-html.min.css?1788765660" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788824106" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788824106" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788824106" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1788824106" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1788824106" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
-      window.relearn.min = `.min`;
+      window.relearn.min = ``;
       window.relearn.path='\/semaine-3\/maven\/index.html';
       window.relearn.relBasePath='..\/..';
       window.relearn.relBaseUri='..\/..\/..';
-      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
       window.relearn.disableAnchorCopy=false;
       window.relearn.disableAnchorScrolling=false;
       window.relearn.disableInlineCopyToClipboard=true;
@@ -309,8 +309,8 @@ omniprésents :</p>
 </table>
 <hr>
 <h2 id="4-cycle-de-vie-maven">4️⃣ Cycle de vie Maven</h2>
-<p><a href="#R-image-0b2b2b90a655dd53cb38e64faa70c2dc" class="lightbox-link"><img alt="Cycle de vie Maven" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-3/maven/images/cycle-vie-maven.svg" style=" height: auto; width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-0b2b2b90a655dd53cb38e64faa70c2dc"><img alt="Cycle de vie Maven" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-3/maven/images/cycle-vie-maven.svg"></a></p>
+<p><a href="#R-image-64d1a33af32be98065d8a38c388d18d5" class="lightbox-link"><img alt="Cycle de vie Maven" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-3/maven/images/cycle-vie-maven.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-64d1a33af32be98065d8a38c388d18d5"><img alt="Cycle de vie Maven" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-3/maven/images/cycle-vie-maven.svg"></a></p>
 <table>
 	<thead>
 			<tr>
@@ -379,23 +379,89 @@ serait risqué.</p>
   </div>
 </details>
 <hr>
-<h2 id="-actualité-de-lindustrie">📰 Actualité de l&rsquo;industrie</h2>
+<h2 id="5-déboguer-des-tests-exécutés-par-maven">5️⃣ Déboguer des tests exécutés par Maven</h2>
+<p>Poser un breakpoint dans un test et lancer <code>mvn test</code> en ligne de commande <strong>ne s&rsquo;arrête jamais</strong>
+sur ce breakpoint — même si le même test, lancé directement depuis l&rsquo;IDE, fonctionne très bien
+avec le débogueur. Ce n&rsquo;est pas un bogue de l&rsquo;IDE : c&rsquo;est le fonctionnement normal de Maven.</p>
+<h3 id="pourquoi-ça-ne-sarrête-pas">Pourquoi ça ne s&rsquo;arrête pas</h3>
+<p>Le plugin <code>maven-surefire-plugin</code> exécute les tests dans un <strong>processus Java séparé</strong> (un <em>fork</em>),
+distinct du processus Maven lui-même. Un breakpoint posé dans votre IDE ne surveille que les
+processus auxquels l&rsquo;IDE est <strong>attaché</strong> — pas ce fork externe créé par Maven, qui roule sans lien
+avec l&rsquo;IDE.</p>
+<h3 id="option-1-la-plus-simple--lancer-le-test-depuis-lide-pas-via-mvn">Option 1 (la plus simple) : lancer le test depuis l&rsquo;IDE, pas via <code>mvn</code></h3>
+<p>Si le but est de déboguer <strong>un test précis</strong>, la façon la plus directe est de ne pas passer par
+Maven du tout : clic droit sur la méthode de test → <strong>Debug</strong> (IntelliJ) ou l&rsquo;icône <em>Debug Test</em>
+au-dessus de la méthode (VS Code, extension <em>Test Runner for Java</em>). L&rsquo;IDE lance alors le test
+directement dans un processus qu&rsquo;il contrôle, et les breakpoints fonctionnent normalement.</p>
+<blockquote>
+<p>✅ Suffisant dans la grande majorité des cas — à essayer <strong>avant</strong> les options suivantes.</p>
+</blockquote>
+<h3 id="option-2--attacher-le-débogueur-au-processus-lancé-par-maven">Option 2 : attacher le débogueur au processus lancé par Maven</h3>
+<p>Utile si le test doit <strong>impérativement</strong> être lancé via <code>mvn</code> (ex. pour reproduire un comportement
+qui dépend d&rsquo;un profil Maven précis, ou d&rsquo;options passées uniquement en ligne de commande).</p>
+<h4 id="option-2a-la-plus-simple-directement-dans-intellij--le-panneau-maven">Option 2a (la plus simple, directement dans IntelliJ) : le panneau Maven</h4>
+<ol>
+<li>Ouvrez le panneau <strong>Maven</strong> (onglet vertical à droite de la fenêtre, ou <strong>View → Tool Windows
+→ Maven</strong> s&rsquo;il n&rsquo;est pas visible).</li>
+<li>Cliquez sur l&rsquo;icône <strong>Execute Maven Goal</strong> en haut du panneau.</li>
+<li>Tapez la commande, en ciblant au besoin un test précis :
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>test -Dtest=NomDeLaClasse#nomDeLaMéthode</code></pre></div>
+</li>
+<li>Le popup propose deux boutons : <strong>Run</strong> et <strong>Debug</strong> (🐞) — cliquez sur <strong>Debug</strong>.</li>
+<li>IntelliJ gère lui-même le fork et l&rsquo;attache <strong>automatiquement</strong> au débogueur — aucun port à
+configurer manuellement, aucune configuration <em>Remote JVM Debug</em> à créer.</li>
+</ol>
+<blockquote>
+<p>✅ À essayer en premier si le panneau Maven est disponible — évite toute la mécanique manuelle
+ci-dessous.</p>
+</blockquote>
+<h4 id="option-2b--manuellement-via-un-terminal-utile-hors-intellij-ou-si-le-panneau-maven-naide-pas">Option 2b : manuellement, via un terminal (utile hors IntelliJ, ou si le panneau Maven n&rsquo;aide pas)</h4>
+<ol>
+<li>Démarrez Maven en mode debug — le processus se lance puis <strong>attend</strong> qu&rsquo;un débogueur s&rsquo;y
+connecte avant de continuer. Si votre projet utilise le <strong>Maven Wrapper</strong> (fichier <code>mvnw</code>/
+<code>mvnw.cmd</code> à la racine — c&rsquo;est le cas le plus fréquent), la commande <code>mvnDebug</code> n&rsquo;est
+généralement <strong>pas disponible</strong> (elle vient d&rsquo;une installation Maven autonome, pas du wrapper) :
+utilisez plutôt le flag équivalent avec <code>mvnw</code> :
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>.\mvnw.cmd test <span style="color:#e6db74">&#34;-Dmaven.surefire.debug&#34;</span> <span style="color:#e6db74">&#34;-Dtest=NomDeLaClasse#nomDeLaMéthode&#34;</span></span></span></code></pre></div>
+(si Maven est installé de façon autonome sur votre poste et accessible en ligne de commande, la
+forme courte <code>mvnDebug test</code> fait la même chose.)</li>
+<li>La console affiche un message du genre :
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>Listening for transport dt_socket at address: 8000</code></pre></div>
+</li>
+<li>Attachez le débogueur au processus en attente — deux façons dans IntelliJ :
 <ul>
-<li><strong>Log4Shell (CVE-2021-44228, décembre 2021)</strong> : une vulnérabilité critique découverte dans
-<code>log4j</code>, une dépendance utilisée (souvent transitivement !) par une immense partie de
-l&rsquo;écosystème Java, a forcé des milliers d&rsquo;entreprises à auditer en urgence leurs <code>pom.xml</code> pour
-savoir si elles étaient exposées — un exemple concret de pourquoi comprendre son arbre de
-dépendances n&rsquo;est pas juste théorique. On reverra l&rsquo;analyse automatisée de ce type de risque avec
-Trivy/SonarQube en semaine 9.</li>
-<li><strong>Outils de surveillance automatique des dépendances</strong> : Dependabot (GitHub), Snyk et OWASP
-Dependency-Check scannent en continu les <code>pom.xml</code> des dépôts d&rsquo;entreprise pour détecter des
-versions vulnérables et proposer automatiquement des mises à jour.</li>
-<li><strong>Maven vs Gradle</strong> : Maven reste dominant dans l&rsquo;écosystème Spring/Java d&rsquo;entreprise (sa
-configuration déclarative en XML favorise la prévisibilité), tandis que Gradle (configuration en
-Groovy/Kotlin, plus programmable) est très répandu en Android et dans certains projets voulant
-des builds plus personnalisés. Les deux appliquent le même concept central : gérer les
-dépendances et automatiser le cycle compilation → tests → empaquetage.</li>
+<li><strong>Attach to Process</strong> (le plus simple, aucune configuration à créer) : menu <strong>Run → Attach to
+Process…</strong> → repérez dans la liste le processus contenant <code>ForkedBooter</code> ou <code>surefire</code> →
+cliquez dessus.</li>
+<li><strong>Remote JVM Debug</strong> (si vous voulez réutiliser la même configuration plus tard) : menu
+<strong>Run → Edit Configurations…</strong> → clic droit dans le panneau de gauche → <strong>Add New
+Configuration</strong> (ou <strong>Alt+Insert</strong>) → <strong>Remote JVM Debug</strong> → port <code>8000</code> (ou celui affiché) →
+<strong>OK</strong>, puis sélectionnez cette configuration et cliquez sur 🐞.</li>
+<li><strong>VS Code</strong> (extension Java) : <code>.vscode/launch.json</code> →
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;java&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Attacher à Maven&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;request&#34;</span>: <span style="color:#e6db74">&#34;attach&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;hostName&#34;</span>: <span style="color:#e6db74">&#34;localhost&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;port&#34;</span>: <span style="color:#ae81ff">8000</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+puis lancer cette configuration depuis l&rsquo;onglet <em>Run and Debug</em>.</li>
 </ul>
+</li>
+<li>Une fois attaché, le processus Maven reprend son exécution et <strong>s&rsquo;arrête normalement</strong> sur vos
+breakpoints.</li>
+</ol>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Vous posez un breakpoint dans une méthode de test, puis lancez <code>mvn test</code> normalement (sans mode
+debug) depuis un terminal. Le programme s&rsquo;exécute jusqu&rsquo;au bout sans jamais s&rsquo;arrêter. Pourquoi, et
+que devriez-vous faire différemment ?</p>
+<p><strong>Réponse</strong> : <code>mvn test</code> exécute les tests dans un processus Java <strong>séparé</strong> (fork Surefire) auquel
+aucun débogueur n&rsquo;est attaché — le breakpoint est ignoré, pas « manqué ». Il faut soit lancer le
+test directement depuis l&rsquo;IDE (option 1), soit passer par le panneau Maven en mode Debug (option
+2a), soit démarrer Maven avec <code>-Dmaven.surefire.debug</code> et attacher un débogueur distant sur le
+port indiqué (option 2b).</p>
+</details>
 <hr>
 <h2 id="-références">📚 Références</h2>
 <ul>
@@ -504,8 +570,8 @@ cycle de vie du build.</li>
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1788765660" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788765660" defer></script>
-    <script src="/420-515/js/theme.min.js?1788765660" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788824106" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788824106" defer></script>
+    <script src="/420-515/js/theme.js?1788824106" defer></script>
   </body>
 </html>

@@ -2,65 +2,65 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Semaine 1 — Bienvenue en maintenance logicielle :: Maintenance de logiciel</title>
-    <link>https://cegepmv.github.io/420-515/semaine-1/index.html</link>
+    <link>http://localhost:1313/420-515/semaine-1/index.html</link>
     <description>🎯 Objectifs d’apprentissage de la semaine À la fin de cette semaine, vous devriez être capable de :&#xA;Expliquer ce qu’est la maintenance logicielle et nommer ses 4 types (ISO/IEC 14764). Expliquer pourquoi la maintenance représente la majorité du coût de vie d’un logiciel. Cloner, configurer et démarrer localement un projet existant. Expliquer ce qu’est une API REST. Utiliser les commandes Git de base (clone, checkout, add, commit, push, pull) pour gérer votre propre copie du code. Repérer, à l’œil, qu’un bout de code « sent mauvais » — sans nécessairement savoir encore le nommer formellement. 🗺️ Aperçu de tout ce qui sera couvert cette session Avant de plonger dans le contenu d’aujourd’hui, voici une vue d’ensemble de tout le parcours de la session. Gardez cette page en référence — vous pourrez y revenir chaque semaine pour voir où vous en êtes rendu·e dans le grand portrait.</description>
     <generator>Hugo</generator>
     <language>fr-ca</language>
-    <atom:link href="https://cegepmv.github.io/420-515/semaine-1/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/420-515/semaine-1/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Définition et présentation du concept de maintenance</title>
-      <link>https://cegepmv.github.io/420-515/semaine-1/definition-maintenance/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-1/definition-maintenance/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-1/definition-maintenance/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-1/definition-maintenance/index.html</guid>
       <description>Vous avez passé vos sessions précédentes à écrire des projets — parfois seul·e, parfois en équipe — mais toujours sur du code neuf, démarré from scratch pour les besoins d’un TP, et qui cessait d’exister (ou presque) une fois la session terminée.&#xA;À partir d’aujourd’hui, vous entrez dans le monde réel du développement logiciel :&#xA;80 % de la carrière d’un·e développeur·euse, ce n’est pas écrire du nouveau code — c’est comprendre, réparer et faire évoluer du code déjà en place depuis longtemps, souvent sous pression, avec une documentation incomplète, sur un système qu’on ne peut pas se permettre d’arrêter.</description>
     </item>
     <item>
       <title>Cycle de vie du logiciel et méthodologies</title>
-      <link>https://cegepmv.github.io/420-515/semaine-1/cycle-de-vie/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-1/cycle-de-vie/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-1/cycle-de-vie/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-1/cycle-de-vie/index.html</guid>
       <description>🔁 Le cycle de vie d’un logiciel Un logiciel ne s’arrête pas d’exister une fois livré : il traverse un cycle de vie complet, qui se répète en boucle à chaque nouvelle évolution. Les phases classiques sont :&#xA;Analyse des besoins — comprendre le problème à résoudre et les attentes des utilisateurs. Conception — définir l’architecture et les choix techniques. Implémentation — écrire le code. Tests — valider que le logiciel fait ce qui est attendu. Déploiement — mettre le logiciel à la disposition des utilisateurs. Maintenance — corriger, adapter, améliorer et prévenir, tout au long de la vie du produit.</description>
     </item>
     <item>
       <title>Découverte du projet du cours</title>
-      <link>https://cegepmv.github.io/420-515/semaine-1/decouverte-projet/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-1/decouverte-projet/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-1/decouverte-projet/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-1/decouverte-projet/index.html</guid>
       <description>🐾 Le projet du cours Toute la session, vous allez travailler sur une application existante, fournie par la personne enseignante. Ce n’est pas un projet-jouet écrit spécialement pour le cours : il s’agit d’un vrai projet, avec du code réel, dans lequel des bogues et de la dette technique ont été intentionnellement laissés ou ajoutés — exactement comme dans un premier emploi où vous héritez d’un projet imparfait.&#xA;⚠️ Ce projet contient volontairement des bogues — c’est fait exprès ! Comme dans un vrai emploi de développeur·euse junior, vous héritez d’un code qui n’est pas parfait. Certains comportements sont incorrects par rapport à ce qui est documenté ou attendu. Votre travail sera, entre autres, de les découvrir vous-mêmes au fil de la session (lecture de code, tests, débogage) — ils ne vous seront pas tous révélés à l’avance. C’est une compétence professionnelle essentielle : apprendre à ne jamais faire une confiance aveugle à du code existant, même s’il « a l’air » de fonctionner. Un code qui compile et qui semble marcher n’est pas nécessairement un code correct !</description>
     </item>
     <item>
       <title>Introduction à Git (1/2)</title>
-      <link>https://cegepmv.github.io/420-515/semaine-1/git/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-1/git/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-1/git/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-1/git/index.html</guid>
       <description>Git est le logiciel de contrôle de version que vous avez déjà utilisé dans vos cours précédents. Cette semaine, on en fait un rappel complet.&#xA;Qu’est-ce que Git ? Git est un logiciel de contrôle de version. Il permet de gérer des fichiers et leur évolution dans le temps. Il permet de retracer l’origine de chaque modification, de rétablir des versions précédentes, et permet l’intégration de modifications effectuées en parallèle.</description>
     </item>
     <item>
       <title>Activité pratique et récapitulatif</title>
-      <link>https://cegepmv.github.io/420-515/semaine-1/activite-pratique/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-1/activite-pratique/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-1/activite-pratique/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-1/activite-pratique/index.html</guid>
       <description>🎯 Activité pratique Installez et vérifiez votre environnement (JDK requis, IntelliJ ou l’éditeur de votre choix). Chaque équipe clone le projet du cours, le fait rouler localement, et confirme qu’au moins un endpoint de l’API répond bien en JSON. Explorez le code pendant 30-40 minutes, en équipe, à la recherche de « code smells » — des indices que quelque chose semble anormal ou mal conçu : noms de variables cryptiques (e, tmp, x1), méthodes qui font plus de 20-30 lignes, blocs de code qui se ressemblent étrangement d’un fichier à l’autre (duplication), commentaires qui ne correspondent plus au code en dessous… Ne corrigez rien encore — l’objectif aujourd’hui est seulement d’observer et de discuter en équipe de vos trouvailles (le nom du fichier concerné et une courte explication pour chacune). On ne nomme pas encore les smells avec le vocabulaire officiel de Fowler (Long Method, Duplicated Code, etc.) — ce vocabulaire sera introduit formellement en semaine 5. Aujourd’hui, l’objectif est seulement d’entraîner votre œil à repérer que « quelque chose sent mauvais » ici et là, même sans savoir encore comment ça s’appelle. 💬 Question de réflexion à poser en fin de séance&#xD;« Combien d’entre vous ont déjà écrit, sans le savoir, un des smells que vous venez de repérer dans du code d’un autre ? »</description>
     </item>
     <item>
       <title>Exercices pratiques</title>
-      <link>https://cegepmv.github.io/420-515/semaine-1/exercices-classroom/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-1/exercices-classroom/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-1/exercices-classroom/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-1/exercices-classroom/index.html</guid>
       <description>🧪 Apprendre en pratiquant Plutôt que d’enchaîner les exposés théoriques, cette semaine (et les suivantes) alterne entre de courtes explications de concept et des exercices concrets — certains directement sur cette page (auto-évaluation), d’autres à réaliser en équipe, directement dans le vrai projet legacy du cours.&#xA;📋 Liste des exercices de la semaine 1 # Exercice Concept visé Format 1 Étiqueter des demandes de changement 4 types de maintenance (ISO/IEC 14764) Auto-évaluation sur le site 2 Défi Git — semaine 1 Configuration, clone, branche, commit, push, pull (sans PR) En équipe, sur le vrai projet legacy Chaque exercice a sa propre page de consignes (voir le menu de gauche).</description>
     </item>
     <item>
       <title>Exercice : étiqueter les types de maintenance</title>
-      <link>https://cegepmv.github.io/420-515/semaine-1/exercice-types-maintenance/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-1/exercice-types-maintenance/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-1/exercice-types-maintenance/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-1/exercice-types-maintenance/index.html</guid>
       <description>🎯 Objectif Manipuler concrètement la classification ISO/IEC 14764 (corrective, adaptative, perfective, préventive) en l’appliquant à des cas réalistes, avant de la mémoriser par cœur.&#xA;📝 Déroulement Pour chacun des 6 scénarios ci-dessous, déterminez le type de maintenance dominant (corrective, adaptative, perfective ou préventive) et essayez de formuler vous-même, en une phrase, pourquoi. Cliquez ensuite sur chaque encadré pour vérifier votre réponse.&#xA;Scénario 1 — Un client signale que le total d’une facture est mal arrondi lorsqu’il y a 3 articles ou plus dans le panier.</description>
     </item>
     <item>
       <title>Défi Git — semaine 1</title>
-      <link>https://cegepmv.github.io/420-515/semaine-1/exercice-git-premiers-pas/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-1/exercice-git-premiers-pas/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-1/exercice-git-premiers-pas/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-1/exercice-git-premiers-pas/index.html</guid>
       <description>🎯 Objectif Vous avez déjà utilisé Git par le passé. Plutôt que de refaire un dépôt d’entraînement fictif, vous allez directement mettre les mains dans le vrai projet legacy du cours en équipe (configuration, premier clone, création de branche, commits, push/pull). Ce défi sert à vérifier et consolider vos réflexes Git 1/2 (sans Pull Request — ça, c’est pour la semaine 2) pendant que vous travaillez sur le projet réel.</description>
     </item>
   </channel>

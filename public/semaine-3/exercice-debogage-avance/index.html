@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
-  <head>
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="generator" content="Hugo 0.165.0">
@@ -14,7 +14,7 @@
     <meta name="twitter:description" content="🎯 Objectif Mettre en pratique, sur votre propre projet, les 4 outils vus dans Techniques de débogage (2/2) : débogueur pas à pas, breakpoint conditionnel, journalisation stratégique, bissection.
 👥 En équipe. Chaque partie peut être faite par une personne différente, puis partagée en équipe — l’objectif est que tout le monde ait manipulé chaque outil au moins une fois.
 🧩 Partie 1 — Débogueur pas à pas Choisissez une méthode de votre projet qui contient une boucle ou une condition non triviale. Posez un breakpoint au début de cette méthode, démarrez en mode Debug, et déclenchez-la réellement (appel API, test, ou exécution de l’application). Utilisez Step Over pour avancer ligne par ligne, et Step Into au moins une fois pour entrer dans une méthode appelée. Notez : une valeur de variable qui vous a surpris, et le nom exact de la classe concrète affichée par le débogueur si une interface est impliquée. 🎯 Partie 2 — Breakpoint conditionnel Repérez une collection ou une boucle qui traite plusieurs éléments (ex. une liste retournée par un endpoint, ou une boucle for sur un tableau). Posez un breakpoint conditionnel qui ne s’arrête que sur un élément précis (par identifiant, par une valeur nulle, ou par une valeur hors de l’intervalle attendu). Vérifiez que le programme s’exécute normalement jusqu’à ce cas précis, sans s’arrêter avant. ❓ QuestionPourquoi un breakpoint conditionnel est-il particulièrement utile pour un bogue qui ne se produit que sur certaines données, plutôt qu’un breakpoint classique ?">
-    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-3/exercice-debogage-avance/index.html">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-3/exercice-debogage-avance/index.html">
     <meta property="og:site_name" content="Maintenance de logiciel">
     <meta property="og:title" content="Exercice : outils de débogage :: Maintenance de logiciel">
     <meta property="og:description" content="🎯 Objectif Mettre en pratique, sur votre propre projet, les 4 outils vus dans Techniques de débogage (2/2) : débogueur pas à pas, breakpoint conditionnel, journalisation stratégique, bissection.
@@ -29,34 +29,34 @@
 🧩 Partie 1 — Débogueur pas à pas Choisissez une méthode de votre projet qui contient une boucle ou une condition non triviale. Posez un breakpoint au début de cette méthode, démarrez en mode Debug, et déclenchez-la réellement (appel API, test, ou exécution de l’application). Utilisez Step Over pour avancer ligne par ligne, et Step Into au moins une fois pour entrer dans une méthode appelée. Notez : une valeur de variable qui vous a surpris, et le nom exact de la classe concrète affichée par le débogueur si une interface est impliquée. 🎯 Partie 2 — Breakpoint conditionnel Repérez une collection ou une boucle qui traite plusieurs éléments (ex. une liste retournée par un endpoint, ou une boucle for sur un tableau). Posez un breakpoint conditionnel qui ne s’arrête que sur un élément précis (par identifiant, par une valeur nulle, ou par une valeur hors de l’intervalle attendu). Vérifiez que le programme s’exécute normalement jusqu’à ce cas précis, sans s’arrêter avant. ❓ QuestionPourquoi un breakpoint conditionnel est-il particulièrement utile pour un bogue qui ne se produit que sur certaines données, plutôt qu’un breakpoint classique ?">
     <meta itemprop="wordCount" content="596">
     <title>Exercice : outils de débogage :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788765660" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788765660" defer></script>
-    <script src="/420-515/js/search-lunr.min.js?1788765660" defer></script>
-    <script src="/420-515/js/search.min.js?1788765660" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788824106" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788824106" defer></script>
+    <script src="/420-515/js/search-lunr.js?1788824106" defer></script>
+    <script src="/420-515/js/search.js?1788824106" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1788765660";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788824106";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1788765660" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788765660" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1788765660" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788824106" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788824106" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788824106" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788824106" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788765660" rel="stylesheet">
-    <link href="/420-515/css/theme.min.css?1788765660" rel="stylesheet">
-    <link href="/420-515/css/format-html.min.css?1788765660" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788824106" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788824106" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788824106" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1788824106" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1788824106" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
-      window.relearn.min = `.min`;
+      window.relearn.min = ``;
       window.relearn.path='\/semaine-3\/exercice-debogage-avance\/index.html';
       window.relearn.relBasePath='..\/..';
       window.relearn.relBaseUri='..\/..\/..';
-      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
       window.relearn.disableAnchorCopy=false;
       window.relearn.disableAnchorScrolling=false;
       window.relearn.disableInlineCopyToClipboard=true;
@@ -305,8 +305,8 @@ venir.</p>
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1788765660" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788765660" defer></script>
-    <script src="/420-515/js/theme.min.js?1788765660" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788824106" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788824106" defer></script>
+    <script src="/420-515/js/theme.js?1788824106" defer></script>
   </body>
 </html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
-  <head>
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="generator" content="Hugo 0.165.0">
@@ -12,7 +12,7 @@
     <meta name="twitter:title" content="Techniques de débogage (1/2) :: Maintenance de logiciel">
     <meta name="twitter:description" content="Cette semaine, on entame la première moitié d’un cycle en deux temps sur le débogage méthodique — la suite (semaine 3) approfondira l’utilisation du débogueur pas à pas. Ici, on pose les bases : comment aborder un bogue de façon systématique plutôt qu’en devinant au hasard.
 🐞 Déboguer, ce n’est pas deviner Face à un bogue dans du code que vous n’avez pas écrit, la tentation est grande de changer une ligne « pour voir si ça règle le problème ». C’est rarement efficace, et ça peut même injecter un nouveau bogue sans qu’on comprenne pourquoi. Le débogage méthodique suit plutôt une démarche proche de la méthode scientifique, popularisée par Andreas Zeller dans Why Programs Fail: A Guide to Systematic Debugging — une référence de fond en génie logiciel sur le sujet.">
-    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-2/debogage/index.html">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-2/debogage/index.html">
     <meta property="og:site_name" content="Maintenance de logiciel">
     <meta property="og:title" content="Techniques de débogage (1/2) :: Maintenance de logiciel">
     <meta property="og:description" content="Cette semaine, on entame la première moitié d’un cycle en deux temps sur le débogage méthodique — la suite (semaine 3) approfondira l’utilisation du débogueur pas à pas. Ici, on pose les bases : comment aborder un bogue de façon systématique plutôt qu’en devinant au hasard.
@@ -25,34 +25,34 @@
 🐞 Déboguer, ce n’est pas deviner Face à un bogue dans du code que vous n’avez pas écrit, la tentation est grande de changer une ligne « pour voir si ça règle le problème ». C’est rarement efficace, et ça peut même injecter un nouveau bogue sans qu’on comprenne pourquoi. Le débogage méthodique suit plutôt une démarche proche de la méthode scientifique, popularisée par Andreas Zeller dans Why Programs Fail: A Guide to Systematic Debugging — une référence de fond en génie logiciel sur le sujet.">
     <meta itemprop="wordCount" content="1876">
     <title>Techniques de débogage (1/2) :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788765660" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788765660" defer></script>
-    <script src="/420-515/js/search-lunr.min.js?1788765660" defer></script>
-    <script src="/420-515/js/search.min.js?1788765660" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788824106" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788824106" defer></script>
+    <script src="/420-515/js/search-lunr.js?1788824106" defer></script>
+    <script src="/420-515/js/search.js?1788824106" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1788765660";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788824106";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1788765660" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788765660" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1788765660" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1788765660" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788824106" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788824106" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788824106" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788824106" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788765660" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788765660" rel="stylesheet">
-    <link href="/420-515/css/theme.min.css?1788765660" rel="stylesheet">
-    <link href="/420-515/css/format-html.min.css?1788765660" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788824106" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788824106" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788824106" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1788824106" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1788824106" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
-      window.relearn.min = `.min`;
+      window.relearn.min = ``;
       window.relearn.path='\/semaine-2\/debogage\/index.html';
       window.relearn.relBasePath='..\/..';
       window.relearn.relBaseUri='..\/..\/..';
-      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
       window.relearn.disableAnchorCopy=false;
       window.relearn.disableAnchorScrolling=false;
       window.relearn.disableInlineCopyToClipboard=true;
@@ -152,8 +152,8 @@ manifeste.</li>
 <em>dynamique</em>) — selon ce qui est le plus rapide et le plus fiable dans votre situation.</li>
 <li><strong>Formuler et tester des hypothèses</strong> sur la cause réelle, jusqu&rsquo;à confirmation.</li>
 </ol>
-<p><a href="#R-image-fdf11ad2caaedf3a1876d6bd0a67168a" class="lightbox-link"><img alt="Démarche méthodique de débogage" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-2/debogage/images/demarche-debogage.svg" style=" height: auto; width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-fdf11ad2caaedf3a1876d6bd0a67168a"><img alt="Démarche méthodique de débogage" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-2/debogage/images/demarche-debogage.svg"></a></p>
+<p><a href="#R-image-2b940c69596611675239837dce46da7a" class="lightbox-link"><img alt="Démarche méthodique de débogage" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-2/debogage/images/demarche-debogage.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-2b940c69596611675239837dce46da7a"><img alt="Démarche méthodique de débogage" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-2/debogage/images/demarche-debogage.svg"></a></p>
 <hr>
 <h2 id="1-lire-la-pile-dappels-stack-trace">1️⃣ Lire la pile d&rsquo;appels (stack trace)</h2>
 <p>Quand une exception n&rsquo;est pas gérée, le programme affiche une <strong>pile d&rsquo;appels</strong> (stack trace) :
@@ -491,8 +491,8 @@ localisation des défauts.</li>
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1788765660" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788765660" defer></script>
-    <script src="/420-515/js/theme.min.js?1788765660" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788824106" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788824106" defer></script>
+    <script src="/420-515/js/theme.js?1788824106" defer></script>
   </body>
 </html>

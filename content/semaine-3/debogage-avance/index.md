@@ -137,6 +137,76 @@ public double calculerTotal(List<Item> items) {
 - En production, on configure typiquement `INFO` ou `WARN` — les lignes `debug()` restent dans le
   code, prêtes à être réactivées sans redéployer, mais n'encombrent pas les logs normalement.
 
+### Ajouter SLF4J au projet (`pom.xml`)
+
+Si votre projet est déjà un projet **Spring Boot**, SLF4J + Logback sont **déjà inclus
+automatiquement** (via `spring-boot-starter-web` ou tout autre starter) — rien à ajouter, l'import
+`org.slf4j.Logger` fonctionne directement.
+
+Pour un projet Java **sans** Spring Boot, ajoutez ces deux dépendances dans `pom.xml` (réinvestit
+la lecture de `pom.xml` vue plus haut cette semaine) :
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.13</version>
+    </dependency>
+    <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>1.5.6</version>
+    </dependency>
+</dependencies>
+```
+
+- `slf4j-api` : l'interface (`Logger`, `LoggerFactory`) utilisée dans votre code.
+- `logback-classic` : l'**implémentation** qui fait le travail réel (écrire dans la console, un
+  fichier, etc.) — SLF4J n'est qu'une façade, il faut toujours une implémentation derrière.
+
+### Rediriger les logs vers un fichier
+
+Par défaut, les logs s'affichent seulement dans la console. Pour les écrire **aussi** dans un
+fichier, ajoutez un fichier de configuration `src/main/resources/logback.xml` :
+
+```xml
+<configuration>
+    <appender name="FICHIER" class="ch.qos.logback.core.FileAppender">
+        <file>logs/application.log</file>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FICHIER" />
+    </root>
+</configuration>
+```
+
+Ce fichier crée (ou complète) `logs/application.log` à chaque démarrage, en plus d'afficher les
+mêmes logs dans la console — pratique pour consulter l'historique après coup, ou pour partager un
+extrait de log sans capture d'écran.
+
+> 💡 **Projet Spring Boot** : pas besoin de `logback.xml` pour un cas simple — ajoutez directement
+> dans `application.properties` :
+> ```properties
+> logging.level.root=INFO
+> logging.level.ca.cegepmv.legacy=DEBUG
+> logging.file.name=logs/application.log
+> ```
+> La deuxième ligne montre comment activer `DEBUG` **seulement** pour votre propre code (par
+> paquetage), en gardant les librairies tierces à `INFO` — évite d'être noyé sous des logs qui ne
+> vous concernent pas.
+
 <details>
 <summary>🤔 Testez-vous</summary>
 
@@ -200,23 +270,6 @@ Choisissez un fichier avec plusieurs commits d'historique. Simulez un `git bisec
 commit « bon » ancien et le commit actuel comme point de départ, puis parcourez manuellement (ou
 avec `git bisect start`) pour retrouver un commit précis où un comportement a changé.
 {{% /notice %}}
-
----
-
-## 📰 Actualité de l'industrie
-
-- **Débogage assisté par IA** : les IDE modernes (GitHub Copilot, IntelliJ AI Assistant) peuvent
-  maintenant expliquer une stack trace ou suggérer une hypothèse de cause directement dans la
-  session de débogage — un gain de temps, mais qui **remplace rarement** la nécessité de vérifier
-  l'hypothèse vous-même (elle peut se tromper avec assurance).
-- **Observabilité en production** : des outils comme **Sentry**, **Datadog** ou **New Relic**
-  appliquent la même logique « reproduire → isoler → hypothèse » à grande échelle, en capturant
-  automatiquement stack traces, variables et contexte au moment d'un crash en production — sans
-  breakpoint possible sur un serveur en direct.
-- Plusieurs études sur les pratiques de développement (dont le rapport *Developer Coefficient*,
-  Stripe, 2018) estiment qu'une part importante du temps des développeur·euse·s est consacrée à la
-  correction de bogues et de dette technique plutôt qu'à écrire du nouveau code — un rappel
-  concret de l'importance de maîtriser ces outils tôt dans votre formation.
 
 ---
 
