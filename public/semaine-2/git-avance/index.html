@@ -25,26 +25,26 @@
 🎬 Mise en situation Imaginez : vous et un coéquipier travaillez chacun sur une branche différente pour corriger deux bogues différents dans le même fichier. Vendredi 16h, vous voulez tout fusionner dans main avant la fin de semaine. Votre coéquipier a déjà poussé sa branche. Vous, vous avez 5 commits « oups », « correction », « oups2 », « ça devrait marcher », « non attends » sur votre branche.">
     <meta itemprop="wordCount" content="1227">
     <title>Git 2/2 — notions avancées :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788835986" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788835986" defer></script>
-    <script src="/420-515/js/search-lunr.min.js?1788835986" defer></script>
-    <script src="/420-515/js/search.min.js?1788835986" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788837676" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788837676" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1788837676" defer></script>
+    <script src="/420-515/js/search.min.js?1788837676" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1788835986";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788837676";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1788835986" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788835986" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1788835986" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1788835986" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788837676" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788837676" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788837676" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788837676" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788835986" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788835986" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788835986" rel="stylesheet">
-    <link href="/420-515/css/theme.min.css?1788835986" rel="stylesheet">
-    <link href="/420-515/css/format-html.min.css?1788835986" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788837676" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788837676" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788837676" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1788837676" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1788837676" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -212,10 +212,10 @@ ne produisent pas le même historique :</p>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># rebase : rejouer les commits d&#39;une branche par-dessus une autre</span>
 </span></span><span style="display:flex;"><span>git checkout ma-branche-travail
 </span></span><span style="display:flex;"><span>git rebase main</span></span></code></pre></div>
-<p><a href="#R-image-80ff247523127057034de11a601aa81c" class="lightbox-link"><img alt="Comparaison merge vs rebase" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/merge-vs-rebase.svg" style=" height: auto; width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-80ff247523127057034de11a601aa81c"><img alt="Comparaison merge vs rebase" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/merge-vs-rebase.svg"></a></p>
-<p><a href="#R-image-b44e32e45328d101efb4439f8172569c" class="lightbox-link"><img alt="Schéma d&rsquo;un rebase" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/gitrebase.svg" style=" height: auto; width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-b44e32e45328d101efb4439f8172569c"><img alt="Schéma d&rsquo;un rebase" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/gitrebase.svg"></a></p>
+<p><a href="#R-image-5c87415e58929e990898877bdcecb04f" class="lightbox-link"><img alt="Comparaison merge vs rebase" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/merge-vs-rebase.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-5c87415e58929e990898877bdcecb04f"><img alt="Comparaison merge vs rebase" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/merge-vs-rebase.svg"></a></p>
+<p><a href="#R-image-4440e0444def76e0835bd5893a12b8dc" class="lightbox-link"><img alt="Schéma d&rsquo;un rebase" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/gitrebase.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-4440e0444def76e0835bd5893a12b8dc"><img alt="Schéma d&rsquo;un rebase" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/gitrebase.svg"></a></p>
 <blockquote>
 <p>⚠️ <strong>Règle d&rsquo;or</strong> : ne jamais faire de rebase sur une branche que d&rsquo;autres personnes ont déjà
 récupérée (<code>pull</code>) — cela réécrit l&rsquo;historique et complique la vie de toute l&rsquo;équipe.</p>
@@ -313,8 +313,8 @@ désirés.</p>
 <div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git checkout main
 </span></span><span style="display:flex;"><span>git log --oneline ma-branche-travail   <span style="color:#75715e"># repérer le commit voulu</span>
 </span></span><span style="display:flex;"><span>git cherry-pick &lt;hash-du-commit&gt;</span></span></code></pre></div>
-<p><a href="#R-image-b5dfb6eb54a55c1e6cc854854cdd609e" class="lightbox-link"><img alt="Schéma du cherry-pick" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/cherry-pick.svg" style=" height: auto; width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-b5dfb6eb54a55c1e6cc854854cdd609e"><img alt="Schéma du cherry-pick" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/cherry-pick.svg"></a></p>
+<p><a href="#R-image-b2245b25314ddc41751fba1b8313ce53" class="lightbox-link"><img alt="Schéma du cherry-pick" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/cherry-pick.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-b2245b25314ddc41751fba1b8313ce53"><img alt="Schéma du cherry-pick" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-2/git-avance/images/cherry-pick.svg"></a></p>
 <hr>
 <h2 id="résolution-de-conflits-de-merge">Résolution de conflits de merge</h2>
 <h3 id="quand-survient-un-conflit">Quand survient un conflit</h3>
@@ -527,8 +527,8 @@ merge, ouvrir une Pull Request, comparer <code>merge</code>/<code>rebase</code>,
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1788835986" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788835986" defer></script>
-    <script src="/420-515/js/theme.min.js?1788835986" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788837676" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788837676" defer></script>
+    <script src="/420-515/js/theme.min.js?1788837676" defer></script>
   </body>
 </html>

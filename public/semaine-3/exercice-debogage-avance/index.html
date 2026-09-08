@@ -27,28 +27,28 @@
     <meta itemprop="description" content="🎯 Objectif Mettre en pratique, sur votre propre projet, les 4 outils vus dans Techniques de débogage (2/2) : débogueur pas à pas, breakpoint conditionnel, journalisation stratégique, bissection.
 👥 En équipe. Chaque partie peut être faite par une personne différente, puis partagée en équipe — l’objectif est que tout le monde ait manipulé chaque outil au moins une fois.
 🧩 Partie 1 — Débogueur pas à pas Choisissez une méthode de votre projet qui contient une boucle ou une condition non triviale. Posez un breakpoint au début de cette méthode, démarrez en mode Debug, et déclenchez-la réellement (appel API, test, ou exécution de l’application). Utilisez Step Over pour avancer ligne par ligne, et Step Into au moins une fois pour entrer dans une méthode appelée. Notez : une valeur de variable qui vous a surpris, et le nom exact de la classe concrète affichée par le débogueur si une interface est impliquée. 🎯 Partie 2 — Breakpoint conditionnel Repérez une collection ou une boucle qui traite plusieurs éléments (ex. une liste retournée par un endpoint, ou une boucle for sur un tableau). Posez un breakpoint conditionnel qui ne s’arrête que sur un élément précis (par identifiant, par une valeur nulle, ou par une valeur hors de l’intervalle attendu). Vérifiez que le programme s’exécute normalement jusqu’à ce cas précis, sans s’arrêter avant. ❓ QuestionPourquoi un breakpoint conditionnel est-il particulièrement utile pour un bogue qui ne se produit que sur certaines données, plutôt qu’un breakpoint classique ?">
-    <meta itemprop="wordCount" content="596">
+    <meta itemprop="wordCount" content="1393">
     <title>Exercice : outils de débogage :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788835986" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788835986" defer></script>
-    <script src="/420-515/js/search-lunr.min.js?1788835986" defer></script>
-    <script src="/420-515/js/search.min.js?1788835986" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788837676" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788837676" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1788837676" defer></script>
+    <script src="/420-515/js/search.min.js?1788837676" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1788835986";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1788837676";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1788835986" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788835986" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1788835986" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1788835986" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1788837676" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788837676" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1788837676" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1788837676" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788835986" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788835986" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788835986" rel="stylesheet">
-    <link href="/420-515/css/theme.min.css?1788835986" rel="stylesheet">
-    <link href="/420-515/css/format-html.min.css?1788835986" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788837676" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788837676" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788837676" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1788837676" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1788837676" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -203,6 +203,86 @@ commit exact où le comportement a changé.</p>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># ... jusqu&#39;au commit fautif</span>
 </span></span><span style="display:flex;"><span>git bisect reset</span></span></code></pre></div>
 <hr>
+<h2 id="-partie-5--chasse-aux-bogues-sur-le-projet-du-cours">🐛 Partie 5 — Chasse aux bogues sur le projet du cours</h2>
+<p>Comme dans un vrai emploi, le code hérité que vous maintenez cette session n&rsquo;est pas parfait —
+certains comportements ne correspondent pas à ce qui est documenté ou attendu. Voici quelques
+<strong>tickets de bogue</strong>, dans le format que vous recevriez en entreprise. C&rsquo;est l&rsquo;occasion de mettre en
+pratique les 4 outils ci-dessus sur du <strong>vrai code</strong>, pas un exemple simplifié.</p>
+<p>Choisissez <strong>au moins 2</strong> des tickets suivants, et pour chacun : (1) reproduisez le comportement
+décrit, (2) utilisez l&rsquo;outil suggéré pour confirmer votre hypothèse sur la cause exacte, (3)
+proposez un correctif, (4) vérifiez manuellement que le comportement est maintenant celui attendu.</p>
+<hr>
+<p><strong>🎫 Ticket #1 — Les visites d&rsquo;un animal ne s&rsquo;affichent pas dans le bon ordre</strong></p>
+<ul>
+<li><strong>Endpoint concerné</strong> : <code>GET /api/pets/{petId}</code> (ou tout endpoint qui retourne un <code>Pet</code> avec ses
+visites), pour un animal ayant <strong>plusieurs visites à des dates différentes</strong>.</li>
+<li><strong>Comportement attendu</strong> : la visite la <strong>plus récente</strong> apparaît en premier dans la liste
+<code>visits</code>.</li>
+<li><strong>Comportement observé</strong> : la visite la plus <strong>ancienne</strong> apparaît en premier.</li>
+<li><strong>Outil suggéré</strong> : Débogueur pas à pas — posez un breakpoint sur la méthode qui construit/trie
+cette liste, et inspectez son contenu juste avant de la retourner.</li>
+</ul>
+<p><strong>🎫 Ticket #2 — Un animal existant retourne une erreur 404 selon son identifiant</strong></p>
+<ul>
+<li><strong>Endpoint concerné</strong> : <code>GET /api/owners/{ownerId}/pets/{petId}</code>.</li>
+<li><strong>Comportement attendu</strong> : retourne <code>200 OK</code> avec les détails de l&rsquo;animal, pour n&rsquo;importe quel
+<code>petId</code> valide appartenant à cet <code>ownerId</code> (confirmé par ailleurs via <code>GET /api/pets/{petId}</code>
+qui, lui, retourne bien l&rsquo;animal).</li>
+<li><strong>Comportement observé</strong> : retourne <code>404 Not Found</code> pour certains <code>petId</code> valides — le problème
+semble lié à la <strong>valeur numérique</strong> de l&rsquo;identifiant plutôt qu&rsquo;à l&rsquo;animal lui-même.</li>
+<li><strong>Repro</strong> : créez suffisamment de nouveaux animaux (via <code>POST</code>) pour qu&rsquo;un <code>petId</code> dépasse une
+centaine, puis interrogez cet animal via l&rsquo;endpoint ci-dessus.</li>
+<li><strong>Outil suggéré</strong> : Breakpoint conditionnel — arrêtez-vous uniquement quand la comparaison entre
+deux identifiants retourne un résultat inattendu.</li>
+</ul>
+<p><strong>🎫 Ticket #3 — Le message d&rsquo;erreur sur l&rsquo;âge d&rsquo;un animal ne correspond pas à ce qui est réellement accepté</strong></p>
+<ul>
+<li><strong>Endpoint concerné</strong> : <code>POST /api/owners/{ownerId}/pets</code> (ou <code>PUT .../pets/{petId}</code>) avec un
+<code>birthDate</code> ancien.</li>
+<li><strong>Comportement attendu (d&rsquo;après le message d&rsquo;erreur affiché)</strong> : une date de naissance de plus de
+<strong>50 ans</strong> devrait être rejetée (<code>400 Bad Request</code>, message <em>&ldquo;Birth date cannot be older than 50
+years&rdquo;</em>).</li>
+<li><strong>Comportement observé</strong> : une date de naissance de, par exemple, 70 ans est <strong>acceptée</strong> sans
+erreur. Seule une date de plus de 100 ans est rejetée.</li>
+<li><strong>Outil suggéré</strong> : Débogueur pas à pas — posez un breakpoint dans la classe de validation
+concernée et inspectez la valeur limite réellement comparée.</li>
+</ul>
+<p><strong>🎫 Ticket #4 — Un nom vide est refusé pour un propriétaire, mais accepté pour un animal</strong></p>
+<ul>
+<li><strong>Endpoints concernés</strong> : <code>POST /api/owners</code> (création d&rsquo;un propriétaire) et
+<code>PUT /api/pets/{petId}</code> (mise à jour d&rsquo;un animal).</li>
+<li><strong>Comportement attendu</strong> : la même règle métier (« un nom ne doit pas être vide ») s&rsquo;applique de
+façon cohérente, peu importe l&rsquo;entité.</li>
+<li><strong>Comportement observé</strong> : envoyer un <code>firstName</code> (ou <code>lastName</code>) égal à une <strong>chaîne vide
+<code>&quot;&quot;</code></strong> à la création d&rsquo;un propriétaire est rejeté (<code>400 Bad Request</code>). Envoyer un <code>name</code> égal à
+une chaîne vide <strong><code>&quot;&quot;</code></strong> à la mise à jour d&rsquo;un animal est accepté sans erreur (<code>204 No Content</code>).</li>
+<li><strong>Outil suggéré</strong> : Journalisation — ajoutez un <code>logger.debug</code> dans chacune des deux méthodes de
+validation concernées (une dans le contrôleur des propriétaires, une dans celui des animaux)
+pour comparer précisément ce qu&rsquo;elles acceptent/rejettent.</li>
+</ul>
+<p><strong>🎫 Ticket #5 — La recherche de propriétaires par nom de famille échoue avec une apostrophe</strong></p>
+<ul>
+<li><strong>Endpoint concerné</strong> : <code>GET /api/owners?lastName=...</code>.</li>
+<li><strong>Pré-requis pour reproduire</strong> : ce ticket concerne l&rsquo;implémentation utilisée quand l&rsquo;application
+tourne avec le profil de dépôt <code>jpa</code> (voir <code>application.properties</code> :
+<code>spring.profiles.active=h2,jpa</code> au lieu de la configuration par défaut). Démarrez l&rsquo;application
+avec ce profil avant de tester.</li>
+<li><strong>Comportement attendu</strong> : retourne la liste des propriétaires dont le nom de famille commence
+par la valeur fournie (ou une liste vide s&rsquo;il n&rsquo;y en a aucun).</li>
+<li><strong>Comportement observé</strong> : avec une valeur contenant une apostrophe (ex. <code>O'Brien</code>), la requête
+échoue avec une erreur serveur (<code>500</code>) au lieu de retourner un résultat.</li>
+<li><strong>Outil suggéré</strong> : Débogueur pas à pas — arrêtez-vous juste avant l&rsquo;exécution de la requête et
+inspectez la chaîne de requête réellement construite avec cette valeur.</li>
+</ul>
+<hr>
+<p>Si un comportement vous semble avoir changé <strong>récemment</strong> sans que vous compreniez pourquoi (plutôt
+qu&rsquo;être un problème présent depuis toujours), essayez plutôt la <strong>bissection</strong> (<code>git bisect</code>) sur
+l&rsquo;historique du projet pour identifier le commit responsable.</p>
+<blockquote>
+<p>💡 Une fois un problème confirmé et corrigé, ouvrez une Pull Request avec une courte explication
+de la cause — exactement la démarche attendue en entreprise pour ce genre de correctif.</p>
+</blockquote>
+<hr>
 <h2 id="-auto-vérification">✅ Auto-vérification</h2>
 <ul>
 <li><input disabled="" type="checkbox"> J&rsquo;ai utilisé <em>Step Over</em> et <em>Step Into</em> au moins une fois chacun sur du vrai code.</li>
@@ -211,6 +291,8 @@ collection, sans m&rsquo;arrêter à chaque itération.</li>
 <li><input disabled="" type="checkbox"> J&rsquo;ai remplacé au moins un <code>println</code> par un appel de logger avec le bon niveau.</li>
 <li><input disabled="" type="checkbox"> J&rsquo;ai réduit un espace de recherche par bissection (code ou <code>git bisect</code>) jusqu&rsquo;à isoler une
 seule cause.</li>
+<li><input disabled="" type="checkbox"> J&rsquo;ai trouvé et corrigé au moins 2 problèmes réels du projet du cours en confirmant chaque
+hypothèse avec l&rsquo;outil de débogage approprié.</li>
 </ul>
 <blockquote>
 <p>💡 Gardez vos notes de cette pratique — elles pourront être utiles pour un travail pratique à
@@ -305,8 +387,8 @@ venir.</p>
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1788835986" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788835986" defer></script>
-    <script src="/420-515/js/theme.min.js?1788835986" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1788837676" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788837676" defer></script>
+    <script src="/420-515/js/theme.min.js?1788837676" defer></script>
   </body>
 </html>

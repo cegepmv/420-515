@@ -84,6 +84,88 @@ git bisect reset
 
 ---
 
+## 🐛 Partie 5 — Chasse aux bogues sur le projet du cours
+
+Comme dans un vrai emploi, le code hérité que vous maintenez cette session n'est pas parfait —
+certains comportements ne correspondent pas à ce qui est documenté ou attendu. Voici quelques
+**tickets de bogue**, dans le format que vous recevriez en entreprise. C'est l'occasion de mettre en
+pratique les 4 outils ci-dessus sur du **vrai code**, pas un exemple simplifié.
+
+Choisissez **au moins 2** des tickets suivants, et pour chacun : (1) reproduisez le comportement
+décrit, (2) utilisez l'outil suggéré pour confirmer votre hypothèse sur la cause exacte, (3)
+proposez un correctif, (4) vérifiez manuellement que le comportement est maintenant celui attendu.
+
+---
+
+**🎫 Ticket #1 — Les visites d'un animal ne s'affichent pas dans le bon ordre**
+- **Endpoint concerné** : `GET /api/pets/{petId}` (ou tout endpoint qui retourne un `Pet` avec ses
+  visites), pour un animal ayant **plusieurs visites à des dates différentes**.
+- **Comportement attendu** : la visite la **plus récente** apparaît en premier dans la liste
+  `visits`.
+- **Comportement observé** : la visite la plus **ancienne** apparaît en premier.
+- **Outil suggéré** : Débogueur pas à pas — posez un breakpoint sur la méthode qui construit/trie
+  cette liste, et inspectez son contenu juste avant de la retourner.
+
+**🎫 Ticket #2 — Un animal existant retourne une erreur 404 selon son identifiant**
+- **Endpoint concerné** : `GET /api/owners/{ownerId}/pets/{petId}`.
+- **Comportement attendu** : retourne `200 OK` avec les détails de l'animal, pour n'importe quel
+  `petId` valide appartenant à cet `ownerId` (confirmé par ailleurs via `GET /api/pets/{petId}`
+  qui, lui, retourne bien l'animal).
+- **Comportement observé** : retourne `404 Not Found` pour certains `petId` valides — le problème
+  semble lié à la **valeur numérique** de l'identifiant plutôt qu'à l'animal lui-même.
+- **Repro** : créez suffisamment de nouveaux animaux (via `POST`) pour qu'un `petId` dépasse une
+  centaine, puis interrogez cet animal via l'endpoint ci-dessus.
+- **Outil suggéré** : Breakpoint conditionnel — arrêtez-vous uniquement quand la comparaison entre
+  deux identifiants retourne un résultat inattendu.
+
+**🎫 Ticket #3 — Le message d'erreur sur l'âge d'un animal ne correspond pas à ce qui est réellement accepté**
+- **Endpoint concerné** : `POST /api/owners/{ownerId}/pets` (ou `PUT .../pets/{petId}`) avec un
+  `birthDate` ancien.
+- **Comportement attendu (d'après le message d'erreur affiché)** : une date de naissance de plus de
+  **50 ans** devrait être rejetée (`400 Bad Request`, message *"Birth date cannot be older than 50
+  years"*).
+- **Comportement observé** : une date de naissance de, par exemple, 70 ans est **acceptée** sans
+  erreur. Seule une date de plus de 100 ans est rejetée.
+- **Outil suggéré** : Débogueur pas à pas — posez un breakpoint dans la classe de validation
+  concernée et inspectez la valeur limite réellement comparée.
+
+**🎫 Ticket #4 — Un nom vide est refusé pour un propriétaire, mais accepté pour un animal**
+- **Endpoints concernés** : `POST /api/owners` (création d'un propriétaire) et
+  `PUT /api/pets/{petId}` (mise à jour d'un animal).
+- **Comportement attendu** : la même règle métier (« un nom ne doit pas être vide ») s'applique de
+  façon cohérente, peu importe l'entité.
+- **Comportement observé** : envoyer un `firstName` (ou `lastName`) égal à une **chaîne vide
+  `""`** à la création d'un propriétaire est rejeté (`400 Bad Request`). Envoyer un `name` égal à
+  une chaîne vide **`""`** à la mise à jour d'un animal est accepté sans erreur (`204 No
+  Content`).
+- **Outil suggéré** : Journalisation — ajoutez un `logger.debug` dans chacune des deux méthodes de
+  validation concernées (une dans le contrôleur des propriétaires, une dans celui des animaux)
+  pour comparer précisément ce qu'elles acceptent/rejettent.
+
+**🎫 Ticket #5 — La recherche de propriétaires par nom de famille échoue avec une apostrophe**
+- **Endpoint concerné** : `GET /api/owners?lastName=...`.
+- **Pré-requis pour reproduire** : ce ticket concerne l'implémentation utilisée quand l'application
+  tourne avec le profil de dépôt `jpa` (voir `application.properties` :
+  `spring.profiles.active=h2,jpa` au lieu de la configuration par défaut). Démarrez l'application
+  avec ce profil avant de tester.
+- **Comportement attendu** : retourne la liste des propriétaires dont le nom de famille commence
+  par la valeur fournie (ou une liste vide s'il n'y en a aucun).
+- **Comportement observé** : avec une valeur contenant une apostrophe (ex. `O'Brien`), la requête
+  échoue avec une erreur serveur (`500`) au lieu de retourner un résultat.
+- **Outil suggéré** : Débogueur pas à pas — arrêtez-vous juste avant l'exécution de la requête et
+  inspectez la chaîne de requête réellement construite avec cette valeur.
+
+---
+
+Si un comportement vous semble avoir changé **récemment** sans que vous compreniez pourquoi (plutôt
+qu'être un problème présent depuis toujours), essayez plutôt la **bissection** (`git bisect`) sur
+l'historique du projet pour identifier le commit responsable.
+
+> 💡 Une fois un problème confirmé et corrigé, ouvrez une Pull Request avec une courte explication
+> de la cause — exactement la démarche attendue en entreprise pour ce genre de correctif.
+
+---
+
 ## ✅ Auto-vérification
 
 - [ ] J'ai utilisé *Step Over* et *Step Into* au moins une fois chacun sur du vrai code.
@@ -92,6 +174,8 @@ git bisect reset
 - [ ] J'ai remplacé au moins un `println` par un appel de logger avec le bon niveau.
 - [ ] J'ai réduit un espace de recherche par bissection (code ou `git bisect`) jusqu'à isoler une
       seule cause.
+- [ ] J'ai trouvé et corrigé au moins 2 problèmes réels du projet du cours en confirmant chaque
+      hypothèse avec l'outil de débogage approprié.
 
 > 💡 Gardez vos notes de cette pratique — elles pourront être utiles pour un travail pratique à
 > venir.
