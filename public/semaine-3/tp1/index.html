@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="Inspiré du laboratoire Epic-1 du dépôt philipmvcegep/simple_website (https://github.com/philipmvcegep/simple_website/wiki/Epic-1), adapté pour réinvestir les notions de git et de lecture de code (semaines 1-2), ainsi que Maven et les techniques de débogage vues à la semaine 3 du cours 420-515.
+Mise en contexte Vous recevez un frontend React déjà fonctionnel (dossier frontend/) qui affiche une liste de personnes et permet de les filtrer avec une barre de recherche. Ce frontend a été écrit par quelqu’un d’autre : votre premier travail n’est pas d’écrire du code, mais de lire et comprendre du code que vous n’avez pas écrit — exactement la compétence pratiquée dans lecture de code (semaine 2). Ensuite, vous allez construire de A à Z le backend Spring Boot qui remplacera le mécanisme actuel (base de données SQLite chargée dans le navigateur) par une vraie API REST.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="TP1 — Recherche de personnes :: Maintenance de logiciel">
+    <meta name="twitter:description" content="Inspiré du laboratoire Epic-1 du dépôt philipmvcegep/simple_website (https://github.com/philipmvcegep/simple_website/wiki/Epic-1), adapté pour réinvestir les notions de git et de lecture de code (semaines 1-2), ainsi que Maven et les techniques de débogage vues à la semaine 3 du cours 420-515.
+Mise en contexte Vous recevez un frontend React déjà fonctionnel (dossier frontend/) qui affiche une liste de personnes et permet de les filtrer avec une barre de recherche. Ce frontend a été écrit par quelqu’un d’autre : votre premier travail n’est pas d’écrire du code, mais de lire et comprendre du code que vous n’avez pas écrit — exactement la compétence pratiquée dans lecture de code (semaine 2). Ensuite, vous allez construire de A à Z le backend Spring Boot qui remplacera le mécanisme actuel (base de données SQLite chargée dans le navigateur) par une vraie API REST.">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-3/tp1/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="TP1 — Recherche de personnes :: Maintenance de logiciel">
+    <meta property="og:description" content="Inspiré du laboratoire Epic-1 du dépôt philipmvcegep/simple_website (https://github.com/philipmvcegep/simple_website/wiki/Epic-1), adapté pour réinvestir les notions de git et de lecture de code (semaines 1-2), ainsi que Maven et les techniques de débogage vues à la semaine 3 du cours 420-515.
+Mise en contexte Vous recevez un frontend React déjà fonctionnel (dossier frontend/) qui affiche une liste de personnes et permet de les filtrer avec une barre de recherche. Ce frontend a été écrit par quelqu’un d’autre : votre premier travail n’est pas d’écrire du code, mais de lire et comprendre du code que vous n’avez pas écrit — exactement la compétence pratiquée dans lecture de code (semaine 2). Ensuite, vous allez construire de A à Z le backend Spring Boot qui remplacera le mécanisme actuel (base de données SQLite chargée dans le navigateur) par une vraie API REST.">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 3 — Débogage outillé et Maven">
+    <meta itemprop="name" content="TP1 — Recherche de personnes :: Maintenance de logiciel">
+    <meta itemprop="description" content="Inspiré du laboratoire Epic-1 du dépôt philipmvcegep/simple_website (https://github.com/philipmvcegep/simple_website/wiki/Epic-1), adapté pour réinvestir les notions de git et de lecture de code (semaines 1-2), ainsi que Maven et les techniques de débogage vues à la semaine 3 du cours 420-515.
+Mise en contexte Vous recevez un frontend React déjà fonctionnel (dossier frontend/) qui affiche une liste de personnes et permet de les filtrer avec une barre de recherche. Ce frontend a été écrit par quelqu’un d’autre : votre premier travail n’est pas d’écrire du code, mais de lire et comprendre du code que vous n’avez pas écrit — exactement la compétence pratiquée dans lecture de code (semaine 2). Ensuite, vous allez construire de A à Z le backend Spring Boot qui remplacera le mécanisme actuel (base de données SQLite chargée dans le navigateur) par une vraie API REST.">
+    <meta itemprop="wordCount" content="1859">
+    <title>TP1 — Recherche de personnes :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1789365893" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1789365893" defer></script>
+    <script src="/420-515/js/search-lunr.js?1789365893" defer></script>
+    <script src="/420-515/js/search.js?1789365893" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1789365893";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1789365893" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1789365893" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1789365893" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1789365893" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789365893" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789365893" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1789365893" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1789365893" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1789365893" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = ``;
+      window.relearn.path='\/semaine-3\/tp1\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-3/tp1/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-3/index.html"><span itemprop="name">Semaine 3 — Débogage outillé et Maven</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">TP1 — Recherche de personnes</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-3" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="tp1--recherche-de-personnes">TP1 — Recherche de personnes</h1>
+
+<blockquote>
+<p>Inspiré du laboratoire <em>Epic-1</em> du dépôt <code>philipmvcegep/simple_website</code>
+(<a href="https://github.com/philipmvcegep/simple_website/wiki/Epic-1)" rel="external" target="_blank">https://github.com/philipmvcegep/simple_website/wiki/Epic-1)</a>, adapté pour réinvestir les
+notions de <strong>git</strong> et de <strong>lecture de code</strong> (semaines 1-2), ainsi que <strong>Maven</strong> et les
+<strong>techniques de débogage</strong> vues à la semaine 3 du cours 420-515.</p>
+</blockquote>
+<h2 id="mise-en-contexte">Mise en contexte</h2>
+<p>Vous recevez un <strong>frontend React déjà fonctionnel</strong> (dossier <code>frontend/</code>) qui affiche une liste de
+personnes et permet de les filtrer avec une barre de recherche. Ce frontend a été écrit par
+quelqu&rsquo;un d&rsquo;autre : votre premier travail n&rsquo;est pas d&rsquo;écrire du code, mais de <strong>lire et comprendre
+du code que vous n&rsquo;avez pas écrit</strong> — exactement la compétence pratiquée dans
+<a href="/420-515/semaine-2/lecture-de-code/">lecture de code</a> (semaine 2). Ensuite, vous allez
+construire de A à Z le backend Spring Boot qui remplacera le mécanisme actuel (base de données
+SQLite chargée dans le navigateur) par une vraie API REST.</p>
+<blockquote>
+<p>⚠️ <strong>Important</strong> : le dépôt qui vous est remis contient <strong>uniquement</strong> le dossier <code>frontend/</code>.
+Il n&rsquo;y a <strong>aucun dossier <code>backend/</code> fourni</strong> — ni scaffold, ni squelette, ni <code>pom.xml</code> de départ.
+Vous devez créer le backend <strong>de A à Z</strong> vous-mêmes, à partir de
+<a href="https://start.spring.io/" rel="external" target="_blank">start.spring.io</a>.</p>
+</blockquote>
+<h2 id="équipes">Équipes</h2>
+<p>Équipes de 2 à 3 personnes.</p>
+<h2 id="livrables-et-pondération-10-">Livrables et pondération (10 %)</h2>
+<table>
+	<thead>
+			<tr>
+					<th>Critère</th>
+					<th>Pondération</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Le frontend affiche et filtre des données provenant de <strong>votre</strong> API Spring Boot (et non plus de sql.js)</td>
+					<td>27 %</td>
+			</tr>
+			<tr>
+					<td>Historique Git : commits atomiques, branches <code>feature/*</code>, au moins une Pull Request avec revue croisée entre équipes</td>
+					<td>27 %</td>
+			</tr>
+			<tr>
+					<td>Réponses écrites aux questions de lecture de code (section « Étape 0 »)</td>
+					<td>12 %</td>
+			</tr>
+			<tr>
+					<td>Maven : <code>pom.xml</code> enrichi et documenté (Étape 2bis)</td>
+					<td>12 %</td>
+			</tr>
+			<tr>
+					<td>Débogage : bogue diagnostiqué et corrigé à l&rsquo;aide des techniques de la semaine 3, démarche documentée (Étape 3bis)</td>
+					<td>17 %</td>
+			</tr>
+			<tr>
+					<td>Swagger/OpenAPI généré et fonctionnel, et persistance réelle des écritures dans <code>people.csv</code> (Étape 3ter)</td>
+					<td>5 %</td>
+			</tr>
+			<tr>
+					<td><strong>Bonus</strong> — Tests automatisés sur au moins un endpoint (capture d&rsquo;écran des tests passants à joindre à la PR)</td>
+					<td>+ 5 %</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>Les tests automatisés (<code>@WebMvcTest</code>/<code>@SpringBootTest</code>) ne sont <strong>pas encore vus au moment de ce
+TP</strong> — ils sont donc <strong>facultatifs et bonifiés</strong> (jusqu&rsquo;à +5 %), pas une exigence de base.</p>
+</blockquote>
+<p>Remise : PR ouverte sur <code>main</code> (via <code>release/*</code>) + capture d&rsquo;écran des tests qui passent (si vous
+en avez fait), avant la date indiquée sur le plan de cours.</p>
+<hr>
+<h2 id="étape-0--lire-le-frontend-avant-dy-toucher">Étape 0 — Lire le frontend avant d&rsquo;y toucher</h2>
+<p>Avant d&rsquo;écrire une seule ligne de backend, explorez <code>frontend/</code> en équipe et répondez par écrit
+(dans un fichier <code>NOTES-LECTURE.md</code> à la racine de votre dépôt) aux questions suivantes. Utilisez
+les stratégies vues en semaine 2 :</p>
+<ol>
+<li><strong>Stratégie descendante (top-down)</strong> : ouvrez <code>src/App.jsx</code>. Quel est le point d&rsquo;entrée visuel
+(le composant racine) ? Quelle fonction est appelée au chargement de la page (<code>useEffect</code>) et
+que fait-elle ?</li>
+<li><strong>Stratégie ascendante (bottom-up)</strong> : ouvrez <code>src/db.js</code> et <code>src/utils/search.js</code>
+indépendamment, <strong>avant</strong> de relire <code>App.jsx</code>. Qu&rsquo;est-ce que <code>loadDatabaseFromCSV</code> construit
+exactement ? Qu&rsquo;est-ce que <code>searchPeople</code> retourne ? Assemblez ensuite mentalement le tout —
+est-ce cohérent avec votre lecture descendante ?</li>
+<li><strong>Repères (« beacons », Brooks 1983)</strong> : quels mots-clés dans le code vous ont permis de
+deviner rapidement qu&rsquo;il s&rsquo;agissait d&rsquo;une recherche par préfixe (<code>LIKE '...%'</code>) plutôt qu&rsquo;une
+recherche par sous-chaîne (<code>LIKE '%...%'</code>) ? Citez la ligne exacte.</li>
+<li><strong>Données</strong> : d&rsquo;où viennent les données affichées (<code>public/data/people.csv</code>) ? Combien de
+colonnes, combien de lignes ?</li>
+<li><strong>Point d&rsquo;accroche pour le futur backend</strong> : la fonction <code>searchPeople</code> dans
+<code>src/utils/search.js</code> est celle que vous devrez <strong>remplacer</strong>. Sans encore coder, écrivez en
+français ce que devra faire son équivalent côté backend (méthode HTTP, chemin, paramètre de
+requête, forme de la réponse JSON attendue).</li>
+</ol>
+<h2 id="étape-1--mettre-en-place-le-dépôt-et-le-flux-git">Étape 1 — Mettre en place le dépôt et le flux Git</h2>
+<p>Ce TP suit <strong>Git Flow</strong> (comme dans l&rsquo;exercice
+<a href="/420-515/semaine-2/exercice-git-avance/">git avancé</a>, avec une branche <code>release/*</code>) :</p>
+<ul>
+<li><code>main</code> : toujours déployable, ne contient que du code fusionné depuis <code>release/*</code>. C&rsquo;est <strong>la
+seule branche corrigée par l&rsquo;enseignant</strong> — ce qui s&rsquo;y trouve doit être final.</li>
+<li><code>release/*</code> : branche de stabilisation créée à partir de <code>develop</code> lorsque les fonctionnalités
+visées sont prêtes ; sert à finaliser (tests, corrections mineures) avant la fusion vers <code>main</code>.</li>
+<li><code>develop</code> : intégration des fonctionnalités, ne contient que du code fusionné depuis des
+branches <code>feature/*</code>.</li>
+<li><code>feature/&lt;nom-court&gt;</code> : une branche par fonctionnalité ci-dessous, créée à partir de <code>develop</code>.</li>
+</ul>
+<p>Chaque fonctionnalité doit être livrée par une <strong>Pull Request</strong> de <code>feature/*</code> vers <code>develop</code>,
+relue par l&rsquo;autre équipe qui vous sera assignée (revue croisée, comme dans l&rsquo;exercice git avancé).
+Une fois <code>develop</code> prêt, ouvrez une Pull Request <code>develop</code> → <code>release/*</code>, puis, après validation,
+une dernière Pull Request <code>release/*</code> → <code>main</code>.</p>
+<blockquote>
+<p>🔒 <strong>Push direct interdit sur <code>main</code>, <code>release/*</code> et <code>develop</code></strong> : le dépôt est protégé par une
+<em>ruleset</em> GitHub qui <strong>bloque tout push direct</strong> sur ces trois branches — tout changement doit
+obligatoirement passer par une Pull Request (avec au moins une revue approuvée avant fusion). Si
+votre push est rejeté, c&rsquo;est normal : créez une branche <code>feature/*</code> (ou <code>release/*</code> selon
+l&rsquo;étape) et ouvrez une Pull Request. Ceci n&rsquo;est pas une contrainte technique arbitraire — c&rsquo;est
+le même mécanisme utilisé en entreprise pour éviter qu&rsquo;un changement non relu ou non finalisé
+casse la branche principale.</p>
+</blockquote>
+<h2 id="étape-2--créer-le-backend-spring-boot">Étape 2 — Créer le backend Spring Boot</h2>
+<ol>
+<li>Générez un projet Spring Boot via <a href="https://start.spring.io/" rel="external" target="_blank">start.spring.io</a> (dépendances :
+<code>Spring Web</code>, <code>Validation</code>) dans un dossier <code>backend/</code> à la racine du dépôt.</li>
+<li>Créez un enregistrement (<code>record</code> ou classe) <code>Person</code> avec les champs du CSV : <code>id</code>,
+<code>firstName</code>, <code>lastName</code>, <code>email</code>, <code>gender</code>.</li>
+<li>Chargez les données de <code>frontend/public/data/people.csv</code> en mémoire au démarrage de
+l&rsquo;application (liste en mémoire, pas de base de données pour ce TP — gardez ça simple, comme le
+prescrit KISS).</li>
+</ol>
+<blockquote>
+<p>📌 Cette liste en mémoire n&rsquo;est qu&rsquo;un point de départ : à l&rsquo;Étape 3ter, vous devrez <strong>aussi
+réécrire le fichier CSV</strong> à chaque <code>POST</code>/<code>PUT</code>/<code>DELETE</code>, pour que les données persistent
+réellement comme si vous aviez une vraie base de données.</p>
+</blockquote>
+<h2 id="étape-2bis--explorer-et-enrichir-le-pomxml">Étape 2bis — Explorer et enrichir le <code>pom.xml</code></h2>
+<p>Avant d&rsquo;implémenter les endpoints, prenez cinq minutes pour ouvrir le <code>pom.xml</code> généré par
+start.spring.io et répondez par écrit (ajoutez ces réponses à <code>NOTES-LECTURE.md</code>) :</p>
+<ol>
+<li>Combien de <code>&lt;dependency&gt;</code> avez-vous, et à quoi sert chacune (regardez le <code>artifactId</code>) ?</li>
+<li>Lancez <code>mvn dependency:tree</code> à la racine de <code>backend/</code>. Repérez une dépendance <strong>transitive</strong>
+(introduite indirectement par <code>spring-boot-starter-web</code> ou <code>spring-boot-starter-validation</code>) et
+notez laquelle.</li>
+<li><strong>Ajoutez une dépendance</strong> utile pour lire le CSV proprement (ex.
+<code>org.apache.commons:commons-csv</code>, ou toute librairie équivalente de votre choix) avec le bon
+<code>scope</code>, puis relancez <code>mvn dependency:tree</code> pour confirmer qu&rsquo;elle est bien intégrée.</li>
+<li>Notez, en une phrase, ce que fait la commande <code>mvn clean package</code> que ne fait pas <code>mvn package</code>
+seul (revoir la phase <code>clean</code> du cycle de vie Maven vue en semaine 3 dans les notes de cours
+<a href="/420-515/semaine-3/maven/">Maven (1/2)</a>).</li>
+</ol>
+<h2 id="étape-3--endpoints-rest">Étape 3 — Endpoints REST</h2>
+<p>Implémentez, un par un, chacun dans sa propre branche <code>feature/*</code> :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Méthode</th>
+					<th>Endpoint</th>
+					<th>Comportement</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>GET</code></td>
+					<td><code>/api/persons</code></td>
+					<td>retourne toutes les personnes</td>
+			</tr>
+			<tr>
+					<td><code>GET</code></td>
+					<td><code>/api/persons/search?q=...</code></td>
+					<td>retourne les personnes dont le prénom, nom, email <strong>ou</strong> genre commence par <code>q</code> (reproduit <code>searchPeople</code>)</td>
+			</tr>
+			<tr>
+					<td><code>POST</code></td>
+					<td><code>/api/persons</code></td>
+					<td>ajoute une personne (corps JSON)</td>
+			</tr>
+			<tr>
+					<td><code>PUT</code></td>
+					<td><code>/api/persons/{id}</code></td>
+					<td>modifie une personne existante</td>
+			</tr>
+			<tr>
+					<td><code>DELETE</code></td>
+					<td><code>/api/persons/{id}</code></td>
+					<td>supprime une personne</td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>Bonus (facultatif)</strong> : la notion de test automatisé n&rsquo;est pas encore vue au moment de ce TP,
+donc aucun test n&rsquo;est exigé. Si vous voulez tenter l&rsquo;exercice, un test (<code>@WebMvcTest</code> ou
+<code>@SpringBootTest</code>) qui vérifie le cas de succès d&rsquo;au moins un endpoint, avec capture d&rsquo;écran des
+tests passants jointe à votre PR finale, rapporte jusqu&rsquo;à +5 % (voir la section « Livrables et
+pondération »).</p>
+<blockquote>
+<p>⚠️ <strong>Point d&rsquo;attention</strong> : <code>searchPeople</code> (voir Étape 0, question 5) compare tout en minuscules
+(<code>lower(...)</code>) des deux côtés, et matche un <strong>préfixe</strong> (<code>LIKE '...%'</code>), pas une sous-chaîne
+quelconque. En traduisant cette logique en Java, il est facile d&rsquo;introduire par erreur une
+recherche sensible à la casse, ou une recherche par sous-chaîne au lieu d&rsquo;un préfixe. Vous en
+aurez besoin à l&rsquo;étape suivante.</p>
+</blockquote>
+<h2 id="étape-3ter--documenter-lapi-avec-swagger-et-rendre-les-écritures-persistantes">Étape 3ter — Documenter l&rsquo;API avec Swagger et rendre les écritures persistantes</h2>
+<ol>
+<li>Ajoutez la dépendance <code>springdoc-openapi-starter-webmvc-ui</code> (Swagger) à votre <code>pom.xml</code>, puis
+vérifiez que <code>/swagger-ui/index.html</code> et <code>/v3/api-docs</code> répondent correctement une fois
+l&rsquo;application démarrée.</li>
+<li>Ajoutez des annotations <code>@Tag</code>/<code>@Operation</code> (ou équivalent) sur votre contrôleur pour que chaque
+endpoint soit clairement documenté dans Swagger (méthode, paramètres, réponses possibles).</li>
+<li><strong>Persistance réelle</strong> : jusqu&rsquo;ici, <code>POST</code>/<code>PUT</code>/<code>DELETE</code> ne modifient que la liste en mémoire —
+si vous redémarrez l&rsquo;application, vos changements disparaissent. À partir de maintenant,
+<strong>chaque appel <code>POST</code>/<code>PUT</code>/<code>DELETE</code></strong> (que ce soit depuis le frontend <strong>ou</strong> depuis
+l&rsquo;interface Swagger) doit aussi <strong>réécrire le fichier <code>people.csv</code></strong> sur disque, pour que les
+données survivent à un redémarrage — exactement comme le ferait une vraie base de données.
+Testez ceci en équipe : faites un appel <code>POST</code> ou <code>DELETE</code> via Swagger, redémarrez
+l&rsquo;application, et confirmez avec <code>GET /api/persons</code> que le changement est toujours là.</li>
+</ol>
+<h2 id="étape-3bis--diagnostiquer-un-comportement-inattendu">Étape 3bis — Diagnostiquer un comportement inattendu</h2>
+<p>Une fois <code>/api/persons/search</code> implémenté, testez-le manuellement (ou en équipe croisée, testez
+celui d&rsquo;une autre équipe) avec des requêtes qui mélangent les majuscules (ex. <code>q=MAR</code>) et des
+requêtes qui ne devraient <strong>pas</strong> matcher un résultat au milieu d&rsquo;un mot (ex. <code>q=aria</code> ne devrait
+rien retourner pour « Maria », puisque la recherche est par préfixe).</p>
+<ul>
+<li>S&rsquo;il y a un écart entre le comportement observé et le comportement attendu (défini à l&rsquo;Étape 0,
+question 5), <strong>utilisez le débogueur pas à pas</strong> (breakpoint dans la méthode du contrôleur ou du
+service concerné, inspection des variables) pour localiser précisément où le comportement
+diverge — ne devinez pas, observez. Voir les notes de cours
+<a href="/420-515/semaine-3/debogage-avance/">Techniques de débogage (2/2)</a>.</li>
+<li>Si aucun écart n&rsquo;apparaît spontanément, <strong>introduisez-en un intentionnellement</strong> (ex. remplacez
+temporairement une comparaison insensible à la casse par une comparaison sensible à la casse),
+puis pratiquez la même démarche de diagnostic pour le retrouver et le corriger.</li>
+<li>Remplacez tout <code>System.out.println</code> de débogage temporaire par un <strong>logger SLF4J</strong>
+(<code>LoggerFactory.getLogger(...)</code>) au niveau <code>debug</code>, comme vu en semaine 3 — aucun <code>println</code> ne
+doit rester dans le code remis.</li>
+<li><strong>Les logs doivent aussi être écrits dans un fichier</strong>, pas seulement dans la console :
+configurez <code>logging.file.name</code> (ex. <code>logging.file.name=logs/backend.log</code>) dans
+<code>application.properties</code>. Le dossier <code>logs/</code> doit être ignoré par Git (ajoutez-le à
+<code>.gitignore</code>) — ce n&rsquo;est pas un artefact à committer, mais vous devez pouvoir montrer le fichier
+généré (ex. capture d&rsquo;écran ou extrait) comme preuve de votre démarche de débogage.</li>
+</ul>
+<p><strong>Livrable</strong> : un court paragraphe dans un fichier <code>NOTES-DEBOGAGE.md</code> à la racine du dépôt,
+décrivant (1) le comportement observé vs attendu, (2) l&rsquo;hypothèse de départ, (3) l&rsquo;outil utilisé
+pour confirmer (débogueur et/ou logs) et (4) la correction apportée. Une capture d&rsquo;écran de la
+session de débogage (variables inspectées, ou extrait de logs) est un plus mais n&rsquo;est pas
+obligatoire.</p>
+<h2 id="étape-4--reconnecter-le-frontend">Étape 4 — Reconnecter le frontend</h2>
+<p>Modifiez <code>frontend/src/App.jsx</code> (et supprimez <code>src/db.js</code>, <code>src/utils/search.js</code> qui deviennent
+inutiles) pour que la recherche appelle <code>GET http://localhost:8080/api/persons/search?q=...</code> via
+<code>fetch</code> au lieu d&rsquo;interroger une base sql.js locale. Le tableau affiché doit rester identique du
+point de vue de l&rsquo;utilisateur.</p>
+<h2 id="étape-5-optionnelle-bonus--crud-dans-linterface">Étape 5 (optionnelle, bonus) — CRUD dans l&rsquo;interface</h2>
+<p>Ajoutez un formulaire simple pour créer/modifier/supprimer une personne depuis l&rsquo;interface,
+branché sur les endpoints <code>POST</code>/<code>PUT</code>/<code>DELETE</code>.</p>
+<hr>
+<h2 id="rappel--ce-nest-pas-un-projet-à-partir-de-rien">Rappel : ce n&rsquo;est pas un projet à partir de rien</h2>
+<p>Le frontend fourni est un point de départ <strong>volontairement imparfait et non documenté</strong> — c&rsquo;est
+voulu : en entreprise, vous hériterez souvent de code sans documentation. L&rsquo;étape 0 (lecture de
+code) n&rsquo;est pas une formalité, elle sera évaluée.</p>
+<blockquote>
+<p>📌 Le dépôt de départ (frontend uniquement) vous sera fourni séparément par l&rsquo;enseignant·e, qui
+précisera aussi la date de remise exacte.</p>
+</blockquote>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu">
+            <li class="" data-nav-id="/420-515/semaine-3/debogage-avance/index.html"><a class="padding" href="/420-515/semaine-3/debogage-avance/index.html">Techniques de débogage (2/2)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-3/exercice-debogage-avance/index.html"><a class="padding" href="/420-515/semaine-3/exercice-debogage-avance/index.html">Exercice : outils de débogage</a></li>
+            <li class="" data-nav-id="/420-515/semaine-3/maven/index.html"><a class="padding" href="/420-515/semaine-3/maven/index.html">Maven (1/2) — pom.xml, dépendances, plugins</a></li>
+            <li class="" data-nav-id="/420-515/semaine-3/exercice-maven/index.html"><a class="padding" href="/420-515/semaine-3/exercice-maven/index.html">Exercice : manipuler pom.xml</a></li>
+            <li class="active " data-nav-id="/420-515/semaine-3/tp1/index.html"><a class="padding" href="/420-515/semaine-3/tp1/index.html">TP1 — Recherche de personnes</a></li></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-4/index.html"><a class="padding" href="/420-515/semaine-4/index.html">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</a><ul id="R-subsections-0a04879d58004f2299c8e47c33299b68" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/travaux-pratiques/index.html"><a class="padding" href="/420-515/travaux-pratiques/index.html">Travaux pratiques</a><ul id="R-subsections-c1e93d49a1f2eb51f4bd0d7e2aee081f" class="collapsible-menu"></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1789365893" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1789365893" defer></script>
+    <script src="/420-515/js/theme.js?1789365893" defer></script>
+  </body>
+</html>

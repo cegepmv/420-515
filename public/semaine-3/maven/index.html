@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
-  <head>
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="generator" content="Hugo 0.165.0">
@@ -12,7 +12,7 @@
     <meta name="twitter:title" content="Maven (1/2) — pom.xml, dépendances, plugins :: Maintenance de logiciel">
     <meta name="twitter:description" content="Pourquoi un outil de build ? Compiler, gérer les librairies externes et empaqueter un projet Java « à la main » devient vite ingérable : chaque librairie a ses propres dépendances (dépendances transitives), parfois en conflit de version entre elles. Maven standardise tout ça avec un fichier de configuration unique — pom.xml — et une convention commune, reconnue dans la quasi-totalité des projets Java d’entreprise.
 1️⃣ Anatomie du pom.xml Exemple — extrait réel du pom.xml de spring-petclinic-rest (le projet utilisé dans ce cours) :">
-    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-3/maven/index.html">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-3/maven/index.html">
     <meta property="og:site_name" content="Maintenance de logiciel">
     <meta property="og:title" content="Maven (1/2) — pom.xml, dépendances, plugins :: Maintenance de logiciel">
     <meta property="og:description" content="Pourquoi un outil de build ? Compiler, gérer les librairies externes et empaqueter un projet Java « à la main » devient vite ingérable : chaque librairie a ses propres dépendances (dépendances transitives), parfois en conflit de version entre elles. Maven standardise tout ça avec un fichier de configuration unique — pom.xml — et une convention commune, reconnue dans la quasi-totalité des projets Java d’entreprise.
@@ -23,36 +23,36 @@
     <meta itemprop="name" content="Maven (1/2) — pom.xml, dépendances, plugins :: Maintenance de logiciel">
     <meta itemprop="description" content="Pourquoi un outil de build ? Compiler, gérer les librairies externes et empaqueter un projet Java « à la main » devient vite ingérable : chaque librairie a ses propres dépendances (dépendances transitives), parfois en conflit de version entre elles. Maven standardise tout ça avec un fichier de configuration unique — pom.xml — et une convention commune, reconnue dans la quasi-totalité des projets Java d’entreprise.
 1️⃣ Anatomie du pom.xml Exemple — extrait réel du pom.xml de spring-petclinic-rest (le projet utilisé dans ce cours) :">
-    <meta itemprop="wordCount" content="1340">
+    <meta itemprop="wordCount" content="1664">
     <title>Maven (1/2) — pom.xml, dépendances, plugins :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1788841018" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1788841018" defer></script>
-    <script src="/420-515/js/search-lunr.min.js?1788841018" defer></script>
-    <script src="/420-515/js/search.min.js?1788841018" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1789362725" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1789362725" defer></script>
+    <script src="/420-515/js/search-lunr.js?1789362725" defer></script>
+    <script src="/420-515/js/search.js?1789362725" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1788841018";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1789362725";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1788841018" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1788841018" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1788841018" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1788841018" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1789362725" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1789362725" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1789362725" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1789362725" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788841018" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1788841018" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1788841018" rel="stylesheet">
-    <link href="/420-515/css/theme.min.css?1788841018" rel="stylesheet">
-    <link href="/420-515/css/format-html.min.css?1788841018" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789362725" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789362725" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1789362725" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1789362725" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1789362725" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
-      window.relearn.min = `.min`;
+      window.relearn.min = ``;
       window.relearn.path='\/semaine-3\/maven\/index.html';
       window.relearn.relBasePath='..\/..';
       window.relearn.relBaseUri='..\/..\/..';
-      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
       window.relearn.disableAnchorCopy=false;
       window.relearn.disableAnchorScrolling=false;
       window.relearn.disableInlineCopyToClipboard=true;
@@ -367,10 +367,17 @@ version déclarée le plus près de votre propre <code>pom.xml</code> l&rsquo;em
 [INFO] +- org.postgresql:postgresql:jar:42.7.11:runtime
 [INFO] \- org.springframework.data:spring-data-jdbc-core:jar:1.2.1.RELEASE:compile
 [INFO]    \- (org.springframework:* omitted : exclu explicitement par le pom.xml)</code></pre></div>
-<p>Le dernier bloc illustre une <strong>exclusion explicite</strong> : <code>spring-data-jdbc-core</code> dépend
-transitivement de plusieurs artefacts <code>org.springframework:*</code>, mais le <code>pom.xml</code> du projet les
-exclut délibérément (via <code>&lt;exclusions&gt;</code>) pour éviter qu&rsquo;ils entrent en conflit avec les versions
-déjà imposées par <code>spring-boot-starter-parent</code> :</p>
+<p>Le dernier bloc illustre une <strong>exclusion explicite</strong>. <code>spring-data-jdbc-core</code> est une librairie
+assez ancienne (version <code>1.2.1.RELEASE</code>) : elle a besoin, pour fonctionner, de plusieurs morceaux
+de Spring (<code>spring-core</code>, <code>spring-context</code>, etc.) — mais dans des versions <strong>beaucoup plus vieilles</strong>
+que celles utilisées par le reste du projet (Spring Boot 4.1.0, bien plus récent). Si on laissait
+ces vieilles versions s&rsquo;ajouter au projet, on se retrouverait avec deux versions différentes de
+Spring en même temps dans le classpath, ce qui peut causer des erreurs difficiles à diagnostiquer
+au démarrage ou à l&rsquo;exécution.</p>
+<p>Le <code>pom.xml</code> du projet règle ça en excluant <strong>toutes</strong> les dépendances transitives
+<code>org.springframework:*</code> que <code>spring-data-jdbc-core</code> voudrait apporter avec lui — le projet utilise
+déjà les bonnes versions de Spring, imposées par <code>spring-boot-starter-parent</code>, donc on n&rsquo;a pas
+besoin des siennes :</p>
 <div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;dependency&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.data<span style="color:#f92672">&lt;/groupId&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-data-jdbc-core<span style="color:#f92672">&lt;/artifactId&gt;</span>
@@ -382,9 +389,32 @@ déjà imposées par <code>spring-boot-starter-parent</code> :</p>
 </span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/exclusion&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/exclusions&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/dependency&gt;</span></span></span></code></pre></div>
+<blockquote>
+<p>💡 Analogie : c&rsquo;est comme installer une extension qui demande une vieille version d&rsquo;une
+librairie que vous avez déjà en version plus récente — on lui dit « utilise celle qui est déjà
+là, ignore la tienne ».</p>
+</blockquote>
+<blockquote>
+<p>⚠️ <strong>Cette exclusion n&rsquo;est pas sans risque.</strong> Elle règle <em>quelle version</em> de Spring se retrouve
+sur le classpath, mais elle ne garantit pas que le code déjà compilé de <code>spring-data-jdbc-core</code>
+(contre une vieille version de Spring) reste compatible avec les classes plus récentes qu&rsquo;on lui
+impose maintenant. Si ce vieux code appelait une méthode qui a été renommée ou supprimée entre
+temps, l&rsquo;erreur n&rsquo;apparaîtrait <strong>qu&rsquo;au moment où ce code s&rsquo;exécute</strong> (<code>NoSuchMethodError</code>), pas à
+la compilation. Dans ce projet, ce risque est couvert par des tests qui exercent justement ce
+code (<code>ClinicServiceH2JdbcTests</code>, <code>ClinicServiceHsqlJdbcTests</code>, profil <code>jdbc</code>) — s&rsquo;ils passent,
+c&rsquo;est la preuve empirique que la compatibilité tient dans les faits, pas seulement en théorie.</p>
+</blockquote>
 <p><code>mvn dependency:tree</code> est l&rsquo;outil de diagnostic à réflexe immédiat devant tout comportement
 inattendu lié à une librairie — que ce soit un conflit de version « nearest wins » ou une
 dépendance transitive indésirable qu&rsquo;il faut exclure explicitement.</p>
+<p><strong>Comment lire l&rsquo;arbre</strong> : chaque niveau d&rsquo;indentation (<code>|  </code>, puis <code>|  |  </code>, etc.) représente une
+dépendance apportée par celle du niveau juste au-dessus. Extrait réel du projet (<code>mvnw dependency:tree</code>) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>[INFO] +- org.springframework.boot:spring-boot-starter-jdbc:jar:4.1.0:compile
+[INFO] |  \- com.zaxxer:HikariCP:jar:7.0.2:compile</code></pre></div>
+<p>Ici, <code>HikariCP</code> (le pool de connexions JDBC) est <strong>indenté d&rsquo;un niveau</strong> sous
+<code>spring-boot-starter-jdbc</code> — ce qui veut dire qu&rsquo;il n&rsquo;est PAS déclaré directement dans <code>pom.xml</code> :
+c&rsquo;est <code>spring-boot-starter-jdbc</code> (déclaré directement, lui, dans <code>pom.xml</code>) qui l&rsquo;a apporté avec
+lui comme dépendance transitive.</p>
 
 <details open class=" box cstyle notices tip">
   <summary class="box-label" tabindex="-1">
@@ -392,9 +422,9 @@ dépendance transitive indésirable qu&rsquo;il faut exclure explicitement.</p>
     🧪 À vous de jouer — sur votre projet
   </summary>
   <div class="box-content">
-<p>Lancez <code>mvn dependency:tree</code> sur votre projet. Trouvez une dépendance transitive (une ligne
-indentée qui n&rsquo;est PAS déclarée directement dans votre <code>pom.xml</code>) et identifiez quelle dépendance
-directe l&rsquo;a introduite.</p>
+<p>Lancez <code>mvn dependency:tree</code> sur votre projet. Repérez une dépendance <strong>indentée</strong> (comme
+<code>HikariCP</code> ci-dessus) qui n&rsquo;apparaît <strong>nulle part</strong> dans votre <code>pom.xml</code>, puis remontez d&rsquo;un niveau
+d&rsquo;indentation pour identifier quelle dépendance déclarée directement l&rsquo;a introduite.</p>
   </div>
 </details>
 <hr>
@@ -429,8 +459,8 @@ omniprésents :</p>
 </table>
 <hr>
 <h2 id="4-cycle-de-vie-maven">4️⃣ Cycle de vie Maven</h2>
-<p><a href="#R-image-710b885b2818a7cb7b912bd3cf89c2f5" class="lightbox-link"><img alt="Cycle de vie Maven" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-3/maven/images/cycle-vie-maven.svg" style=" height: auto; width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-710b885b2818a7cb7b912bd3cf89c2f5"><img alt="Cycle de vie Maven" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-3/maven/images/cycle-vie-maven.svg"></a></p>
+<p><a href="#R-image-c9092c8f1b632988aca353c47df2dc56" class="lightbox-link"><img alt="Cycle de vie Maven" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-3/maven/images/cycle-vie-maven.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-c9092c8f1b632988aca353c47df2dc56"><img alt="Cycle de vie Maven" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-3/maven/images/cycle-vie-maven.svg"></a></p>
 <table>
 	<thead>
 			<tr>
@@ -570,7 +600,10 @@ cycle de vie du build.</li>
             <li class="" data-nav-id="/420-515/semaine-3/debogage-avance/index.html"><a class="padding" href="/420-515/semaine-3/debogage-avance/index.html">Techniques de débogage (2/2)</a></li>
             <li class="" data-nav-id="/420-515/semaine-3/exercice-debogage-avance/index.html"><a class="padding" href="/420-515/semaine-3/exercice-debogage-avance/index.html">Exercice : outils de débogage</a></li>
             <li class="active " data-nav-id="/420-515/semaine-3/maven/index.html"><a class="padding" href="/420-515/semaine-3/maven/index.html">Maven (1/2) — pom.xml, dépendances, plugins</a></li>
-            <li class="" data-nav-id="/420-515/semaine-3/exercice-maven/index.html"><a class="padding" href="/420-515/semaine-3/exercice-maven/index.html">Exercice : manipuler pom.xml</a></li></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/exercice-maven/index.html"><a class="padding" href="/420-515/semaine-3/exercice-maven/index.html">Exercice : manipuler pom.xml</a></li>
+            <li class="" data-nav-id="/420-515/semaine-3/tp1/index.html"><a class="padding" href="/420-515/semaine-3/tp1/index.html">TP1 — Recherche de personnes</a></li></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-4/index.html"><a class="padding" href="/420-515/semaine-4/index.html">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</a><ul id="R-subsections-0a04879d58004f2299c8e47c33299b68" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/travaux-pratiques/index.html"><a class="padding" href="/420-515/travaux-pratiques/index.html">Travaux pratiques</a><ul id="R-subsections-c1e93d49a1f2eb51f4bd0d7e2aee081f" class="collapsible-menu"></ul></li>
           </ul>
         </div>
         <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
@@ -606,8 +639,8 @@ cycle de vie du build.</li>
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1788841018" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1788841018" defer></script>
-    <script src="/420-515/js/theme.min.js?1788841018" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1789362725" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1789362725" defer></script>
+    <script src="/420-515/js/theme.js?1789362725" defer></script>
   </body>
 </html>

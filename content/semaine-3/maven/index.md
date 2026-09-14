@@ -195,10 +195,18 @@ Extrait réel (raccourci) de la sortie sur `spring-petclinic-rest` :
 [INFO]    \- (org.springframework:* omitted : exclu explicitement par le pom.xml)
 ```
 
-Le dernier bloc illustre une **exclusion explicite** : `spring-data-jdbc-core` dépend
-transitivement de plusieurs artefacts `org.springframework:*`, mais le `pom.xml` du projet les
-exclut délibérément (via `<exclusions>`) pour éviter qu'ils entrent en conflit avec les versions
-déjà imposées par `spring-boot-starter-parent` :
+Le dernier bloc illustre une **exclusion explicite**. `spring-data-jdbc-core` est une librairie
+assez ancienne (version `1.2.1.RELEASE`) : elle a besoin, pour fonctionner, de plusieurs morceaux
+de Spring (`spring-core`, `spring-context`, etc.) — mais dans des versions **beaucoup plus vieilles**
+que celles utilisées par le reste du projet (Spring Boot 4.1.0, bien plus récent). Si on laissait
+ces vieilles versions s'ajouter au projet, on se retrouverait avec deux versions différentes de
+Spring en même temps dans le classpath, ce qui peut causer des erreurs difficiles à diagnostiquer
+au démarrage ou à l'exécution.
+
+Le `pom.xml` du projet règle ça en excluant **toutes** les dépendances transitives
+`org.springframework:*` que `spring-data-jdbc-core` voudrait apporter avec lui — le projet utilise
+déjà les bonnes versions de Spring, imposées par `spring-boot-starter-parent`, donc on n'a pas
+besoin des siennes :
 
 ```xml
 <dependency>
@@ -214,14 +222,41 @@ déjà imposées par `spring-boot-starter-parent` :
 </dependency>
 ```
 
+> 💡 Analogie : c'est comme installer une extension qui demande une vieille version d'une
+> librairie que vous avez déjà en version plus récente — on lui dit « utilise celle qui est déjà
+> là, ignore la tienne ».
+
+> ⚠️ **Cette exclusion n'est pas sans risque.** Elle règle *quelle version* de Spring se retrouve
+> sur le classpath, mais elle ne garantit pas que le code déjà compilé de `spring-data-jdbc-core`
+> (contre une vieille version de Spring) reste compatible avec les classes plus récentes qu'on lui
+> impose maintenant. Si ce vieux code appelait une méthode qui a été renommée ou supprimée entre
+> temps, l'erreur n'apparaîtrait **qu'au moment où ce code s'exécute** (`NoSuchMethodError`), pas à
+> la compilation. Dans ce projet, ce risque est couvert par des tests qui exercent justement ce
+> code (`ClinicServiceH2JdbcTests`, `ClinicServiceHsqlJdbcTests`, profil `jdbc`) — s'ils passent,
+> c'est la preuve empirique que la compatibilité tient dans les faits, pas seulement en théorie.
+
 `mvn dependency:tree` est l'outil de diagnostic à réflexe immédiat devant tout comportement
 inattendu lié à une librairie — que ce soit un conflit de version « nearest wins » ou une
 dépendance transitive indésirable qu'il faut exclure explicitement.
 
+**Comment lire l'arbre** : chaque niveau d'indentation (`|  `, puis `|  |  `, etc.) représente une
+dépendance apportée par celle du niveau juste au-dessus. Extrait réel du projet (`mvnw
+dependency:tree`) :
+
+```
+[INFO] +- org.springframework.boot:spring-boot-starter-jdbc:jar:4.1.0:compile
+[INFO] |  \- com.zaxxer:HikariCP:jar:7.0.2:compile
+```
+
+Ici, `HikariCP` (le pool de connexions JDBC) est **indenté d'un niveau** sous
+`spring-boot-starter-jdbc` — ce qui veut dire qu'il n'est PAS déclaré directement dans `pom.xml` :
+c'est `spring-boot-starter-jdbc` (déclaré directement, lui, dans `pom.xml`) qui l'a apporté avec
+lui comme dépendance transitive.
+
 {{% notice tip "🧪 À vous de jouer — sur votre projet" %}}
-Lancez `mvn dependency:tree` sur votre projet. Trouvez une dépendance transitive (une ligne
-indentée qui n'est PAS déclarée directement dans votre `pom.xml`) et identifiez quelle dépendance
-directe l'a introduite.
+Lancez `mvn dependency:tree` sur votre projet. Repérez une dépendance **indentée** (comme
+`HikariCP` ci-dessus) qui n'apparaît **nulle part** dans votre `pom.xml`, puis remontez d'un niveau
+d'indentation pour identifier quelle dépendance déclarée directement l'a introduite.
 {{% /notice %}}
 
 ---

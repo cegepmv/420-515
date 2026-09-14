@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="Jusqu’ici, vérifier qu’un changement de code fonctionne s’est fait manuellement : relancer l’application, cliquer, observer. Cette approche ne passe pas à l’échelle et s’oublie facilement. Un test automatisé encode cette vérification une fois pour toutes, sous forme de code exécutable en quelques secondes, autant de fois que nécessaire.
+0️⃣ Vocabulaire de base Avant d’écrire du code, clarifions quelques termes utilisés partout dans ce chapitre (et dans n’importe quelle documentation ou outil de test) :">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Introduction aux tests automatisés (JUnit) :: Maintenance de logiciel">
+    <meta name="twitter:description" content="Jusqu’ici, vérifier qu’un changement de code fonctionne s’est fait manuellement : relancer l’application, cliquer, observer. Cette approche ne passe pas à l’échelle et s’oublie facilement. Un test automatisé encode cette vérification une fois pour toutes, sous forme de code exécutable en quelques secondes, autant de fois que nécessaire.
+0️⃣ Vocabulaire de base Avant d’écrire du code, clarifions quelques termes utilisés partout dans ce chapitre (et dans n’importe quelle documentation ou outil de test) :">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-4/junit/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Introduction aux tests automatisés (JUnit) :: Maintenance de logiciel">
+    <meta property="og:description" content="Jusqu’ici, vérifier qu’un changement de code fonctionne s’est fait manuellement : relancer l’application, cliquer, observer. Cette approche ne passe pas à l’échelle et s’oublie facilement. Un test automatisé encode cette vérification une fois pour toutes, sous forme de code exécutable en quelques secondes, autant de fois que nécessaire.
+0️⃣ Vocabulaire de base Avant d’écrire du code, clarifions quelques termes utilisés partout dans ce chapitre (et dans n’importe quelle documentation ou outil de test) :">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 4 — Maven (2/2) et introduction aux tests automatisés">
+    <meta itemprop="name" content="Introduction aux tests automatisés (JUnit) :: Maintenance de logiciel">
+    <meta itemprop="description" content="Jusqu’ici, vérifier qu’un changement de code fonctionne s’est fait manuellement : relancer l’application, cliquer, observer. Cette approche ne passe pas à l’échelle et s’oublie facilement. Un test automatisé encode cette vérification une fois pour toutes, sous forme de code exécutable en quelques secondes, autant de fois que nécessaire.
+0️⃣ Vocabulaire de base Avant d’écrire du code, clarifions quelques termes utilisés partout dans ce chapitre (et dans n’importe quelle documentation ou outil de test) :">
+    <meta itemprop="wordCount" content="3463">
+    <title>Introduction aux tests automatisés (JUnit) :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1789366031" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1789366031" defer></script>
+    <script src="/420-515/js/search-lunr.js?1789366031" defer></script>
+    <script src="/420-515/js/search.js?1789366031" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1789366031";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1789366031" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1789366031" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1789366031" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1789366031" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789366031" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789366031" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1789366031" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1789366031" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1789366031" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = ``;
+      window.relearn.path='\/semaine-4\/junit\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-4/junit/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-4/index.html"><span itemprop="name">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Introduction aux tests automatisés (JUnit)</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-4" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="introduction-aux-tests-automatisés-junit">Introduction aux tests automatisés (JUnit)</h1>
+
+<p>Jusqu&rsquo;ici, vérifier qu&rsquo;un changement de code fonctionne s&rsquo;est fait <strong>manuellement</strong> : relancer
+l&rsquo;application, cliquer, observer. Cette approche ne passe pas à l&rsquo;échelle et s&rsquo;oublie facilement.
+Un <strong>test automatisé</strong> encode cette vérification une fois pour toutes, sous forme de code exécutable
+en quelques secondes, autant de fois que nécessaire.</p>
+<hr>
+<h2 id="0-vocabulaire-de-base">0️⃣ Vocabulaire de base</h2>
+<p>Avant d&rsquo;écrire du code, clarifions quelques termes utilisés partout dans ce chapitre (et dans
+n&rsquo;importe quelle documentation ou outil de test) :</p>
+<ul>
+<li><strong>Assertion</strong> : une vérification unique, du type « je m&rsquo;attends à ce que cette valeur soit égale
+à celle-là ». En JUnit, ce sont les méthodes comme <code>assertEquals(...)</code> ou <code>assertTrue(...)</code>. Une
+assertion qui échoue fait échouer le test dans lequel elle se trouve.</li>
+<li><strong>Cas de test</strong> (<em>test case</em>) : une méthode qui vérifie <strong>un seul comportement précis</strong> à l&rsquo;aide
+d&rsquo;une ou plusieurs assertions (ex. « trouver un animal par son nom, peu importe la casse »). En
+JUnit, un cas de test est une méthode annotée <code>@Test</code>. C&rsquo;est la plus petite unité qu&rsquo;on exécute et
+qu&rsquo;on rapporte individuellement (réussi, échoué, en erreur ou ignoré).</li>
+<li><strong>Classe de test</strong> : regroupe plusieurs cas de test liés à une même classe ou un même
+comportement du programme (ex. <code>OwnerTest</code> regroupe tous les cas de test pour la classe <code>Owner</code>).</li>
+<li><strong>Suite de test</strong> (<em>test suite</em>) : un regroupement plus large de classes de test, exécutées
+ensemble — par exemple, « tous les tests unitaires du module <code>validation</code> » ou « tous les tests du
+projet ». Quand <code>mvn test</code> affiche <code>Tests run: 47</code>, ce nombre additionne les cas de test de
+<strong>toutes</strong> les classes exécutées, c&rsquo;est-à-dire de la suite complète.</li>
+<li><strong>Résultat d&rsquo;un cas de test</strong> : chaque cas de test se termine dans l&rsquo;un de ces quatre états :
+<ul>
+<li>✅ <strong>Succès</strong> (<em>passed</em>) : toutes les assertions sont vraies.</li>
+<li>❌ <strong>Échec</strong> (<em>failure</em>) : au moins une assertion a échoué (le comportement attendu n&rsquo;est pas
+au rendez-vous).</li>
+<li>💥 <strong>Erreur</strong> (<em>error</em>) : le code a levé une exception imprévue (souvent un bug, ou un test mal
+écrit) — différent d&rsquo;un échec d&rsquo;assertion.</li>
+<li>⏭️ <strong>Ignoré</strong> (<em>skipped</em>) : le cas de test n&rsquo;a pas été exécuté, par exemple parce qu&rsquo;il est
+annoté <code>@Disabled</code>.</li>
+</ul>
+</li>
+<li><strong>Test unitaire</strong> : un test qui vérifie une petite unité de code (souvent une méthode ou une
+classe) de façon isolée, sans dépendances externes réelles (base de données, réseau, fichiers).
+C&rsquo;est le type de test que vous allez écrire dans ce chapitre. On l&rsquo;oppose au <strong>test
+d&rsquo;intégration</strong>, qui vérifie que plusieurs composants fonctionnent correctement ensemble.</li>
+</ul>
+<p>Avec ce vocabulaire en tête, la ligne <code>Tests run: 47, Failures: 0, Errors: 0, Skipped: 1</code> que vous
+verrez plus loin se lit simplement : « la suite complète contient 47 cas de test, aucun échec,
+aucune erreur, 1 ignoré ».</p>
+<hr>
+<h2 id="1-anatomie-dune-classe-de-test-junit-6">1️⃣ Anatomie d&rsquo;une classe de test JUnit 6</h2>
+<p>Le projet utilise déjà <strong>JUnit 6</strong> (la génération actuelle du framework, souvent encore appelée
+« Jupiter » pour son moteur de test) — rien à ajouter au <code>pom.xml</code>, c&rsquo;est inclus par
+<code>spring-boot-starter-test</code>. On peut le confirmer directement avec <code>mvn dependency:tree</code> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>[INFO]    \- org.junit.jupiter:junit-jupiter:jar:6.0.3:test
+[INFO]       +- org.junit.jupiter:junit-jupiter-api:jar:6.0.3:test
+[INFO]       +- org.junit.jupiter:junit-jupiter-params:jar:6.0.3:test
+[INFO]       \- org.junit.jupiter:junit-jupiter-engine:jar:6.0.3:test</code></pre></div>
+<blockquote>
+<p>💡 <strong>Pourquoi 6 et pas 5 ?</strong> Le projet JUnit a abandonné le suffixe « 5 » dans son nom (le dépôt
+s&rsquo;appelle maintenant simplement <code>junit-framework</code>), mais garde les mêmes artefacts Maven
+(<code>org.junit.jupiter:junit-jupiter-*</code>) et le même modèle de programmation. La version 6 exige une
+base Java plus récente et modernise certaines dépendances internes, mais l&rsquo;API que vous utilisez
+au quotidien (<code>@Test</code>, <code>assertEquals</code>, <code>@BeforeEach</code>, etc.) reste la même que celle popularisée
+sous le nom « JUnit 5 ». D&rsquo;où le nom encore très répandu « Jupiter » pour désigner ce modèle de
+test, peu importe le numéro de version exact du moteur qui l&rsquo;exécute.</p>
+</blockquote>
+<h3 id="structurer-un-test-avec-le-patron-arrange-act-assert-aaa">Structurer un test avec le patron Arrange-Act-Assert (AAA)</h3>
+<p>Avant de regarder le premier exemple, remarquez sa structure interne : presque tout cas de test
+suit le même patron en 3 étapes, souvent abrégé <strong>AAA</strong> :</p>
+<ol>
+<li><strong>Arrange</strong> (préparer) : construire les objets nécessaires et mettre en place l&rsquo;état de départ
+(ex. créer un <code>Owner</code>, lui ajouter un <code>Pet</code>).</li>
+<li><strong>Act</strong> (agir) : exécuter <strong>une seule fois</strong> l&rsquo;action précise qu&rsquo;on veut tester — l&rsquo;appel de
+méthode dont on vérifie le comportement (ex. <code>owner.getPet(&quot;LÉO&quot;)</code>).</li>
+<li><strong>Assert</strong> (vérifier) : comparer le résultat obtenu au résultat attendu, à l&rsquo;aide d&rsquo;une ou
+plusieurs assertions.</li>
+</ol>
+<p>Séparer visiblement ces trois blocs (souvent avec un commentaire ou une ligne vide, comme dans
+l&rsquo;exemple ci-dessous) rend un test <strong>plus facile à lire d&rsquo;un coup d&rsquo;œil</strong> : on sait immédiatement
+quelle partie prépare les données, laquelle déclenche le comportement testé, et laquelle vérifie
+le résultat — même dans un test plus long. C&rsquo;est aussi un bon signal d&rsquo;alarme : si l&rsquo;étape <em>Act</em>
+contient plusieurs appels différents, ou si des assertions apparaissent avant l&rsquo;action, c&rsquo;est
+souvent le signe qu&rsquo;un test essaie de vérifier trop de choses à la fois et devrait être scindé en
+plusieurs cas de test plus ciblés.</p>
+<p>Voici une première classe de test, volontairement simple, écrite pour la classe <code>Owner</code> du projet
+(aucun mock, aucun contexte Spring nécessaire — un pur objet Java) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> org.springframework.samples.petclinic.model;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.junit.jupiter.api.Test;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import static</span> org.junit.jupiter.api.Assertions.*;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OwnerTest</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldFindPetByNameIgnoringCase</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Arrange</span>
+</span></span><span style="display:flex;"><span>        Owner owner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Owner();
+</span></span><span style="display:flex;"><span>        Pet pet <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Pet();
+</span></span><span style="display:flex;"><span>        pet.<span style="color:#a6e22e">setName</span>(<span style="color:#e6db74">&#34;Léo&#34;</span>);
+</span></span><span style="display:flex;"><span>        owner.<span style="color:#a6e22e">addPet</span>(pet);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Act</span>
+</span></span><span style="display:flex;"><span>        Pet found <span style="color:#f92672">=</span> owner.<span style="color:#a6e22e">getPet</span>(<span style="color:#e6db74">&#34;LÉO&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Assert</span>
+</span></span><span style="display:flex;"><span>        assertNotNull(found);
+</span></span><span style="display:flex;"><span>        assertEquals(<span style="color:#e6db74">&#34;Léo&#34;</span>, found.<span style="color:#a6e22e">getName</span>());
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldReturnNullWhenPetNameDoesNotExist</span>() {
+</span></span><span style="display:flex;"><span>        Owner owner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Owner();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Pet found <span style="color:#f92672">=</span> owner.<span style="color:#a6e22e">getPet</span>(<span style="color:#e6db74">&#34;Inconnu&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        assertNull(found);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<table>
+	<thead>
+			<tr>
+					<th>Élément</th>
+					<th>Rôle</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>@Test</code></td>
+					<td>Marque une méthode comme un test que JUnit doit exécuter</td>
+			</tr>
+			<tr>
+					<td><code>assertEquals(attendu, réel)</code></td>
+					<td>Échoue si les deux valeurs ne sont pas égales</td>
+			</tr>
+			<tr>
+					<td><code>assertNotNull(valeur)</code> / <code>assertNull(valeur)</code></td>
+					<td>Échoue si la valeur est (ou n&rsquo;est pas) <code>null</code></td>
+			</tr>
+			<tr>
+					<td><code>assertTrue(condition)</code> / <code>assertFalse(condition)</code></td>
+					<td>Échoue si la condition est fausse (ou vraie)</td>
+			</tr>
+			<tr>
+					<td><code>import static ...Assertions.*</code></td>
+					<td>Permet d&rsquo;écrire <code>assertEquals(...)</code> plutôt que <code>Assertions.assertEquals(...)</code></td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 Remarquez <code>shouldFindPetByNameIgnoringCase</code> : on cherche <code>&quot;LÉO&quot;</code> (majuscules) alors que le nom
+enregistré est <code>&quot;Léo&quot;</code>. Ce test vérifie précisément le comportement de
+<code>Owner.getPet(String, boolean)</code> : la comparaison se fait <code>toLowerCase()</code> des deux côtés, donc la
+casse ne devrait pas compter. Un bon test choisit ses données pour vérifier un comportement
+précis, pas seulement « un cas qui marche ».</p>
+</blockquote>
+<h3 id="autres-assertions-utiles">Autres assertions utiles</h3>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">petListShouldContainExactlyTwoElements</span>() {
+</span></span><span style="display:flex;"><span>    Owner owner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Owner();
+</span></span><span style="display:flex;"><span>    owner.<span style="color:#a6e22e">addPet</span>(<span style="color:#66d9ef">new</span> Pet());
+</span></span><span style="display:flex;"><span>    owner.<span style="color:#a6e22e">addPet</span>(<span style="color:#66d9ef">new</span> Pet());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    assertEquals(2, owner.<span style="color:#a6e22e">getPets</span>().<span style="color:#a6e22e">size</span>());
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Pourquoi <code>assertEquals(&quot;Léo&quot;, found.getName())</code> place-t-il la valeur <strong>attendue</strong> en premier
+argument, et la valeur <strong>réelle</strong> (obtenue par le code testé) en second ?</p>
+<p><strong>Réponse</strong> : c&rsquo;est la convention JUnit — l&rsquo;ordre des arguments détermine le message d&rsquo;échec
+affiché (« expected: &lt;Léo&gt; but was: &lt;&hellip;&gt; »). Inverser les deux ne change pas si le test
+passe ou échoue, mais rend le message d&rsquo;erreur trompeur en cas d&rsquo;échec, ce qui ralentit le
+diagnostic.</p>
+</details>
+<hr>
+<h2 id="2-regrouper-plusieurs-assertions-avec-assertall">2️⃣ Regrouper plusieurs assertions avec <code>assertAll</code></h2>
+<p>Un piège fréquent avec plusieurs <code>assertEquals</code> d&rsquo;affilée : dès que le <strong>premier</strong> échoue, JUnit
+arrête immédiatement le test — les assertions suivantes ne s&rsquo;exécutent jamais, même si elles
+auraient révélé d&rsquo;autres problèmes. <code>assertAll</code> regroupe plusieurs vérifications liées au <strong>même</strong>
+scénario et les exécute <strong>toutes</strong>, même si certaines échouent, pour un diagnostic complet en un
+seul passage :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldCreatePetWithExpectedFields</span>() {
+</span></span><span style="display:flex;"><span>    Owner owner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Owner();
+</span></span><span style="display:flex;"><span>    Pet pet <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Pet();
+</span></span><span style="display:flex;"><span>    pet.<span style="color:#a6e22e">setName</span>(<span style="color:#e6db74">&#34;Léo&#34;</span>);
+</span></span><span style="display:flex;"><span>    owner.<span style="color:#a6e22e">addPet</span>(pet);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Pet found <span style="color:#f92672">=</span> owner.<span style="color:#a6e22e">getPet</span>(<span style="color:#e6db74">&#34;Léo&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    assertAll(<span style="color:#e6db74">&#34;propriétés du Pet retrouvé&#34;</span>,
+</span></span><span style="display:flex;"><span>        () <span style="color:#f92672">-&gt;</span> assertNotNull(found),
+</span></span><span style="display:flex;"><span>        () <span style="color:#f92672">-&gt;</span> assertEquals(<span style="color:#e6db74">&#34;Léo&#34;</span>, found.<span style="color:#a6e22e">getName</span>()),
+</span></span><span style="display:flex;"><span>        () <span style="color:#f92672">-&gt;</span> assertEquals(owner, found.<span style="color:#a6e22e">getOwner</span>())
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<blockquote>
+<p>💡 Sans <code>assertAll</code>, si <code>assertEquals(&quot;Léo&quot;, found.getName())</code> échouait à cause d&rsquo;un bogue, vous
+ne sauriez <strong>jamais</strong>, dans le même essai, si <code>found.getOwner()</code> était lui aussi incorrect — il
+faudrait corriger le premier problème, relancer le test, et découvrir le second seulement à ce
+moment-là. <code>assertAll</code> rapporte les deux échecs d&rsquo;un coup.</p>
+</blockquote>
+<hr>
+<h2 id="3-tester-quune-exception-est-bien-lancée">3️⃣ Tester qu&rsquo;une exception est bien lancée</h2>
+<p><code>assertThrows</code> vérifie qu&rsquo;un bloc de code lance bien le type d&rsquo;exception attendu — et retourne
+cette exception, pour en inspecter le contenu (ex. le message) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldThrowWhenPetNameIsNull</span>() {
+</span></span><span style="display:flex;"><span>    Owner owner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Owner();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    NullPointerException exception <span style="color:#f92672">=</span> assertThrows(
+</span></span><span style="display:flex;"><span>        NullPointerException.<span style="color:#a6e22e">class</span>,
+</span></span><span style="display:flex;"><span>        () <span style="color:#f92672">-&gt;</span> owner.<span style="color:#a6e22e">getPet</span>(<span style="color:#66d9ef">null</span>)
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    assertNotNull(exception.<span style="color:#a6e22e">getMessage</span>());
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<blockquote>
+<p>⚠️ Un test comme celui-ci révèle un vrai choix de conception à documenter : <code>Owner.getPet(String, boolean)</code> appelle <code>name.toLowerCase()</code> sans jamais vérifier que <code>name</code> n&rsquo;est pas <code>null</code> — passer
+<code>null</code> provoque donc une <code>NullPointerException</code> <strong>non intentionnelle</strong>, plutôt qu&rsquo;une erreur
+métier claire. Écrire ce test rend ce comportement explicite, que l&rsquo;équipe décide ensuite de le
+garder tel quel ou de le corriger (ex. lancer une <code>IllegalArgumentException</code> avec un message
+clair à la place).</p>
+</blockquote>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Un test utilise <code>assertThrows(RuntimeException.class, () -&gt; methode())</code>, alors que <code>methode()</code> lance
+en réalité une <code>NullPointerException</code>. Le test passe-t-il ?</p>
+<p><strong>Réponse</strong> : oui — <code>NullPointerException</code> <strong>hérite</strong> de <code>RuntimeException</code>, et <code>assertThrows</code>
+accepte toute sous-classe du type demandé. C&rsquo;est voulu, mais ça veut aussi dire qu&rsquo;un type trop
+générique (<code>RuntimeException</code>, voire <code>Exception</code>) peut faire passer un test même si l&rsquo;exception
+réellement lancée n&rsquo;est pas celle que vous pensiez tester — soyez aussi précis que possible dans le
+type attendu.</p>
+</details>
+<hr>
+<h2 id="4-tests-paramétrés--éviter-de-copier-coller-un-test-pour-chaque-valeur">4️⃣ Tests paramétrés : éviter de copier-coller un test pour chaque valeur</h2>
+<p>Sans outil dédié, tester plusieurs valeurs d&rsquo;entrée oblige à dupliquer le même test avec seulement
+une valeur qui change — ce qui viole la bonne pratique « éviter la duplication » vue ailleurs dans
+le cours. <code>@ParameterizedTest</code> exécute la <strong>même</strong> méthode de test une fois par valeur fournie :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> org.junit.jupiter.params.ParameterizedTest;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> org.junit.jupiter.params.provider.ValueSource;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@ParameterizedTest</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@ValueSource</span>(strings <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;Léo&#34;</span>, <span style="color:#e6db74">&#34;LÉO&#34;</span>, <span style="color:#e6db74">&#34;léo&#34;</span>, <span style="color:#e6db74">&#34;lÉo&#34;</span>})
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldFindPetRegardlessOfCase</span>(String recherche) {
+</span></span><span style="display:flex;"><span>    Owner owner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Owner();
+</span></span><span style="display:flex;"><span>    Pet pet <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Pet();
+</span></span><span style="display:flex;"><span>    pet.<span style="color:#a6e22e">setName</span>(<span style="color:#e6db74">&#34;Léo&#34;</span>);
+</span></span><span style="display:flex;"><span>    owner.<span style="color:#a6e22e">addPet</span>(pet);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    assertNotNull(owner.<span style="color:#a6e22e">getPet</span>(recherche));
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Pour des cas plus riches (plusieurs valeurs liées entre elles), <code>@CsvSource</code> fournit chaque
+combinaison directement :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">import</span> org.junit.jupiter.params.provider.CsvSource;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@ParameterizedTest</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@CsvSource</span>({
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Léo, léo, true&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;Léo, Milo, false&#34;</span>
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldMatchPetNameCaseInsensitively</span>(String nomEnregistré, String recherche, <span style="color:#66d9ef">boolean</span> trouvé) {
+</span></span><span style="display:flex;"><span>    Owner owner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Owner();
+</span></span><span style="display:flex;"><span>    Pet pet <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Pet();
+</span></span><span style="display:flex;"><span>    pet.<span style="color:#a6e22e">setName</span>(nomEnregistré);
+</span></span><span style="display:flex;"><span>    owner.<span style="color:#a6e22e">addPet</span>(pet);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    assertEquals(trouvé, owner.<span style="color:#a6e22e">getPet</span>(recherche) <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<blockquote>
+<p>💡 Ce n&rsquo;est pas juste une question de concision : un test paramétré rend visible, d&rsquo;un seul coup
+d&rsquo;œil dans le rapport Surefire, <strong>quelle combinaison précise</strong> échoue (<code>shouldMatchPetNameCaseInsensitively[2]</code>
+par exemple) — plutôt que de deviner laquelle des quatre méthodes copiées-collées est en cause.</p>
+</blockquote>
+<h3 id="comment-lire-csvsource">Comment lire <code>@CsvSource</code></h3>
+<ul>
+<li>Chaque <strong>chaîne</strong> du tableau représente <strong>une exécution</strong> de la méthode de test — ici, la méthode
+s&rsquo;exécute 2 fois (2 lignes fournies), chacune avec ses propres valeurs.</li>
+<li>Chaque ligne est découpée par des <strong>virgules</strong> en autant de valeurs qu&rsquo;il y a de <strong>paramètres</strong>
+dans la méthode, <strong>dans le même ordre</strong> : <code>&quot;Léo, léo, true&quot;</code> correspond à
+<code>nomEnregistré = &quot;Léo&quot;</code>, <code>recherche = &quot;léo&quot;</code>, <code>trouvé = true</code>.</li>
+<li>JUnit <strong>convertit automatiquement</strong> chaque valeur texte vers le type du paramètre correspondant :
+ici <code>&quot;true&quot;</code>/<code>&quot;false&quot;</code> deviennent des <code>boolean</code>, alors que <code>&quot;Léo&quot;</code>/<code>&quot;léo&quot;</code> restent des <code>String</code>.
+Cette conversion fonctionne pour les types simples (<code>int</code>, <code>boolean</code>, <code>double</code>, énumérations,
+etc.) — pas besoin de code supplémentaire.</li>
+<li>Les espaces après les virgules sont ignorés par défaut (<code>&quot;Léo, léo, true&quot;</code> équivaut à
+<code>&quot;Léo,léo,true&quot;</code>).</li>
+<li>Chaque ligne teste un <strong>scénario distinct</strong> : la première vérifie que la casse est bien ignorée
+(<code>&quot;Léo&quot;</code> trouvé en cherchant <code>&quot;léo&quot;</code> → <code>true</code>), la deuxième vérifie qu&rsquo;un nom différent n&rsquo;est
+<strong>pas</strong> trouvé (<code>&quot;Milo&quot;</code> cherché alors que le pet s&rsquo;appelle <code>&quot;Léo&quot;</code> → <code>false</code>). C&rsquo;est la même
+logique qu&rsquo;un tableau de cas de test « entrée → sortie attendue », mais exécutée par JUnit sans
+boucle ni duplication manuelle.</li>
+<li>Dans le rapport, chaque ligne apparaît comme une exécution séparée et numérotée (par exemple
+<code>shouldMatchPetNameCaseInsensitively[1]</code>, <code>[2]</code>), ce qui permet de savoir immédiatement laquelle
+échoue si l&rsquo;une des deux combinaisons casse.</li>
+</ul>
+<hr>
+<h2 id="5-isoler-une-dépendance-avec-un-mock">5️⃣ Isoler une dépendance avec un mock</h2>
+<h3 id="pourquoi-un-mock-et-quand-lutiliser">Pourquoi un mock, et quand l&rsquo;utiliser</h3>
+<p>Certaines classes ne peuvent pas être testées « en pur Java » comme <code>Owner</code> plus haut : elles
+dépendent d&rsquo;un objet difficile, coûteux ou risqué à construire réellement dans un test — une vraie
+base de données, un vrai appel réseau, un vrai contexte de validation Jakarta. Un <strong>mock</strong> (via
+Mockito, déjà inclus dans <code>spring-boot-starter-test</code>) remplace cette dépendance par une version
+simulée, entièrement sous votre contrôle : vous décidez exactement ce qu&rsquo;elle retourne, sans jamais
+exécuter son vrai code.</p>
+<table>
+	<thead>
+			<tr>
+					<th>Situation</th>
+					<th>Objet réel ou mock ?</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>Owner</code>, <code>Pet</code> — objets du domaine, logique pure, rapide, sans effet de bord</td>
+					<td><strong>Objet réel</strong> (voir la section 1 plus haut) — inutile de mocker ce qui est déjà simple et rapide à construire</td>
+			</tr>
+			<tr>
+					<td><code>ClinicService</code> dans un test de contrôleur — accède normalement à une vraie base de données</td>
+					<td><strong>Mock</strong> — on veut tester la logique du contrôleur (validation, codes de statut HTTP), pas relancer une vraie base de données à chaque test</td>
+			</tr>
+			<tr>
+					<td><code>ConstraintValidatorContext</code> — objet Jakarta Validation, non trivial à instancier hors d&rsquo;un vrai contexte de validation</td>
+					<td><strong>Mock</strong> — construire le vrai objet exigerait de démarrer toute l&rsquo;infrastructure de validation pour tester une seule méthode</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>⚠️ Un mock n&rsquo;est <strong>pas</strong> une solution universelle. Mocker un objet simple comme <code>Owner</code> ajouterait
+de la complexité sans aucun bénéfice — pire, un mock mal configuré peut faire passer un test qui
+ne vérifie plus rien de réel. Réservez les mocks aux dépendances réellement difficiles à faire
+intervenir telles quelles dans un test.</p>
+</blockquote>
+<h3 id="cas-dusage-1--simuler-une-valeur-de-retour">Cas d&rsquo;usage 1 — simuler une valeur de retour</h3>
+<p>Le cas le plus simple : programmer ce qu&rsquo;une méthode du mock doit retourner quand elle est appelée
+avec certains arguments. Le projet utilise deux syntaxes strictement équivalentes pour ça, selon les
+fichiers :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Style classique Mockito -- utilisé dans PetAgeValidatorTest</span>
+</span></span><span style="display:flex;"><span>ConstraintValidatorContext context <span style="color:#f92672">=</span> mock(ConstraintValidatorContext.<span style="color:#a6e22e">class</span>);
+</span></span><span style="display:flex;"><span>when(context.<span style="color:#a6e22e">buildConstraintViolationWithTemplate</span>(anyString()))
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">thenReturn</span>(mock(ConstraintValidatorContext.<span style="color:#a6e22e">ConstraintViolationBuilder</span>.<span style="color:#a6e22e">class</span>));</span></span></code></pre></div>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// Style BDD (Behavior-Driven Development) -- utilisé dans OwnerRestControllerV1Tests</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// (import static org.mockito.BDDMockito.given;)</span>
+</span></span><span style="display:flex;"><span>given(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">clinicService</span>.<span style="color:#a6e22e">findOwnerById</span>(1))
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">willReturn</span>(ownerMapper.<span style="color:#a6e22e">toOwner</span>(owners.<span style="color:#a6e22e">get</span>(0)));</span></span></code></pre></div>
+<p><code>when(x).thenReturn(y)</code> et <code>given(x).willReturn(y)</code> font <strong>exactement</strong> la même chose — seul le
+vocabulaire change (<code>given</code>/<code>willReturn</code> est pensé pour se lire comme une phrase « Étant donné que
+X, alors retourne Y », plus proche du style Given-When-Then). Utilisez celui déjà en place dans le
+fichier que vous modifiez, par cohérence avec le reste de l&rsquo;équipe.</p>
+<h3 id="cas-dusage-2--simuler-une-exception-méthode-void">Cas d&rsquo;usage 2 — simuler une exception (méthode <code>void</code>)</h3>
+<p><code>testCreatePetShouldNotExposeTechnicalDetails</code>, dans le projet, illustre un cas plus subtil : on
+veut vérifier que le contrôleur transforme une erreur technique de bas niveau (une contrainte de
+base de données violée) en une réponse HTTP propre, <strong>sans jamais exposer</strong> le détail technique au
+client de l&rsquo;API :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@WithMockUser</span>(roles <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;OWNER_ADMIN&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testCreatePetShouldNotExposeTechnicalDetails</span>() <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>    String technicalMessage <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;could not execute statement; SQL [insert into pets ...]; constraint [fk_pet_owner]&#34;</span>;
+</span></span><span style="display:flex;"><span>    given(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">clinicService</span>.<span style="color:#a6e22e">findOwnerById</span>(1)).<span style="color:#a6e22e">willReturn</span>(ownerMapper.<span style="color:#a6e22e">toOwner</span>(owners.<span style="color:#a6e22e">get</span>(0)));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// savePet(...) retourne void -- impossible d&#39;écrire when(clinicService.savePet(pet))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// puisqu&#39;on ne peut pas passer un appel à une méthode void en argument de when().</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Mockito fournit doThrow(...).when(mock).methode(...) pour ce cas précis :</span>
+</span></span><span style="display:flex;"><span>    doThrow(<span style="color:#66d9ef">new</span> DataIntegrityViolationException(technicalMessage))
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">when</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">clinicService</span>).<span style="color:#a6e22e">savePet</span>(any());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">mockMvc</span>.<span style="color:#a6e22e">perform</span>(post(<span style="color:#e6db74">&#34;/api/owners/1/pets&#34;</span>)
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">content</span>(newPetAsJSON).<span style="color:#a6e22e">contentType</span>(MediaType.<span style="color:#a6e22e">APPLICATION_JSON_VALUE</span>))
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">andExpect</span>(status().<span style="color:#a6e22e">isNotFound</span>())
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">andExpect</span>(jsonPath(<span style="color:#e6db74">&#34;$.detail&#34;</span>)
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">value</span>(<span style="color:#e6db74">&#34;The requested resource could not be processed due to a data constraint violation&#34;</span>));
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<blockquote>
+<p>💡 <strong>Pourquoi <code>doThrow().when()</code> et pas <code>when().thenThrow()</code> ici ?</strong> <code>savePet(Pet pet)</code> retourne
+<code>void</code> — on ne peut pas écrire <code>when(this.clinicService.savePet(pet))</code> puisque <code>savePet(pet)</code>
+lui-même ne retourne rien à passer à <code>when(...)</code>. Mockito inverse donc l&rsquo;ordre pour les méthodes
+<code>void</code> : on déclare d&rsquo;abord l&rsquo;action (<code>doThrow(...)</code>), puis sur quel mock et quelle méthode elle
+s&rsquo;applique (<code>.when(mock).methode(...)</code>). Utilisez <code>doThrow</code>/<code>doReturn</code>/<code>doNothing</code> chaque fois que
+la méthode simulée est <code>void</code> ou que <code>when(...)</code> seul poserait un problème de compilation.</p>
+</blockquote>
+<p>Ce test illustre aussi une bonne pratique de sécurité au passage : <code>technicalMessage</code> (qui contient
+le nom d&rsquo;une table et d&rsquo;une contrainte SQL) n&rsquo;apparaît <strong>jamais</strong> dans la réponse HTTP vérifiée —
+seul un message générique (<code>jsonPath(&quot;$.detail&quot;)</code>) est exposé au client. Le mock permet ici de
+provoquer facilement, à volonté, un scénario d&rsquo;erreur qu&rsquo;il serait risqué ou compliqué de
+reproduire avec une vraie base de données.</p>
+<h3 id="cas-dusage-3--any-et-les-autres-argument-matchers">Cas d&rsquo;usage 3 — <code>any()</code> et les autres <em>argument matchers</em></h3>
+<p><code>any()</code> (et ses variantes <code>anyString()</code>, <code>anyInt()</code>, <code>eq(valeur)</code>, etc.) indique à Mockito
+« n&rsquo;importe quelle valeur, peu importe laquelle, appliquer ce comportement ». C&rsquo;est utile quand
+seul l&rsquo;appel de la méthode compte pour ce test, pas la valeur exacte de son argument :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>doThrow(<span style="color:#66d9ef">new</span> DataIntegrityViolationException(technicalMessage))
+</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">when</span>(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">clinicService</span>).<span style="color:#a6e22e">savePet</span>(any());   <span style="color:#f92672">//</span> n<span style="color:#960050;background-color:#1e0010">&#39;</span>importe quel Pet passé à <span style="color:#a6e22e">savePet</span>(...)</span></span></code></pre></div>
+<blockquote>
+<p>⚠️ <strong>Piège fréquent</strong> : si un mock a plusieurs arguments, <strong>soit tous sont des valeurs précises,
+soit tous doivent être des matchers</strong> (<code>any()</code>, <code>eq()</code>, etc.) — impossible de mélanger les deux
+dans un même appel (ex. <code>savePet(any(), 1)</code> ne compile pas s&rsquo;il faut aussi préciser un second
+argument précis; il faudrait écrire <code>savePet(any(), eq(1))</code>). Mockito lance une erreur explicite
+à l&rsquo;exécution si cette règle est violée — un message qu&rsquo;il faut savoir reconnaître plutôt que de
+paniquer devant.</p>
+</blockquote>
+<h3 id="cas-dusage-4--verify--confirmer-quune-méthode-a-bien-été-appelée">Cas d&rsquo;usage 4 — <code>verify()</code> : confirmer qu&rsquo;une méthode a bien été appelée</h3>
+<p>Un mock ne sert pas seulement à fournir une valeur de retour — il permet aussi de vérifier
+<strong>après coup</strong> qu&rsquo;une méthode a bien été appelée, et avec quels arguments. C&rsquo;est <code>verify()</code>.</p>
+<p>Fait révélateur : <code>testDeleteOwnerSuccess</code>, dans le projet, vérifie seulement le code de statut HTTP
+retourné (<code>204 No Content</code>) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@WithMockUser</span>(roles <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;OWNER_ADMIN&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testDeleteOwnerSuccess</span>() <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> Owner owner <span style="color:#f92672">=</span> ownerMapper.<span style="color:#a6e22e">toOwner</span>(owners.<span style="color:#a6e22e">get</span>(0));
+</span></span><span style="display:flex;"><span>    given(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">clinicService</span>.<span style="color:#a6e22e">findOwnerById</span>(1)).<span style="color:#a6e22e">willReturn</span>(owner);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">mockMvc</span>.<span style="color:#a6e22e">perform</span>(delete(<span style="color:#e6db74">&#34;/api/owners/1&#34;</span>)
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">content</span>(newOwnerAsJSON).<span style="color:#a6e22e">contentType</span>(MediaType.<span style="color:#a6e22e">APPLICATION_JSON_VALUE</span>))
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">andExpect</span>(status().<span style="color:#a6e22e">isNoContent</span>());
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// ⚠️ Ce test s&#39;arrête ici -- rien ne confirme que clinicService.deleteOwner(owner)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// a réellement été appelé, alors que c&#39;est exactement ce que OwnerRestControllerV1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// .deleteOwner(...) est censé faire.</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Ce test passerait <strong>encore au vert</strong> même si quelqu&rsquo;un supprimait accidentellement l&rsquo;appel à
+<code>this.clinicService.deleteOwner(owner);</code> dans le contrôleur (tant que le contrôleur renvoie quand
+même <code>204 No Content</code>) — un vrai trou dans le filet de sécurité. <code>verify()</code> comble ce trou :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@WithMockUser</span>(roles <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;OWNER_ADMIN&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testDeleteOwnerSuccess</span>() <span style="color:#66d9ef">throws</span> Exception {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> Owner owner <span style="color:#f92672">=</span> ownerMapper.<span style="color:#a6e22e">toOwner</span>(owners.<span style="color:#a6e22e">get</span>(0));
+</span></span><span style="display:flex;"><span>    given(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">clinicService</span>.<span style="color:#a6e22e">findOwnerById</span>(1)).<span style="color:#a6e22e">willReturn</span>(owner);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">mockMvc</span>.<span style="color:#a6e22e">perform</span>(delete(<span style="color:#e6db74">&#34;/api/owners/1&#34;</span>)
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">content</span>(newOwnerAsJSON).<span style="color:#a6e22e">contentType</span>(MediaType.<span style="color:#a6e22e">APPLICATION_JSON_VALUE</span>))
+</span></span><span style="display:flex;"><span>        .<span style="color:#a6e22e">andExpect</span>(status().<span style="color:#a6e22e">isNoContent</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Confirme que la suppression a RÉELLEMENT été demandée au service, pas seulement</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// que le contrôleur a répondu 204 par coïncidence.</span>
+</span></span><span style="display:flex;"><span>    verify(<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">clinicService</span>).<span style="color:#a6e22e">deleteOwner</span>(owner);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<table>
+	<thead>
+			<tr>
+					<th>Variante de <code>verify</code></th>
+					<th>Vérifie que&hellip;</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>verify(mock).methode(args)</code></td>
+					<td>La méthode a été appelée <strong>exactement une fois</strong>, avec ces arguments</td>
+			</tr>
+			<tr>
+					<td><code>verify(mock, times(2)).methode(args)</code></td>
+					<td>La méthode a été appelée <strong>exactement 2 fois</strong></td>
+			</tr>
+			<tr>
+					<td><code>verify(mock, never()).methode(args)</code></td>
+					<td>La méthode n&rsquo;a <strong>jamais</strong> été appelée</td>
+			</tr>
+			<tr>
+					<td><code>verify(mock, atLeastOnce()).methode(args)</code></td>
+					<td>La méthode a été appelée <strong>au moins une fois</strong></td>
+			</tr>
+	</tbody>
+</table>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Un test utilise <code>given(this.clinicService.findOwnerById(1)).willReturn(owner)</code> mais n&rsquo;appelle
+jamais <code>verify(...)</code> sur <code>clinicService</code>. Un développeur supprime par erreur la logique qui
+sauvegarde réellement les changements dans le contrôleur, mais le test continue de passer. Pourquoi,
+et comment corriger le test ?</p>
+<p><strong>Réponse</strong> : configurer un mock avec <code>given()</code>/<code>when()</code> ne vérifie <strong>rien</strong> en soi — ça prépare
+seulement une valeur de retour au cas où la méthode serait appelée. Si le test ne vérifie que le
+code de statut HTTP final, il peut rester vert même si un appel important au service a été retiré
+par erreur, tant que la réponse HTTP reste plausible. Ajouter <code>verify(this.clinicService).save...(...)</code>
+force le test à confirmer que l&rsquo;appel a réellement eu lieu, pas seulement que la réponse « a l&rsquo;air »
+correcte.</p>
+</details>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer — sur votre projet
+  </summary>
+  <div class="box-content">
+<p>Trouvez, dans les tests de votre projet, un test qui configure un mock (<code>given</code>/<code>when</code>) mais qui
+n&rsquo;appelle jamais <code>verify(...)</code> sur ce même mock. Ajoutez le <code>verify(...)</code> manquant, puis cassez
+volontairement le code de production (retirez l&rsquo;appel réel au service) pour confirmer que votre test
+enrichi échoue désormais — alors qu&rsquo;il ne l&rsquo;aurait pas fait avant votre ajout.</p>
+  </div>
+</details>
+<hr>
+<h2 id="6-cycle-de-vie-dune-classe-de-test">6️⃣ Cycle de vie d&rsquo;une classe de test</h2>
+<p>Répéter la construction d&rsquo;un objet identique dans chaque méthode de test (comme <code>new Owner()</code>
+ci-dessus) devient répétitif. Les annotations de cycle de vie permettent de factoriser cette
+préparation :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OwnerTest</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Owner owner;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@BeforeEach</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Exécuté avant CHAQUE test : état propre garanti, aucun risque de fuite entre tests</span>
+</span></span><span style="display:flex;"><span>        owner <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Owner();
+</span></span><span style="display:flex;"><span>        Pet pet <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Pet();
+</span></span><span style="display:flex;"><span>        pet.<span style="color:#a6e22e">setName</span>(<span style="color:#e6db74">&#34;Léo&#34;</span>);
+</span></span><span style="display:flex;"><span>        owner.<span style="color:#a6e22e">addPet</span>(pet);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldFindPetByNameIgnoringCase</span>() {
+</span></span><span style="display:flex;"><span>        Pet found <span style="color:#f92672">=</span> owner.<span style="color:#a6e22e">getPet</span>(<span style="color:#e6db74">&#34;léo&#34;</span>);
+</span></span><span style="display:flex;"><span>        assertNotNull(found);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldReturnNullWhenPetNameDoesNotExist</span>() {
+</span></span><span style="display:flex;"><span>        Pet found <span style="color:#f92672">=</span> owner.<span style="color:#a6e22e">getPet</span>(<span style="color:#e6db74">&#34;Inconnu&#34;</span>);
+</span></span><span style="display:flex;"><span>        assertNull(found);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@AfterEach</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Exécuté après CHAQUE test : nettoyage si nécessaire (fichiers temporaires, etc.)</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<table>
+	<thead>
+			<tr>
+					<th>Annotation</th>
+					<th>Quand elle s&rsquo;exécute</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>@BeforeEach</code></td>
+					<td>Avant <strong>chaque</strong> méthode <code>@Test</code> de la classe</td>
+			</tr>
+			<tr>
+					<td><code>@AfterEach</code></td>
+					<td>Après <strong>chaque</strong> méthode <code>@Test</code> de la classe</td>
+			</tr>
+			<tr>
+					<td><code>@BeforeAll</code></td>
+					<td><strong>Une seule fois</strong>, avant tous les tests de la classe (méthode <code>static</code>)</td>
+			</tr>
+			<tr>
+					<td><code>@AfterAll</code></td>
+					<td><strong>Une seule fois</strong>, après tous les tests de la classe (méthode <code>static</code>)</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>⚠️ <code>@BeforeEach</code> recrée <code>owner</code> avant <strong>chaque</strong> test — c&rsquo;est ce qui garantit l&rsquo;<strong>indépendance</strong>
+des tests (aucun état résiduel d&rsquo;un test à l&rsquo;autre), un principe qui sera approfondi plus tard
+dans la session. Sans cette réinitialisation, un test qui modifie <code>owner</code> pourrait fausser le
+résultat du test suivant, selon l&rsquo;ordre d&rsquo;exécution.</p>
+</blockquote>
+<hr>
+<h2 id="7-où-placer-vos-tests">7️⃣ Où placer vos tests</h2>
+<p>Convention Maven stricte : le code de production vit dans <code>src/main/java/...</code>, les tests dans
+<code>src/test/java/...</code>, en respectant le <strong>même</strong> package. Une classe de test pour
+<code>org.springframework.samples.petclinic.model.Owner</code> doit donc se trouver dans
+<code>src/test/java/org/springframework/samples/petclinic/model/OwnerTest.java</code> — jamais dans
+<code>src/main/</code>, où elle serait empaquetée par erreur dans le livrable final.</p>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer — sur votre projet
+  </summary>
+  <div class="box-content">
+<p>Repérez une classe de votre projet qui n&rsquo;a <strong>aucun</strong> test, et pour laquelle vous pouvez écrire un
+test <strong>sans</strong> avoir besoin de mock ni de contexte Spring (comme <code>Owner</code> ci-dessus). Écrivez une
+première classe de test avec au moins deux méthodes <code>@Test</code>.</p>
+  </div>
+</details>
+<hr>
+<h2 id="-références">📚 Références</h2>
+<ul>
+<li>Documentation officielle JUnit — <a href="https://docs.junit.org/current/user-guide/#writing-tests" rel="external" target="_blank">Writing Tests</a>,
+guide de référence pour les annotations et assertions présentées ici (JUnit 6, moteur Jupiter).</li>
+<li>Documentation officielle JUnit — <a href="https://docs.junit.org/current/user-guide/#writing-tests-parameterized-tests" rel="external" target="_blank">Parameterized Tests</a>.</li>
+<li>Documentation officielle Mockito — <a href="https://site.mockito.org/" rel="external" target="_blank">site.mockito.org</a> — bases de
+<code>mock()</code>/<code>when()</code>/<code>thenReturn()</code> illustrées ci-dessus.</li>
+<li>Kent Beck (2002), <em>Test-Driven Development: By Example</em>, Addison-Wesley.</li>
+</ul>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer
+  </summary>
+  <div class="box-content">
+<p>Poursuivez avec l&rsquo;<a href="/420-515/semaine-4/exercice-junit/">exercice JUnit</a> pour écrire vos
+premiers tests directement sur votre projet.</p>
+  </div>
+</details>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-4/index.html"><a class="padding" href="/420-515/semaine-4/index.html">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</a><ul id="R-subsections-0a04879d58004f2299c8e47c33299b68" class="collapsible-menu">
+            <li class="" data-nav-id="/420-515/semaine-4/maven-tests/index.html"><a class="padding" href="/420-515/semaine-4/maven-tests/index.html">Maven (2/2) — cycle de build et exécution des tests</a></li>
+            <li class="" data-nav-id="/420-515/semaine-4/exercice-maven-tests/index.html"><a class="padding" href="/420-515/semaine-4/exercice-maven-tests/index.html">Exercice : exécution des tests avec Maven</a></li>
+            <li class="active " data-nav-id="/420-515/semaine-4/junit/index.html"><a class="padding" href="/420-515/semaine-4/junit/index.html">Introduction aux tests automatisés (JUnit)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-4/exercice-junit/index.html"><a class="padding" href="/420-515/semaine-4/exercice-junit/index.html">Exercice : écrire vos premiers tests JUnit</a></li>
+            <li class="" data-nav-id="/420-515/semaine-4/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-4/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1789366031" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1789366031" defer></script>
+    <script src="/420-515/js/theme.js?1789366031" defer></script>
+  </body>
+</html>

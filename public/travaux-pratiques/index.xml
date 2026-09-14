@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Travaux pratiques :: Maintenance de logiciel</title>
+    <link>http://localhost:1313/420-515/travaux-pratiques/index.html</link>
+    <description>🎯 Travaux pratiques notés Ce chapitre regroupe l’énoncé complet de chaque travail pratique (TP) noté du cours. Chaque TP réinvestit les notions vues dans les semaines précédentes — consultez le plan de cours pour les dates de remise exactes et la pondération globale de chaque TP.</description>
+    <generator>Hugo</generator>
+    <language>fr-ca</language>
+    <atom:link href="http://localhost:1313/420-515/travaux-pratiques/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>
