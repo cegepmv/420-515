@@ -2,7 +2,7 @@
 title = "Semaine 5 — Tests automatisés et intégration continue"
 type = "chapter"
 weight = 6
-draft = true
+draft = false
 +++
 
 ## 🎯 Objectifs d'apprentissage de la semaine

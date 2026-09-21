@@ -1,12 +1,16 @@
 +++
-title = "Intégration continue — premier pipeline GitHub Actions / GitLab CI"
-weight = 3
-draft = true
+title = "Intégration continue — premier pipeline GitHub Actions"
+weight = 4
+draft = false
 +++
 
 Écrire de bons tests ne sert à rien s'ils ne sont exécutés que « de temps en temps, quand on y
 pense ». L'**intégration continue** (CI) automatise leur exécution à chaque changement de code,
 pour détecter une régression **immédiatement**, avant qu'elle n'atteigne la branche principale.
+
+> 💡 Cette page suppose que vous connaissez déjà le vocabulaire de base de GitHub Actions (workflow,
+> événement, job, step, action, runner). Si ce n'est pas le cas, commencez par
+> [GitHub Actions — les bases]({{% relref "/semaine-5/github-actions" %}}).
 
 ---
 
@@ -81,12 +85,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
         with:
-          java-version: '17'
+          java-version: '25'
           distribution: 'temurin'
           cache: maven
 
@@ -98,8 +102,8 @@ jobs:
 |---|---|
 | `on: push` / `on: pull_request` | Événements qui déclenchent le pipeline — ici, à chaque push sur `main` et à chaque Pull Request ciblant `main` |
 | `runs-on: ubuntu-latest` | La machine virtuelle (éphémère, neuve à chaque exécution) sur laquelle le job s'exécute |
-| `actions/checkout@v4` | Récupère le code du commit concerné sur cette machine virtuelle |
-| `actions/setup-java@v4` | Installe le JDK demandé (ici Temurin 17) sur la machine virtuelle |
+| `actions/checkout@v5` | Récupère le code du commit concerné sur cette machine virtuelle |
+| `actions/setup-java@v5` | Installe le JDK demandé (ici Temurin 25) sur la machine virtuelle |
 | `cache: maven` | Met en cache le dépôt local Maven (`~/.m2`) entre les exécutions, pour accélérer les prochains pipelines |
 | `./mvnw -B clean verify` | `-B` (*batch mode*, pas d'interaction) ; `verify` déclenche aussi `compile` et `test` (cycle de vie Maven, semaine 3) |
 
@@ -135,48 +139,9 @@ clone neuf du dépôt, il ne voit que ce qui est réellement commité.
 
 ---
 
-## 4️⃣ L'équivalent GitLab CI
-
-Si votre équipe utilise GitLab plutôt que GitHub, un pipeline équivalent se définit dans un fichier
-`.gitlab-ci.yml` à la racine du dépôt :
-
-```yaml
-# .gitlab-ci.yml
-image: eclipse-temurin:17-jdk
-
-stages:
-  - test
-
-cache:
-  paths:
-    - .m2/repository
-
-variables:
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-
-build-and-test:
-  stage: test
-  script:
-    - ./mvnw -B clean verify
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_COMMIT_BRANCH == "main"'
-```
-
-| Section | Rôle |
-|---|---|
-| `image` | L'image de conteneur Docker (Docker sera vu en détail à la semaine 7) utilisée pour exécuter le job — ici, une image avec le JDK 17 déjà installé |
-| `stages` / `build-and-test` | Les grandes étapes du pipeline (ici une seule : `test`) et le job qui s'y exécute |
-| `cache` | Équivalent du cache Maven vu côté GitHub Actions |
-| `rules` | Conditions de déclenchement — ici, sur chaque Merge Request et sur chaque commit de `main` |
-
-> 💡 Les concepts sont identiques des deux côtés (checkout implicite, environnement neuf,
-> installation du JDK, exécution de `mvn verify`, rapport consultable après coup) — seule la
-> syntaxe YAML et le vocabulaire (*job*/*stage* vs *step*/*job*) diffèrent.
-
 {{% notice tip "🧪 À vous de jouer — sur votre projet" %}}
-Créez le fichier de workflow (GitHub Actions ou GitLab CI, selon la plateforme choisie par votre
-équipe), poussez-le sur une branche, et observez l'exécution réelle du pipeline sur votre dépôt.
+Créez le fichier de workflow GitHub Actions sur votre propre dépôt, poussez-le sur une branche, et
+observez l'exécution réelle du pipeline.
 {{% /notice %}}
 
 ---
@@ -185,8 +150,6 @@ Créez le fichier de workflow (GitHub Actions ou GitLab CI, selon la plateforme 
 
 - Documentation officielle GitHub Actions —
   [Building and testing Java with Maven](https://docs.github.com/actions/automating-builds-and-tests/building-and-testing-java-with-maven).
-- Documentation officielle GitLab CI/CD —
-  [gitlab.com/.../ci/yaml](https://docs.gitlab.com/ee/ci/yaml/).
 - Martin Fowler, *Continuous Integration* —
   [martinfowler.com/articles/continuousIntegration.html](https://martinfowler.com/articles/continuousIntegration.html).
 

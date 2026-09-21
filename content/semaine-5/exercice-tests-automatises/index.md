@@ -1,7 +1,7 @@
 +++
 title = "Exercice : tests unitaires, régression et couverture"
 weight = 2
-draft = true
+draft = false
 +++
 
 ## 🎯 Objectif

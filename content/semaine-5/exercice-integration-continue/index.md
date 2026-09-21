@@ -1,7 +1,7 @@
 +++
 title = "Exercice : mettre en place un pipeline CI"
-weight = 4
-draft = true
+weight = 5
+draft = false
 +++
 
 ## 🎯 Objectif

@@ -2,44 +2,44 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Semaine 4 — Maven (2/2) et introduction aux tests automatisés :: Maintenance de logiciel</title>
-    <link>http://localhost:1313/420-515/semaine-4/index.html</link>
+    <link>https://cegepmv.github.io/420-515/semaine-4/index.html</link>
     <description>🎯 Objectifs d’apprentissage de la semaine À la fin de cette semaine, vous devriez être capable de :&#xA;Exécuter les tests d’un projet avec mvn test, cibler un test précis avec -Dtest, et lire un rapport Surefire. Distinguer les tests exécutés par maven-surefire-plugin (tests unitaires, phase test) de ceux exécutés par maven-failsafe-plugin (tests d’intégration, phase verify). Ignorer volontairement l’exécution des tests (-DskipTests vs -Dmaven.test.skip) et expliquer la différence entre les deux. Écrire une première classe de test JUnit 6 (Jupiter) : structure @Test, assertions de base, nommage clair. Regrouper plusieurs assertions liées avec assertAll, et vérifier qu’une exception est bien lancée avec assertThrows. Écrire un test paramétré (@ParameterizedTest) pour couvrir plusieurs cas sans dupliquer de code. Expliquer, sur un exemple concret du projet, pourquoi et comment un mock (Mockito) isole le code testé d’une dépendance difficile à construire. Utiliser le cycle de vie d’une classe de test (@BeforeEach/@AfterEach) pour préparer un état propre avant chaque test. 🔍 Accroche « La semaine dernière, vous avez appris à lire un pom.xml et à suivre le cycle de vie Maven. Cette semaine, on s’attarde sur une seule phase de ce cycle — test — parce que c’est probablement celle que vous allez exécuter le plus souvent, chaque jour, pour le reste de votre carrière. Et on écrit vos tout premiers tests JUnit sur l’application legacy : le début d’un filet de sécurité qui va vous accompagner pour le reste de la session. »</description>
     <generator>Hugo</generator>
     <language>fr-ca</language>
-    <atom:link href="http://localhost:1313/420-515/semaine-4/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://cegepmv.github.io/420-515/semaine-4/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Maven (2/2) — cycle de build et exécution des tests</title>
-      <link>http://localhost:1313/420-515/semaine-4/maven-tests/index.html</link>
+      <link>https://cegepmv.github.io/420-515/semaine-4/maven-tests/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/420-515/semaine-4/maven-tests/index.html</guid>
+      <guid>https://cegepmv.github.io/420-515/semaine-4/maven-tests/index.html</guid>
       <description>La semaine dernière (Maven 1/2), vous avez exploré le pom.xml : dépendances, scope, plugins, et le cycle de vie complet (validate → … → deploy). Cette semaine se concentre sur une seule phase de ce cycle — test — et sur les outils qui l’exécutent concrètement.&#xA;1️⃣ maven-surefire-plugin : qui exécute vos tests Quand vous lancez mvn test, ce n’est pas Maven lui-même qui exécute vos classes de test — c’est le plugin Surefire, invoqué automatiquement pendant la phase test. Il recherche par convention toutes les classes dont le nom correspond à un patron précis :</description>
     </item>
     <item>
       <title>Exercice : exécution des tests avec Maven</title>
-      <link>http://localhost:1313/420-515/semaine-4/exercice-maven-tests/index.html</link>
+      <link>https://cegepmv.github.io/420-515/semaine-4/exercice-maven-tests/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/420-515/semaine-4/exercice-maven-tests/index.html</guid>
+      <guid>https://cegepmv.github.io/420-515/semaine-4/exercice-maven-tests/index.html</guid>
       <description>🎯 Objectif Manipuler concrètement l’exécution des tests avec Maven, sur votre propre projet, en réinvestissant les notions vues dans Maven (2/2).&#xA;🧩 Partie 1 — Exécuter et cibler des tests Lancez mvn test sur votre projet et repérez, dans la console, le résumé final (Tests run: X, Failures: Y, Errors: Z, Skipped: W). Choisissez une classe de test existante et relancez-la seule avec -Dtest=NomDeLaClasse. Ciblez ensuite une seule méthode de cette classe avec -Dtest=NomDeLaClasse#nomDeLaMéthode. 📄 Partie 2 — Lire un rapport Surefire Ouvrez le dossier target/surefire-reports/ généré après votre mvn test. Choisissez un fichier .txt et identifiez : le nombre de tests exécutés, leur temps d’exécution total, et si des tests ont été ignorés (Skipped). Si un test échoue, ouvrez le rapport correspondant et repérez la trace de la première assertion qui a échoué. 🚫 Partie 3 — -DskipTests vs -Dmaven.test.skip Lancez mvn package -DskipTests : confirmez dans la console que les classes de test sont compilées, mais qu’aucun test ne s’exécute. Lancez mvn package -Dmaven.test.skip=true : confirmez cette fois que la compilation des tests elle-même est sautée. Modifiez temporairement une classe de test pour qu’elle ne compile plus (ex. retirez un ;), puis relancez les deux commandes précédentes. Laquelle des deux révèle le problème de compilation, et laquelle le masque complètement ? Annulez ensuite votre modification. ❓ Question&#xD;Un script de déploiement automatisé utilise -Dmaven.test.skip=true pour accélérer les livraisons fréquentes. Quel risque cela introduit-il, comparé à -DskipTests ?</description>
     </item>
     <item>
       <title>Introduction aux tests automatisés (JUnit)</title>
-      <link>http://localhost:1313/420-515/semaine-4/junit/index.html</link>
+      <link>https://cegepmv.github.io/420-515/semaine-4/junit/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/420-515/semaine-4/junit/index.html</guid>
+      <guid>https://cegepmv.github.io/420-515/semaine-4/junit/index.html</guid>
       <description>Jusqu’ici, vérifier qu’un changement de code fonctionne s’est fait manuellement : relancer l’application, cliquer, observer. Cette approche ne passe pas à l’échelle et s’oublie facilement. Un test automatisé encode cette vérification une fois pour toutes, sous forme de code exécutable en quelques secondes, autant de fois que nécessaire.&#xA;0️⃣ Vocabulaire de base Avant d’écrire du code, clarifions quelques termes utilisés partout dans ce chapitre (et dans n’importe quelle documentation ou outil de test) :</description>
     </item>
     <item>
       <title>Exercice : écrire vos premiers tests JUnit</title>
-      <link>http://localhost:1313/420-515/semaine-4/exercice-junit/index.html</link>
+      <link>https://cegepmv.github.io/420-515/semaine-4/exercice-junit/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/420-515/semaine-4/exercice-junit/index.html</guid>
+      <guid>https://cegepmv.github.io/420-515/semaine-4/exercice-junit/index.html</guid>
       <description>🎯 Objectif Écrire une première classe de test JUnit 6 (Jupiter) sur votre application legacy, en réinvestissant les notions vues dans Introduction aux tests automatisés (JUnit).&#xA;🧩 Partie 1 — Premier test, sans mock Choisissez une classe de votre projet dont la logique ne dépend pas de Spring, d’une base de données ou d’un appel réseau (un objet du domaine avec une méthode qui calcule ou vérifie quelque chose, comme Owner.getPet(...) dans le projet du cours). Créez la classe de test correspondante au bon endroit (src/test/java/..., même package que la classe testée, nom se terminant par Test ou Tests). Écrivez au moins deux méthodes @Test : un cas où le résultat attendu est présent/vrai, et un cas où il est absent/faux (ex. un élément trouvé vs un élément non trouvé). 🔁 Partie 2 — Factoriser avec @BeforeEach Si vos deux tests répètent la même préparation d’objets, extrayez-la dans une méthode annotée @BeforeEach. Confirmez que vos deux tests passent toujours après cette factorisation. Ajoutez un troisième test qui réutilise le même état préparé par @BeforeEach, sans dupliquer sa construction. 🧪 Partie 3 — Exception, assertions groupées et test paramétré Écrivez un test avec assertThrows qui vérifie qu’une méthode de votre projet lance bien une exception dans un cas invalide (ex. argument null ou hors limites). Regroupez au moins deux assertions liées au même scénario avec assertAll, puis provoquez volontairement l’échec des deux en même temps pour confirmer qu’elles sont bien rapportées ensemble dans un seul résultat de test. Transformez un test qui vérifie plusieurs valeurs d’entrée similaires (ou écrivez-en un nouveau) en test paramétré avec @ParameterizedTest et @ValueSource ou @CsvSource. 🎭 Partie 4 — Un premier mock Repérez, dans le projet, un exemple existant de mock(...) (ex. PetAgeValidatorTest) ou de @MockitoBean (ex. OwnerRestControllerV1Tests). En équipe, expliquez à voix haute pourquoi ce mock est nécessaire ici : quelle dépendance remplace-t-il, et pourquoi serait-il difficile ou peu souhaitable d’utiliser la vraie dépendance dans ce test ? Sans nécessairement l’exécuter, identifiez une méthode de votre projet qui aurait besoin d’un mock similaire pour être testée en isolation (ex. une méthode qui appelle un service externe ou une base de données). 🧨 Partie 5 — Faire échouer un test intentionnellement Modifiez temporairement une assertion pour qu’elle échoue à coup sûr (ex. changez la valeur attendue). Lancez le test et lisez attentivement le message d’échec produit par JUnit (« expected: … but was: … »). Annulez votre modification et confirmez que le test repasse au vert. ❓ Question&#xD;Pourquoi est-il utile, en apprenant à écrire des tests, de voir volontairement un test échouer au moins une fois avant de le voir passer ?</description>
     </item>
     <item>
       <title>Activité pratique</title>
-      <link>http://localhost:1313/420-515/semaine-4/activite-pratique/index.html</link>
+      <link>https://cegepmv.github.io/420-515/semaine-4/activite-pratique/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/420-515/semaine-4/activite-pratique/index.html</guid>
+      <guid>https://cegepmv.github.io/420-515/semaine-4/activite-pratique/index.html</guid>
       <description>🎯 Activité pratique (non notée) En équipe, sur votre application legacy :&#xA;Écrivez au moins 3 tests JUnit sur des classes de votre projet qui n’ont actuellement aucun test, en utilisant @BeforeEach si plusieurs tests partagent une préparation commune. Exécutez votre suite complète avec mvn test et consultez les rapports générés dans target/surefire-reports/. Ciblez ensuite un seul de vos tests avec -Dtest=NomDeLaClasse#nomDeLaMéthode pour confirmer que vous savez l’exécuter isolément. 💡 Cette activité prépare directement la semaine 5, où ces mêmes tests seront distingués entre tests unitaires et tests de régression, mesurés en couverture, puis intégrés à un pipeline d’intégration continue.</description>
     </item>
   </channel>

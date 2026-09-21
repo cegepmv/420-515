@@ -1,7 +1,7 @@
 +++
 title = "Activité pratique"
-weight = 5
-draft = true
+weight = 6
+draft = false
 +++
 
 ## 🎯 Activité pratique (non notée)

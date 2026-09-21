@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="En semaine 4, vous avez écrit vos premiers tests JUnit. Cette semaine approfondit pourquoi on écrit certains tests plutôt que d’autres, comment mesurer objectivement l’effort de test déjà fourni, et quelles règles suivre pour qu’une suite de tests reste un atout plutôt qu’un fardeau.
+1️⃣ Test unitaire vs test de régression : même outil (JUnit), deux intentions différentes Un test unitaire vérifie qu’une unité de code (une méthode, une classe) se comporte comme prévu, en isolant ses dépendances. Il est généralement écrit en même temps que le code, pour documenter et valider son comportement attendu.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Tests automatisés — unitaires, régression, couverture, bonnes pratiques :: Maintenance de logiciel">
+    <meta name="twitter:description" content="En semaine 4, vous avez écrit vos premiers tests JUnit. Cette semaine approfondit pourquoi on écrit certains tests plutôt que d’autres, comment mesurer objectivement l’effort de test déjà fourni, et quelles règles suivre pour qu’une suite de tests reste un atout plutôt qu’un fardeau.
+1️⃣ Test unitaire vs test de régression : même outil (JUnit), deux intentions différentes Un test unitaire vérifie qu’une unité de code (une méthode, une classe) se comporte comme prévu, en isolant ses dépendances. Il est généralement écrit en même temps que le code, pour documenter et valider son comportement attendu.">
+    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-5/tests-automatises/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Tests automatisés — unitaires, régression, couverture, bonnes pratiques :: Maintenance de logiciel">
+    <meta property="og:description" content="En semaine 4, vous avez écrit vos premiers tests JUnit. Cette semaine approfondit pourquoi on écrit certains tests plutôt que d’autres, comment mesurer objectivement l’effort de test déjà fourni, et quelles règles suivre pour qu’une suite de tests reste un atout plutôt qu’un fardeau.
+1️⃣ Test unitaire vs test de régression : même outil (JUnit), deux intentions différentes Un test unitaire vérifie qu’une unité de code (une méthode, une classe) se comporte comme prévu, en isolant ses dépendances. Il est généralement écrit en même temps que le code, pour documenter et valider son comportement attendu.">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 5 — Tests automatisés et intégration continue">
+    <meta itemprop="name" content="Tests automatisés — unitaires, régression, couverture, bonnes pratiques :: Maintenance de logiciel">
+    <meta itemprop="description" content="En semaine 4, vous avez écrit vos premiers tests JUnit. Cette semaine approfondit pourquoi on écrit certains tests plutôt que d’autres, comment mesurer objectivement l’effort de test déjà fourni, et quelles règles suivre pour qu’une suite de tests reste un atout plutôt qu’un fardeau.
+1️⃣ Test unitaire vs test de régression : même outil (JUnit), deux intentions différentes Un test unitaire vérifie qu’une unité de code (une méthode, une classe) se comporte comme prévu, en isolant ses dépendances. Il est généralement écrit en même temps que le code, pour documenter et valider son comportement attendu.">
+    <meta itemprop="wordCount" content="1583">
+    <title>Tests automatisés — unitaires, régression, couverture, bonnes pratiques :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1789964158" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1789964158" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1789964158" defer></script>
+    <script src="/420-515/js/search.min.js?1789964158" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1789964158";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1789964158" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1789964158" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1789964158" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1789964158" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789964158" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789964158" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1789964158" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1789964158" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1789964158" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/semaine-5\/tests-automatises\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-5/tests-automatises/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-5/index.html"><span itemprop="name">Semaine 5 — Tests automatisés et intégration continue</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Tests automatisés — unitaires, régression, couverture, bonnes pratiques</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-5" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="tests-automatisés--unitaires-régression-couverture-bonnes-pratiques">Tests automatisés — unitaires, régression, couverture, bonnes pratiques</h1>
+
+<p>En semaine 4, vous avez écrit vos premiers tests JUnit. Cette semaine approfondit <strong>pourquoi</strong> on
+écrit certains tests plutôt que d&rsquo;autres, <strong>comment</strong> mesurer objectivement l&rsquo;effort de test déjà
+fourni, et <strong>quelles règles</strong> suivre pour qu&rsquo;une suite de tests reste un atout plutôt qu&rsquo;un fardeau.</p>
+<hr>
+<h2 id="1-test-unitaire-vs-test-de-régression--même-outil-junit-deux-intentions-différentes">1️⃣ Test unitaire vs test de régression : même outil (JUnit), deux intentions différentes</h2>
+<p>Un <strong>test unitaire</strong> vérifie qu&rsquo;une unité de code (une méthode, une classe) se comporte comme
+prévu, en isolant ses dépendances. Il est généralement écrit <strong>en même temps</strong> que le code, pour
+documenter et valider son comportement attendu.</p>
+<p>Un <strong>test de régression</strong> a une intention différente : il capture, sous forme de test automatisé,
+un bogue <strong>déjà observé</strong>, pour garantir qu&rsquo;il ne réapparaîtra jamais silencieusement. La séquence
+typique est :</p>
+<ol>
+<li>Un bogue est signalé ou découvert.</li>
+<li>On écrit un test qui reproduit ce bogue — <strong>ce test doit échouer</strong> tant que le bogue n&rsquo;est pas
+corrigé (sinon il ne prouve rien).</li>
+<li>On corrige le bogue.</li>
+<li>Le même test passe maintenant au vert — preuve tangible et automatisée que le bogue est réglé.</li>
+<li>Ce test reste dans la suite <strong>pour toujours</strong> : si quelqu&rsquo;un réintroduit accidentellement ce
+bogue (ex. en réusinant le code), le test échoue immédiatement, en local ou en CI.</li>
+</ol>
+<blockquote>
+<p>💡 Un test de régression est donc, techniquement, un test unitaire (même syntaxe JUnit, mêmes
+assertions) — ce qui change, c&rsquo;est <strong>l&rsquo;origine</strong> du test (un bogue réel plutôt qu&rsquo;une spécification
+anticipée) et son rôle dans le temps (empêcher un retour en arrière, plutôt que documenter un
+comportement neuf).</p>
+</blockquote>
+<h3 id="exemple-réel--un-test-de-régression-qui-a-cessé-de-protéger-le-projet">Exemple réel — un test de régression qui a cessé de protéger le projet</h3>
+<p><code>PetAgeValidator</code> (validation de la date de naissance d&rsquo;un animal) illustre bien le risque qu&rsquo;un
+test de régression est censé éliminer :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// PetAgeValidator.java</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isValid</span>(LocalDate birthDate, ConstraintValidatorContext context) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (birthDate <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    LocalDate today <span style="color:#f92672">=</span> LocalDate.<span style="color:#a6e22e">now</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (birthDate.<span style="color:#a6e22e">isAfter</span>(today)) {
+</span></span><span style="display:flex;"><span>        context.<span style="color:#a6e22e">disableDefaultConstraintViolation</span>();
+</span></span><span style="display:flex;"><span>        context.<span style="color:#a6e22e">buildConstraintViolationWithTemplate</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;Birth date cannot be in the future&#34;</span>
+</span></span><span style="display:flex;"><span>        ).<span style="color:#a6e22e">addConstraintViolation</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (birthDate.<span style="color:#a6e22e">isBefore</span>(today.<span style="color:#a6e22e">minusYears</span>(100))) {
+</span></span><span style="display:flex;"><span>        context.<span style="color:#a6e22e">disableDefaultConstraintViolation</span>();
+</span></span><span style="display:flex;"><span>        context.<span style="color:#a6e22e">buildConstraintViolationWithTemplate</span>(
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;Birth date cannot be older than 50 years&#34;</span>   <span style="color:#75715e">// ⚠️ message désynchronisé de la règle réelle</span>
+</span></span><span style="display:flex;"><span>        ).<span style="color:#a6e22e">addConstraintViolation</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Et le test qui l&rsquo;accompagne, dans <code>PetAgeValidatorTest</code> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// PetAgeValidatorTest.java</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Disabled</span>(<span style="color:#e6db74">&#34;Bogue intentionnel A26 - voir README-COURS-A26.md - à réactiver au moment choisi en classe&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldReturnFalseWhenBirthDateIsOlderThan50Years</span>() {
+</span></span><span style="display:flex;"><span>    LocalDate tooOldDate <span style="color:#f92672">=</span> LocalDate.<span style="color:#a6e22e">now</span>().<span style="color:#a6e22e">minusYears</span>(51);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ConstraintValidatorContext context <span style="color:#f92672">=</span> mock(ConstraintValidatorContext.<span style="color:#a6e22e">class</span>);
+</span></span><span style="display:flex;"><span>    when(context.<span style="color:#a6e22e">buildConstraintViolationWithTemplate</span>(anyString()))
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">thenReturn</span>(mock(ConstraintValidatorContext.<span style="color:#a6e22e">ConstraintViolationBuilder</span>.<span style="color:#a6e22e">class</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> result <span style="color:#f92672">=</span> validator.<span style="color:#a6e22e">isValid</span>(tooOldDate, context);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    assertFalse(result);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Ce test a été écrit à une époque où la règle métier limitait l&rsquo;âge à <strong>50 ans</strong> (<code>isBefore(today.minusYears(50))</code>).
+Le code a ensuite évolué : la limite réelle est passée à <strong>100 ans</strong>, mais ni le message d&rsquo;erreur
+(toujours « &hellip; older than 50 years ») ni ce test n&rsquo;ont été mis à jour en conséquence. Résultat :
+une date vieille de 51 ans est aujourd&rsquo;hui <strong>valide</strong> selon le code, mais ce test s&rsquo;attend encore à
+ce qu&rsquo;elle soit rejetée — il échouerait s&rsquo;il n&rsquo;était pas désactivé (<code>@Disabled</code>).</p>
+<blockquote>
+<p>⚠️ C&rsquo;est exactement le scénario qu&rsquo;un test de régression est censé prévenir : une règle métier a
+changé sans que la suite de tests suive, et personne ne s&rsquo;en est rendu compte parce que le test
+concerné a simplement été neutralisé plutôt que corrigé ou retiré consciemment. Un <code>@Disabled</code>
+qui traîne est un signal d&rsquo;alarme à ne jamais ignorer en revue de code — c&rsquo;est un trou dans le
+filet de sécurité, invisible dans les résultats verts habituels.</p>
+</blockquote>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Vous retirez l&rsquo;annotation <code>@Disabled</code> de <code>shouldReturnFalseWhenBirthDateIsOlderThan50Years</code> et
+relancez les tests. Le test échoue. Qu&rsquo;est-ce que cela révèle : un bogue dans <code>PetAgeValidator</code>, un
+bogue dans le test, ou les deux ?</p>
+<p><strong>Réponse</strong> : le test est désynchronisé avec la règle métier actuelle (100 ans, pas 50) — c&rsquo;est le
+<strong>test</strong> qui est obsolète, pas nécessairement le comportement du validateur. Mais le <strong>message
+d&rsquo;erreur</strong> du validateur, lui, ment toujours sur la vraie limite (100 ans) : c&rsquo;est un vrai bogue
+séparé, à corriger dans le code de production. Corriger un test qui échoue exige toujours de se
+demander lequel des deux — code ou test — reflète la véritable intention, avant de modifier l&rsquo;un
+ou l&rsquo;autre à l&rsquo;aveugle.</p>
+</details>
+<hr>
+<h2 id="2-couverture-de-code--ce-quelle-mesure-et-ce-quelle-ne-mesure-pas">2️⃣ Couverture de code : ce qu&rsquo;elle mesure, et ce qu&rsquo;elle ne mesure pas</h2>
+<p>La <strong>couverture de code</strong> (<em>code coverage</em>) quantifie la proportion du code source réellement
+exécutée pendant l&rsquo;exécution d&rsquo;une suite de tests. Les métriques les plus courantes :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Métrique</th>
+					<th>Ce qu&rsquo;elle compte</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Couverture de lignes (<em>line coverage</em>)</td>
+					<td>% de lignes exécutées au moins une fois</td>
+			</tr>
+			<tr>
+					<td>Couverture de branches (<em>branch coverage</em>)</td>
+					<td>% de branches (<code>if</code>/<code>else</code>, <code>switch</code>) empruntées, dans les deux sens</td>
+			</tr>
+			<tr>
+					<td>Couverture de méthodes</td>
+					<td>% de méthodes appelées au moins une fois</td>
+			</tr>
+	</tbody>
+</table>
+<h3 id="ajouter-jacoco-au-projet">Ajouter JaCoCo au projet</h3>
+<p>Le projet du cours n&rsquo;a <strong>pas encore</strong> d&rsquo;outil de mesure de couverture configuré — c&rsquo;est justement
+l&rsquo;objet de l&rsquo;exercice de cette semaine. <strong>JaCoCo</strong> (<em>Java Code Coverage</em>) est l&rsquo;outil standard de
+l&rsquo;écosystème Java/Maven. Extrait de configuration à ajouter dans la section <code>&lt;build&gt;&lt;plugins&gt;</code> du
+<code>pom.xml</code> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;plugin&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;groupId&gt;</span>org.jacoco<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>jacoco-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;version&gt;</span>0.8.12<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;executions&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>prepare-agent<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;execution&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;id&gt;</span>report<span style="color:#f92672">&lt;/id&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;phase&gt;</span>test<span style="color:#f92672">&lt;/phase&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;goals&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;goal&gt;</span>report<span style="color:#f92672">&lt;/goal&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;/goals&gt;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&lt;/execution&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;/executions&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/plugin&gt;</span></span></span></code></pre></div>
+<ul>
+<li><code>prepare-agent</code> s&rsquo;attache au processus JVM <strong>avant</strong> l&rsquo;exécution des tests, pour observer quelles
+lignes s&rsquo;exécutent.</li>
+<li><code>report</code> génère, après <code>mvn test</code>, un rapport HTML consultable dans
+<code>target/site/jacoco/index.html</code>.</li>
+</ul>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mvn clean test
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># puis ouvrir target/site/jacoco/index.html dans un navigateur</span></span></span></code></pre></div>
+<h3 id="-ce-quune-couverture-élevée-ne-garantit-pas">⚠️ Ce qu&rsquo;une couverture élevée NE garantit PAS</h3>
+<blockquote>
+<p>💡 <strong>100 % de couverture de lignes ne veut pas dire &ldquo;0 bogue&rdquo;.</strong> Une ligne peut être <em>exécutée</em>
+par un test sans que son résultat soit <em>vérifié</em> par une assertion pertinente.</p>
+</blockquote>
+<p>Exemple concret sur <code>PetAgeValidator</code> : un test comme celui-ci exécute la ligne fautive (le message
+« 50 years ») sans jamais la couvrir réellement du point de vue métier :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">callsIsValidWithoutCheckingTheRule</span>() {
+</span></span><span style="display:flex;"><span>    LocalDate someDate <span style="color:#f92672">=</span> LocalDate.<span style="color:#a6e22e">now</span>().<span style="color:#a6e22e">minusYears</span>(60);
+</span></span><span style="display:flex;"><span>    validator.<span style="color:#a6e22e">isValid</span>(someDate, mock(ConstraintValidatorContext.<span style="color:#a6e22e">class</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Aucune assertion sur le résultat : la ligne s&#39;exécute, la &#34;couverture&#34; grimpe,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// mais rien n&#39;est réellement vérifié.</span>
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Ce test ferait grimper la couverture de lignes sans jamais détecter que le message d&rsquo;erreur ment
+sur la vraie limite d&rsquo;âge. La couverture est donc un indicateur <strong>d&rsquo;effort minimal de test</strong> (« estce
+qu&rsquo;on a complètement oublié de tester ce code ? »), pas une preuve de qualité ou d&rsquo;absence de
+bogue.</p>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Une classe affiche 95 % de couverture de lignes dans le rapport JaCoCo. Peut-on affirmer que cette
+classe ne contient presque aucun bogue ?</p>
+<p><strong>Réponse</strong> : non. La couverture mesure seulement quelles lignes ont été <strong>exécutées</strong> pendant les
+tests, pas si leurs résultats ont été <strong>vérifiés correctement</strong> par des assertions pertinentes. Un
+code peut être entièrement exécuté par des tests mal conçus (sans assertion, ou avec une assertion
+qui ne teste pas le bon comportement) et rester truffé de bogues malgré une couverture élevée.</p>
+</details>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer — sur votre projet
+  </summary>
+  <div class="box-content">
+<p>Ajoutez le plugin JaCoCo à votre <code>pom.xml</code>, lancez <code>mvn clean test</code>, et ouvrez le rapport HTML.
+Identifiez une classe avec une couverture de branches nettement plus faible que sa couverture de
+lignes — que cela révèle-t-il typiquement (indice : des <code>if</code>/<code>else</code> où un seul des deux chemins est
+testé) ?</p>
+  </div>
+</details>
+<hr>
+<h2 id="3-bonnes-pratiques-décriture-de-tests">3️⃣ Bonnes pratiques d&rsquo;écriture de tests</h2>
+<h3 id="nommage-clair">Nommage clair</h3>
+<p>Un nom de test devrait décrire <strong>le scénario</strong> et <strong>le résultat attendu</strong>, sans avoir à lire le
+corps du test. Le projet suit déjà cette convention (<code>should&lt;Résultat&gt;When&lt;Scénario&gt;</code>) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldReturnFalseWhenBirthDateIsInFuture</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldReturnTrueWhenBirthDateIsValid</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldReturnTrueWhenBirthDateIsNull</span>()</span></span></code></pre></div>
+<blockquote>
+<p>⚠️ À éviter : <code>test1()</code>, <code>testValidator()</code>, <code>testIsValid()</code> — ces noms n&rsquo;indiquent ni le scénario
+ni le résultat attendu; il faut lire tout le corps du test pour comprendre ce qui est vérifié.</p>
+</blockquote>
+<h3 id="structure-arrange-act-assert-aaa">Structure Arrange-Act-Assert (AAA)</h3>
+<p>Chaque test gagne en lisibilité s&rsquo;il suit systématiquement trois étapes distinctes, comme dans
+<code>shouldReturnFalseWhenBirthDateIsInFuture</code> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shouldReturnFalseWhenBirthDateIsInFuture</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Arrange : préparer les données et les objets nécessaires</span>
+</span></span><span style="display:flex;"><span>    LocalDate futureDate <span style="color:#f92672">=</span> LocalDate.<span style="color:#a6e22e">now</span>().<span style="color:#a6e22e">plusDays</span>(1);
+</span></span><span style="display:flex;"><span>    ConstraintValidatorContext context <span style="color:#f92672">=</span> mock(ConstraintValidatorContext.<span style="color:#a6e22e">class</span>);
+</span></span><span style="display:flex;"><span>    when(context.<span style="color:#a6e22e">buildConstraintViolationWithTemplate</span>(anyString()))
+</span></span><span style="display:flex;"><span>            .<span style="color:#a6e22e">thenReturn</span>(mock(ConstraintValidatorContext.<span style="color:#a6e22e">ConstraintViolationBuilder</span>.<span style="color:#a6e22e">class</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Act : exécuter le comportement à tester</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> result <span style="color:#f92672">=</span> validator.<span style="color:#a6e22e">isValid</span>(futureDate, context);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Assert : vérifier le résultat</span>
+</span></span><span style="display:flex;"><span>    assertFalse(result);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<h3 id="un-seul-comportement-testé-par-test">Un seul comportement testé par test</h3>
+<p>Un test qui vérifie plusieurs comportements sans lien devient difficile à diagnostiquer quand il
+échoue (lequel des trois comportements a cassé ?). Le fichier <code>PetAgeValidatorTest</code> illustre la
+bonne pratique : un test séparé pour chaque scénario (date future, date trop ancienne, date valide,
+date nulle), plutôt qu&rsquo;un seul test géant qui enchaîne les quatre cas avec quatre assertions.</p>
+<h3 id="indépendance-des-tests">Indépendance des tests</h3>
+<p>Un test ne devrait <strong>jamais</strong> dépendre de l&rsquo;exécution préalable d&rsquo;un autre test, ni d&rsquo;un état
+partagé mutable entre les tests. Deux signes fréquents de violation :</p>
+<ul>
+<li>Un test qui échoue <strong>seulement</strong> quand on exécute toute la classe, mais qui passe si on
+l&rsquo;exécute seul.</li>
+<li>Un champ d&rsquo;instance modifié par un test et lu par un autre, sans réinitialisation entre les deux
+(<code>@BeforeEach</code> sert justement à repartir d&rsquo;un état propre à chaque test).</li>
+</ul>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Un test passe quand vous l&rsquo;exécutez seul (clic droit → Run), mais échoue quand vous exécutez toute
+la classe de tests. Quelle est la cause la plus probable ?</p>
+<p><strong>Réponse</strong> : une dépendance cachée entre tests — un état partagé (champ d&rsquo;instance, base de
+données en mémoire, fichier temporaire) modifié par un autre test qui s&rsquo;exécute avant lui, sans
+réinitialisation propre entre chaque test. Les tests doivent être écrits pour être exécutables dans
+n&rsquo;importe quel ordre, isolément ou ensemble.</p>
+</details>
+<hr>
+<h2 id="-références">📚 Références</h2>
+<ul>
+<li>Kent Beck (2002), <em>Test-Driven Development: By Example</em>, Addison-Wesley — origine du cycle
+Arrange-Act-Assert (souvent présenté sous le nom Given-When-Then).</li>
+<li>Documentation officielle JaCoCo — <a href="https://www.jacoco.org/jacoco/trunk/doc/" rel="external" target="_blank">jacoco.org</a> — guide
+de configuration Maven du plugin de couverture.</li>
+<li>Martin Fowler, <em>Regression Test</em> — <a href="https://martinfowler.com/bliki/RegressionTest.html" rel="external" target="_blank">martinfowler.com/bliki/RegressionTest.html</a>.</li>
+</ul>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer
+  </summary>
+  <div class="box-content">
+<p>Poursuivez avec l&rsquo;<a href="/420-515/semaine-5/exercice-tests-automatises/">exercice Tests automatisés</a>
+pour appliquer ces notions directement sur votre projet.</p>
+  </div>
+</details>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-4/index.html"><a class="padding" href="/420-515/semaine-4/index.html">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</a><ul id="R-subsections-0a04879d58004f2299c8e47c33299b68" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-5/index.html"><a class="padding" href="/420-515/semaine-5/index.html">Semaine 5 — Tests automatisés et intégration continue</a><ul id="R-subsections-62d70e99f8941f86fbf4d8780b33e646" class="collapsible-menu">
+            <li class="active " data-nav-id="/420-515/semaine-5/tests-automatises/index.html"><a class="padding" href="/420-515/semaine-5/tests-automatises/index.html">Tests automatisés — unitaires, régression, couverture, bonnes pratiques</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/exercice-tests-automatises/index.html"><a class="padding" href="/420-515/semaine-5/exercice-tests-automatises/index.html">Exercice : tests unitaires, régression et couverture</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/github-actions/index.html"><a class="padding" href="/420-515/semaine-5/github-actions/index.html">GitHub Actions — les bases</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/integration-continue/index.html"><a class="padding" href="/420-515/semaine-5/integration-continue/index.html">Intégration continue — premier pipeline GitHub Actions</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/exercice-integration-continue/index.html"><a class="padding" href="/420-515/semaine-5/exercice-integration-continue/index.html">Exercice : mettre en place un pipeline CI</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-5/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1789964158" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1789964158" defer></script>
+    <script src="/420-515/js/theme.min.js?1789964158" defer></script>
+  </body>
+</html>

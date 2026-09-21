@@ -1,7 +1,7 @@
 +++
 title = "Tests automatisés — unitaires, régression, couverture, bonnes pratiques"
 weight = 1
-draft = true
+draft = false
 +++
 
 En semaine 4, vous avez écrit vos premiers tests JUnit. Cette semaine approfondit **pourquoi** on

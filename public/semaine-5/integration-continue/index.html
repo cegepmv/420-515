@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="Écrire de bons tests ne sert à rien s’ils ne sont exécutés que « de temps en temps, quand on y pense ». L’intégration continue (CI) automatise leur exécution à chaque changement de code, pour détecter une régression immédiatement, avant qu’elle n’atteigne la branche principale.
+💡 Cette page suppose que vous connaissez déjà le vocabulaire de base de GitHub Actions (workflow, événement, job, step, action, runner). Si ce n’est pas le cas, commencez par GitHub Actions — les bases.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Intégration continue — premier pipeline GitHub Actions :: Maintenance de logiciel">
+    <meta name="twitter:description" content="Écrire de bons tests ne sert à rien s’ils ne sont exécutés que « de temps en temps, quand on y pense ». L’intégration continue (CI) automatise leur exécution à chaque changement de code, pour détecter une régression immédiatement, avant qu’elle n’atteigne la branche principale.
+💡 Cette page suppose que vous connaissez déjà le vocabulaire de base de GitHub Actions (workflow, événement, job, step, action, runner). Si ce n’est pas le cas, commencez par GitHub Actions — les bases.">
+    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-5/integration-continue/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Intégration continue — premier pipeline GitHub Actions :: Maintenance de logiciel">
+    <meta property="og:description" content="Écrire de bons tests ne sert à rien s’ils ne sont exécutés que « de temps en temps, quand on y pense ». L’intégration continue (CI) automatise leur exécution à chaque changement de code, pour détecter une régression immédiatement, avant qu’elle n’atteigne la branche principale.
+💡 Cette page suppose que vous connaissez déjà le vocabulaire de base de GitHub Actions (workflow, événement, job, step, action, runner). Si ce n’est pas le cas, commencez par GitHub Actions — les bases.">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 5 — Tests automatisés et intégration continue">
+    <meta itemprop="name" content="Intégration continue — premier pipeline GitHub Actions :: Maintenance de logiciel">
+    <meta itemprop="description" content="Écrire de bons tests ne sert à rien s’ils ne sont exécutés que « de temps en temps, quand on y pense ». L’intégration continue (CI) automatise leur exécution à chaque changement de code, pour détecter une régression immédiatement, avant qu’elle n’atteigne la branche principale.
+💡 Cette page suppose que vous connaissez déjà le vocabulaire de base de GitHub Actions (workflow, événement, job, step, action, runner). Si ce n’est pas le cas, commencez par GitHub Actions — les bases.">
+    <meta itemprop="wordCount" content="854">
+    <title>Intégration continue — premier pipeline GitHub Actions :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1789964158" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1789964158" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1789964158" defer></script>
+    <script src="/420-515/js/search.min.js?1789964158" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1789964158";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1789964158" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1789964158" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1789964158" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1789964158" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789964158" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789964158" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1789964158" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1789964158" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1789964158" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/semaine-5\/integration-continue\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-5/integration-continue/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-5/index.html"><span itemprop="name">Semaine 5 — Tests automatisés et intégration continue</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Intégration continue — premier pipeline GitHub Actions</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-5" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="intégration-continue--premier-pipeline-github-actions">Intégration continue — premier pipeline GitHub Actions</h1>
+
+<p>Écrire de bons tests ne sert à rien s&rsquo;ils ne sont exécutés que « de temps en temps, quand on y
+pense ». L&rsquo;<strong>intégration continue</strong> (CI) automatise leur exécution à chaque changement de code,
+pour détecter une régression <strong>immédiatement</strong>, avant qu&rsquo;elle n&rsquo;atteigne la branche principale.</p>
+<blockquote>
+<p>💡 Cette page suppose que vous connaissez déjà le vocabulaire de base de GitHub Actions (workflow,
+événement, job, step, action, runner). Si ce n&rsquo;est pas le cas, commencez par
+<a href="/420-515/semaine-5/github-actions/">GitHub Actions — les bases</a>.</p>
+</blockquote>
+<hr>
+<h2 id="1-pourquoi-automatiser">1️⃣ Pourquoi automatiser</h2>
+<p>« Ça fonctionne sur ma machine » n&rsquo;est plus un argument recevable en équipe : la configuration
+locale d&rsquo;une seule personne (version du JDK, variables d&rsquo;environnement, fichiers non commités) peut
+faire passer des tests qui échoueraient ailleurs. Un pipeline CI exécute la suite de tests dans un
+environnement <strong>neuf et identique pour tout le monde</strong>, à chaque <code>push</code> ou Pull Request — la seule
+version de la vérité que toute l&rsquo;équipe partage.</p>
+<p>Un pipeline CI minimal répond à une seule question, de façon automatique et systématique : <strong>le
+projet compile-t-il, et tous les tests passent-ils, sur ce commit précis ?</strong></p>
+<hr>
+<h2 id="2-le-pipeline--de-référence--déjà-présent-dans-le-projet">2️⃣ Le pipeline « de référence » déjà présent dans le projet</h2>
+<p>Le dépôt du cours contient déjà, hérités du projet open source <code>spring-petclinic-rest</code>, plusieurs
+fichiers de workflow GitHub Actions dans <code>.github/workflows/</code>. Ils ont été volontairement passés en
+déclenchement <strong>manuel</strong> (<code>workflow_dispatch</code>) pour ne pas faire échouer votre CI dès le TP1 (ils
+référencent des secrets/organisations qui n&rsquo;existent pas dans le dépôt du cours) — mais ils restent
+consultables comme exemple d&rsquo;un pipeline « niveau industrie » :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># .github/workflows/maven-build-pull-request.yml (extrait, déclenchement manuel dans ce dépôt)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">Java CI for Pull Request (RÉFÉRENCE - déclenchement manuel)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">workflow_dispatch</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v3</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Set up JDK 17</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/setup-java@v4</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">java-version</span>: <span style="color:#e6db74">&#39;17&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">distribution</span>: <span style="color:#e6db74">&#39;temurin&#39;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">cache</span>: <span style="color:#ae81ff">maven</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">GITHUB_TOKEN</span>: <span style="color:#ae81ff">${{ secrets.GITHUB_TOKEN }}</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">run</span>: <span style="color:#ae81ff">./mvnw -B verify</span></span></span></code></pre></div>
+<blockquote>
+<p>💡 Ce fichier date du projet upstream et déclenche même une analyse SonarCloud
+(<code>maven-build-master.yml</code>) — la qualité de code sera abordée en détail à la semaine 9. Le
+pipeline que <strong>vous</strong> construisez cette semaine est plus modeste, mais c&rsquo;est lui qui protégera
+réellement votre travail d&rsquo;équipe à partir de maintenant.</p>
+</blockquote>
+<hr>
+<h2 id="3-construire-votre-propre-pipeline--github-actions">3️⃣ Construire votre propre pipeline — GitHub Actions</h2>
+<p>Un pipeline minimal qui construit le projet et exécute la suite de tests à chaque Pull Request :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># .github/workflows/ci.yml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">CI</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">main ]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">pull_request</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">main ]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build-and-test</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Set up JDK 25</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/setup-java@v5</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">java-version</span>: <span style="color:#e6db74">&#39;25&#39;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">distribution</span>: <span style="color:#e6db74">&#39;temurin&#39;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">cache</span>: <span style="color:#ae81ff">maven</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build and run tests</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">./mvnw -B clean verify</span></span></span></code></pre></div>
+<table>
+	<thead>
+			<tr>
+					<th>Section</th>
+					<th>Rôle</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>on: push</code> / <code>on: pull_request</code></td>
+					<td>Événements qui déclenchent le pipeline — ici, à chaque push sur <code>main</code> et à chaque Pull Request ciblant <code>main</code></td>
+			</tr>
+			<tr>
+					<td><code>runs-on: ubuntu-latest</code></td>
+					<td>La machine virtuelle (éphémère, neuve à chaque exécution) sur laquelle le job s&rsquo;exécute</td>
+			</tr>
+			<tr>
+					<td><code>actions/checkout@v5</code></td>
+					<td>Récupère le code du commit concerné sur cette machine virtuelle</td>
+			</tr>
+			<tr>
+					<td><code>actions/setup-java@v5</code></td>
+					<td>Installe le JDK demandé (ici Temurin 25) sur la machine virtuelle</td>
+			</tr>
+			<tr>
+					<td><code>cache: maven</code></td>
+					<td>Met en cache le dépôt local Maven (<code>~/.m2</code>) entre les exécutions, pour accélérer les prochains pipelines</td>
+			</tr>
+			<tr>
+					<td><code>./mvnw -B clean verify</code></td>
+					<td><code>-B</code> (<em>batch mode</em>, pas d&rsquo;interaction) ; <code>verify</code> déclenche aussi <code>compile</code> et <code>test</code> (cycle de vie Maven, semaine 3)</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>⚠️ Utilisez <code>./mvnw</code> (le <em>Maven Wrapper</em> fourni avec le projet), pas <code>mvn</code> directement — la
+machine virtuelle GitHub Actions n&rsquo;a pas Maven préinstallé dans la version exacte attendue par le
+projet; le wrapper télécharge lui-même la bonne version, garantissant un build reproductible peu
+importe la machine.</p>
+</blockquote>
+<h3 id="où-voir-le-résultat">Où voir le résultat</h3>
+<p>Sur GitHub : onglet <strong>Actions</strong> du dépôt, ou directement sous l&rsquo;onglet <strong>Checks</strong> d&rsquo;une Pull
+Request. Un ✅ vert ou un ❌ rouge apparaît à côté de chaque commit et de chaque PR.</p>
+<h3 id="diagnostiquer-un-échec-de-pipeline">Diagnostiquer un échec de pipeline</h3>
+<ol>
+<li>Cliquez sur l&rsquo;exécution en échec, puis sur le job <code>build-and-test</code>.</li>
+<li>Dépliez l&rsquo;étape qui a échoué (souvent <code>Build and run tests</code>) — la sortie est la <strong>même</strong> console
+qu&rsquo;un <code>mvn verify</code> exécuté localement, avec le rapport Surefire habituel.</li>
+<li>Reproduisez le problème <strong>localement</strong> avec la même commande (<code>./mvnw -B clean verify</code>) avant de
+corriger — évite des allers-retours lents (push → attendre le pipeline → push) pour chaque essai.</li>
+</ol>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Votre pipeline échoue sur GitHub Actions, mais <code>mvn test</code> passe sans problème sur votre machine.
+Quelles sont deux causes plausibles à vérifier en premier ?</p>
+<p><strong>Réponse</strong> : (1) une différence de version du JDK entre votre machine locale et celle configurée
+dans <code>setup-java</code> du workflow; (2) un fichier nécessaire au build qui n&rsquo;est pas commité dans le
+dépôt (ex. présent seulement en local, ignoré par <code>.gitignore</code>) — le pipeline part toujours d&rsquo;un
+clone neuf du dépôt, il ne voit que ce qui est réellement commité.</p>
+</details>
+<hr>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer — sur votre projet
+  </summary>
+  <div class="box-content">
+<p>Créez le fichier de workflow GitHub Actions sur votre propre dépôt, poussez-le sur une branche, et
+observez l&rsquo;exécution réelle du pipeline.</p>
+  </div>
+</details>
+<hr>
+<h2 id="-références">📚 Références</h2>
+<ul>
+<li>Documentation officielle GitHub Actions —
+<a href="https://docs.github.com/actions/automating-builds-and-tests/building-and-testing-java-with-maven" rel="external" target="_blank">Building and testing Java with Maven</a>.</li>
+<li>Martin Fowler, <em>Continuous Integration</em> —
+<a href="https://martinfowler.com/articles/continuousIntegration.html" rel="external" target="_blank">martinfowler.com/articles/continuousIntegration.html</a>.</li>
+</ul>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer
+  </summary>
+  <div class="box-content">
+<p>Poursuivez avec l&rsquo;<a href="/420-515/semaine-5/exercice-integration-continue/">exercice Intégration continue</a>
+pour mettre votre propre pipeline en place de A à Z.</p>
+  </div>
+</details>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-4/index.html"><a class="padding" href="/420-515/semaine-4/index.html">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</a><ul id="R-subsections-0a04879d58004f2299c8e47c33299b68" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-5/index.html"><a class="padding" href="/420-515/semaine-5/index.html">Semaine 5 — Tests automatisés et intégration continue</a><ul id="R-subsections-62d70e99f8941f86fbf4d8780b33e646" class="collapsible-menu">
+            <li class="" data-nav-id="/420-515/semaine-5/tests-automatises/index.html"><a class="padding" href="/420-515/semaine-5/tests-automatises/index.html">Tests automatisés — unitaires, régression, couverture, bonnes pratiques</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/exercice-tests-automatises/index.html"><a class="padding" href="/420-515/semaine-5/exercice-tests-automatises/index.html">Exercice : tests unitaires, régression et couverture</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/github-actions/index.html"><a class="padding" href="/420-515/semaine-5/github-actions/index.html">GitHub Actions — les bases</a></li>
+            <li class="active " data-nav-id="/420-515/semaine-5/integration-continue/index.html"><a class="padding" href="/420-515/semaine-5/integration-continue/index.html">Intégration continue — premier pipeline GitHub Actions</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/exercice-integration-continue/index.html"><a class="padding" href="/420-515/semaine-5/exercice-integration-continue/index.html">Exercice : mettre en place un pipeline CI</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-5/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1789964158" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1789964158" defer></script>
+    <script src="/420-515/js/theme.min.js?1789964158" defer></script>
+  </body>
+</html>

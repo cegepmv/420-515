@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="Avant de construire votre propre pipeline (voir Intégration continue), il est utile de comprendre le vocabulaire et la mécanique de GitHub Actions en profondeur : ce n’est pas un outil réservé à la CI, mais un moteur d’automatisation générique déclenché par des événements sur un dépôt GitHub.
+1️⃣ Vocabulaire de base Terme Définition Workflow Un fichier YAML (.github/workflows/*.yml) décrivant une automatisation complète, déclenchée par un ou plusieurs événements Événement (event) Ce qui déclenche l’exécution d’un workflow (push, pull_request, workflow_dispatch, schedule, etc.) Job Un ensemble d’étapes exécutées séquentiellement, sur une seule machine virtuelle (runner) Step Une étape individuelle à l’intérieur d’un job : soit une commande shell (run:), soit une action réutilisable (uses:) Action Une unité de code réutilisable et partageable (souvent publiée sur le Marketplace), ex. actions/checkout@v5 Runner La machine virtuelle éphémère (neuve à chaque exécution) sur laquelle un job s’exécute (ubuntu-latest, windows-latest, etc., ou un runner auto-hébergé) Run (exécution) Une instance concrète d’exécution d’un workflow, déclenchée par un événement précis (visible sous l’onglet Actions du dépôt) 💡 Un dépôt peut contenir plusieurs fichiers de workflow dans .github/workflows/, chacun avec ses propres déclencheurs et responsabilités (ex. un pour la CI, un autre pour publier une documentation, un autre pour créer une release).">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="GitHub Actions — les bases :: Maintenance de logiciel">
+    <meta name="twitter:description" content="Avant de construire votre propre pipeline (voir Intégration continue), il est utile de comprendre le vocabulaire et la mécanique de GitHub Actions en profondeur : ce n’est pas un outil réservé à la CI, mais un moteur d’automatisation générique déclenché par des événements sur un dépôt GitHub.
+1️⃣ Vocabulaire de base Terme Définition Workflow Un fichier YAML (.github/workflows/*.yml) décrivant une automatisation complète, déclenchée par un ou plusieurs événements Événement (event) Ce qui déclenche l’exécution d’un workflow (push, pull_request, workflow_dispatch, schedule, etc.) Job Un ensemble d’étapes exécutées séquentiellement, sur une seule machine virtuelle (runner) Step Une étape individuelle à l’intérieur d’un job : soit une commande shell (run:), soit une action réutilisable (uses:) Action Une unité de code réutilisable et partageable (souvent publiée sur le Marketplace), ex. actions/checkout@v5 Runner La machine virtuelle éphémère (neuve à chaque exécution) sur laquelle un job s’exécute (ubuntu-latest, windows-latest, etc., ou un runner auto-hébergé) Run (exécution) Une instance concrète d’exécution d’un workflow, déclenchée par un événement précis (visible sous l’onglet Actions du dépôt) 💡 Un dépôt peut contenir plusieurs fichiers de workflow dans .github/workflows/, chacun avec ses propres déclencheurs et responsabilités (ex. un pour la CI, un autre pour publier une documentation, un autre pour créer une release).">
+    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-5/github-actions/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="GitHub Actions — les bases :: Maintenance de logiciel">
+    <meta property="og:description" content="Avant de construire votre propre pipeline (voir Intégration continue), il est utile de comprendre le vocabulaire et la mécanique de GitHub Actions en profondeur : ce n’est pas un outil réservé à la CI, mais un moteur d’automatisation générique déclenché par des événements sur un dépôt GitHub.
+1️⃣ Vocabulaire de base Terme Définition Workflow Un fichier YAML (.github/workflows/*.yml) décrivant une automatisation complète, déclenchée par un ou plusieurs événements Événement (event) Ce qui déclenche l’exécution d’un workflow (push, pull_request, workflow_dispatch, schedule, etc.) Job Un ensemble d’étapes exécutées séquentiellement, sur une seule machine virtuelle (runner) Step Une étape individuelle à l’intérieur d’un job : soit une commande shell (run:), soit une action réutilisable (uses:) Action Une unité de code réutilisable et partageable (souvent publiée sur le Marketplace), ex. actions/checkout@v5 Runner La machine virtuelle éphémère (neuve à chaque exécution) sur laquelle un job s’exécute (ubuntu-latest, windows-latest, etc., ou un runner auto-hébergé) Run (exécution) Une instance concrète d’exécution d’un workflow, déclenchée par un événement précis (visible sous l’onglet Actions du dépôt) 💡 Un dépôt peut contenir plusieurs fichiers de workflow dans .github/workflows/, chacun avec ses propres déclencheurs et responsabilités (ex. un pour la CI, un autre pour publier une documentation, un autre pour créer une release).">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 5 — Tests automatisés et intégration continue">
+    <meta itemprop="name" content="GitHub Actions — les bases :: Maintenance de logiciel">
+    <meta itemprop="description" content="Avant de construire votre propre pipeline (voir Intégration continue), il est utile de comprendre le vocabulaire et la mécanique de GitHub Actions en profondeur : ce n’est pas un outil réservé à la CI, mais un moteur d’automatisation générique déclenché par des événements sur un dépôt GitHub.
+1️⃣ Vocabulaire de base Terme Définition Workflow Un fichier YAML (.github/workflows/*.yml) décrivant une automatisation complète, déclenchée par un ou plusieurs événements Événement (event) Ce qui déclenche l’exécution d’un workflow (push, pull_request, workflow_dispatch, schedule, etc.) Job Un ensemble d’étapes exécutées séquentiellement, sur une seule machine virtuelle (runner) Step Une étape individuelle à l’intérieur d’un job : soit une commande shell (run:), soit une action réutilisable (uses:) Action Une unité de code réutilisable et partageable (souvent publiée sur le Marketplace), ex. actions/checkout@v5 Runner La machine virtuelle éphémère (neuve à chaque exécution) sur laquelle un job s’exécute (ubuntu-latest, windows-latest, etc., ou un runner auto-hébergé) Run (exécution) Une instance concrète d’exécution d’un workflow, déclenchée par un événement précis (visible sous l’onglet Actions du dépôt) 💡 Un dépôt peut contenir plusieurs fichiers de workflow dans .github/workflows/, chacun avec ses propres déclencheurs et responsabilités (ex. un pour la CI, un autre pour publier une documentation, un autre pour créer une release).">
+    <meta itemprop="wordCount" content="1998">
+    <title>GitHub Actions — les bases :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1789964158" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1789964158" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1789964158" defer></script>
+    <script src="/420-515/js/search.min.js?1789964158" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1789964158";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1789964158" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1789964158" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1789964158" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1789964158" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789964158" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789964158" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1789964158" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1789964158" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1789964158" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/semaine-5\/github-actions\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-5/github-actions/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-5/index.html"><span itemprop="name">Semaine 5 — Tests automatisés et intégration continue</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">GitHub Actions — les bases</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-5" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="github-actions--les-bases">GitHub Actions — les bases</h1>
+
+<p>Avant de construire votre propre pipeline (voir <a href="/420-515/semaine-5/integration-continue/">Intégration continue</a>), il est utile de comprendre le vocabulaire et la mécanique
+de <strong>GitHub Actions</strong> en profondeur : ce n&rsquo;est pas un outil réservé à la CI, mais un moteur
+d&rsquo;automatisation générique déclenché par des événements sur un dépôt GitHub.</p>
+<hr>
+<h2 id="1-vocabulaire-de-base">1️⃣ Vocabulaire de base</h2>
+<table>
+	<thead>
+			<tr>
+					<th>Terme</th>
+					<th>Définition</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>Workflow</strong></td>
+					<td>Un fichier YAML (<code>.github/workflows/*.yml</code>) décrivant une automatisation complète, déclenchée par un ou plusieurs événements</td>
+			</tr>
+			<tr>
+					<td><strong>Événement</strong> (<em>event</em>)</td>
+					<td>Ce qui déclenche l&rsquo;exécution d&rsquo;un workflow (<code>push</code>, <code>pull_request</code>, <code>workflow_dispatch</code>, <code>schedule</code>, etc.)</td>
+			</tr>
+			<tr>
+					<td><strong>Job</strong></td>
+					<td>Un ensemble d&rsquo;étapes exécutées séquentiellement, sur une seule machine virtuelle (<em>runner</em>)</td>
+			</tr>
+			<tr>
+					<td><strong>Step</strong></td>
+					<td>Une étape individuelle à l&rsquo;intérieur d&rsquo;un job : soit une commande shell (<code>run:</code>), soit une <strong>action</strong> réutilisable (<code>uses:</code>)</td>
+			</tr>
+			<tr>
+					<td><strong>Action</strong></td>
+					<td>Une unité de code réutilisable et partageable (souvent publiée sur le <a href="https://github.com/marketplace?type=actions" rel="external" target="_blank">Marketplace</a>), ex. <code>actions/checkout@v5</code></td>
+			</tr>
+			<tr>
+					<td><strong>Runner</strong></td>
+					<td>La machine virtuelle éphémère (neuve à chaque exécution) sur laquelle un job s&rsquo;exécute (<code>ubuntu-latest</code>, <code>windows-latest</code>, etc., ou un runner auto-hébergé)</td>
+			</tr>
+			<tr>
+					<td><strong>Run</strong> (exécution)</td>
+					<td>Une instance concrète d&rsquo;exécution d&rsquo;un workflow, déclenchée par un événement précis (visible sous l&rsquo;onglet <strong>Actions</strong> du dépôt)</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 Un dépôt peut contenir <strong>plusieurs</strong> fichiers de workflow dans <code>.github/workflows/</code>, chacun
+avec ses propres déclencheurs et responsabilités (ex. un pour la CI, un autre pour publier une
+documentation, un autre pour créer une release).</p>
+</blockquote>
+<hr>
+<h2 id="2-anatomie-annotée-dun-workflow">2️⃣ Anatomie annotée d&rsquo;un workflow</h2>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># .github/workflows/ci.yml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">CI                             </span> <span style="color:#75715e"># (1) Nom affiché dans l&#39;onglet Actions</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:                                    <span style="color:#75715e"># (2) Événements déclencheurs</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">main ]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">pull_request</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">main ]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:                                  <span style="color:#75715e"># (3) Un ou plusieurs jobs</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build-and-test</span>:                     <span style="color:#75715e"># Identifiant du job (utilisé par `needs:` au besoin)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest            </span> <span style="color:#75715e"># (4) Le runner sur lequel ce job s&#39;exécute</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:                             <span style="color:#75715e"># (5) Étapes exécutées dans l&#39;ordre</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v5     </span> <span style="color:#75715e"># (6) Une action réutilisable...</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Set up JDK 25</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/setup-java@v5</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">with</span>:                          <span style="color:#75715e"># ...paramétrée par des entrées (`with:`)</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">java-version</span>: <span style="color:#e6db74">&#39;25&#39;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">distribution</span>: <span style="color:#e6db74">&#39;temurin&#39;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build and run tests</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">./mvnw -B clean verify   </span> <span style="color:#75715e"># (7) ...ou une commande shell directe (`run:`)</span></span></span></code></pre></div>
+<ol>
+<li><strong><code>name</code></strong> — purement cosmétique, identifie le workflow dans l&rsquo;interface GitHub.</li>
+<li><strong><code>on</code></strong> — un ou plusieurs événements. Ici, le workflow se déclenche à chaque <code>push</code> sur <code>main</code>
+<strong>et</strong> à chaque Pull Request ciblant <code>main</code> (voir la section suivante pour d&rsquo;autres événements).</li>
+<li><strong><code>jobs</code></strong> — un dictionnaire de jobs; par défaut, des jobs différents s&rsquo;exécutent <strong>en
+parallèle</strong>, sur des runners distincts et indépendants (sauf dépendance explicite via <code>needs:</code>).</li>
+<li><strong><code>runs-on</code></strong> — chaque job démarre sur une machine virtuelle <strong>neuve</strong>, sans aucun état laissé
+par une exécution précédente : rien n&rsquo;est présumé installé sauf ce que le job installe lui-même.</li>
+<li><strong><code>steps</code></strong> — exécutées <strong>séquentiellement</strong>, dans l&rsquo;ordre d&rsquo;écriture, à l&rsquo;intérieur d&rsquo;un même
+job. Si une étape échoue, les étapes suivantes du job sont annulées par défaut.</li>
+<li><strong><code>uses:</code></strong> — référence une action existante, ici <code>actions/checkout@v5</code> (récupère le code du
+commit courant — sans cette étape, le runner est une machine vide qui ne connaît même pas le
+contenu du dépôt).</li>
+<li><strong><code>run:</code></strong> — exécute directement une commande shell sur le runner, comme dans un terminal.</li>
+</ol>
+<hr>
+<h2 id="3-événements-déclencheurs-courants">3️⃣ Événements déclencheurs courants</h2>
+<table>
+	<thead>
+			<tr>
+					<th>Événement</th>
+					<th>Se déclenche quand…</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>push</code></td>
+					<td>Un commit est poussé sur une branche (filtrable par <code>branches:</code>)</td>
+			</tr>
+			<tr>
+					<td><code>pull_request</code></td>
+					<td>Une Pull Request est ouverte, mise à jour, ou rouverte vers une branche ciblée</td>
+			</tr>
+			<tr>
+					<td><code>workflow_dispatch</code></td>
+					<td>Quelqu&rsquo;un déclenche le workflow <strong>manuellement</strong> depuis l&rsquo;onglet Actions</td>
+			</tr>
+			<tr>
+					<td><code>schedule</code></td>
+					<td>À intervalle régulier, selon une syntaxe cron (ex. tous les jours à minuit)</td>
+			</tr>
+	</tbody>
+</table>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">main ]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">pull_request</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">main ]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">workflow_dispatch</span>:      <span style="color:#75715e"># bouton &#34;Run workflow&#34; disponible manuellement, en plus des déclencheurs automatiques</span></span></span></code></pre></div>
+<blockquote>
+<p>⚠️ Le dépôt du cours contient des workflows hérités du projet upstream configurés en
+<code>workflow_dispatch</code> uniquement (voir <a href="/420-515/semaine-5/integration-continue/">Intégration continue</a>) — ils ne se déclenchent <strong>jamais</strong> automatiquement sur
+<code>push</code>/<code>pull_request</code>, volontairement, pour ne pas faire échouer votre CI dès le TP1.</p>
+</blockquote>
+<hr>
+<h2 id="4-jobs--parallélisme-dépendances-et-matrices">4️⃣ Jobs : parallélisme, dépendances et matrices</h2>
+<p>Par défaut, plusieurs jobs d&rsquo;un même workflow s&rsquo;exécutent <strong>en parallèle</strong> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>: [ <span style="color:#ae81ff">... ]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">lint</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>: [ <span style="color:#ae81ff">... ]</span></span></span></code></pre></div>
+<p><code>build</code> et <code>lint</code> démarrent en même temps, sur deux runners distincts. Pour forcer un ordre (ex.
+n&rsquo;exécuter les tests qu&rsquo;après un build réussi), on utilise <code>needs:</code> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>: [ <span style="color:#ae81ff">... ]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">deploy</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">needs</span>: <span style="color:#ae81ff">build         </span> <span style="color:#75715e"># attend que `build` se termine avec succès avant de démarrer</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>: [ <span style="color:#ae81ff">... ]</span></span></span></code></pre></div>
+<p>Une <strong>matrice</strong> (<code>strategy.matrix</code>) permet d&rsquo;exécuter le <strong>même</strong> job plusieurs fois, avec des
+paramètres différents (ex. plusieurs versions de JDK) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">strategy</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">matrix</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">java</span>: [ <span style="color:#e6db74">&#39;21&#39;</span>, <span style="color:#e6db74">&#39;25&#39;</span> ]
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v5</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/setup-java@v5</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">java-version</span>: <span style="color:#ae81ff">${{ matrix.java }}</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">distribution</span>: <span style="color:#e6db74">&#39;temurin&#39;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">run</span>: <span style="color:#ae81ff">./mvnw -B clean verify</span></span></span></code></pre></div>
+<p>Ce job s&rsquo;exécute <strong>deux fois en parallèle</strong> (une fois par version de JDK dans la matrice), sur deux
+runners distincts — utile pour confirmer qu&rsquo;un projet reste compatible avec plusieurs versions.</p>
+<hr>
+<h2 id="5-variables-secrets-et-artefacts">5️⃣ Variables, secrets et artefacts</h2>
+<h3 id="variables-denvironnement-et-expressions--">Variables d&rsquo;environnement et expressions <code>${{ }}</code></h3>
+<p>Les doubles accolades <code>${{ }}</code> évaluent une <strong>expression</strong> GitHub Actions (contexte, fonction,
+variable) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Afficher la branche courante</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">run</span>: <span style="color:#ae81ff">echo &#34;Branche : ${{ github.ref_name }}&#34;</span></span></span></code></pre></div>
+<h3 id="secrets">Secrets</h3>
+<p>Un <strong>secret</strong> (configuré dans les paramètres du dépôt : <em>Settings → Secrets and variables →
+Actions</em>) est une valeur sensible (jeton d&rsquo;API, mot de passe) jamais affichée en clair dans les
+journaux :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">env</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">GITHUB_TOKEN</span>: <span style="color:#ae81ff">${{ secrets.GITHUB_TOKEN }}  </span> <span style="color:#75715e"># secret prédéfini, fourni automatiquement par GitHub</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">run</span>: <span style="color:#ae81ff">./mvnw -B verify</span></span></span></code></pre></div>
+<blockquote>
+<p>⚠️ Ne mettez <strong>jamais</strong> de secret directement en clair dans un fichier de workflow (il serait
+visible par quiconque a accès au dépôt, y compris dans l&rsquo;historique Git) — passez toujours par un
+secret configuré côté GitHub.</p>
+</blockquote>
+<h3 id="artefacts">Artefacts</h3>
+<p>Un <strong>artefact</strong> est un fichier (ou dossier) produit par un job et conservé après l&rsquo;exécution (ex.
+un rapport de tests ou un <code>.jar</code> compilé), téléchargeable depuis l&rsquo;onglet Actions :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Publier le rapport de tests</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/upload-artifact@v5</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">rapport-surefire</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">path</span>: <span style="color:#ae81ff">target/surefire-reports/</span></span></span></code></pre></div>
+<p>Le même mécanisme permet de conserver le <strong><code>.jar</code></strong> produit par <code>./mvnw -B clean package</code> (ou
+<code>verify</code>), pour le récupérer sans avoir à reconstruire le projet — utile pour l&rsquo;inspecter, le
+déployer manuellement, ou le réutiliser dans un job suivant :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">run</span>: <span style="color:#ae81ff">./mvnw -B clean package -DskipTests  </span> <span style="color:#75715e"># produit le .jar dans target/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Publier le .jar en artefact</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/upload-artifact@v5</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">application-jar</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">path</span>: <span style="color:#ae81ff">target/*.jar         </span> <span style="color:#75715e"># ex. target/spring-petclinic-rest-*.jar</span></span></span></code></pre></div>
+<p>Le <code>.jar</code> publié apparaît ensuite dans la section <strong>Artifacts</strong> de l&rsquo;exécution du workflow (onglet
+<strong>Actions</strong>), téléchargeable manuellement pendant une durée limitée (90 jours par défaut).</p>
+<blockquote>
+<p>💡 <code>upload-artifact</code> ne <strong>déploie</strong> rien : il ne fait que conserver un fichier produit par le job
+pour le rendre téléchargeable depuis l&rsquo;interface GitHub. Publier une vraie release (ex. sur
+GitHub Releases ou un registre d&rsquo;artefacts Maven) est une étape distincte, hors de la portée de
+cette introduction.</p>
+</blockquote>
+<h3 id="cache-maven">Cache Maven</h3>
+<p>Chaque runner GitHub Actions démarre <strong>neuf</strong> : sans cache, Maven retélécharge la totalité du
+dépôt local (<code>~/.m2/repository</code>, toutes les dépendances du projet) à <strong>chaque</strong> exécution du
+pipeline — plusieurs dizaines de secondes, voire minutes, perdues à chaque <code>push</code>.</p>
+<p>L&rsquo;option <code>cache: maven</code> de <code>actions/setup-java</code> active automatiquement ce cache, sans configuration
+additionnelle :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Set up JDK 25</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/setup-java@v5</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">java-version</span>: <span style="color:#e6db74">&#39;25&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">distribution</span>: <span style="color:#e6db74">&#39;temurin&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">cache</span>: <span style="color:#ae81ff">maven         </span> <span style="color:#75715e"># met en cache ~/.m2/repository entre les exécutions</span></span></span></code></pre></div>
+<p>Concrètement :</p>
+<ol>
+<li>Au premier run, <code>setup-java</code> télécharge toutes les dépendances Maven normalement, puis
+<strong>sauvegarde</strong> le contenu de <code>~/.m2/repository</code> comme cache, associé à une clé calculée à partir
+du contenu du fichier <code>pom.xml</code> (via un hash).</li>
+<li>Aux runs suivants, si le <code>pom.xml</code> <strong>n&rsquo;a pas changé</strong>, la clé de cache correspond déjà à un
+cache existant : <code>setup-java</code> <strong>restaure</strong> directement <code>~/.m2/repository</code> plutôt que de tout
+retélécharger — le pipeline gagne un temps considérable.</li>
+<li>Si le <code>pom.xml</code> change (ex. une dépendance ajoutée ou une version modifiée), la clé de cache
+change aussi : un nouveau cache est reconstruit automatiquement, sans intervention manuelle.</li>
+</ol>
+<blockquote>
+<p>💡 Ce cache ne concerne que les <strong>dépendances téléchargées</strong> (<code>~/.m2/repository</code>) — il n&rsquo;a aucun
+effet sur la durée de compilation ou d&rsquo;exécution des tests eux-mêmes, seulement sur la partie
+« téléchargement » du build.</p>
+</blockquote>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Vous ajoutez une nouvelle dépendance dans le <code>pom.xml</code> de votre projet. Le prochain pipeline
+CI semble « ignorer » le cache Maven habituel et prend plus de temps que d&rsquo;habitude à s&rsquo;exécuter.
+Est-ce normal, et pourquoi ?</p>
+<p><strong>Réponse</strong> : oui, c&rsquo;est le comportement attendu. La clé de cache est calculée à partir du contenu
+du <code>pom.xml</code> : dès que celui-ci change, l&rsquo;ancienne clé ne correspond plus, donc l&rsquo;ancien cache
+n&rsquo;est pas restauré. <code>setup-java</code> télécharge alors les dépendances normalement (incluant la
+nouvelle), puis sauvegarde un <strong>nouveau</strong> cache associé à la nouvelle clé — les prochains runs avec
+ce <code>pom.xml</code> inchangé profiteront à nouveau du cache.</p>
+</details>
+<hr>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Un workflow contient deux jobs, <code>tests</code> et <code>publish</code>, sans clause <code>needs:</code> entre eux. Le job
+<code>publish</code> échoue de façon intermittente parce qu&rsquo;il tente parfois de publier un artefact que
+<code>tests</code> n&rsquo;a pas encore fini de produire. Quelle est la cause, et comment la corriger ?</p>
+<p><strong>Réponse</strong> : sans <code>needs:</code>, GitHub Actions exécute les jobs <strong>en parallèle</strong> par défaut — rien ne
+garantit que <code>tests</code> se termine avant <code>publish</code>. Il faut ajouter <code>needs: tests</code> au job <code>publish</code>
+pour forcer l&rsquo;ordre d&rsquo;exécution et garantir que <code>tests</code> (et la production de l&rsquo;artefact) est
+terminé avant que <code>publish</code> démarre.</p>
+</details>
+<hr>
+<h2 id="6-conditions-dexécution--if-success-failure-always-cancelled">6️⃣ Conditions d&rsquo;exécution : <code>if</code>, <code>success()</code>, <code>failure()</code>, <code>always()</code>, <code>cancelled()</code></h2>
+<p>Par défaut, une <strong>étape</strong> (step) ne s&rsquo;exécute que si toutes les étapes précédentes du même job ont
+réussi, et un <strong>job</strong> ne s&rsquo;exécute que si tous les jobs listés dans <code>needs:</code> ont réussi. La clause
+<code>if:</code> permet de personnaliser cette règle, souvent combinée à des <strong>fonctions de statut</strong> :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Fonction</th>
+					<th>Vrai quand…</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>success()</code></td>
+					<td>Toutes les étapes/jobs précédents ont réussi (comportement <strong>par défaut</strong> implicite si <code>if:</code> est absent)</td>
+			</tr>
+			<tr>
+					<td><code>failure()</code></td>
+					<td>Au moins une étape/job précédent a échoué</td>
+			</tr>
+			<tr>
+					<td><code>always()</code></td>
+					<td>Toujours vrai, peu importe le résultat des étapes/jobs précédents (même après un échec ou une annulation)</td>
+			</tr>
+			<tr>
+					<td><code>cancelled()</code></td>
+					<td>Le workflow a été annulé manuellement (ou automatiquement, ex. par un nouveau push qui annule un run en cours)</td>
+			</tr>
+	</tbody>
+</table>
+<h3 id="if-sur-une-étape"><code>if:</code> sur une étape</h3>
+<p>Cas classique : exécuter une étape de nettoyage ou de notification <strong>même si</strong> une étape
+précédente a échoué, ce qu&rsquo;un <code>run:</code> normal ne ferait jamais (le job s&rsquo;arrête dès la première
+étape en échec) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build and run tests</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">run</span>: <span style="color:#ae81ff">./mvnw -B clean verify</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Publier le rapport de tests</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">if</span>: <span style="color:#ae81ff">always()                      </span> <span style="color:#75715e"># s&#39;exécute même si les tests précédents ont échoué</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/upload-artifact@v5</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">name</span>: <span style="color:#ae81ff">rapport-surefire</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">path</span>: <span style="color:#ae81ff">target/surefire-reports/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Notifier un échec</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">if</span>: <span style="color:#ae81ff">failure()                     </span> <span style="color:#75715e"># s&#39;exécute seulement si une étape précédente a échoué</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">run</span>: <span style="color:#ae81ff">echo &#34;Le build a échoué, vérifier les journaux.&#34;</span></span></span></code></pre></div>
+<blockquote>
+<p>💡 Sans <code>if: always()</code>, l&rsquo;étape <code>Publier le rapport de tests</code> serait <strong>sautée</strong> si <code>mvnw verify</code>
+échoue — alors que c&rsquo;est justement dans ce cas-là que le rapport de tests est le plus utile pour
+diagnostiquer le problème !</p>
+</blockquote>
+<h3 id="if-sur-un-job"><code>if:</code> sur un job</h3>
+<p>La même logique s&rsquo;applique à un job entier, combinée à <code>needs:</code> pour réagir au résultat d&rsquo;un job
+précédent :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build-and-test</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>: [ <span style="color:#ae81ff">... ]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">notify-on-failure</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">needs</span>: <span style="color:#ae81ff">build-and-test</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">if</span>: <span style="color:#ae81ff">failure()                    </span> <span style="color:#75715e"># ne s&#39;exécute que si build-and-test a échoué</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">run</span>: <span style="color:#ae81ff">echo &#34;Pipeline en échec, notifier l&#39;équipe.&#34;</span></span></span></code></pre></div>
+<h3 id="if-avec-une-condition-personnalisée"><code>if:</code> avec une condition personnalisée</h3>
+<p><code>if:</code> accepte aussi des expressions arbitraires (contexte <code>github.*</code>, comparaisons), pas seulement
+des fonctions de statut :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Déployer (seulement sur main)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">if</span>: <span style="color:#ae81ff">github.ref_name == &#39;main&#39; &amp;&amp; success()</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">run</span>: <span style="color:#ae81ff">echo &#34;Déploiement...&#34;</span></span></span></code></pre></div>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Une étape <code>Envoyer une notification Slack en cas d'échec</code> n&rsquo;utilise aucune clause <code>if:</code>. Le build
+échoue à l&rsquo;étape précédente, mais la notification ne se déclenche jamais. Pourquoi, et comment
+corriger ce comportement ?</p>
+<p><strong>Réponse</strong> : sans <code>if:</code>, GitHub Actions applique la règle implicite <code>success()</code> — l&rsquo;étape est
+<strong>sautée</strong> dès qu&rsquo;une étape précédente du job a échoué. Il faut ajouter <code>if: failure()</code> (ou
+<code>if: always()</code> si la notification doit aussi apparaître en cas de succès) pour que cette étape
+s&rsquo;exécute précisément quand le build a échoué.</p>
+</details>
+<hr>
+<h2 id="-références">📚 Références</h2>
+<ul>
+<li>Documentation officielle — <a href="https://docs.github.com/actions/learn-github-actions/understanding-github-actions" rel="external" target="_blank">Understanding GitHub Actions</a>.</li>
+<li>Documentation officielle — <a href="https://docs.github.com/actions/using-workflows/workflow-syntax-for-github-actions" rel="external" target="_blank">Workflow syntax for GitHub Actions</a>.</li>
+<li>Documentation officielle — <a href="https://docs.github.com/actions/learn-github-actions/expressions#status-check-functions" rel="external" target="_blank">Expressions (fonctions de statut <code>success</code>, <code>failure</code>, <code>always</code>, <code>cancelled</code>)</a>.</li>
+<li><a href="https://github.com/marketplace?type=actions" rel="external" target="_blank">GitHub Actions Marketplace</a> — catalogue d&rsquo;actions réutilisables.</li>
+</ul>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer
+  </summary>
+  <div class="box-content">
+<p>Poursuivez avec <a href="/420-515/semaine-5/integration-continue/">Intégration continue</a> pour
+appliquer ces bases à un pipeline concret qui construit votre projet et exécute sa suite de tests.</p>
+  </div>
+</details>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-4/index.html"><a class="padding" href="/420-515/semaine-4/index.html">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</a><ul id="R-subsections-0a04879d58004f2299c8e47c33299b68" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-5/index.html"><a class="padding" href="/420-515/semaine-5/index.html">Semaine 5 — Tests automatisés et intégration continue</a><ul id="R-subsections-62d70e99f8941f86fbf4d8780b33e646" class="collapsible-menu">
+            <li class="" data-nav-id="/420-515/semaine-5/tests-automatises/index.html"><a class="padding" href="/420-515/semaine-5/tests-automatises/index.html">Tests automatisés — unitaires, régression, couverture, bonnes pratiques</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/exercice-tests-automatises/index.html"><a class="padding" href="/420-515/semaine-5/exercice-tests-automatises/index.html">Exercice : tests unitaires, régression et couverture</a></li>
+            <li class="active " data-nav-id="/420-515/semaine-5/github-actions/index.html"><a class="padding" href="/420-515/semaine-5/github-actions/index.html">GitHub Actions — les bases</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/integration-continue/index.html"><a class="padding" href="/420-515/semaine-5/integration-continue/index.html">Intégration continue — premier pipeline GitHub Actions</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/exercice-integration-continue/index.html"><a class="padding" href="/420-515/semaine-5/exercice-integration-continue/index.html">Exercice : mettre en place un pipeline CI</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-5/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1789964158" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1789964158" defer></script>
+    <script src="/420-515/js/theme.min.js?1789964158" defer></script>
+  </body>
+</html>

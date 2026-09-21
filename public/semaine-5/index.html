@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="🎯 Objectifs d’apprentissage de la semaine À la fin de cette semaine, vous devriez être capable de :
+Distinguer un test unitaire d’un test de régression et expliquer pourquoi un test qui échoue avant une correction a plus de valeur qu’un test qui passe du premier coup. Mesurer la couverture de code d’une suite de tests et interpréter ce qu’elle mesure réellement (et ce qu’elle ne garantit PAS). Appliquer des bonnes pratiques d’écriture de tests (nommage, structure Arrange-Act-Assert, indépendance, un seul comportement par test). Configurer un pipeline d’intégration continue (GitHub Actions et/ou GitLab CI) qui construit le projet et exécute automatiquement la suite de tests à chaque push/Pull Request. Diagnostiquer l’échec d’un pipeline CI à partir de ses journaux d’exécution. 🔍 Accroche « Un test qui n’a jamais échoué n’a jamais rien prouvé. La vraie question n’est pas “est-ce que mes tests passent ?”, mais “est-ce que mes tests échoueraient si le bogue qu’ils sont censés attraper était encore là ?”. Aujourd’hui, on outille ce réflexe — et on fait en sorte qu’il s’exécute automatiquement, à chaque push, sans que personne n’ait à y penser. »">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Semaine 5 — Tests automatisés et intégration continue :: Maintenance de logiciel">
+    <meta name="twitter:description" content="🎯 Objectifs d’apprentissage de la semaine À la fin de cette semaine, vous devriez être capable de :
+Distinguer un test unitaire d’un test de régression et expliquer pourquoi un test qui échoue avant une correction a plus de valeur qu’un test qui passe du premier coup. Mesurer la couverture de code d’une suite de tests et interpréter ce qu’elle mesure réellement (et ce qu’elle ne garantit PAS). Appliquer des bonnes pratiques d’écriture de tests (nommage, structure Arrange-Act-Assert, indépendance, un seul comportement par test). Configurer un pipeline d’intégration continue (GitHub Actions et/ou GitLab CI) qui construit le projet et exécute automatiquement la suite de tests à chaque push/Pull Request. Diagnostiquer l’échec d’un pipeline CI à partir de ses journaux d’exécution. 🔍 Accroche « Un test qui n’a jamais échoué n’a jamais rien prouvé. La vraie question n’est pas “est-ce que mes tests passent ?”, mais “est-ce que mes tests échoueraient si le bogue qu’ils sont censés attraper était encore là ?”. Aujourd’hui, on outille ce réflexe — et on fait en sorte qu’il s’exécute automatiquement, à chaque push, sans que personne n’ait à y penser. »">
+    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-5/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Semaine 5 — Tests automatisés et intégration continue :: Maintenance de logiciel">
+    <meta property="og:description" content="🎯 Objectifs d’apprentissage de la semaine À la fin de cette semaine, vous devriez être capable de :
+Distinguer un test unitaire d’un test de régression et expliquer pourquoi un test qui échoue avant une correction a plus de valeur qu’un test qui passe du premier coup. Mesurer la couverture de code d’une suite de tests et interpréter ce qu’elle mesure réellement (et ce qu’elle ne garantit PAS). Appliquer des bonnes pratiques d’écriture de tests (nommage, structure Arrange-Act-Assert, indépendance, un seul comportement par test). Configurer un pipeline d’intégration continue (GitHub Actions et/ou GitLab CI) qui construit le projet et exécute automatiquement la suite de tests à chaque push/Pull Request. Diagnostiquer l’échec d’un pipeline CI à partir de ses journaux d’exécution. 🔍 Accroche « Un test qui n’a jamais échoué n’a jamais rien prouvé. La vraie question n’est pas “est-ce que mes tests passent ?”, mais “est-ce que mes tests échoueraient si le bogue qu’ils sont censés attraper était encore là ?”. Aujourd’hui, on outille ce réflexe — et on fait en sorte qu’il s’exécute automatiquement, à chaque push, sans que personne n’ait à y penser. »">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="website">
+    <meta itemprop="name" content="Semaine 5 — Tests automatisés et intégration continue :: Maintenance de logiciel">
+    <meta itemprop="description" content="🎯 Objectifs d’apprentissage de la semaine À la fin de cette semaine, vous devriez être capable de :
+Distinguer un test unitaire d’un test de régression et expliquer pourquoi un test qui échoue avant une correction a plus de valeur qu’un test qui passe du premier coup. Mesurer la couverture de code d’une suite de tests et interpréter ce qu’elle mesure réellement (et ce qu’elle ne garantit PAS). Appliquer des bonnes pratiques d’écriture de tests (nommage, structure Arrange-Act-Assert, indépendance, un seul comportement par test). Configurer un pipeline d’intégration continue (GitHub Actions et/ou GitLab CI) qui construit le projet et exécute automatiquement la suite de tests à chaque push/Pull Request. Diagnostiquer l’échec d’un pipeline CI à partir de ses journaux d’exécution. 🔍 Accroche « Un test qui n’a jamais échoué n’a jamais rien prouvé. La vraie question n’est pas “est-ce que mes tests passent ?”, mais “est-ce que mes tests échoueraient si le bogue qu’ils sont censés attraper était encore là ?”. Aujourd’hui, on outille ce réflexe — et on fait en sorte qu’il s’exécute automatiquement, à chaque push, sans que personne n’ait à y penser. »">
+    <meta itemprop="wordCount" content="186">
+    <title>Semaine 5 — Tests automatisés et intégration continue :: Maintenance de logiciel</title>
+    <link href="/420-515/semaine-5/index.xml" rel="alternate" type="application/rss+xml" title="Semaine 5 — Tests automatisés et intégration continue :: Maintenance de logiciel"><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1789964158" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1789964158" defer></script>
+    <script src="/420-515/js/search-lunr.min.js?1789964158" defer></script>
+    <script src="/420-515/js/search.min.js?1789964158" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1789964158";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1789964158" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1789964158" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1789964158" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1789964158" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789964158" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789964158" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1789964158" rel="stylesheet">
+    <link href="/420-515/css/theme.min.css?1789964158" rel="stylesheet">
+    <link href="/420-515/css/format-html.min.css?1789964158" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = `.min`;
+      window.relearn.path='\/semaine-5\/index.html';
+      window.relearn.relBasePath='..';
+      window.relearn.relBaseUri='..\/..';
+      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-5/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Semaine 5 — Tests automatisés et intégration continue</span><meta itemprop="position" content="2"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable chapter" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="chapter narrow">
+  <header class="headline">
+  </header>
+<div class="article-subheading">Chapter 6</div>
+
+<h1 id="semaine-5--tests-automatisés-et-intégration-continue">Semaine 5 — Tests automatisés et intégration continue</h1>
+
+<h2 id="-objectifs-dapprentissage-de-la-semaine">🎯 Objectifs d&rsquo;apprentissage de la semaine</h2>
+<p>À la fin de cette semaine, vous devriez être capable de :</p>
+<ul>
+<li>Distinguer un test unitaire d&rsquo;un test de régression et expliquer pourquoi un test qui échoue
+avant une correction a plus de valeur qu&rsquo;un test qui passe du premier coup.</li>
+<li>Mesurer la couverture de code d&rsquo;une suite de tests et interpréter ce qu&rsquo;elle mesure réellement
+(et ce qu&rsquo;elle ne garantit PAS).</li>
+<li>Appliquer des bonnes pratiques d&rsquo;écriture de tests (nommage, structure Arrange-Act-Assert,
+indépendance, un seul comportement par test).</li>
+<li>Configurer un pipeline d&rsquo;intégration continue (GitHub Actions et/ou GitLab CI) qui construit le
+projet et exécute automatiquement la suite de tests à chaque <code>push</code>/Pull Request.</li>
+<li>Diagnostiquer l&rsquo;échec d&rsquo;un pipeline CI à partir de ses journaux d&rsquo;exécution.</li>
+</ul>
+<hr>
+<h2 id="-accroche">🔍 Accroche</h2>
+<p>« Un test qui n&rsquo;a jamais échoué n&rsquo;a jamais rien prouvé. La vraie question n&rsquo;est pas &ldquo;est-ce que
+mes tests passent ?&rdquo;, mais &ldquo;est-ce que mes tests <strong>échoueraient</strong> si le bogue qu&rsquo;ils sont censés
+attraper était encore là ?&rdquo;. Aujourd&rsquo;hui, on outille ce réflexe — et on fait en sorte qu&rsquo;il
+s&rsquo;exécute automatiquement, à chaque <code>push</code>, sans que personne n&rsquo;ait à y penser. »</p>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-4/index.html"><a class="padding" href="/420-515/semaine-4/index.html">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</a><ul id="R-subsections-0a04879d58004f2299c8e47c33299b68" class="collapsible-menu"></ul></li>
+            <li class="active parent " data-nav-id="/420-515/semaine-5/index.html"><a class="padding" href="/420-515/semaine-5/index.html">Semaine 5 — Tests automatisés et intégration continue</a><ul id="R-subsections-62d70e99f8941f86fbf4d8780b33e646" class="collapsible-menu">
+            <li class="" data-nav-id="/420-515/semaine-5/tests-automatises/index.html"><a class="padding" href="/420-515/semaine-5/tests-automatises/index.html">Tests automatisés — unitaires, régression, couverture, bonnes pratiques</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/exercice-tests-automatises/index.html"><a class="padding" href="/420-515/semaine-5/exercice-tests-automatises/index.html">Exercice : tests unitaires, régression et couverture</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/github-actions/index.html"><a class="padding" href="/420-515/semaine-5/github-actions/index.html">GitHub Actions — les bases</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/integration-continue/index.html"><a class="padding" href="/420-515/semaine-5/integration-continue/index.html">Intégration continue — premier pipeline GitHub Actions</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/exercice-integration-continue/index.html"><a class="padding" href="/420-515/semaine-5/exercice-integration-continue/index.html">Exercice : mettre en place un pipeline CI</a></li>
+            <li class="" data-nav-id="/420-515/semaine-5/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-5/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1789964158" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1789964158" defer></script>
+    <script src="/420-515/js/theme.min.js?1789964158" defer></script>
+  </body>
+</html>
