@@ -14,19 +14,17 @@ dépôt, en réinvestissant les notions vues dans
 
 ## 🧩 Partie 1 — Créer le pipeline
 
-1. En équipe, créez le fichier de configuration adapté à votre plateforme
-   (`.github/workflows/ci.yml` pour GitHub Actions, ou `.gitlab-ci.yml` pour GitLab CI) à partir du
-   gabarit vu dans les notes de cette semaine.
+1. En équipe, créez le fichier de configuration `.github/workflows/ci.yml` pour GitHub Actions à
+   partir du gabarit vu dans les notes de cette semaine.
 2. Identifiez les étapes minimales nécessaires : récupération du code, installation du JDK,
    exécution de `./mvnw -B clean verify`.
-3. Poussez la configuration sur une branche dédiée et ouvrez une Pull/Merge Request.
+3. Poussez la configuration sur une branche dédiée et ouvrez une Pull Request.
 
 ---
 
 ## 🟢 Partie 2 — Obtenir un premier pipeline vert
 
-1. Observez l'exécution du pipeline sur votre plateforme (onglet **Actions** sur GitHub, ou
-   **CI/CD → Pipelines** sur GitLab).
+1. Observez l'exécution du pipeline dans l'onglet **Actions** sur GitHub.
 2. Si le pipeline échoue, ouvrez les journaux d'exécution et diagnostiquez la cause avant de
    corriger (erreur de syntaxe YAML, version du JDK incorrecte, fichier non commité, test qui
    échoue réellement).
@@ -40,7 +38,7 @@ dépôt, en réinvestissant les notions vues dans
    changez une valeur attendue dans une assertion) ou introduisez un petit bogue volontaire dans le
    code.
 2. Poussez ce changement et confirmez que le pipeline détecte bien l'échec (❌ visible sur la
-   Pull/Merge Request).
+   Pull Request).
 3. Annulez la modification (ou corrigez le bogue) et confirmez le retour au vert.
 
 <details>
@@ -60,10 +58,10 @@ pipeline **détecte réellement** les problèmes, et pas seulement qu'il s'exéc
 ## 🔗 Partie 4 — Intégrer la suite de tests de votre équipe
 
 1. Ajoutez au moins un nouveau test (unitaire ou de régression, vus dans l'exercice précédent) au
-   dépôt de votre équipe, sur la même branche ou une nouvelle Pull/Merge Request.
+   dépôt de votre équipe, sur la même branche ou une nouvelle Pull Request.
 2. Confirmez que le pipeline CI exécute automatiquement ce nouveau test, sans configuration
    additionnelle.
-3. Fusionnez la Pull/Merge Request une fois le pipeline vert.
+3. Fusionnez la Pull Request une fois le pipeline vert.
 
 ---
 

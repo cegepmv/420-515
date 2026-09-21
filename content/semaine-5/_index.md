@@ -15,7 +15,7 @@ draft = false
   (et ce qu'elle ne garantit PAS).
 - Appliquer des bonnes pratiques d'écriture de tests (nommage, structure Arrange-Act-Assert,
   indépendance, un seul comportement par test).
-- Configurer un pipeline d'intégration continue (GitHub Actions et/ou GitLab CI) qui construit le
+- Configurer un pipeline d'intégration continue (GitHub Actions) qui construit le
   projet et exécute automatiquement la suite de tests à chaque `push`/Pull Request.
 - Diagnostiquer l'échec d'un pipeline CI à partir de ses journaux d'exécution.
 
