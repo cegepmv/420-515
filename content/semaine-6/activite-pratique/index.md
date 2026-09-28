@@ -30,13 +30,3 @@ Pour la Pull/Merge Request :
   changement de comportement observable).
 - Au moins une revue de code croisée entre équipes avant la fusion, avec une attention particulière
   à repérer si un changement de comportement se serait glissé dans le réusinage.
-
-> 💡 Cette activité réinvestit directement les notions et l'exercice de la semaine : elle ne
-> demande rien de nouveau, seulement d'appliquer la même discipline (petites étapes, tests verts,
-> commits séparés) à une échelle un peu plus grande qu'un seul smell isolé.
-
-> 📌 Cette activité **prépare** le TP2 noté (10 points), dont la remise est prévue cette semaine
-> selon le plan de cours (réusinage d'un module de l'application legacy, appuyé par la suite de
-> tests existante) — ce n'est pas la remise elle-même. Reportez-vous aux consignes détaillées du
-> TP2 fournies séparément par l'enseignant·e pour les critères d'évaluation exacts et la date
-> limite.
