@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Semaine 6 — Réusinage (refactoring) et code smells :: Maintenance de logiciel</title>
+    <link>http://localhost:1313/420-515/semaine-6/index.html</link>
+    <description>🎯 Objectifs d’apprentissage de la semaine À la fin de cette semaine, vous devriez être capable de :&#xA;Définir le réusinage (refactoring) selon Martin Fowler et expliquer en quoi il se distingue d’une correction de bogue ou de l’ajout d’une fonctionnalité. Expliquer pourquoi une suite de tests automatisés (semaine 5) est la condition préalable qui rend le réusinage sécuritaire, plutôt qu’une simple bonne pratique parallèle. Reconnaître, dans du code réel, les code smells les plus courants : méthode trop longue, classe trop grosse, duplication de code, liste de paramètres trop longue, obsession des primitifs, feature envy, data clumps, enchaînements conditionnels répétés. Appliquer un sous-ensemble du catalogue de réusinages de Fowler (extraire une méthode, extraire une variable, renommer, extraire une classe, remplacer un nombre magique par une constante, introduire un objet paramètre, remplacer une condition par du polymorphisme) à l’aide des outils de réusinage automatisé de l’IDE. Réusiner par petites étapes réversibles, en relançant la suite de tests après chaque étape, sans jamais mélanger un changement de comportement avec un changement de structure. Reconnaître les situations où il vaut mieux reporter un réusinage (absence de tests, échéance serrée, code sur le point d’être supprimé). 🔍 Accroche « Vos tests passent, votre pipeline CI est vert (semaine 5) — le code fonctionne. Mais “fonctionner” et “être facile à faire évoluer” sont deux choses différentes. Cette semaine, on s’attaque à la structure interne du code, sans jamais changer ce qu’il fait de l’extérieur. Le filet de sécurité que vous avez tissé la semaine dernière n’était pas un exercice isolé : c’est précisément ce qui va vous permettre de réusiner sans retenue, en sachant immédiatement si vous avez cassé quelque chose. »</description>
+    <generator>Hugo</generator>
+    <language>fr-ca</language>
+    <atom:link href="http://localhost:1313/420-515/semaine-6/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Réusinage (refactoring) et code smells</title>
+      <link>http://localhost:1313/420-515/semaine-6/refactoring/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/420-515/semaine-6/refactoring/index.html</guid>
+      <description>1️⃣ Qu’est-ce que le réusinage — et ce que ce n’est PAS Martin Fowler définit le réusinage (refactoring) ainsi :&#xA;« A change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior. » — Martin Fowler, Refactoring: Improving the Design of Existing Code (2e éd., 2019)&#xA;Trois éléments de cette définition sont essentiels, et souvent mal compris en pratique :</description>
+    </item>
+    <item>
+      <title>Exercice : identifier et appliquer des réusinages</title>
+      <link>http://localhost:1313/420-515/semaine-6/exercice-refactoring/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/420-515/semaine-6/exercice-refactoring/index.html</guid>
+      <description>🎯 Objectif Pratiquer, sur votre propre projet, la démarche complète vue dans Réusinage (refactoring) et code smells : repérer un code smell réel, le corriger avec un réusinage catalogué, par petites étapes vérifiées par votre suite de tests (semaine 5) à chaque fois.&#xA;🧩 Partie 1 — Chasser les code smells En équipe, parcourez un module de votre projet (ou de l’application legacy fournie) et repérez au moins trois code smells différents parmi ceux du catalogue de la semaine (méthode trop longue, duplication, classe trop grosse, liste de paramètres trop longue, obsession des primitifs, feature envy, data clumps, chaînes de conditions répétées). Pour chacun, notez : le nom du smell, le fichier et la méthode concernés, et une phrase expliquant pourquoi ce smell rend le code plus difficile à comprendre ou à modifier. Ne corrigez rien encore — l’objectif de cette partie est seulement d’apprendre à reconnaître un smell avant de foncer dans la correction. 🤔 Testez-vous&#xD;Vous trouvez une méthode de 80 lignes qui fonctionne parfaitement et que personne n’a eu besoin de modifier depuis deux ans. Est-ce un problème à corriger en priorité ?</description>
+    </item>
+    <item>
+      <title>Activité pratique</title>
+      <link>http://localhost:1313/420-515/semaine-6/activite-pratique/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/420-515/semaine-6/activite-pratique/index.html</guid>
+      <description>🎯 Activité pratique (non notée) En équipe, réalisez le travail suivant sur votre dépôt, via une vraie Pull/Merge Request, en réinvestissant directement la démarche vue dans Réusinage (refactoring) et code smells et pratiquée dans l’exercice Réusinage :&#xA;Choisissez un module entier de votre application legacy (pas une seule méthode isolée) qui présente plusieurs code smells liés entre eux — par exemple une classe qui mélange à la fois une méthode trop longue, de la duplication et une liste de paramètres trop longue. Confirmez la couverture de tests de ce module avant de commencer (voir semaine 5). S’il manque des tests sur une partie du comportement que vous comptez réusiner, ajoutez-les d’abord. Réusinage par étapes : appliquez au moins deux réusinages catalogués différents (ex. Extract Method puis Introduce Parameter Object), chacun dans son propre commit, avec la suite de tests verte après chaque étape. Confirmez, par le pipeline CI (semaine 5), que la suite de tests reste entièrement verte sur votre branche après l’ensemble des réusinages. Pour la Pull/Merge Request :</description>
+    </item>
+  </channel>
+</rss>

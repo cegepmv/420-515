@@ -1,58 +1,58 @@
 <!DOCTYPE html>
 <html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
-  <head>
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
     <meta charset="utf-8">
     <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="generator" content="Hugo 0.165.0">
+    <meta name="generator" content="Hugo 0.166.0">
     <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
     <meta name="description" content="🎯 Objectif Configurer, exécuter et diagnostiquer un pipeline d’intégration continue réel sur votre propre dépôt, en réinvestissant les notions vues dans Intégration continue.
-🧩 Partie 1 — Créer le pipeline En équipe, créez le fichier de configuration adapté à votre plateforme (.github/workflows/ci.yml pour GitHub Actions, ou .gitlab-ci.yml pour GitLab CI) à partir du gabarit vu dans les notes de cette semaine. Identifiez les étapes minimales nécessaires : récupération du code, installation du JDK, exécution de ./mvnw -B clean verify. Poussez la configuration sur une branche dédiée et ouvrez une Pull/Merge Request. 🟢 Partie 2 — Obtenir un premier pipeline vert Observez l’exécution du pipeline sur votre plateforme (onglet Actions sur GitHub, ou CI/CD → Pipelines sur GitLab). Si le pipeline échoue, ouvrez les journaux d’exécution et diagnostiquez la cause avant de corriger (erreur de syntaxe YAML, version du JDK incorrecte, fichier non commité, test qui échoue réellement). Répétez jusqu’à obtenir un pipeline entièrement vert. 🔴 Partie 3 — Provoquer volontairement un échec Une fois le pipeline vert, modifiez temporairement un test existant pour qu’il échoue (ex. changez une valeur attendue dans une assertion) ou introduisez un petit bogue volontaire dans le code. Poussez ce changement et confirmez que le pipeline détecte bien l’échec (❌ visible sur la Pull/Merge Request). Annulez la modification (ou corrigez le bogue) et confirmez le retour au vert. ❓ QuestionPourquoi est-il utile de voir un pipeline échouer avant de le voir réussir, plutôt que de faire confiance à un premier essai vert ?">
+🧩 Partie 1 — Créer le pipeline En équipe, créez le fichier de configuration .github/workflows/ci.yml pour GitHub Actions à partir du gabarit vu dans les notes de cette semaine. Identifiez les étapes minimales nécessaires : récupération du code, installation du JDK, exécution de ./mvnw -B clean verify. Poussez la configuration sur une branche dédiée et ouvrez une Pull Request. 🟢 Partie 2 — Obtenir un premier pipeline vert Observez l’exécution du pipeline dans l’onglet Actions sur GitHub. Si le pipeline échoue, ouvrez les journaux d’exécution et diagnostiquez la cause avant de corriger (erreur de syntaxe YAML, version du JDK incorrecte, fichier non commité, test qui échoue réellement). Répétez jusqu’à obtenir un pipeline entièrement vert. 🔴 Partie 3 — Provoquer volontairement un échec Une fois le pipeline vert, modifiez temporairement un test existant pour qu’il échoue (ex. changez une valeur attendue dans une assertion) ou introduisez un petit bogue volontaire dans le code. Poussez ce changement et confirmez que le pipeline détecte bien l’échec (❌ visible sur la Pull Request). Annulez la modification (ou corrigez le bogue) et confirmez le retour au vert. ❓ QuestionPourquoi est-il utile de voir un pipeline échouer avant de le voir réussir, plutôt que de faire confiance à un premier essai vert ?">
     <meta name="author" content="">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Exercice : mettre en place un pipeline CI :: Maintenance de logiciel">
     <meta name="twitter:description" content="🎯 Objectif Configurer, exécuter et diagnostiquer un pipeline d’intégration continue réel sur votre propre dépôt, en réinvestissant les notions vues dans Intégration continue.
-🧩 Partie 1 — Créer le pipeline En équipe, créez le fichier de configuration adapté à votre plateforme (.github/workflows/ci.yml pour GitHub Actions, ou .gitlab-ci.yml pour GitLab CI) à partir du gabarit vu dans les notes de cette semaine. Identifiez les étapes minimales nécessaires : récupération du code, installation du JDK, exécution de ./mvnw -B clean verify. Poussez la configuration sur une branche dédiée et ouvrez une Pull/Merge Request. 🟢 Partie 2 — Obtenir un premier pipeline vert Observez l’exécution du pipeline sur votre plateforme (onglet Actions sur GitHub, ou CI/CD → Pipelines sur GitLab). Si le pipeline échoue, ouvrez les journaux d’exécution et diagnostiquez la cause avant de corriger (erreur de syntaxe YAML, version du JDK incorrecte, fichier non commité, test qui échoue réellement). Répétez jusqu’à obtenir un pipeline entièrement vert. 🔴 Partie 3 — Provoquer volontairement un échec Une fois le pipeline vert, modifiez temporairement un test existant pour qu’il échoue (ex. changez une valeur attendue dans une assertion) ou introduisez un petit bogue volontaire dans le code. Poussez ce changement et confirmez que le pipeline détecte bien l’échec (❌ visible sur la Pull/Merge Request). Annulez la modification (ou corrigez le bogue) et confirmez le retour au vert. ❓ QuestionPourquoi est-il utile de voir un pipeline échouer avant de le voir réussir, plutôt que de faire confiance à un premier essai vert ?">
-    <meta property="og:url" content="https://cegepmv.github.io/420-515/semaine-5/exercice-integration-continue/index.html">
+🧩 Partie 1 — Créer le pipeline En équipe, créez le fichier de configuration .github/workflows/ci.yml pour GitHub Actions à partir du gabarit vu dans les notes de cette semaine. Identifiez les étapes minimales nécessaires : récupération du code, installation du JDK, exécution de ./mvnw -B clean verify. Poussez la configuration sur une branche dédiée et ouvrez une Pull Request. 🟢 Partie 2 — Obtenir un premier pipeline vert Observez l’exécution du pipeline dans l’onglet Actions sur GitHub. Si le pipeline échoue, ouvrez les journaux d’exécution et diagnostiquez la cause avant de corriger (erreur de syntaxe YAML, version du JDK incorrecte, fichier non commité, test qui échoue réellement). Répétez jusqu’à obtenir un pipeline entièrement vert. 🔴 Partie 3 — Provoquer volontairement un échec Une fois le pipeline vert, modifiez temporairement un test existant pour qu’il échoue (ex. changez une valeur attendue dans une assertion) ou introduisez un petit bogue volontaire dans le code. Poussez ce changement et confirmez que le pipeline détecte bien l’échec (❌ visible sur la Pull Request). Annulez la modification (ou corrigez le bogue) et confirmez le retour au vert. ❓ QuestionPourquoi est-il utile de voir un pipeline échouer avant de le voir réussir, plutôt que de faire confiance à un premier essai vert ?">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-5/exercice-integration-continue/index.html">
     <meta property="og:site_name" content="Maintenance de logiciel">
     <meta property="og:title" content="Exercice : mettre en place un pipeline CI :: Maintenance de logiciel">
     <meta property="og:description" content="🎯 Objectif Configurer, exécuter et diagnostiquer un pipeline d’intégration continue réel sur votre propre dépôt, en réinvestissant les notions vues dans Intégration continue.
-🧩 Partie 1 — Créer le pipeline En équipe, créez le fichier de configuration adapté à votre plateforme (.github/workflows/ci.yml pour GitHub Actions, ou .gitlab-ci.yml pour GitLab CI) à partir du gabarit vu dans les notes de cette semaine. Identifiez les étapes minimales nécessaires : récupération du code, installation du JDK, exécution de ./mvnw -B clean verify. Poussez la configuration sur une branche dédiée et ouvrez une Pull/Merge Request. 🟢 Partie 2 — Obtenir un premier pipeline vert Observez l’exécution du pipeline sur votre plateforme (onglet Actions sur GitHub, ou CI/CD → Pipelines sur GitLab). Si le pipeline échoue, ouvrez les journaux d’exécution et diagnostiquez la cause avant de corriger (erreur de syntaxe YAML, version du JDK incorrecte, fichier non commité, test qui échoue réellement). Répétez jusqu’à obtenir un pipeline entièrement vert. 🔴 Partie 3 — Provoquer volontairement un échec Une fois le pipeline vert, modifiez temporairement un test existant pour qu’il échoue (ex. changez une valeur attendue dans une assertion) ou introduisez un petit bogue volontaire dans le code. Poussez ce changement et confirmez que le pipeline détecte bien l’échec (❌ visible sur la Pull/Merge Request). Annulez la modification (ou corrigez le bogue) et confirmez le retour au vert. ❓ QuestionPourquoi est-il utile de voir un pipeline échouer avant de le voir réussir, plutôt que de faire confiance à un premier essai vert ?">
+🧩 Partie 1 — Créer le pipeline En équipe, créez le fichier de configuration .github/workflows/ci.yml pour GitHub Actions à partir du gabarit vu dans les notes de cette semaine. Identifiez les étapes minimales nécessaires : récupération du code, installation du JDK, exécution de ./mvnw -B clean verify. Poussez la configuration sur une branche dédiée et ouvrez une Pull Request. 🟢 Partie 2 — Obtenir un premier pipeline vert Observez l’exécution du pipeline dans l’onglet Actions sur GitHub. Si le pipeline échoue, ouvrez les journaux d’exécution et diagnostiquez la cause avant de corriger (erreur de syntaxe YAML, version du JDK incorrecte, fichier non commité, test qui échoue réellement). Répétez jusqu’à obtenir un pipeline entièrement vert. 🔴 Partie 3 — Provoquer volontairement un échec Une fois le pipeline vert, modifiez temporairement un test existant pour qu’il échoue (ex. changez une valeur attendue dans une assertion) ou introduisez un petit bogue volontaire dans le code. Poussez ce changement et confirmez que le pipeline détecte bien l’échec (❌ visible sur la Pull Request). Annulez la modification (ou corrigez le bogue) et confirmez le retour au vert. ❓ QuestionPourquoi est-il utile de voir un pipeline échouer avant de le voir réussir, plutôt que de faire confiance à un premier essai vert ?">
     <meta property="og:locale" content="fr_ca">
     <meta property="og:type" content="article">
     <meta property="article:section" content="Semaine 5 — Tests automatisés et intégration continue">
     <meta itemprop="name" content="Exercice : mettre en place un pipeline CI :: Maintenance de logiciel">
     <meta itemprop="description" content="🎯 Objectif Configurer, exécuter et diagnostiquer un pipeline d’intégration continue réel sur votre propre dépôt, en réinvestissant les notions vues dans Intégration continue.
-🧩 Partie 1 — Créer le pipeline En équipe, créez le fichier de configuration adapté à votre plateforme (.github/workflows/ci.yml pour GitHub Actions, ou .gitlab-ci.yml pour GitLab CI) à partir du gabarit vu dans les notes de cette semaine. Identifiez les étapes minimales nécessaires : récupération du code, installation du JDK, exécution de ./mvnw -B clean verify. Poussez la configuration sur une branche dédiée et ouvrez une Pull/Merge Request. 🟢 Partie 2 — Obtenir un premier pipeline vert Observez l’exécution du pipeline sur votre plateforme (onglet Actions sur GitHub, ou CI/CD → Pipelines sur GitLab). Si le pipeline échoue, ouvrez les journaux d’exécution et diagnostiquez la cause avant de corriger (erreur de syntaxe YAML, version du JDK incorrecte, fichier non commité, test qui échoue réellement). Répétez jusqu’à obtenir un pipeline entièrement vert. 🔴 Partie 3 — Provoquer volontairement un échec Une fois le pipeline vert, modifiez temporairement un test existant pour qu’il échoue (ex. changez une valeur attendue dans une assertion) ou introduisez un petit bogue volontaire dans le code. Poussez ce changement et confirmez que le pipeline détecte bien l’échec (❌ visible sur la Pull/Merge Request). Annulez la modification (ou corrigez le bogue) et confirmez le retour au vert. ❓ QuestionPourquoi est-il utile de voir un pipeline échouer avant de le voir réussir, plutôt que de faire confiance à un premier essai vert ?">
-    <meta itemprop="wordCount" content="426">
+🧩 Partie 1 — Créer le pipeline En équipe, créez le fichier de configuration .github/workflows/ci.yml pour GitHub Actions à partir du gabarit vu dans les notes de cette semaine. Identifiez les étapes minimales nécessaires : récupération du code, installation du JDK, exécution de ./mvnw -B clean verify. Poussez la configuration sur une branche dédiée et ouvrez une Pull Request. 🟢 Partie 2 — Obtenir un premier pipeline vert Observez l’exécution du pipeline dans l’onglet Actions sur GitHub. Si le pipeline échoue, ouvrez les journaux d’exécution et diagnostiquez la cause avant de corriger (erreur de syntaxe YAML, version du JDK incorrecte, fichier non commité, test qui échoue réellement). Répétez jusqu’à obtenir un pipeline entièrement vert. 🔴 Partie 3 — Provoquer volontairement un échec Une fois le pipeline vert, modifiez temporairement un test existant pour qu’il échoue (ex. changez une valeur attendue dans une assertion) ou introduisez un petit bogue volontaire dans le code. Poussez ce changement et confirmez que le pipeline détecte bien l’échec (❌ visible sur la Pull Request). Annulez la modification (ou corrigez le bogue) et confirmez le retour au vert. ❓ QuestionPourquoi est-il utile de voir un pipeline échouer avant de le voir réussir, plutôt que de faire confiance à un premier essai vert ?">
+    <meta itemprop="wordCount" content="409">
     <title>Exercice : mettre en place un pipeline CI :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1789964158" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1789964158" defer></script>
-    <script src="/420-515/js/search-lunr.min.js?1789964158" defer></script>
-    <script src="/420-515/js/search.min.js?1789964158" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1790605557" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1790605557" defer></script>
+    <script src="/420-515/js/search-lunr.js?1790605557" defer></script>
+    <script src="/420-515/js/search.js?1790605557" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1789964158";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1790605557";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1789964158" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1789964158" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1789964158" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1789964158" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1790605557" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1790605557" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1790605557" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1790605557" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789964158" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1789964158" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1789964158" rel="stylesheet">
-    <link href="/420-515/css/theme.min.css?1789964158" rel="stylesheet">
-    <link href="/420-515/css/format-html.min.css?1789964158" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1790605557" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1790605557" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1790605557" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1790605557" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1790605557" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
-      window.relearn.min = `.min`;
+      window.relearn.min = ``;
       window.relearn.path='\/semaine-5\/exercice-integration-continue\/index.html';
       window.relearn.relBasePath='..\/..';
       window.relearn.relBaseUri='..\/..\/..';
-      window.relearn.absBaseUri='https:\/\/cegepmv.github.io\/420-515';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
       window.relearn.disableAnchorCopy=false;
       window.relearn.disableAnchorScrolling=false;
       window.relearn.disableInlineCopyToClipboard=true;
@@ -139,18 +139,16 @@ dépôt, en réinvestissant les notions vues dans
 <hr>
 <h2 id="-partie-1--créer-le-pipeline">🧩 Partie 1 — Créer le pipeline</h2>
 <ol>
-<li>En équipe, créez le fichier de configuration adapté à votre plateforme
-(<code>.github/workflows/ci.yml</code> pour GitHub Actions, ou <code>.gitlab-ci.yml</code> pour GitLab CI) à partir du
-gabarit vu dans les notes de cette semaine.</li>
+<li>En équipe, créez le fichier de configuration <code>.github/workflows/ci.yml</code> pour GitHub Actions à
+partir du gabarit vu dans les notes de cette semaine.</li>
 <li>Identifiez les étapes minimales nécessaires : récupération du code, installation du JDK,
 exécution de <code>./mvnw -B clean verify</code>.</li>
-<li>Poussez la configuration sur une branche dédiée et ouvrez une Pull/Merge Request.</li>
+<li>Poussez la configuration sur une branche dédiée et ouvrez une Pull Request.</li>
 </ol>
 <hr>
 <h2 id="-partie-2--obtenir-un-premier-pipeline-vert">🟢 Partie 2 — Obtenir un premier pipeline vert</h2>
 <ol>
-<li>Observez l&rsquo;exécution du pipeline sur votre plateforme (onglet <strong>Actions</strong> sur GitHub, ou
-<strong>CI/CD → Pipelines</strong> sur GitLab).</li>
+<li>Observez l&rsquo;exécution du pipeline dans l&rsquo;onglet <strong>Actions</strong> sur GitHub.</li>
 <li>Si le pipeline échoue, ouvrez les journaux d&rsquo;exécution et diagnostiquez la cause avant de
 corriger (erreur de syntaxe YAML, version du JDK incorrecte, fichier non commité, test qui
 échoue réellement).</li>
@@ -163,7 +161,7 @@ corriger (erreur de syntaxe YAML, version du JDK incorrecte, fichier non commit�
 changez une valeur attendue dans une assertion) ou introduisez un petit bogue volontaire dans le
 code.</li>
 <li>Poussez ce changement et confirmez que le pipeline détecte bien l&rsquo;échec (❌ visible sur la
-Pull/Merge Request).</li>
+Pull Request).</li>
 <li>Annulez la modification (ou corrigez le bogue) et confirmez le retour au vert.</li>
 </ol>
 <details>
@@ -179,10 +177,10 @@ pipeline <strong>détecte réellement</strong> les problèmes, et pas seulement 
 <h2 id="-partie-4--intégrer-la-suite-de-tests-de-votre-équipe">🔗 Partie 4 — Intégrer la suite de tests de votre équipe</h2>
 <ol>
 <li>Ajoutez au moins un nouveau test (unitaire ou de régression, vus dans l&rsquo;exercice précédent) au
-dépôt de votre équipe, sur la même branche ou une nouvelle Pull/Merge Request.</li>
+dépôt de votre équipe, sur la même branche ou une nouvelle Pull Request.</li>
 <li>Confirmez que le pipeline CI exécute automatiquement ce nouveau test, sans configuration
 additionnelle.</li>
-<li>Fusionnez la Pull/Merge Request une fois le pipeline vert.</li>
+<li>Fusionnez la Pull Request une fois le pipeline vert.</li>
 </ol>
 <hr>
 <h2 id="-auto-vérification">✅ Auto-vérification</h2>
@@ -251,6 +249,7 @@ additionnelle.</li>
             <li class="" data-nav-id="/420-515/semaine-5/integration-continue/index.html"><a class="padding" href="/420-515/semaine-5/integration-continue/index.html">Intégration continue — premier pipeline GitHub Actions</a></li>
             <li class="active " data-nav-id="/420-515/semaine-5/exercice-integration-continue/index.html"><a class="padding" href="/420-515/semaine-5/exercice-integration-continue/index.html">Exercice : mettre en place un pipeline CI</a></li>
             <li class="" data-nav-id="/420-515/semaine-5/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-5/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-6/index.html"><a class="padding" href="/420-515/semaine-6/index.html">Semaine 6 — Réusinage (refactoring) et code smells</a><ul id="R-subsections-f67fcebe2365ce5f296a1590e7b19ab6" class="collapsible-menu"></ul></li>
           </ul>
         </div>
         <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
@@ -286,8 +285,8 @@ additionnelle.</li>
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1789964158" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1789964158" defer></script>
-    <script src="/420-515/js/theme.min.js?1789964158" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1790605557" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1790605557" defer></script>
+    <script src="/420-515/js/theme.js?1790605557" defer></script>
   </body>
 </html>

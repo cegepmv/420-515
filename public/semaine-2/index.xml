@@ -2,58 +2,58 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Semaine 2 — Lire le code des autres :: Maintenance de logiciel</title>
-    <link>https://cegepmv.github.io/420-515/semaine-2/index.html</link>
+    <link>http://localhost:1313/420-515/semaine-2/index.html</link>
     <description>🎯 Objectifs d’apprentissage de la semaine À la fin de cette semaine, vous devriez être capable de :&#xA;Appliquer des stratégies de lecture de code (top-down vs bottom-up) pour comprendre un programme écrit par quelqu’un d’autre. Utiliser les tests existants comme documentation vivante. Repérer des indices de code smells à l’aide d’une grille de lecture simple. Reproduire et isoler un bogue de façon fiable avant de tenter de le corriger. Lire une pile d’appels (stack trace) pour localiser la cause d’une exception, y compris sa cause racine (Caused by:). Formuler et tester des hypothèses de cause, plutôt que de corriger « à l’aveugle ». Ouvrir et gérer une Pull Request, effectuer une revue de code. Distinguer merge et rebase, ainsi que revert et reset. Utiliser git cherry-pick pour appliquer un commit précis d’une branche à une autre. 🔍 Accroche « N’importe qui peut écrire du code. Peu de gens savent le LIRE efficacement. C’est une compétence distincte, presque un sixième sens qu’on développe. Aujourd’hui, on l’entraîne. »</description>
     <generator>Hugo</generator>
     <language>fr-ca</language>
-    <atom:link href="https://cegepmv.github.io/420-515/semaine-2/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/420-515/semaine-2/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Lire le code des autres</title>
-      <link>https://cegepmv.github.io/420-515/semaine-2/lecture-de-code/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-2/lecture-de-code/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-2/lecture-de-code/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-2/lecture-de-code/index.html</guid>
       <description>Ce que veut dire « comprendre » du code Avant de voir les stratégies concrètes, clarifions ce qu’on cherche à construire quand on lit du code : un modèle mental — une compréhension du fonctionnement du système et des raisons qui expliquent ses choix de conception. Ce n’est pas juste “avoir lu les lignes”, c’est être capable d’expliquer et de prédire le comportement du code sans le relire.&#xA;Pour construire ce modèle mental, deux types de connaissances entrent en jeu :</description>
     </item>
     <item>
       <title>Exercices approfondis — lecture de code</title>
-      <link>https://cegepmv.github.io/420-515/semaine-2/exercice-lecture-de-code/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-2/exercice-lecture-de-code/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-2/exercice-lecture-de-code/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-2/exercice-lecture-de-code/index.html</guid>
       <description>🎯 Objectif Un exercice distinct pour chacune des quatre stratégies de lecture de code vues dans Lire le code des autres. Chaque partie se termine par une vraie petite modification à apporter à votre projet legacy — rien de comparable en ampleur au TP1 : ce sont des modifications additives, à faible risque&#xA;👥 En équipe. Travaillez chaque partie sur sa propre branche (ex. lecture-topdown, lecture-bottomup, etc.), avec un commit et une petite Pull Request à la fin — une belle occasion de réutiliser vos réflexes de la page Git 2/2. Ces branches d’exercice n’ont pas besoin d’être conservées après validation en équipe.</description>
     </item>
     <item>
       <title>Techniques de débogage (1/2)</title>
-      <link>https://cegepmv.github.io/420-515/semaine-2/debogage/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-2/debogage/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-2/debogage/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-2/debogage/index.html</guid>
       <description>Cette semaine, on entame la première moitié d’un cycle en deux temps sur le débogage méthodique — la suite (semaine 3) approfondira l’utilisation du débogueur pas à pas. Ici, on pose les bases : comment aborder un bogue de façon systématique plutôt qu’en devinant au hasard.&#xA;🐞 Déboguer, ce n’est pas deviner Face à un bogue dans du code que vous n’avez pas écrit, la tentation est grande de changer une ligne « pour voir si ça règle le problème ». C’est rarement efficace, et ça peut même injecter un nouveau bogue sans qu’on comprenne pourquoi. Le débogage méthodique suit plutôt une démarche proche de la méthode scientifique, popularisée par Andreas Zeller dans Why Programs Fail: A Guide to Systematic Debugging — une référence de fond en génie logiciel sur le sujet.</description>
     </item>
     <item>
       <title>Exercice : lire une stack trace</title>
-      <link>https://cegepmv.github.io/420-515/semaine-2/exercice-stack-trace/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-2/exercice-stack-trace/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-2/exercice-stack-trace/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-2/exercice-stack-trace/index.html</guid>
       <description>🎯 Objectif Mettre en pratique la stratégie de lecture d’une pile d’appels (stack trace) vue dans Techniques de débogage (1/2) : trouver la cause racine, localiser le point d’entrée pertinent dans votre propre code, et formuler une hypothèse de cause.&#xA;📝 Déroulement Pour chacune des piles d’appels ci-dessous, répondez à trois questions avant de révéler la réponse :&#xA;Où l’exception a-t-elle été levée en premier (fichier + ligne) ? Y a-t-il un Caused by: ? Si oui, quelle est la cause racine ? Quelle hypothèse feriez-vous sur la cause du problème ? Stack trace 1</description>
     </item>
     <item>
       <title>Git 2/2 — notions avancées</title>
-      <link>https://cegepmv.github.io/420-515/semaine-2/git-avance/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-2/git-avance/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-2/git-avance/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-2/git-avance/index.html</guid>
       <description>Cette semaine, on poursuit l’introduction à Git amorcée en semaine 1, avec les notions nécessaires pour collaborer efficacement en équipe : Pull Request, choix entre merge et rebase, retour en arrière sécuritaire, et récupération sélective de commits.&#xA;🎬 Mise en situation Imaginez : vous et un coéquipier travaillez chacun sur une branche différente pour corriger deux bogues différents dans le même fichier. Vendredi 16h, vous voulez tout fusionner dans main avant la fin de semaine. Votre coéquipier a déjà poussé sa branche. Vous, vous avez 5 commits « oups », « correction », « oups2 », « ça devrait marcher », « non attends » sur votre branche.</description>
     </item>
     <item>
       <title>Défi Git — semaine 2 (avancé)</title>
-      <link>https://cegepmv.github.io/420-515/semaine-2/exercice-git-avance/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-2/exercice-git-avance/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-2/exercice-git-avance/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-2/exercice-git-avance/index.html</guid>
       <description>🎯 Objectif Avant de vous lancer dans le TP1, vous allez pratiquer, sans enjeu de note, les réflexes de Git 2/2 — merge vs rebase, Pull Request, revert vs reset, cherry-pick et stash — directement dans le vrai projet legacy (spring-petclinic-rest-legacy-a26) que vous explorez depuis la semaine&#xA;Pour éviter tout risque d’interférer avec le vrai code source (que vous devrez corriger plus tard dans la session), toutes les manipulations ci-dessous se font dans un seul fichier d’entraînement à la racine du projet : PRATIQUE-GIT.md. 👥 En équipe de 2. Si vous êtes seul·e, simulez les deux rôles (« Personne A » / « Personne B ») avec deux clones locaux du même dépôt (deux dossiers), ou en changeant temporairement l’identité Git entre vos commits :</description>
     </item>
     <item>
       <title>Activité pratique</title>
-      <link>https://cegepmv.github.io/420-515/semaine-2/activite-pratique/index.html</link>
+      <link>http://localhost:1313/420-515/semaine-2/activite-pratique/index.html</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://cegepmv.github.io/420-515/semaine-2/activite-pratique/index.html</guid>
+      <guid>http://localhost:1313/420-515/semaine-2/activite-pratique/index.html</guid>
       <description>🎯 Activité pratique (non notée) En équipe, réalisez les deux parties suivantes, chacune via une vraie Pull Request sur GitHub :&#xA;Partie A : corriger un premier bogue simple dans votre projet. Partie B : ajouter une toute petite fonctionnalité à un endpoint existant. Pour chaque Pull Request :&#xA;Une description claire de ce qui a été fait (bogue corrigé, ou fonctionnalité ajoutée). Au moins une revue de code croisée entre équipes avant la fusion. 🐞 Partie A — Corriger un bogue Où trouver ce bogue ? Cette page ne dicte pas quel bogue corriger, puisque chaque équipe travaille sur son propre projet — mais voici, dans l’ordre à essayer, les sources les plus courantes :</description>
     </item>
   </channel>

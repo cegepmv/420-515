@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.166.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="1️⃣ Qu’est-ce que le réusinage — et ce que ce n’est PAS Martin Fowler définit le réusinage (refactoring) ainsi :
+« A change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior. » — Martin Fowler, Refactoring: Improving the Design of Existing Code (2e éd., 2019)
+Trois éléments de cette définition sont essentiels, et souvent mal compris en pratique :">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Réusinage (refactoring) et code smells :: Maintenance de logiciel">
+    <meta name="twitter:description" content="1️⃣ Qu’est-ce que le réusinage — et ce que ce n’est PAS Martin Fowler définit le réusinage (refactoring) ainsi :
+« A change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior. » — Martin Fowler, Refactoring: Improving the Design of Existing Code (2e éd., 2019)
+Trois éléments de cette définition sont essentiels, et souvent mal compris en pratique :">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-6/refactoring/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Réusinage (refactoring) et code smells :: Maintenance de logiciel">
+    <meta property="og:description" content="1️⃣ Qu’est-ce que le réusinage — et ce que ce n’est PAS Martin Fowler définit le réusinage (refactoring) ainsi :
+« A change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior. » — Martin Fowler, Refactoring: Improving the Design of Existing Code (2e éd., 2019)
+Trois éléments de cette définition sont essentiels, et souvent mal compris en pratique :">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 6 — Réusinage (refactoring) et code smells">
+    <meta itemprop="name" content="Réusinage (refactoring) et code smells :: Maintenance de logiciel">
+    <meta itemprop="description" content="1️⃣ Qu’est-ce que le réusinage — et ce que ce n’est PAS Martin Fowler définit le réusinage (refactoring) ainsi :
+« A change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior. » — Martin Fowler, Refactoring: Improving the Design of Existing Code (2e éd., 2019)
+Trois éléments de cette définition sont essentiels, et souvent mal compris en pratique :">
+    <meta itemprop="wordCount" content="4814">
+    <title>Réusinage (refactoring) et code smells :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1790605557" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1790605557" defer></script>
+    <script src="/420-515/js/search-lunr.js?1790605557" defer></script>
+    <script src="/420-515/js/search.js?1790605557" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1790605557";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1790605557" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1790605557" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1790605557" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1790605557" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1790605557" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1790605557" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1790605557" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1790605557" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1790605557" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = ``;
+      window.relearn.path='\/semaine-6\/refactoring\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-6/refactoring/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-6/index.html"><span itemprop="name">Semaine 6 — Réusinage (refactoring) et code smells</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Réusinage (refactoring) et code smells</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-6" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="réusinage-refactoring-et-code-smells">Réusinage (refactoring) et code smells</h1>
+
+<h2 id="1-quest-ce-que-le-réusinage--et-ce-que-ce-nest-pas">1️⃣ Qu&rsquo;est-ce que le réusinage — et ce que ce n&rsquo;est PAS</h2>
+<p>Martin Fowler définit le <strong>réusinage</strong> (<em>refactoring</em>) ainsi :</p>
+<blockquote>
+<p>« A change made to the internal structure of software to make it easier to understand and
+cheaper to modify without changing its observable behavior. »
+— Martin Fowler, <em>Refactoring: Improving the Design of Existing Code</em> (2e éd., 2019)</p>
+</blockquote>
+<p>Trois éléments de cette définition sont essentiels, et souvent mal compris en pratique :</p>
+<ol>
+<li><strong>Structure interne seulement</strong> — on réorganise le code (noms, découpage en méthodes/classes,
+élimination de duplication), on ne touche pas à <em>ce qu&rsquo;il fait</em>.</li>
+<li><strong>Comportement observable inchangé</strong> — pour n&rsquo;importe quelle entrée valide, la sortie doit
+rester <strong>strictement identique</strong> avant et après le réusinage. Si le comportement change, ce
+n&rsquo;est plus un réusinage : c&rsquo;est soit une correction de bogue, soit une nouvelle fonctionnalité.</li>
+<li><strong>Plus facile à comprendre et moins coûteux à modifier</strong> — le réusinage n&rsquo;est jamais une fin en
+soi ; il se justifie uniquement s&rsquo;il rend le prochain changement (fonctionnalité ou correctif)
+plus simple, plus rapide ou moins risqué.</li>
+</ol>
+<h3 id="réusinage-vs-correction-de-bogue-vs-nouvelle-fonctionnalité">Réusinage vs correction de bogue vs nouvelle fonctionnalité</h3>
+<table>
+	<thead>
+			<tr>
+					<th>Type de changement</th>
+					<th>Le comportement observable change-t-il ?</th>
+					<th>Objectif</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>Réusinage</strong></td>
+					<td>Non — jamais</td>
+					<td>Améliorer la structure interne</td>
+			</tr>
+			<tr>
+					<td><strong>Correction de bogue</strong></td>
+					<td>Oui — un comportement incorrect devient correct</td>
+					<td>Faire correspondre le comportement à la spécification</td>
+			</tr>
+			<tr>
+					<td><strong>Nouvelle fonctionnalité</strong></td>
+					<td>Oui — un nouveau comportement apparaît</td>
+					<td>Répondre à un nouveau besoin</td>
+			</tr>
+	</tbody>
+</table>
+<hr>
+<h2 id="2-pourquoi-la-suite-de-tests-est-la-condition-préalable">2️⃣ Pourquoi la suite de tests est la condition préalable</h2>
+<p>Réusiner sans filet de tests, c&rsquo;est réorganiser le code <strong>en espérant</strong> ne rien casser — on ne le
+sait qu&rsquo;en observant si quelqu&rsquo;un se plaint plus tard, en production. Avec une suite de tests
+automatisés qui couvre déjà le comportement du code (semaine 5), chaque petite étape de réusinage
+peut être <strong>validée immédiatement</strong> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>1. Les tests passent (état de départ, vert).
+2. Appliquer UNE petite transformation (ex. extraire une méthode).
+3. Relancer la suite de tests.
+4. Vert → committer cette étape, passer à la suivante.
+   Rouge → annuler cette étape (ou corriger immédiatement), ne JAMAIS accumuler
+           plusieurs transformations non vérifiées.</code></pre></div>
+<blockquote>
+<p>💡 C&rsquo;est le même réflexe que le cycle <strong>Red-Green-Refactor</strong> du développement piloté par les
+tests (Kent Beck) — sauf qu&rsquo;ici, on entre directement dans la phase <em>Refactor</em>, avec des tests
+déjà au vert, écrits à la semaine précédente. Le pipeline d&rsquo;intégration continue (semaine 5)
+rejoue cette vérification à chaque <code>push</code>, ce qui protège aussi vos coéquipiers d&rsquo;une régression
+que vous auriez introduite sans vous en rendre compte.</p>
+</blockquote>
+<p>Cela justifie un principe simple, mais souvent ignoré en pratique : <strong>ne réusinez jamais du code
+qui n&rsquo;est couvert par aucun test.</strong> Si le code que vous voulez réusiner n&rsquo;a pas de test, la
+première étape consiste à <strong>en écrire un</strong> qui capture le comportement actuel (même si ce
+comportement contient un bogue connu — un test de caractérisation documente ce que le code fait
+réellement, pas ce qu&rsquo;il devrait faire), <em>avant</em> de toucher à la structure.</p>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Un coéquipier propose de réusiner une classe qui n&rsquo;a aucun test, en argumentant qu&rsquo;« on ira plus
+vite en ne perdant pas de temps à écrire des tests d&rsquo;abord ». Que répondez-vous ?</p>
+<p><strong>Réponse</strong> : sans tests, il n&rsquo;y a aucun moyen automatisé de confirmer que le comportement
+observable n&rsquo;a pas changé pendant le réusinage — chaque transformation devient un pari plutôt
+qu&rsquo;une vérification. Le temps « gagné » en sautant les tests est perdu (souvent avec intérêt) au
+premier bogue de régression découvert en production, sans historique clair pour le diagnostiquer.
+Écrire d&rsquo;abord un test de caractérisation qui capture le comportement actuel est un prérequis, pas
+une perte de temps.</p>
+</details>
+<hr>
+<h2 id="3-catalogue-de-code-smells-courants">3️⃣ Catalogue de <em>code smells</em> courants</h2>
+<p>Un <strong>code smell</strong> (terme popularisé par Kent Beck et Martin Fowler) est un indice <strong>de surface</strong> —
+pas une preuve formelle — qu&rsquo;un problème de structure plus profond existe probablement quelque
+part dans le code. Un smell n&rsquo;est pas un bogue : le code smellé peut très bien fonctionner
+correctement ; il est simplement plus difficile à comprendre, tester ou faire évoluer qu&rsquo;il ne
+devrait l&rsquo;être.</p>
+<blockquote>
+<p>⚠️ <strong>Attention aux nombres magiques dans les exemples ci-dessous.</strong> Les blocs marqués ❌ <em>Avant</em>
+contiennent volontairement des constantes non nommées (<code>250.0</code>, <code>0.02</code>, <code>1.5</code>&hellip;) : c&rsquo;est
+justement une partie du problème à corriger, pas seulement le smell mis en vedette dans chaque
+section. Un nombre magique <strong>sans commentaire ni nom</strong> est en soi un défaut — même dans un
+exemple « corrigé » qui se concentre sur un autre smell. Les blocs ✅ <em>Après</em> ci-dessous nomment
+donc systématiquement ces constantes (<code>SURGERY_RATE</code>, <code>LATE_PAYMENT_PENALTY_RATE</code>, etc.), même
+quand ce n&rsquo;est pas le smell principal illustré — voir aussi <em>Replace Magic Number</em> en section 4️⃣
+pour ce réusinage en détail.</p>
+</blockquote>
+<h3 id="méthode-trop-longue-long-method">Méthode trop longue (<em>Long Method</em>)</h3>
+<p>Une méthode qui fait « plusieurs choses » (validation, calcul, formatage, journalisation) est
+difficile à nommer précisément, à tester unitairement, et à réutiliser en partie.</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ❌ Avant : une seule méthode qui mélange validation, calcul et formatage</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">buildInvoiceSummary</span>(Owner owner, List<span style="color:#f92672">&lt;</span>Visit<span style="color:#f92672">&gt;</span> visits) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (owner <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> visits <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> visits.<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;Owner and visits are required&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> total <span style="color:#f92672">=</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (Visit visit : visits) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">double</span> base <span style="color:#f92672">=</span> visit.<span style="color:#a6e22e">getType</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;SURGERY&#34;</span>) <span style="color:#f92672">?</span> 250.<span style="color:#a6e22e">0</span> : 60.<span style="color:#a6e22e">0</span>;
+</span></span><span style="display:flex;"><span>        total <span style="color:#f92672">+=</span> base <span style="color:#f92672">*</span> (visit.<span style="color:#a6e22e">isEmergency</span>() <span style="color:#f92672">?</span> 1.<span style="color:#a6e22e">5</span> : 1.<span style="color:#a6e22e">0</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    StringBuilder sb <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder();
+</span></span><span style="display:flex;"><span>    sb.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34;Invoice for &#34;</span>).<span style="color:#a6e22e">append</span>(owner.<span style="color:#a6e22e">getFirstName</span>()).<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; &#34;</span>).<span style="color:#a6e22e">append</span>(owner.<span style="color:#a6e22e">getLastName</span>());
+</span></span><span style="display:flex;"><span>    sb.<span style="color:#a6e22e">append</span>(<span style="color:#e6db74">&#34; — Total: $&#34;</span>).<span style="color:#a6e22e">append</span>(String.<span style="color:#a6e22e">format</span>(<span style="color:#e6db74">&#34;%.2f&#34;</span>, total));
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> sb.<span style="color:#a6e22e">toString</span>();
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">double</span> SURGERY_RATE <span style="color:#f92672">=</span> 250.<span style="color:#a6e22e">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">double</span> STANDARD_RATE <span style="color:#f92672">=</span> 60.<span style="color:#a6e22e">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">double</span> EMERGENCY_MULTIPLIER <span style="color:#f92672">=</span> 1.<span style="color:#a6e22e">5</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ✅ Après : la validation et le calcul (qui contient une boucle) sont extraits ;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// le formatage, un simple one-liner utilisé une seule fois, reste inline</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">buildInvoiceSummary</span>(Owner owner, List<span style="color:#f92672">&lt;</span>Visit<span style="color:#f92672">&gt;</span> visits) {
+</span></span><span style="display:flex;"><span>    validateInvoiceInput(owner, visits);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> total <span style="color:#f92672">=</span> calculateTotal(visits);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Invoice for %s %s — Total: $%.2f&#34;</span>.<span style="color:#a6e22e">formatted</span>(
+</span></span><span style="display:flex;"><span>            owner.<span style="color:#a6e22e">getFirstName</span>(), owner.<span style="color:#a6e22e">getLastName</span>(), total);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">validateInvoiceInput</span>(Owner owner, List<span style="color:#f92672">&lt;</span>Visit<span style="color:#f92672">&gt;</span> visits) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (owner <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> visits <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> visits.<span style="color:#a6e22e">isEmpty</span>()) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;Owner and visits are required&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">calculateTotal</span>(List<span style="color:#f92672">&lt;</span>Visit<span style="color:#f92672">&gt;</span> visits) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> total <span style="color:#f92672">=</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (Visit visit : visits) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">double</span> base <span style="color:#f92672">=</span> visit.<span style="color:#a6e22e">getType</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;SURGERY&#34;</span>) <span style="color:#f92672">?</span> SURGERY_RATE : STANDARD_RATE;
+</span></span><span style="display:flex;"><span>        total <span style="color:#f92672">+=</span> base <span style="color:#f92672">*</span> (visit.<span style="color:#a6e22e">isEmergency</span>() <span style="color:#f92672">?</span> EMERGENCY_MULTIPLIER : 1.<span style="color:#a6e22e">0</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> total;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<blockquote>
+<p>💡 <strong>N&rsquo;extrayez pas systématiquement</strong> : une méthode privée n&rsquo;a de valeur que si elle apporte
+quelque chose — un nom qui clarifie l&rsquo;intention d&rsquo;un bloc autrement peu lisible, une logique
+testable isolément, ou l&rsquo;élimination d&rsquo;une duplication. Ici, <code>validateInvoiceInput</code> et
+<code>calculateTotal</code> méritent d&rsquo;être extraites (la première nomme une intention, la seconde contient
+une boucle avec sa propre logique) ; par contre, transformer le simple <code>&quot;Invoice for ...&quot;. formatted(...)</code> en une méthode <code>formatSummary</code> séparée n&rsquo;ajoute rien — c&rsquo;est déjà lisible tel
+quel, et créer une méthode d&rsquo;une seule ligne, appelée à un seul endroit, ne fait qu&rsquo;ajouter un
+niveau d&rsquo;indirection à suivre pour le prochain lecteur. Extraire pour extraire n&rsquo;est pas
+l&rsquo;objectif ; réduire l&rsquo;effort de compréhension l&rsquo;est.</p>
+</blockquote>
+<p><strong>🔧 Comment corriger</strong> : appliquer <strong>Extract Method</strong> — découper la méthode en sous-méthodes
+privées nommées, une par responsabilité (valider, calculer), <strong>en jugeant au cas par cas
+si chaque extraction en vaut la peine</strong>. Règle pratique : si vous devez ajouter un commentaire du
+genre <code>// maintenant on calcule le total</code> avant un bloc de plusieurs lignes (surtout avec une
+boucle ou une condition), ce bloc est probablement une méthode qui s&rsquo;ignore elle-même — extrayez-le
+et laissez le nom de la méthode remplacer le commentaire. Mais si le bloc tient déjà en une seule
+ligne claire, l&rsquo;extraction ajoute plus de bruit (indirection, saut vers une autre méthode) que de
+clarté.</p>
+<h3 id="duplication-de-code-duplicated-code">Duplication de code (<em>Duplicated Code</em>)</h3>
+<p>La même logique copiée-collée à plusieurs endroits — un correctif ou une évolution doit alors être
+appliqué <strong>partout</strong>, et il suffit d&rsquo;un seul oubli pour introduire une incohérence.</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ❌ Avant : le même calcul de tarif est recopié dans 3 méthodes différentes</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">genererFacture</span>(Visit visit) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> base <span style="color:#f92672">=</span> visit.<span style="color:#a6e22e">getType</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;SURGERY&#34;</span>) <span style="color:#f92672">?</span> 250.<span style="color:#a6e22e">0</span> : 60.<span style="color:#a6e22e">0</span>; <span style="color:#75715e">// dupliqué</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> base <span style="color:#f92672">*</span> (visit.<span style="color:#a6e22e">isEmergency</span>() <span style="color:#f92672">?</span> 1.<span style="color:#a6e22e">5</span> : 1.<span style="color:#a6e22e">0</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">estimerCoutAnnuel</span>(List<span style="color:#f92672">&lt;</span>Visit<span style="color:#f92672">&gt;</span> visits) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> total <span style="color:#f92672">=</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (Visit v : visits) {
+</span></span><span style="display:flex;"><span>        total <span style="color:#f92672">+=</span> v.<span style="color:#a6e22e">getType</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;SURGERY&#34;</span>) <span style="color:#f92672">?</span> 250.<span style="color:#a6e22e">0</span> : 60.<span style="color:#a6e22e">0</span>; <span style="color:#75715e">// dupliqué</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> total <span style="color:#f92672">*</span> 12;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ✅ Après : la logique de tarif existe à un seul endroit, réutilisée partout,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// et les nombres magiques sont eux aussi nommés (voir Replace Magic Number, section 4️⃣)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">double</span> SURGERY_RATE <span style="color:#f92672">=</span> 250.<span style="color:#a6e22e">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">double</span> STANDARD_RATE <span style="color:#f92672">=</span> 60.<span style="color:#a6e22e">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">double</span> EMERGENCY_MULTIPLIER <span style="color:#f92672">=</span> 1.<span style="color:#a6e22e">5</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">calculerTarifBase</span>(Visit visit) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> visit.<span style="color:#a6e22e">getType</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;SURGERY&#34;</span>) <span style="color:#f92672">?</span> SURGERY_RATE : STANDARD_RATE;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">genererFacture</span>(Visit visit) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> calculerTarifBase(visit) <span style="color:#f92672">*</span> (visit.<span style="color:#a6e22e">isEmergency</span>() <span style="color:#f92672">?</span> EMERGENCY_MULTIPLIER : 1.<span style="color:#a6e22e">0</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">estimerCoutAnnuel</span>(List<span style="color:#f92672">&lt;</span>Visit<span style="color:#f92672">&gt;</span> visits) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> total <span style="color:#f92672">=</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (Visit v : visits) {
+</span></span><span style="display:flex;"><span>        total <span style="color:#f92672">+=</span> calculerTarifBase(v);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> total <span style="color:#f92672">*</span> 12;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>🔧 Comment corriger</strong> : appliquer <strong>Extract Method</strong> (ou <strong>Extract Class</strong> si la logique
+dupliquée est assez riche pour devenir un concept à part entière — voir <em>Repeated Switch/If
+Chains</em> ci-dessous) pour centraliser la logique à un seul endroit, puis faire appeler cette
+méthode/classe partout où le duplicata existait. Utilisez la fonctionnalité <em>Find Usages</em>/<em>Find
+Similar Code</em> de l&rsquo;IDE pour vous assurer d&rsquo;avoir bien repéré <strong>toutes</strong> les occurrences avant de
+supprimer les copies.</p>
+<h3 id="classe-trop-grosse-large-class--god-class">Classe trop grosse (<em>Large Class</em> / <em>God Class</em>)</h3>
+<p>Une classe qui accumule trop de responsabilités (souvent reconnaissable à un grand nombre de
+champs et de méthodes sans lien évident entre eux) devient un point de contention : presque tout le
+monde doit la modifier, ce qui multiplie les conflits de fusion et les effets de bord imprévus.</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ❌ Avant : Owner accumule l&#39;identité, la facturation, les notifications, la fidélité</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ET la génération de rapports — bien plus que 3-4 champs qui voyagent ensemble</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// (contrairement à Data Clumps ci-dessus, ici ce sont des COMPORTEMENTS non liés qui</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// s&#39;accumulent, pas seulement des données)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Owner</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String firstName, lastName, email;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> balance;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> loyaltyPoints;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>Pet<span style="color:#f92672">&gt;</span> pets;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">calculateLateFee</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> balance <span style="color:#f92672">&lt;</span> 0 <span style="color:#f92672">?</span> Math.<span style="color:#a6e22e">abs</span>(balance) <span style="color:#f92672">*</span> 0.<span style="color:#a6e22e">02</span> : 0;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendReminderEmail</span>(String message) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// ... construit et envoie un courriel via un client SMTP ...</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">calculateLoyaltyTier</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> pets.<span style="color:#a6e22e">size</span>() <span style="color:#f92672">&gt;</span> 1 <span style="color:#f92672">&amp;&amp;</span> balance <span style="color:#f92672">&gt;=</span> 0 <span style="color:#f92672">?</span> 2 : 1;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">generateAnnualStatement</span>() { <span style="color:#75715e">/* ... 40 lignes de mise en page ... */</span> <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span>; }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ✅ Après : chaque responsabilité migre vers une classe dédiée à un seul rôle ;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Owner ne conserve plus que ses propres données (identité, solde, animaux)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Owner</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String firstName, lastName, email;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">double</span> balance;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> loyaltyPoints;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>Pet<span style="color:#f92672">&gt;</span> pets;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// getters uniquement — plus aucune logique de facturation/notification/fidélité ici</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">BillingService</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">double</span> LATE_PAYMENT_PENALTY_RATE <span style="color:#f92672">=</span> 0.<span style="color:#a6e22e">02</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">calculateLateFee</span>(Owner owner) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> owner.<span style="color:#a6e22e">getBalance</span>() <span style="color:#f92672">&lt;</span> 0
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">?</span> Math.<span style="color:#a6e22e">abs</span>(owner.<span style="color:#a6e22e">getBalance</span>()) <span style="color:#f92672">*</span> LATE_PAYMENT_PENALTY_RATE
+</span></span><span style="display:flex;"><span>                : 0;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NotificationService</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">sendReminderEmail</span>(Owner owner, String message) {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// ... construit et envoie un courriel via un client SMTP ...</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">LoyaltyService</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">calculateTier</span>(Owner owner) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> owner.<span style="color:#a6e22e">getPets</span>().<span style="color:#a6e22e">size</span>() <span style="color:#f92672">&gt;</span> 1 <span style="color:#f92672">&amp;&amp;</span> owner.<span style="color:#a6e22e">getBalance</span>() <span style="color:#f92672">&gt;=</span> 0 <span style="color:#f92672">?</span> 2 : 1;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">StatementService</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">generateAnnualStatement</span>(Owner owner) { <span style="color:#75715e">/* ... */</span> <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;&#34;</span>; }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>🔧 Comment corriger</strong> : appliquer <strong>Extract Class</strong>, mais ici pour séparer des
+<strong>responsabilités</strong> (facturation, notifications, fidélité, rapports), pas seulement des champs
+qui voyagent ensemble — c&rsquo;est la différence clé avec <em>Data Clumps</em>. Un bon indice de <em>God Class</em> :
+la classe a besoin d&rsquo;être importée par des modules qui n&rsquo;ont rien en commun entre eux (le module
+de facturation, celui des notifications, celui des statistiques&hellip;) simplement parce que toute la
+logique de l&rsquo;application y est empilée. Après le réusinage, <code>Owner</code> redevient un simple porteur de
+données ; chaque service ne dépend que des données <code>Owner</code> dont il a réellement besoin.</p>
+<h3 id="liste-de-paramètres-trop-longue-long-parameter-list">Liste de paramètres trop longue (<em>Long Parameter List</em>)</h3>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ❌ Avant : 6 paramètres, ordre facile à inverser par erreur</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Visit <span style="color:#a6e22e">scheduleVisit</span>(<span style="color:#66d9ef">int</span> petId, LocalDate date, String type,
+</span></span><span style="display:flex;"><span>                           <span style="color:#66d9ef">boolean</span> emergency, String vetName, String notes) { ... }</span></span></code></pre></div>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ✅ Après : les paramètres qui voyagent toujours ensemble deviennent un seul objet</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">record</span> <span style="color:#a6e22e">VisitRequest</span>(<span style="color:#66d9ef">int</span> petId, LocalDate date, String type,
+</span></span><span style="display:flex;"><span>                            <span style="color:#66d9ef">boolean</span> emergency, String vetName, String notes) {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Visit <span style="color:#a6e22e">scheduleVisit</span>(VisitRequest request) { ... }</span></span></code></pre></div>
+<p><strong>🔧 Comment corriger</strong> : appliquer <strong>Introduce Parameter Object</strong> — regrouper les paramètres en
+un <code>record</code> (ou une petite classe immuable) nommé selon le concept qu&rsquo;il représente. Bénéfice
+secondaire : si un 7e paramètre doit être ajouté plus tard, un seul type change, au lieu de devoir
+modifier la signature (et tous les appels) de la méthode.</p>
+<h3 id="obsession-des-primitifs-primitive-obsession">Obsession des primitifs (<em>Primitive Obsession</em>)</h3>
+<p>Utiliser des <code>String</code>/<code>int</code> bruts pour représenter un concept du domaine (un email, un numéro de
+téléphone, un montant monétaire) plutôt qu&rsquo;un petit type dédié — rien n&rsquo;empêche alors de passer un
+email là où un nom est attendu, puisque ce sont tous les deux des <code>String</code> pour le compilateur.</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ❌ Avant : rien n&#39;empêche d&#39;inverser email et téléphone par erreur — les deux sont des String</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">notifyOwner</span>(String email, String phone, String message) { ... }
+</span></span><span style="display:flex;"><span>notifyOwner(phoneNumber, ownerEmail, <span style="color:#e6db74">&#34;Rappel de vaccin&#34;</span>); <span style="color:#f92672">//</span> compile, mais c<span style="color:#960050;background-color:#1e0010">&#39;</span>est inversé <span style="color:#f92672">!</span></span></span></code></pre></div>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ✅ Après : des types dédiés rendent l&#39;inversion impossible à la compilation</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">record</span> <span style="color:#a6e22e">Email</span>(String value) { }
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">record</span> <span style="color:#a6e22e">PhoneNumber</span>(String value) { }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">notifyOwner</span>(Email email, PhoneNumber phone, String message) { ... }</span></span></code></pre></div>
+<p><strong>🔧 Comment corriger</strong> : appliquer <strong>Replace Primitive with Object</strong> (aussi appelé <em>Introduce
+Value Object</em>) — envelopper la primitive dans un petit type dédié (souvent un <code>record</code>), qui peut
+au passage valider son propre format (ex. un <code>Email</code> refuse une chaîne sans <code>@</code> dans son
+constructeur) plutôt que de laisser cette responsabilité éparpillée dans tout le code appelant.</p>
+<blockquote>
+<p>🤔 <strong>Pourquoi pas simplement <code>notifyOwner(email = &quot;samuel@...&quot;, phone = &quot;...&quot;)</code> ?</strong> Dans des
+langages comme Python ou Kotlin, les <strong>arguments nommés</strong> à l&rsquo;appel permettraient effectivement
+d&rsquo;éviter l&rsquo;inversion (<code>notifyOwner(phone = ownerPhone, email = ownerEmail)</code> resterait correct
+même dans le mauvais ordre). <strong>Java ne supporte pas les arguments nommés</strong> — à l&rsquo;appel, seul
+l&rsquo;ordre positionnel compte, et rien dans le nom du paramètre à la déclaration n&rsquo;est vérifié ni
+visible pour le compilateur. C&rsquo;est justement pour cette raison qu&rsquo;en Java, on compense ce
+manque de garde-fou du langage en donnant un <strong>type distinct</strong> à chaque concept (<code>Email</code>,
+<code>PhoneNumber</code>) : le compilateur peut alors détecter l&rsquo;inversion, même sans arguments nommés.</p>
+</blockquote>
+<h3 id="envie-de-fonctionnalité-feature-envy">Envie de fonctionnalité (<em>Feature Envy</em>)</h3>
+<p>Une méthode qui s&rsquo;intéresse <strong>davantage</strong> aux données d&rsquo;un autre objet qu&rsquo;aux siennes propres — un
+signal que cette logique devrait probablement vivre dans l&rsquo;autre classe.</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ❌ Avant : PetService manipule presque exclusivement les champs internes de Owner</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PetService</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">describeOwner</span>(Owner owner) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> owner.<span style="color:#a6e22e">getFirstName</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> owner.<span style="color:#a6e22e">getLastName</span>()
+</span></span><span style="display:flex;"><span>             <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; (&#34;</span> <span style="color:#f92672">+</span> owner.<span style="color:#a6e22e">getAddress</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, &#34;</span> <span style="color:#f92672">+</span> owner.<span style="color:#a6e22e">getCity</span>() <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;)&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ✅ Après : la logique déménage vers la classe dont elle utilise réellement les données</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Owner</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">describe</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> firstName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> lastName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34; (&#34;</span> <span style="color:#f92672">+</span> address <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;, &#34;</span> <span style="color:#f92672">+</span> city <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;)&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PetService</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">describeOwner</span>(Owner owner) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> owner.<span style="color:#a6e22e">describe</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p><strong>🔧 Comment corriger</strong> : appliquer <strong>Move Method</strong> — déplacer la méthode (ou la partie du corps
+concernée) vers la classe dont elle utilise le plus les données. Astuce pour la repérer : si une
+méthode appelle plus de <em>getters</em> sur un paramètre que sur <code>this</code>, c&rsquo;est un signal fort qu&rsquo;elle est
+mal placée.</p>
+<h3 id="groupes-de-données-data-clumps">Groupes de données (<em>Data Clumps</em>)</h3>
+<p>Les mêmes 3-4 champs (ex. <code>street</code>, <code>city</code>, <code>postalCode</code>) qui voyagent systématiquement ensemble en
+paramètres, sans jamais être regroupés en un seul objet — un signal qu&rsquo;ils forment en réalité un
+concept manquant (ici, une <code>Address</code>).</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ❌ Avant : street/city/postalCode voyagent toujours ensemble, séparément</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Owner</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String street, city, postalCode;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shipInvoice</span>(String street, String city, String postalCode) { ... }</span></span></code></pre></div>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ✅ Après : le concept manquant (Address) devient un type explicite, réutilisé partout</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">record</span> <span style="color:#a6e22e">Address</span>(String street, String city, String postalCode) { }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Owner</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Address address;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shipInvoice</span>(Address address) { ... }</span></span></code></pre></div>
+<p><strong>🔧 Comment corriger</strong> : appliquer <strong>Extract Class</strong> (pour regrouper les champs dans l&rsquo;entité) et
+<strong>Introduce Parameter Object</strong> (pour regrouper les paramètres équivalents dans les signatures de
+méthode) — les deux réusinages s&rsquo;attaquent au même symptôme, à deux endroits différents du code
+(champs vs paramètres).</p>
+<h3 id="chaînes-de-conditions-répétées-repeated-switchif-chains">Chaînes de conditions répétées (<em>Repeated Switch/If Chains</em>)</h3>
+<p>Le même <code>switch</code>/<code>if-else</code> sur un même type de donnée, dupliqué à plusieurs endroits du code —
+ajouter un nouveau cas oblige à retrouver et modifier chaque occurrence.</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ❌ Avant : ce switch sur visit.getType() est recopié — presque à l&#39;identique —</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// dans 3 méthodes différentes, une par comportement qui varie selon le type</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">tarifPour</span>(Visit visit) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">switch</span> (visit.<span style="color:#a6e22e">getType</span>()) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;SURGERY&#34;</span> <span style="color:#f92672">-&gt;</span> 250.<span style="color:#a6e22e">0</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;CHECKUP&#34;</span> <span style="color:#f92672">-&gt;</span> 60.<span style="color:#a6e22e">0</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;VACCINATION&#34;</span> <span style="color:#f92672">-&gt;</span> 35.<span style="color:#a6e22e">0</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">default</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;Type inconnu&#34;</span>);
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">dureeMinutesPour</span>(Visit visit) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">switch</span> (visit.<span style="color:#a6e22e">getType</span>()) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;SURGERY&#34;</span> <span style="color:#f92672">-&gt;</span> 90;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;CHECKUP&#34;</span> <span style="color:#f92672">-&gt;</span> 20;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;VACCINATION&#34;</span> <span style="color:#f92672">-&gt;</span> 10;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">default</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;Type inconnu&#34;</span>);
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">descriptionPour</span>(Visit visit) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">switch</span> (visit.<span style="color:#a6e22e">getType</span>()) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;SURGERY&#34;</span> <span style="color:#f92672">-&gt;</span> <span style="color:#e6db74">&#34;Intervention chirurgicale&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;CHECKUP&#34;</span> <span style="color:#f92672">-&gt;</span> <span style="color:#e6db74">&#34;Examen de routine&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;VACCINATION&#34;</span> <span style="color:#f92672">-&gt;</span> <span style="color:#e6db74">&#34;Rappel de vaccin&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">default</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;Type inconnu&#34;</span>);
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Ajouter un 4e type de visite (ex. <code>&quot;DENTAL&quot;</code>) oblige à retrouver et modifier <strong>ces 3 méthodes</strong> —
+et rien n&rsquo;empêche d&rsquo;en oublier une : le compilateur ne signale aucune erreur si <code>dureeMinutesPour</code>
+n&rsquo;est pas mis à jour, il continuera simplement à lancer <code>IllegalArgumentException</code> pour ce cas
+oublié, en production.</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ✅ Après (solution recommandée) : un enum à champs regroupe les 3 comportements</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// en un seul endroit, avec beaucoup moins de code que des classes séparées</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> TypeVisite {
+</span></span><span style="display:flex;"><span>    CHIRURGIE(250.<span style="color:#a6e22e">0</span>, 90, <span style="color:#e6db74">&#34;Intervention chirurgicale&#34;</span>),
+</span></span><span style="display:flex;"><span>    CONSULTATION(60.<span style="color:#a6e22e">0</span>, 20, <span style="color:#e6db74">&#34;Examen de routine&#34;</span>),
+</span></span><span style="display:flex;"><span>    VACCINATION(35.<span style="color:#a6e22e">0</span>, 10, <span style="color:#e6db74">&#34;Rappel de vaccin&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">double</span> tarif;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> dureeMinutes;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String description;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    TypeVisite(<span style="color:#66d9ef">double</span> tarif, <span style="color:#66d9ef">int</span> dureeMinutes, String description) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">tarif</span> <span style="color:#f92672">=</span> tarif;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">dureeMinutes</span> <span style="color:#f92672">=</span> dureeMinutes;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> description;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">tarif</span>() { <span style="color:#66d9ef">return</span> tarif; }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">dureeMinutes</span>() { <span style="color:#66d9ef">return</span> dureeMinutes; }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">description</span>() { <span style="color:#66d9ef">return</span> description; }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#f92672">//</span> visit.<span style="color:#a6e22e">getTypeVisite</span>().<span style="color:#a6e22e">tarif</span>() <span style="color:#f92672">/</span> .<span style="color:#a6e22e">dureeMinutes</span>() <span style="color:#f92672">/</span> .<span style="color:#a6e22e">description</span>()</span></span></code></pre></div>
+<p>Ajouter un 4e type de visite ne demande plus qu&rsquo;<strong>une seule ligne</strong> (une nouvelle constante
+d&rsquo;enum) — impossible d&rsquo;oublier un des 3 comportements, puisque le constructeur de l&rsquo;enum exige les
+3 valeurs pour chaque constante.</p>
+<p><strong>🔧 Comment corriger</strong> : quand la variation entre les types se limite à des <strong>données</strong>
+constantes (un tarif, une durée, un libellé — comme ici), un <strong>enum à champs</strong> règle le problème
+avec beaucoup moins de code qu&rsquo;une hiérarchie de classes, tout en gardant le même bénéfice
+(compilateur qui force à définir les 3 comportements pour chaque type). Réservez <strong>Replace
+Conditional with Polymorphism</strong> (interface + une classe par type) au cas où chaque type exige un
+<strong>algorithme réellement différent</strong> — pas seulement une valeur différente. Par exemple, si le
+calcul du tarif d&rsquo;une chirurgie devait tenir compte d&rsquo;une durée variable et d&rsquo;un supplément de
+matériel, alors qu&rsquo;une vaccination reste un montant fixe, ces deux logiques ne peuvent plus
+tenir dans un simple champ d&rsquo;enum ; chaque type mérite alors sa propre implémentation :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">CalculateurTarif</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">calculer</span>(Visite visite);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CalculateurTarifChirurgie</span> <span style="color:#66d9ef">implements</span> CalculateurTarif {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">calculer</span>(Visite visite) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> TARIF_BASE_CHIRURGIE
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">+</span> visite.<span style="color:#a6e22e">getDureeReelleMinutes</span>() <span style="color:#f92672">*</span> SUPPLEMENT_PAR_MINUTE
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">+</span> visite.<span style="color:#a6e22e">getFraisMateriel</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CalculateurTarifVaccination</span> <span style="color:#66d9ef">implements</span> CalculateurTarif {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">calculer</span>(Visite visite) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> TARIF_FIXE_VACCINATION;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<blockquote>
+<p>💡 Dans ce dernier exemple, chaque méthode <code>calculer</code> contient une <strong>vraie logique</strong>, pas
+seulement une valeur de retour — c&rsquo;est ce qui justifie une classe séparée par type. Si toutes
+les implémentations se réduisaient à <code>return UNE_CONSTANTE;</code>, ce serait le signal qu&rsquo;un enum à
+champs suffit, et que l&rsquo;interface ajoute de la complexité sans bénéfice réel.</p>
+</blockquote>
+<p>Sur un <code>switch</code> qui n&rsquo;apparaît qu&rsquo;à un <strong>seul</strong> endroit du code, un simple <strong>Extract Method</strong> qui
+centralise ce <code>switch</code> dans une méthode partagée reste la solution la plus simple — inutile
+d&rsquo;introduire un enum ou une interface pour un <code>switch</code> unique qui ne change presque jamais.</p>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Une méthode <code>printOwnerDetails(Owner owner)</code> accède à <code>owner.getPet().getVisits().get(0).getVet()</code>
+et n&rsquo;utilise presque aucun champ de son propre objet contenant. Quel <em>code smell</em> cela illustre-t-il,
+et quelle piste de réusinage suggère-t-il ?</p>
+<p><strong>Réponse</strong> : c&rsquo;est un exemple de <em>Feature Envy</em> — la méthode s&rsquo;intéresse presque exclusivement aux
+données d&rsquo;objets externes (<code>Pet</code>, <code>Visit</code>, <code>Vet</code>) plutôt qu&rsquo;aux siennes. Cela suggère de déplacer
+cette logique plus près des données qu&rsquo;elle manipule (ex. une méthode sur <code>Pet</code> ou <code>Visit</code>), ou
+d&rsquo;extraire un objet intermédiaire qui expose directement ce qui est nécessaire, plutôt que de
+naviguer une longue chaîne d&rsquo;appels depuis l&rsquo;extérieur.</p>
+</details>
+<hr>
+<h2 id="4-catalogue-de-réusinages--avant--après">4️⃣ Catalogue de réusinages — avant / après</h2>
+<p>Fowler documente des dizaines de réusinages nommés et catalogués, chacun avec une procédure précise
+et réversible. La section précédente a déjà montré, pour chaque smell, la technique qui le corrige
+(<strong>Extract Method</strong> pour <em>Long Method</em>/<em>Duplicated Code</em>, <strong>Extract Class</strong> pour <em>Large
+Class</em>/<em>Data Clumps</em>, <strong>Introduce Parameter Object</strong> pour <em>Long Parameter List</em>/<em>Data Clumps</em>,
+<strong>Move Method</strong> pour <em>Feature Envy</em>, <strong>Replace Primitive with Object</strong> pour <em>Primitive Obsession</em>,
+<strong>Replace Conditional with Polymorphism</strong> pour <em>Repeated Switch/If Chains</em>). Voici quatre autres
+réusinages tout aussi fréquents, qui ne correspondent pas à un seul smell précis mais s&rsquo;appliquent
+au quotidien, dans presque toutes les méthodes.</p>
+<h3 id="extraire-une-variable-extract-variable">Extraire une variable (<em>Extract Variable</em>)</h3>
+<p>Nommer une sous-expression complexe pour documenter son intention, plutôt que de la laisser inline.</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ❌ Avant</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (visit.<span style="color:#a6e22e">isEmergency</span>() <span style="color:#f92672">&amp;&amp;</span> visit.<span style="color:#a6e22e">getType</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;SURGERY&#34;</span>) <span style="color:#f92672">&amp;&amp;</span> owner.<span style="color:#a6e22e">getBalance</span>() <span style="color:#f92672">&lt;</span> 0) { ... }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ✅ Après</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">boolean</span> isUnpaidEmergencySurgery <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>        visit.<span style="color:#a6e22e">isEmergency</span>() <span style="color:#f92672">&amp;&amp;</span> visit.<span style="color:#a6e22e">getType</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;SURGERY&#34;</span>) <span style="color:#f92672">&amp;&amp;</span> owner.<span style="color:#a6e22e">getBalance</span>() <span style="color:#f92672">&lt;</span> 0;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (isUnpaidEmergencySurgery) { ... }</span></span></code></pre></div>
+<h3 id="renommer-rename-variablemethodfield">Renommer (<em>Rename Variable/Method/Field</em>)</h3>
+<p>Le réusinage le plus fréquent et souvent le plus sous-estimé : un bon nom <strong>remplace un
+commentaire</strong>. Toujours effectué via la fonction <em>rename</em> de l&rsquo;IDE (jamais un chercher-remplacer
+manuel — voir section 6).</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ❌ Avant</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> d; <span style="color:#75715e">// nombre de jours depuis la dernière visite</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ✅ Après</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> daysSinceLastVisit;</span></span></code></pre></div>
+<blockquote>
+<p>💡 <strong>Convention de nommage pour les méthodes</strong> : une méthode fait quelque chose (elle calcule,
+valide, génère, envoie&hellip;) — son nom devrait donc <strong>commencer par un verbe</strong> (<code>calculerTotal</code>,
+<code>validerEntree</code>, <code>genererRapport</code>), jamais par un simple nom commun (<code>total</code>, <code>tarifBase</code>,
+<code>rapport</code>). Un nom sans verbe se confond facilement avec un champ ou une propriété, et cache le
+fait qu&rsquo;un calcul ou un effet a lieu. Les champs et variables, à l&rsquo;inverse, sont généralement de
+simples noms (<code>daysSinceLastVisit</code>, <code>total</code>), sans verbe.</p>
+</blockquote>
+<h3 id="remplacer-un-nombre-magique-par-une-constante-nommée-replace-magic-number-with-symbolic-constant">Remplacer un nombre magique par une constante nommée (<em>Replace Magic Number with Symbolic Constant</em>)</h3>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ❌ Avant : que représente 250.0 ? Et si le tarif change, combien d&#39;endroits corriger ?</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">double</span> base <span style="color:#f92672">=</span> visit.<span style="color:#a6e22e">getType</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;SURGERY&#34;</span>) <span style="color:#f92672">?</span> 250.<span style="color:#a6e22e">0</span> : 60.<span style="color:#a6e22e">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ✅ Après</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">double</span> SURGERY_RATE <span style="color:#f92672">=</span> 250.<span style="color:#a6e22e">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">double</span> STANDARD_RATE <span style="color:#f92672">=</span> 60.<span style="color:#a6e22e">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">double</span> base <span style="color:#f92672">=</span> visit.<span style="color:#a6e22e">getType</span>().<span style="color:#a6e22e">equals</span>(<span style="color:#e6db74">&#34;SURGERY&#34;</span>) <span style="color:#f92672">?</span> SURGERY_RATE : STANDARD_RATE;</span></span></code></pre></div>
+<h3 id="introduire-une-clause-de-garde-guard-clauses">Introduire une clause de garde (<em>Guard Clauses</em>)</h3>
+<p>Remplacer un imbriquement profond de <code>if</code>/<code>else</code> par des sorties anticipées (<code>return</code>/<code>throw</code>)
+réduit la profondeur d&rsquo;indentation et rend le cas normal (« happy path ») immédiatement visible.</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// ❌ Avant : la logique utile est noyée dans l&#39;imbrication</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">calculateDiscount</span>(Owner owner) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> discount <span style="color:#f92672">=</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (owner <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (owner.<span style="color:#a6e22e">getBalance</span>() <span style="color:#f92672">&gt;=</span> 0) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (owner.<span style="color:#a6e22e">getPets</span>().<span style="color:#a6e22e">size</span>() <span style="color:#f92672">&gt;</span> 1) {
+</span></span><span style="display:flex;"><span>                discount <span style="color:#f92672">=</span> 0.<span style="color:#a6e22e">1</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> discount;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ✅ Après : les cas d&#39;exclusion sortent tôt, le cas normal reste au premier niveau,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// et le nombre magique 0.1 devient une constante nommée</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">double</span> MULTI_PET_DISCOUNT_RATE <span style="color:#f92672">=</span> 0.<span style="color:#a6e22e">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">calculateDiscount</span>(Owner owner) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (owner <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span>) <span style="color:#66d9ef">return</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (owner.<span style="color:#a6e22e">getBalance</span>() <span style="color:#f92672">&lt;</span> 0) <span style="color:#66d9ef">return</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (owner.<span style="color:#a6e22e">getPets</span>().<span style="color:#a6e22e">size</span>() <span style="color:#f92672">&lt;=</span> 1) <span style="color:#66d9ef">return</span> 0;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> MULTI_PET_DISCOUNT_RATE;
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Vous repérez le même bloc <code>if (type.equals(&quot;SURGERY&quot;)) { rate = 250.0; } else { rate = 60.0; }</code>
+copié dans quatre méthodes différentes d&rsquo;une même classe. Quel réusinage appliquer en premier —
+<em>Extract Class</em> ou <em>Extract Method</em> ?</p>
+<p><strong>Réponse</strong> : <em>Extract Method</em> d&rsquo;abord — regrouper cette logique dupliquée dans une seule méthode
+privée (<code>private double calculerTarif(String type)</code>) appelée aux quatre endroits élimine déjà la
+duplication avec un changement minimal et réversible. <em>Extract Class</em> serait une transformation
+plus large, à envisager seulement si cette logique de tarification grossit encore et mérite de
+devenir un concept autonome du domaine (ex. une classe <code>PricingPolicy</code>) — inutile de sauter
+directement à la solution la plus lourde quand une plus légère règle déjà le problème observé.</p>
+</details>
+<hr>
+<h2 id="5-quand-réusiner--et-quand-sen-abstenir">5️⃣ Quand réusiner — et quand s&rsquo;en abstenir</h2>
+<h3 id="la-règle-des-trois-rule-of-three">La règle des trois (<em>Rule of Three</em>)</h3>
+<p>Attribuée à Don Roberts : la première fois qu&rsquo;on fait quelque chose, on le fait simplement. La
+deuxième fois qu&rsquo;on répète une structure similaire, on grimace mais on duplique quand même. La
+<strong>troisième</strong> fois, on réusinage pour éliminer la duplication. Ce principe évite de sur-généraliser
+trop tôt (créer une abstraction pour un seul cas d&rsquo;usage), tout en fixant une limite claire à ne
+pas dépasser.</p>
+<h3 id="la-règle-du-boy-scout-boy-scout-rule">La règle du boy-scout (<em>Boy Scout Rule</em>)</h3>
+<p>Attribuée à Robert C. Martin : « laissez le camping plus propre que vous ne l&rsquo;avez trouvé ». En
+pratique : chaque fois que vous touchez à un fichier pour une autre raison (corriger un bogue,
+ajouter une fonctionnalité), profitez-en pour améliorer légèrement ce que vous voyez au passage
+(renommer une variable mal nommée, extraire une méthode trop longue) — sans transformer ce
+changement en un réusinage massif et hors sujet par rapport à la tâche en cours.</p>
+<h3 id="quand-reporter-un-réusinage">Quand reporter un réusinage</h3>
+<ul>
+<li><strong>Le code n&rsquo;est couvert par aucun test</strong> — écrivez d&rsquo;abord un test de caractérisation (section 2)
+avant de toucher à la structure.</li>
+<li><strong>Une échéance très serrée approche</strong> — un réusinage risqué juste avant une livraison est un pari
+dont le potentiel désavantage (régression de dernière minute) dépasse largement le bénéfice.</li>
+<li><strong>Le code est sur le point d&rsquo;être supprimé ou remplacé</strong> — investir du temps à améliorer la
+structure d&rsquo;un code qui disparaîtra bientôt n&rsquo;apporte aucun bénéfice futur.</li>
+</ul>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Vous constatez qu&rsquo;une méthode est dupliquée une deuxième fois dans le projet (donc deux occurrences
+au total). Selon la règle des trois, devriez-vous réusiner immédiatement pour éliminer la
+duplication ?</p>
+<p><strong>Réponse</strong> : pas nécessairement encore. La règle des trois suggère de tolérer la duplication
+jusqu&rsquo;à la <strong>troisième</strong> occurrence avant d&rsquo;extraire une abstraction commune — extraire trop tôt,
+sur seulement deux cas, risque de créer une généralisation basée sur un échantillon trop petit pour
+deviner la bonne forme de l&rsquo;abstraction. Il reste raisonnable de surveiller cette duplication et de
+réusiner dès qu&rsquo;une troisième occurrence apparaît.</p>
+</details>
+<hr>
+<h2 id="6-réusiner-par-petites-étapes-avec-les-outils-de-lide">6️⃣ Réusiner par petites étapes, avec les outils de l&rsquo;IDE</h2>
+<p>Un réusinage manuel (chercher-remplacer, copier-coller) introduit facilement des erreurs qu&rsquo;un
+outil automatisé évite par construction : la plupart des IDE modernes (IntelliJ IDEA, Eclipse,
+VS Code avec les bonnes extensions) offrent des commandes de réusinage <strong>sûres</strong> — elles analysent
+le code (pas seulement le texte) avant d&rsquo;appliquer la transformation, ce qui évite par exemple de
+renommer une variable dans un commentaire ou une chaîne de caractères sans lien avec le symbole
+visé.</p>
+<table>
+	<thead>
+			<tr>
+					<th>Réusinage</th>
+					<th>Raccourci typique (IntelliJ IDEA)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Renommer (<em>Rename</em>)</td>
+					<td><code>Shift+F6</code></td>
+			</tr>
+			<tr>
+					<td>Extraire une méthode (<em>Extract Method</em>)</td>
+					<td><code>Ctrl+Alt+M</code></td>
+			</tr>
+			<tr>
+					<td>Extraire une variable (<em>Extract Variable</em>)</td>
+					<td><code>Ctrl+Alt+V</code></td>
+			</tr>
+			<tr>
+					<td>Extraire une constante (<em>Extract Constant</em>)</td>
+					<td><code>Ctrl+Alt+C</code></td>
+			</tr>
+			<tr>
+					<td>Déplacer une classe/méthode (<em>Move</em>)</td>
+					<td><code>F6</code></td>
+			</tr>
+	</tbody>
+</table>
+<p>Procédure recommandée pour un réusinage de taille non triviale :</p>
+<ol>
+<li>Confirmer que la suite de tests est <strong>verte</strong> avant de commencer.</li>
+<li>Appliquer <strong>une seule</strong> transformation catalogée (ex. un seul <em>Extract Method</em>), de préférence
+via la commande de l&rsquo;IDE plutôt que manuellement.</li>
+<li>Relancer la suite de tests immédiatement.</li>
+<li>Si verte : committer cette étape avec un message clair (ex. « Extract calculateTotal() from
+buildInvoiceSummary() ») avant de passer à la transformation suivante.</li>
+<li>Si rouge : ne pas empiler une correction par-dessus — annuler la transformation (<code>Ctrl+Z</code> ou
+<code>git checkout</code>) et recommencer plus petit.</li>
+</ol>
+<blockquote>
+<p>💡 Une série de petits commits de réusinage, chacun accompagné de tests verts, est bien plus
+facile à relire (et à annuler sélectivement si besoin, via <code>git revert</code>) qu&rsquo;un unique commit
+massif « Refactoring » qui mélange dix transformations différentes.</p>
+</blockquote>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Pourquoi préférer la commande <em>Rename</em> de l&rsquo;IDE à un chercher-remplacer global (<code>Ctrl+H</code>) sur le
+nom d&rsquo;une variable ?</p>
+<p><strong>Réponse</strong> : un chercher-remplacer textuel ne comprend pas le code — il remplacera <strong>toute</strong>
+occurrence de la chaîne, y compris dans des commentaires, des chaînes de caractères, ou des
+variables homonymes d&rsquo;une portée différente qui n&rsquo;ont aucun lien avec le symbole visé. La commande
+<em>Rename</em> de l&rsquo;IDE analyse le code (résolution de symboles) et ne renomme que les références réelles
+à la variable ciblée, dans sa portée exacte — beaucoup plus sûr sur un projet de taille réelle.</p>
+</details>
+<hr>
+<h2 id="-références">📚 Références</h2>
+<ul>
+<li>Martin Fowler (2019), <em>Refactoring: Improving the Design of Existing Code</em> (2e éd.),
+Addison-Wesley.</li>
+<li>Robert C. Martin (2009), <em>Clean Code: A Handbook of Agile Software Craftsmanship</em>, Prentice Hall.</li>
+<li>Kent Beck (2002), <em>Test-Driven Development: By Example</em>, Addison-Wesley — cycle Red-Green-Refactor.</li>
+<li>Catalogue en ligne (extraits du livre de Fowler, mis à jour) —
+<a href="https://refactoring.com/catalog/" rel="external" target="_blank">refactoring.com/catalog</a>.</li>
+</ul>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer
+  </summary>
+  <div class="box-content">
+<p>Poursuivez avec l&rsquo;<a href="/420-515/semaine-6/exercice-refactoring/">exercice Réusinage</a> pour
+appliquer ce catalogue directement sur votre projet, avec votre suite de tests comme filet de
+sécurité.</p>
+  </div>
+</details>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-4/index.html"><a class="padding" href="/420-515/semaine-4/index.html">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</a><ul id="R-subsections-0a04879d58004f2299c8e47c33299b68" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-5/index.html"><a class="padding" href="/420-515/semaine-5/index.html">Semaine 5 — Tests automatisés et intégration continue</a><ul id="R-subsections-62d70e99f8941f86fbf4d8780b33e646" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-6/index.html"><a class="padding" href="/420-515/semaine-6/index.html">Semaine 6 — Réusinage (refactoring) et code smells</a><ul id="R-subsections-f67fcebe2365ce5f296a1590e7b19ab6" class="collapsible-menu">
+            <li class="active " data-nav-id="/420-515/semaine-6/refactoring/index.html"><a class="padding" href="/420-515/semaine-6/refactoring/index.html">Réusinage (refactoring) et code smells</a></li>
+            <li class="" data-nav-id="/420-515/semaine-6/exercice-refactoring/index.html"><a class="padding" href="/420-515/semaine-6/exercice-refactoring/index.html">Exercice : identifier et appliquer des réusinages</a></li>
+            <li class="" data-nav-id="/420-515/semaine-6/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-6/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1790605557" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1790605557" defer></script>
+    <script src="/420-515/js/theme.js?1790605557" defer></script>
+  </body>
+</html>
