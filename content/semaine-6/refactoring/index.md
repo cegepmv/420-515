@@ -651,14 +651,6 @@ directement à la solution la plus lourde quand une plus légère règle déjà 
 
 ## 5️⃣ Quand réusiner — et quand s'en abstenir
 
-### La règle des trois (*Rule of Three*)
-
-Attribuée à Don Roberts : la première fois qu'on fait quelque chose, on le fait simplement. La
-deuxième fois qu'on répète une structure similaire, on grimace mais on duplique quand même. La
-**troisième** fois, on réusinage pour éliminer la duplication. Ce principe évite de sur-généraliser
-trop tôt (créer une abstraction pour un seul cas d'usage), tout en fixant une limite claire à ne
-pas dépasser.
-
 ### La règle du boy-scout (*Boy Scout Rule*)
 
 Attribuée à Robert C. Martin : « laissez le camping plus propre que vous ne l'avez trouvé ». En
@@ -673,22 +665,7 @@ changement en un réusinage massif et hors sujet par rapport à la tâche en cou
   avant de toucher à la structure.
 - **Une échéance très serrée approche** — un réusinage risqué juste avant une livraison est un pari
   dont le potentiel désavantage (régression de dernière minute) dépasse largement le bénéfice.
-- **Le code est sur le point d'être supprimé ou remplacé** — investir du temps à améliorer la
-  structure d'un code qui disparaîtra bientôt n'apporte aucun bénéfice futur.
-
-<details>
-<summary>🤔 Testez-vous</summary>
-
-Vous constatez qu'une méthode est dupliquée une deuxième fois dans le projet (donc deux occurrences
-au total). Selon la règle des trois, devriez-vous réusiner immédiatement pour éliminer la
-duplication ?
-
-**Réponse** : pas nécessairement encore. La règle des trois suggère de tolérer la duplication
-jusqu'à la **troisième** occurrence avant d'extraire une abstraction commune — extraire trop tôt,
-sur seulement deux cas, risque de créer une généralisation basée sur un échantillon trop petit pour
-deviner la bonne forme de l'abstraction. Il reste raisonnable de surveiller cette duplication et de
-réusiner dès qu'une troisième occurrence apparaît.
-</details>
+- **Le code est sur le point d'être supprimé ou remplacé** — investir du temps à améliorer la structure d'un code qui disparaîtra bientôt n'apporte aucun bénéfice futur.
 
 ---
 
@@ -723,19 +700,6 @@ Procédure recommandée pour un réusinage de taille non triviale :
 > 💡 Une série de petits commits de réusinage, chacun accompagné de tests verts, est bien plus
 > facile à relire (et à annuler sélectivement si besoin, via `git revert`) qu'un unique commit
 > massif « Refactoring » qui mélange dix transformations différentes.
-
-<details>
-<summary>🤔 Testez-vous</summary>
-
-Pourquoi préférer la commande *Rename* de l'IDE à un chercher-remplacer global (`Ctrl+H`) sur le
-nom d'une variable ?
-
-**Réponse** : un chercher-remplacer textuel ne comprend pas le code — il remplacera **toute**
-occurrence de la chaîne, y compris dans des commentaires, des chaînes de caractères, ou des
-variables homonymes d'une portée différente qui n'ont aucun lien avec le symbole visé. La commande
-*Rename* de l'IDE analyse le code (résolution de symboles) et ne renomme que les références réelles
-à la variable ciblée, dans sa portée exacte — beaucoup plus sûr sur un projet de taille réelle.
-</details>
 
 ---
 
