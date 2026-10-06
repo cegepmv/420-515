@@ -4,6 +4,9 @@
     <loc>http://localhost:1313/420-515/semaine-1/definition-maintenance/index.html</loc>
   </url>
   <url>
+    <loc>http://localhost:1313/420-515/semaine-7/docker/index.html</loc>
+  </url>
+  <url>
     <loc>http://localhost:1313/420-515/intro/index.html</loc>
   </url>
   <url>
@@ -23,6 +26,9 @@
   </url>
   <url>
     <loc>http://localhost:1313/420-515/semaine-1/cycle-de-vie/index.html</loc>
+  </url>
+  <url>
+    <loc>http://localhost:1313/420-515/semaine-7/exercice-docker/index.html</loc>
   </url>
   <url>
     <loc>http://localhost:1313/420-515/semaine-4/exercice-maven-tests/index.html</loc>
@@ -58,6 +64,9 @@
     <loc>http://localhost:1313/420-515/semaine-3/maven/index.html</loc>
   </url>
   <url>
+    <loc>http://localhost:1313/420-515/semaine-7/registre-conteneurs/index.html</loc>
+  </url>
+  <url>
     <loc>http://localhost:1313/420-515/semaine-2/index.html</loc>
   </url>
   <url>
@@ -73,6 +82,9 @@
     <loc>http://localhost:1313/420-515/semaine-3/exercice-maven/index.html</loc>
   </url>
   <url>
+    <loc>http://localhost:1313/420-515/semaine-7/exercice-registre-conteneurs/index.html</loc>
+  </url>
+  <url>
     <loc>http://localhost:1313/420-515/semaine-5/integration-continue/index.html</loc>
   </url>
   <url>
@@ -83,6 +95,9 @@
   </url>
   <url>
     <loc>http://localhost:1313/420-515/semaine-4/activite-pratique/index.html</loc>
+  </url>
+  <url>
+    <loc>http://localhost:1313/420-515/semaine-7/activite-pratique/index.html</loc>
   </url>
   <url>
     <loc>http://localhost:1313/420-515/semaine-1/activite-pratique/index.html</loc>
@@ -119,6 +134,9 @@
   </url>
   <url>
     <loc>http://localhost:1313/420-515/semaine-1/exercice-git-premiers-pas/index.html</loc>
+  </url>
+  <url>
+    <loc>http://localhost:1313/420-515/semaine-7/index.html</loc>
   </url>
   <url>
     <loc>http://localhost:1313/420-515/categories/index.html</loc>

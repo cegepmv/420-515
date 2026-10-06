@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.166.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="Une fois la publication d’image automatisée (voir Registres de conteneurs), reste à décider comment nommer les versions publiées et comment en garder une trace lisible par des humains — deux aspects de la traçabilité d’une version précise du projet.
+1️⃣ Stratégie de tags : pourquoi (au moins) deux tags Publier seulement latest rend impossible de savoir, plus tard, quelle version exacte du code correspond à l’image actuellement déployée. Publier systématiquement le SHA du commit en plus de latest garantit une traçabilité complète :">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Stratégie de tags et publications GitHub (Releases) :: Maintenance de logiciel">
+    <meta name="twitter:description" content="Une fois la publication d’image automatisée (voir Registres de conteneurs), reste à décider comment nommer les versions publiées et comment en garder une trace lisible par des humains — deux aspects de la traçabilité d’une version précise du projet.
+1️⃣ Stratégie de tags : pourquoi (au moins) deux tags Publier seulement latest rend impossible de savoir, plus tard, quelle version exacte du code correspond à l’image actuellement déployée. Publier systématiquement le SHA du commit en plus de latest garantit une traçabilité complète :">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-7/tags-et-releases/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Stratégie de tags et publications GitHub (Releases) :: Maintenance de logiciel">
+    <meta property="og:description" content="Une fois la publication d’image automatisée (voir Registres de conteneurs), reste à décider comment nommer les versions publiées et comment en garder une trace lisible par des humains — deux aspects de la traçabilité d’une version précise du projet.
+1️⃣ Stratégie de tags : pourquoi (au moins) deux tags Publier seulement latest rend impossible de savoir, plus tard, quelle version exacte du code correspond à l’image actuellement déployée. Publier systématiquement le SHA du commit en plus de latest garantit une traçabilité complète :">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 7 — Conteneurisation avec Docker">
+    <meta itemprop="name" content="Stratégie de tags et publications GitHub (Releases) :: Maintenance de logiciel">
+    <meta itemprop="description" content="Une fois la publication d’image automatisée (voir Registres de conteneurs), reste à décider comment nommer les versions publiées et comment en garder une trace lisible par des humains — deux aspects de la traçabilité d’une version précise du projet.
+1️⃣ Stratégie de tags : pourquoi (au moins) deux tags Publier seulement latest rend impossible de savoir, plus tard, quelle version exacte du code correspond à l’image actuellement déployée. Publier systématiquement le SHA du commit en plus de latest garantit une traçabilité complète :">
+    <meta itemprop="wordCount" content="793">
+    <title>Stratégie de tags et publications GitHub (Releases) :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1791257852" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1791257852" defer></script>
+    <script src="/420-515/js/search-lunr.js?1791257852" defer></script>
+    <script src="/420-515/js/search.js?1791257852" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1791257852";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1791257852" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1791257852" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1791257852" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1791257852" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791257852" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791257852" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1791257852" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1791257852" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1791257852" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = ``;
+      window.relearn.path='\/semaine-7\/tags-et-releases\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-7/tags-et-releases/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-7/index.html"><span itemprop="name">Semaine 7 — Conteneurisation avec Docker</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Stratégie de tags et publications GitHub (Releases)</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-7" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="stratégie-de-tags-et-publications-github-releases">Stratégie de tags et publications GitHub (Releases)</h1>
+
+<p>Une fois la publication d&rsquo;image automatisée (voir
+<a href="/420-515/semaine-7/registre-conteneurs/">Registres de conteneurs</a>), reste à décider
+<strong>comment nommer</strong> les versions publiées et comment en garder une trace lisible par des humains —
+deux aspects de la traçabilité d&rsquo;une version précise du projet.</p>
+<hr>
+<h2 id="1-stratégie-de-tags--pourquoi-au-moins-deux-tags">1️⃣ Stratégie de tags : pourquoi (au moins) deux tags</h2>
+<p>Publier <strong>seulement</strong> <code>latest</code> rend impossible de savoir, plus tard, quelle version exacte du code
+correspond à l&rsquo;image actuellement déployée. Publier <strong>systématiquement</strong> le SHA du commit en plus
+de <code>latest</code> garantit une traçabilité complète :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Tag</th>
+					<th>Usage</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>ghcr.io/.../mon-projet:latest</code></td>
+					<td>Pratique pour un <code>docker pull</code> rapide de « la dernière version » — mais son contenu change à chaque publication</td>
+			</tr>
+			<tr>
+					<td><code>ghcr.io/.../mon-projet:&lt;sha-du-commit&gt;</code></td>
+					<td>Immuable : ce tag précis correspondra <strong>toujours</strong> au même code, peu importe les publications futures — indispensable pour diagnostiquer un problème en production ou revenir à une version antérieure connue</td>
+			</tr>
+	</tbody>
+</table>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Une image est déployée en production avec le tag <code>latest</code>. Un bogue apparaît après un déploiement
+récent, et vous voulez savoir précisément quel commit a produit l&rsquo;image actuellement en
+production. Le tag <code>latest</code> vous permet-il de répondre à cette question ?</p>
+<p><strong>Réponse</strong> : non — <code>latest</code> est un tag mobile qui pointe vers la publication la plus récente, sans
+indiquer par lui-même quel commit l&rsquo;a produite. Seul un tag immuable (comme le SHA du commit) permet
+de retrouver avec certitude le code source exact correspondant à une image donnée; c&rsquo;est pourquoi
+on publie toujours les deux : <code>latest</code> pour la commodité, le SHA pour la traçabilité.</p>
+</details>
+<hr>
+<h2 id="2-créer-une-publication-github-release-automatiquement">2️⃣ Créer une publication GitHub (<em>Release</em>) automatiquement</h2>
+<p>Une <strong>Release</strong> GitHub est différente d&rsquo;une image publiée sur un registre : c&rsquo;est une page dédiée
+du dépôt (onglet <strong>Releases</strong>) qui regroupe un <strong>tag Git</strong>, des notes de version, et éventuellement
+des fichiers joints (ex. le <code>.jar</code> compilé) — un point de référence lisible par des humains, utile
+même si vous ne distribuez pas d&rsquo;image Docker.</p>
+<h3 id="déclencheur--un-tag-git-plutôt-quun-push-sur-main">Déclencheur : un tag Git plutôt qu&rsquo;un <code>push</code> sur <code>main</code></h3>
+<p>Contrairement aux jobs vus jusqu&rsquo;ici (déclenchés à chaque <code>push</code>/<code>pull_request</code>), une Release ne
+doit se créer que <strong>ponctuellement</strong>, lorsqu&rsquo;une version est prête à être publiée — on déclenche
+donc ce workflow sur la création d&rsquo;un <strong>tag</strong> suivant une convention (ex. <code>v1.2.3</code>) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">tags</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#39;v*&#39;</span>          <span style="color:#75715e"># ex. v1.0.0, v1.2.3 — mais pas un push ordinaire sur main</span></span></span></code></pre></div>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Créer et pousser un tag depuis votre poste pour déclencher ce workflow</span>
+</span></span><span style="display:flex;"><span>git tag v1.0.0
+</span></span><span style="display:flex;"><span>git push origin v1.0.0</span></span></code></pre></div>
+<blockquote>
+<p>💡 Ce <code>v*</code> suit la convention du <a href="https://semver.org/lang/fr/" rel="external" target="_blank">Versionnage sémantique</a>
+(<code>MAJEUR.MINEUR.CORRECTIF</code>), que nous reverrons plus en détail une prochaine semaine — il suffit
+pour l&rsquo;instant de retenir qu&rsquo;un tag <code>vX.Y.Z</code> marque une version précise et volontaire du projet,
+distincte des commits ordinaires sur <code>main</code>.</p>
+</blockquote>
+<h3 id="un-job-qui-construit-publie-la-release-et-y-attache-le-jar">Un job qui construit, publie la Release, et y attache le <code>.jar</code></h3>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">release</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">permissions</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">contents</span>: <span style="color:#ae81ff">write                </span> <span style="color:#75715e"># requis pour que le workflow puisse créer une Release</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Set up JDK 25</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/setup-java@v5</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">java-version</span>: <span style="color:#e6db74">&#39;25&#39;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">distribution</span>: <span style="color:#e6db74">&#39;temurin&#39;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">cache</span>: <span style="color:#ae81ff">maven</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">./mvnw -B clean package -DskipTests</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Créer la Release et y attacher le .jar</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">softprops/action-gh-release@v2</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">files</span>: <span style="color:#ae81ff">target/*.jar</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">generate_release_notes</span>: <span style="color:#66d9ef">true</span>    <span style="color:#75715e"># génère automatiquement les notes à partir des PR/commits fusionnés</span></span></span></code></pre></div>
+<table>
+	<thead>
+			<tr>
+					<th>Élément</th>
+					<th>Rôle</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>permissions: contents: write</code></td>
+					<td>Sans cette permission explicite, le jeton <code>GITHUB_TOKEN</code> par défaut n&rsquo;a pas le droit de créer une Release</td>
+			</tr>
+			<tr>
+					<td><code>softprops/action-gh-release</code></td>
+					<td>Action tierce très utilisée (hors <code>actions/*</code> officiel) qui crée la Release correspondant au tag ayant déclenché le workflow</td>
+			</tr>
+			<tr>
+					<td><code>files: target/*.jar</code></td>
+					<td>Joint le <code>.jar</code> compilé comme fichier téléchargeable directement depuis la page de la Release</td>
+			</tr>
+			<tr>
+					<td><code>generate_release_notes: true</code></td>
+					<td>Génère automatiquement une liste des changements (basée sur les PR fusionnées depuis la Release précédente), sans rédaction manuelle</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 Rien n&rsquo;empêche de combiner les deux dans un <strong>même déclencheur par tag</strong> : un job qui publie
+l&rsquo;image Docker avec le tag <code>v1.2.3</code> (en plus du SHA et de <code>latest</code> — voir la section
+précédente) <strong>et</strong> un job qui crée la Release GitHub correspondante avec le <code>.jar</code> en pièce
+jointe — les deux pointent alors vers la <strong>même version exacte</strong> du projet, sous deux formes
+différentes (image exécutable vs archive téléchargeable avec notes de version).</p>
+</blockquote>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Votre équipe veut qu&rsquo;une Release ne soit créée que pour des versions « officielles », jamais à
+chaque <code>push</code> sur <code>main</code>. Quel élément du workflow garantit ce comportement, et que se passe-t-il
+si quelqu&rsquo;un pousse un commit ordinaire sur <code>main</code> sans créer de tag ?</p>
+<p><strong>Réponse</strong> : le déclencheur <code>on: push: tags: ['v*']</code> garantit ce comportement — le workflow ne
+s&rsquo;exécute <strong>que</strong> lorsqu&rsquo;un tag correspondant au motif <code>v*</code> est poussé, jamais sur un <code>push</code>
+ordinaire de commits vers <code>main</code>. Un commit poussé sans tag ne déclenche donc <strong>aucune</strong> exécution
+de ce workflow, peu importe son contenu.</p>
+</details>
+<hr>
+<h2 id="-références">📚 Références</h2>
+<ul>
+<li>Documentation officielle GitHub — <a href="https://docs.github.com/repositories/releasing-projects-on-github/managing-releases-in-a-repository" rel="external" target="_blank">Managing releases in a repository</a>.</li>
+<li>Action tierce — <a href="https://github.com/softprops/action-gh-release" rel="external" target="_blank">softprops/action-gh-release</a>.</li>
+<li>Versionnage sémantique — <a href="https://semver.org/lang/fr/" rel="external" target="_blank">semver.org</a>.</li>
+</ul>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-4/index.html"><a class="padding" href="/420-515/semaine-4/index.html">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</a><ul id="R-subsections-0a04879d58004f2299c8e47c33299b68" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-5/index.html"><a class="padding" href="/420-515/semaine-5/index.html">Semaine 5 — Tests automatisés et intégration continue</a><ul id="R-subsections-62d70e99f8941f86fbf4d8780b33e646" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-6/index.html"><a class="padding" href="/420-515/semaine-6/index.html">Semaine 6 — Réusinage (refactoring) et code smells</a><ul id="R-subsections-f67fcebe2365ce5f296a1590e7b19ab6" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-7/index.html"><a class="padding" href="/420-515/semaine-7/index.html">Semaine 7 — Conteneurisation avec Docker</a><ul id="R-subsections-46cef0e5d7909a168d728f129b96eadf" class="collapsible-menu">
+            <li class="" data-nav-id="/420-515/semaine-7/docker/index.html"><a class="padding" href="/420-515/semaine-7/docker/index.html">Docker — Dockerfile, image, bonnes pratiques</a></li>
+            <li class="" data-nav-id="/420-515/semaine-7/exercice-docker/index.html"><a class="padding" href="/420-515/semaine-7/exercice-docker/index.html">Exercice : écrire et exécuter un Dockerfile</a></li>
+            <li class="" data-nav-id="/420-515/semaine-7/registre-conteneurs/index.html"><a class="padding" href="/420-515/semaine-7/registre-conteneurs/index.html">Registres de conteneurs et publication automatisée (CI/CD)</a></li>
+            <li class="active " data-nav-id="/420-515/semaine-7/tags-et-releases/index.html"><a class="padding" href="/420-515/semaine-7/tags-et-releases/index.html">Stratégie de tags et publications GitHub (Releases)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-7/exercice-registre-conteneurs/index.html"><a class="padding" href="/420-515/semaine-7/exercice-registre-conteneurs/index.html">Exercice : publier une image sur GitHub Container Registry</a></li>
+            <li class="" data-nav-id="/420-515/semaine-7/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-7/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1791257852" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1791257852" defer></script>
+    <script src="/420-515/js/theme.js?1791257852" defer></script>
+  </body>
+</html>

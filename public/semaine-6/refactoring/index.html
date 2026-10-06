@@ -27,28 +27,28 @@ Trois éléments de cette définition sont essentiels, et souvent mal compris en
     <meta itemprop="description" content="1️⃣ Qu’est-ce que le réusinage — et ce que ce n’est PAS Martin Fowler définit le réusinage (refactoring) ainsi :
 « A change made to the internal structure of software to make it easier to understand and cheaper to modify without changing its observable behavior. » — Martin Fowler, Refactoring: Improving the Design of Existing Code (2e éd., 2019)
 Trois éléments de cette définition sont essentiels, et souvent mal compris en pratique :">
-    <meta itemprop="wordCount" content="4814">
+    <meta itemprop="wordCount" content="4548">
     <title>Réusinage (refactoring) et code smells :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1790610912" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1790610912" defer></script>
-    <script src="/420-515/js/search-lunr.js?1790610912" defer></script>
-    <script src="/420-515/js/search.js?1790610912" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1791264716" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1791264716" defer></script>
+    <script src="/420-515/js/search-lunr.js?1791264716" defer></script>
+    <script src="/420-515/js/search.js?1791264716" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1790610912";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1791264716";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1790610912" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1790610912" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1790610912" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1790610912" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1791264716" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1791264716" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1791264716" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1791264716" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1790610912" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1790610912" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1790610912" rel="stylesheet">
-    <link href="/420-515/css/theme.css?1790610912" rel="stylesheet">
-    <link href="/420-515/css/format-html.css?1790610912" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791264716" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791264716" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1791264716" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1791264716" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1791264716" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -685,12 +685,6 @@ directement à la solution la plus lourde quand une plus légère règle déjà 
 </details>
 <hr>
 <h2 id="5-quand-réusiner--et-quand-sen-abstenir">5️⃣ Quand réusiner — et quand s&rsquo;en abstenir</h2>
-<h3 id="la-règle-des-trois-rule-of-three">La règle des trois (<em>Rule of Three</em>)</h3>
-<p>Attribuée à Don Roberts : la première fois qu&rsquo;on fait quelque chose, on le fait simplement. La
-deuxième fois qu&rsquo;on répète une structure similaire, on grimace mais on duplique quand même. La
-<strong>troisième</strong> fois, on réusinage pour éliminer la duplication. Ce principe évite de sur-généraliser
-trop tôt (créer une abstraction pour un seul cas d&rsquo;usage), tout en fixant une limite claire à ne
-pas dépasser.</p>
 <h3 id="la-règle-du-boy-scout-boy-scout-rule">La règle du boy-scout (<em>Boy Scout Rule</em>)</h3>
 <p>Attribuée à Robert C. Martin : « laissez le camping plus propre que vous ne l&rsquo;avez trouvé ». En
 pratique : chaque fois que vous touchez à un fichier pour une autre raison (corriger un bogue,
@@ -703,20 +697,8 @@ changement en un réusinage massif et hors sujet par rapport à la tâche en cou
 avant de toucher à la structure.</li>
 <li><strong>Une échéance très serrée approche</strong> — un réusinage risqué juste avant une livraison est un pari
 dont le potentiel désavantage (régression de dernière minute) dépasse largement le bénéfice.</li>
-<li><strong>Le code est sur le point d&rsquo;être supprimé ou remplacé</strong> — investir du temps à améliorer la
-structure d&rsquo;un code qui disparaîtra bientôt n&rsquo;apporte aucun bénéfice futur.</li>
+<li><strong>Le code est sur le point d&rsquo;être supprimé ou remplacé</strong> — investir du temps à améliorer la structure d&rsquo;un code qui disparaîtra bientôt n&rsquo;apporte aucun bénéfice futur.</li>
 </ul>
-<details>
-<summary>🤔 Testez-vous</summary>
-<p>Vous constatez qu&rsquo;une méthode est dupliquée une deuxième fois dans le projet (donc deux occurrences
-au total). Selon la règle des trois, devriez-vous réusiner immédiatement pour éliminer la
-duplication ?</p>
-<p><strong>Réponse</strong> : pas nécessairement encore. La règle des trois suggère de tolérer la duplication
-jusqu&rsquo;à la <strong>troisième</strong> occurrence avant d&rsquo;extraire une abstraction commune — extraire trop tôt,
-sur seulement deux cas, risque de créer une généralisation basée sur un échantillon trop petit pour
-deviner la bonne forme de l&rsquo;abstraction. Il reste raisonnable de surveiller cette duplication et de
-réusiner dès qu&rsquo;une troisième occurrence apparaît.</p>
-</details>
 <hr>
 <h2 id="6-réusiner-par-petites-étapes-avec-les-outils-de-lide">6️⃣ Réusiner par petites étapes, avec les outils de l&rsquo;IDE</h2>
 <p>Un réusinage manuel (chercher-remplacer, copier-coller) introduit facilement des erreurs qu&rsquo;un
@@ -771,16 +753,6 @@ buildInvoiceSummary() ») avant de passer à la transformation suivante.</li>
 facile à relire (et à annuler sélectivement si besoin, via <code>git revert</code>) qu&rsquo;un unique commit
 massif « Refactoring » qui mélange dix transformations différentes.</p>
 </blockquote>
-<details>
-<summary>🤔 Testez-vous</summary>
-<p>Pourquoi préférer la commande <em>Rename</em> de l&rsquo;IDE à un chercher-remplacer global (<code>Ctrl+H</code>) sur le
-nom d&rsquo;une variable ?</p>
-<p><strong>Réponse</strong> : un chercher-remplacer textuel ne comprend pas le code — il remplacera <strong>toute</strong>
-occurrence de la chaîne, y compris dans des commentaires, des chaînes de caractères, ou des
-variables homonymes d&rsquo;une portée différente qui n&rsquo;ont aucun lien avec le symbole visé. La commande
-<em>Rename</em> de l&rsquo;IDE analyse le code (résolution de symboles) et ne renomme que les références réelles
-à la variable ciblée, dans sa portée exacte — beaucoup plus sûr sur un projet de taille réelle.</p>
-</details>
 <hr>
 <h2 id="-références">📚 Références</h2>
 <ul>
@@ -859,6 +831,7 @@ sécurité.</p>
             <li class="active " data-nav-id="/420-515/semaine-6/refactoring/index.html"><a class="padding" href="/420-515/semaine-6/refactoring/index.html">Réusinage (refactoring) et code smells</a></li>
             <li class="" data-nav-id="/420-515/semaine-6/exercice-refactoring/index.html"><a class="padding" href="/420-515/semaine-6/exercice-refactoring/index.html">Exercice : identifier et appliquer des réusinages</a></li>
             <li class="" data-nav-id="/420-515/semaine-6/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-6/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-7/index.html"><a class="padding" href="/420-515/semaine-7/index.html">Semaine 7 — Conteneurisation avec Docker</a><ul id="R-subsections-46cef0e5d7909a168d728f129b96eadf" class="collapsible-menu"></ul></li>
           </ul>
         </div>
         <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
@@ -894,8 +867,8 @@ sécurité.</p>
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1790610912" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1790610912" defer></script>
-    <script src="/420-515/js/theme.js?1790610912" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1791264716" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1791264716" defer></script>
+    <script src="/420-515/js/theme.js?1791264716" defer></script>
   </body>
 </html>

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.166.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="🎯 Objectif Écrire, construire et exécuter un Dockerfile pour votre propre projet, en appliquant les notions vues dans Docker — Dockerfile, image, bonnes pratiques.
+🧩 Partie 1 — Un premier Dockerfile naïf À la racine de votre projet, créez un fichier Dockerfile à une seule étape (sur le modèle de la version naïve vue dans les notes de cette semaine). Construisez l’image : docker build -t mon-projet:naif . Notez la taille de l’image obtenue (docker images affiche la taille de chaque image). 🏗️ Partie 2 — Construction multi-étapes (Option B, pour comprendre la technique) Réécrivez votre Dockerfile en construction multi-étapes : une étape build (JDK complet) qui produit le .jar, puis une étape finale (JRE seulement) qui ne copie que ce .jar. Ordonnez vos instructions COPY pour exploiter le cache Docker (dépendances avant code source). Reconstruisez l’image sous un nouveau tag : docker build -t mon-projet:multistage . Comparez la taille de cette image à celle de la Partie 1. 💡 Cet exercice construit et teste localement l’Option B (Dockerfile autosuffisant). Dans l’exercice suivant, votre pipeline CI utilisera plutôt l’Option A (réutiliser le .jar déjà construit par build-and-test), pour éviter de compiler le projet deux fois — voir Docker — les deux approches pour la différence.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Exercice : écrire et exécuter un Dockerfile :: Maintenance de logiciel">
+    <meta name="twitter:description" content="🎯 Objectif Écrire, construire et exécuter un Dockerfile pour votre propre projet, en appliquant les notions vues dans Docker — Dockerfile, image, bonnes pratiques.
+🧩 Partie 1 — Un premier Dockerfile naïf À la racine de votre projet, créez un fichier Dockerfile à une seule étape (sur le modèle de la version naïve vue dans les notes de cette semaine). Construisez l’image : docker build -t mon-projet:naif . Notez la taille de l’image obtenue (docker images affiche la taille de chaque image). 🏗️ Partie 2 — Construction multi-étapes (Option B, pour comprendre la technique) Réécrivez votre Dockerfile en construction multi-étapes : une étape build (JDK complet) qui produit le .jar, puis une étape finale (JRE seulement) qui ne copie que ce .jar. Ordonnez vos instructions COPY pour exploiter le cache Docker (dépendances avant code source). Reconstruisez l’image sous un nouveau tag : docker build -t mon-projet:multistage . Comparez la taille de cette image à celle de la Partie 1. 💡 Cet exercice construit et teste localement l’Option B (Dockerfile autosuffisant). Dans l’exercice suivant, votre pipeline CI utilisera plutôt l’Option A (réutiliser le .jar déjà construit par build-and-test), pour éviter de compiler le projet deux fois — voir Docker — les deux approches pour la différence.">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-7/exercice-docker/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Exercice : écrire et exécuter un Dockerfile :: Maintenance de logiciel">
+    <meta property="og:description" content="🎯 Objectif Écrire, construire et exécuter un Dockerfile pour votre propre projet, en appliquant les notions vues dans Docker — Dockerfile, image, bonnes pratiques.
+🧩 Partie 1 — Un premier Dockerfile naïf À la racine de votre projet, créez un fichier Dockerfile à une seule étape (sur le modèle de la version naïve vue dans les notes de cette semaine). Construisez l’image : docker build -t mon-projet:naif . Notez la taille de l’image obtenue (docker images affiche la taille de chaque image). 🏗️ Partie 2 — Construction multi-étapes (Option B, pour comprendre la technique) Réécrivez votre Dockerfile en construction multi-étapes : une étape build (JDK complet) qui produit le .jar, puis une étape finale (JRE seulement) qui ne copie que ce .jar. Ordonnez vos instructions COPY pour exploiter le cache Docker (dépendances avant code source). Reconstruisez l’image sous un nouveau tag : docker build -t mon-projet:multistage . Comparez la taille de cette image à celle de la Partie 1. 💡 Cet exercice construit et teste localement l’Option B (Dockerfile autosuffisant). Dans l’exercice suivant, votre pipeline CI utilisera plutôt l’Option A (réutiliser le .jar déjà construit par build-and-test), pour éviter de compiler le projet deux fois — voir Docker — les deux approches pour la différence.">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 7 — Conteneurisation avec Docker">
+    <meta itemprop="name" content="Exercice : écrire et exécuter un Dockerfile :: Maintenance de logiciel">
+    <meta itemprop="description" content="🎯 Objectif Écrire, construire et exécuter un Dockerfile pour votre propre projet, en appliquant les notions vues dans Docker — Dockerfile, image, bonnes pratiques.
+🧩 Partie 1 — Un premier Dockerfile naïf À la racine de votre projet, créez un fichier Dockerfile à une seule étape (sur le modèle de la version naïve vue dans les notes de cette semaine). Construisez l’image : docker build -t mon-projet:naif . Notez la taille de l’image obtenue (docker images affiche la taille de chaque image). 🏗️ Partie 2 — Construction multi-étapes (Option B, pour comprendre la technique) Réécrivez votre Dockerfile en construction multi-étapes : une étape build (JDK complet) qui produit le .jar, puis une étape finale (JRE seulement) qui ne copie que ce .jar. Ordonnez vos instructions COPY pour exploiter le cache Docker (dépendances avant code source). Reconstruisez l’image sous un nouveau tag : docker build -t mon-projet:multistage . Comparez la taille de cette image à celle de la Partie 1. 💡 Cet exercice construit et teste localement l’Option B (Dockerfile autosuffisant). Dans l’exercice suivant, votre pipeline CI utilisera plutôt l’Option A (réutiliser le .jar déjà construit par build-and-test), pour éviter de compiler le projet deux fois — voir Docker — les deux approches pour la différence.">
+    <meta itemprop="wordCount" content="593">
+    <title>Exercice : écrire et exécuter un Dockerfile :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1791257862" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1791257862" defer></script>
+    <script src="/420-515/js/search-lunr.js?1791257862" defer></script>
+    <script src="/420-515/js/search.js?1791257862" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1791257862";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1791257862" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1791257862" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1791257862" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1791257862" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791257862" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791257862" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1791257862" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1791257862" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1791257862" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = ``;
+      window.relearn.path='\/semaine-7\/exercice-docker\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-7/exercice-docker/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-7/index.html"><span itemprop="name">Semaine 7 — Conteneurisation avec Docker</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Exercice : écrire et exécuter un Dockerfile</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-7" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="exercice--écrire-et-exécuter-un-dockerfile">Exercice : écrire et exécuter un Dockerfile</h1>
+
+<h2 id="-objectif">🎯 Objectif</h2>
+<p>Écrire, construire et exécuter un <code>Dockerfile</code> pour votre propre projet, en appliquant les notions
+vues dans <a href="/420-515/semaine-7/docker/">Docker — Dockerfile, image, bonnes pratiques</a>.</p>
+<hr>
+<h2 id="-partie-1--un-premier-dockerfile-naïf">🧩 Partie 1 — Un premier <code>Dockerfile</code> naïf</h2>
+<ol>
+<li>À la racine de votre projet, créez un fichier <code>Dockerfile</code> à <strong>une seule étape</strong> (sur le modèle
+de la version naïve vue dans les notes de cette semaine).</li>
+<li>Construisez l&rsquo;image : <code>docker build -t mon-projet:naif .</code></li>
+<li>Notez la taille de l&rsquo;image obtenue (<code>docker images</code> affiche la taille de chaque image).</li>
+</ol>
+<hr>
+<h2 id="-partie-2--construction-multi-étapes-option-b-pour-comprendre-la-technique">🏗️ Partie 2 — Construction multi-étapes (Option B, pour comprendre la technique)</h2>
+<ol>
+<li>Réécrivez votre <code>Dockerfile</code> en <strong>construction multi-étapes</strong> : une étape <code>build</code> (JDK complet)
+qui produit le <code>.jar</code>, puis une étape finale (JRE seulement) qui ne copie que ce <code>.jar</code>.</li>
+<li>Ordonnez vos instructions <code>COPY</code> pour exploiter le cache Docker (dépendances avant code source).</li>
+<li>Reconstruisez l&rsquo;image sous un nouveau tag : <code>docker build -t mon-projet:multistage .</code></li>
+<li>Comparez la taille de cette image à celle de la Partie 1.</li>
+</ol>
+<blockquote>
+<p>💡 Cet exercice construit et teste localement l&rsquo;Option B (Dockerfile autosuffisant). Dans
+l&rsquo;<a href="/420-515/semaine-7/exercice-registre-conteneurs/">exercice suivant</a>, votre pipeline CI
+utilisera plutôt l&rsquo;Option A (réutiliser le <code>.jar</code> déjà construit par <code>build-and-test</code>), pour
+éviter de compiler le projet deux fois — voir
+<a href="/420-515/semaine-7/docker/">Docker — les deux approches</a> pour la différence.</p>
+</blockquote>
+<details>
+<summary>❓ Question</summary>
+<p>Vous reconstruisez votre image après avoir modifié un seul fichier <code>.java</code> (aucun changement dans
+<code>pom.xml</code>). Quelles étapes du <code>Dockerfile</code> devraient réutiliser le cache Docker, et lesquelles
+devraient être réexécutées ?</p>
+<p><strong>Réponse</strong> : si l&rsquo;ordre des instructions place <code>COPY pom.xml</code> et le téléchargement des dépendances
+<strong>avant</strong> <code>COPY src</code>, alors toutes les instructions jusqu&rsquo;à (et incluant) le téléchargement des
+dépendances réutilisent le cache — seules les instructions à partir de <code>COPY src</code> (copie du code
+source, compilation) sont réexécutées, puisque c&rsquo;est le seul fichier qui a changé.</p>
+</details>
+<hr>
+<h2 id="-partie-3--utilisateur-non-root-et-dockerignore">🔒 Partie 3 — Utilisateur non-root et <code>.dockerignore</code></h2>
+<ol>
+<li>Ajoutez un utilisateur dédié non-root dans votre <code>Dockerfile</code> (<code>adduser</code>/<code>USER</code>) et confirmez
+que le conteneur démarre toujours correctement.</li>
+<li>Créez un fichier <code>.dockerignore</code> excluant au minimum <code>target/</code>, <code>.git/</code>, et tout autre dossier
+volumineux ou inutile à la construction.</li>
+</ol>
+<hr>
+<h2 id="-partie-4--exécuter-et-valider-le-conteneur">▶️ Partie 4 — Exécuter et valider le conteneur</h2>
+<ol>
+<li>Démarrez un conteneur à partir de votre image multi-étapes, en exposant le bon port.</li>
+<li>Validez le bon fonctionnement avec au moins une requête réelle (<code>curl</code> ou Postman) vers un
+endpoint connu de votre application.</li>
+<li>Arrêtez le conteneur (<code>docker stop</code>), puis redémarrez-en un nouveau à partir de la même image —
+confirmez que le comportement est identique (preuve que l&rsquo;image, pas un état local, définit le
+comportement de l&rsquo;application).</li>
+</ol>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Vous démarrez votre conteneur, mais <code>curl http://localhost:&lt;port&gt;</code> échoue avec une erreur de
+connexion refusée, alors que l&rsquo;application affiche bien « Started Application » dans les journaux
+du conteneur (<code>docker logs &lt;nom-du-conteneur&gt;</code>). Quelle est la cause la plus probable ?</p>
+<p><strong>Réponse</strong> : le port n&rsquo;a probablement pas été correctement publié au démarrage du conteneur (<code>-p &lt;hôte&gt;:&lt;conteneur&gt;</code> manquant ou mal orthographié), ou le port interne de l&rsquo;application (<code>EXPOSE</code>
+dans le <code>Dockerfile</code>) ne correspond pas à celui réellement utilisé par l&rsquo;application (ex.
+<code>server.port</code> dans <code>application.properties</code>). L&rsquo;application peut tourner <strong>parfaitement</strong> à
+l&rsquo;intérieur du conteneur sans être accessible de l&rsquo;extérieur si le mappage de port est incorrect.</p>
+</details>
+<hr>
+<h2 id="-auto-vérification">✅ Auto-vérification</h2>
+<ul>
+<li><input disabled="" type="checkbox"> J&rsquo;ai un <code>Dockerfile</code> en construction multi-étapes, fonctionnel.</li>
+<li><input disabled="" type="checkbox"> Mon image finale est basée sur une image JRE (pas JDK complet).</li>
+<li><input disabled="" type="checkbox"> Mon <code>Dockerfile</code> copie les fichiers de dépendances avant le code source (cache Docker).</li>
+<li><input disabled="" type="checkbox"> Le conteneur s&rsquo;exécute avec un utilisateur non-root.</li>
+<li><input disabled="" type="checkbox"> J&rsquo;ai un fichier <code>.dockerignore</code> fonctionnel.</li>
+<li><input disabled="" type="checkbox"> J&rsquo;ai validé mon conteneur avec au moins une requête HTTP réelle.</li>
+</ul>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer
+  </summary>
+  <div class="box-content">
+<p>Poursuivez avec <a href="/420-515/semaine-7/registre-conteneurs/">Registres de conteneurs</a> pour
+publier automatiquement cette image depuis votre pipeline CI.</p>
+  </div>
+</details>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-4/index.html"><a class="padding" href="/420-515/semaine-4/index.html">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</a><ul id="R-subsections-0a04879d58004f2299c8e47c33299b68" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-5/index.html"><a class="padding" href="/420-515/semaine-5/index.html">Semaine 5 — Tests automatisés et intégration continue</a><ul id="R-subsections-62d70e99f8941f86fbf4d8780b33e646" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-6/index.html"><a class="padding" href="/420-515/semaine-6/index.html">Semaine 6 — Réusinage (refactoring) et code smells</a><ul id="R-subsections-f67fcebe2365ce5f296a1590e7b19ab6" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-7/index.html"><a class="padding" href="/420-515/semaine-7/index.html">Semaine 7 — Conteneurisation avec Docker</a><ul id="R-subsections-46cef0e5d7909a168d728f129b96eadf" class="collapsible-menu">
+            <li class="" data-nav-id="/420-515/semaine-7/docker/index.html"><a class="padding" href="/420-515/semaine-7/docker/index.html">Docker — Dockerfile, image, bonnes pratiques</a></li>
+            <li class="active " data-nav-id="/420-515/semaine-7/exercice-docker/index.html"><a class="padding" href="/420-515/semaine-7/exercice-docker/index.html">Exercice : écrire et exécuter un Dockerfile</a></li>
+            <li class="" data-nav-id="/420-515/semaine-7/registre-conteneurs/index.html"><a class="padding" href="/420-515/semaine-7/registre-conteneurs/index.html">Registres de conteneurs et publication automatisée (CI/CD)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-7/exercice-registre-conteneurs/index.html"><a class="padding" href="/420-515/semaine-7/exercice-registre-conteneurs/index.html">Exercice : publier une image sur GitHub Container Registry</a></li>
+            <li class="" data-nav-id="/420-515/semaine-7/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-7/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1791257862" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1791257862" defer></script>
+    <script src="/420-515/js/theme.js?1791257862" defer></script>
+  </body>
+</html>

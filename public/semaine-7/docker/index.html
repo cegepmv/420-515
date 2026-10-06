@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.166.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="Jusqu’ici, « faire fonctionner » l’application legacy supposait d’avoir installé localement le bon JDK, Maven, et parfois une base de données compatible. Docker élimine cette dépendance à l’environnement local : on décrit une seule fois, dans un Dockerfile, tout ce qu’il faut pour exécuter l’application, et cette description produit une image identique peu importe la machine qui l’exécute ensuite.
+0️⃣ Le problème que Docker résout Imaginez une application composée de plusieurs services (un backend Spring Boot, une base de données, un frontend React) : chaque service a ses propres exigences de version (JDK, bibliothèque système, version de Node). Faire cohabiter plusieurs projets aux exigences différentes sur une même machine, sans qu’ils entrent en conflit, est parfois appelé la « matrice de l’enfer » (Matrix From Hell) : chaque nouvelle combinaison de service/version doit être revalidée manuellement, et rien ne garantit qu’un environnement reproduit fidèlement un autre.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Docker — Dockerfile, image, bonnes pratiques :: Maintenance de logiciel">
+    <meta name="twitter:description" content="Jusqu’ici, « faire fonctionner » l’application legacy supposait d’avoir installé localement le bon JDK, Maven, et parfois une base de données compatible. Docker élimine cette dépendance à l’environnement local : on décrit une seule fois, dans un Dockerfile, tout ce qu’il faut pour exécuter l’application, et cette description produit une image identique peu importe la machine qui l’exécute ensuite.
+0️⃣ Le problème que Docker résout Imaginez une application composée de plusieurs services (un backend Spring Boot, une base de données, un frontend React) : chaque service a ses propres exigences de version (JDK, bibliothèque système, version de Node). Faire cohabiter plusieurs projets aux exigences différentes sur une même machine, sans qu’ils entrent en conflit, est parfois appelé la « matrice de l’enfer » (Matrix From Hell) : chaque nouvelle combinaison de service/version doit être revalidée manuellement, et rien ne garantit qu’un environnement reproduit fidèlement un autre.">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-7/docker/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Docker — Dockerfile, image, bonnes pratiques :: Maintenance de logiciel">
+    <meta property="og:description" content="Jusqu’ici, « faire fonctionner » l’application legacy supposait d’avoir installé localement le bon JDK, Maven, et parfois une base de données compatible. Docker élimine cette dépendance à l’environnement local : on décrit une seule fois, dans un Dockerfile, tout ce qu’il faut pour exécuter l’application, et cette description produit une image identique peu importe la machine qui l’exécute ensuite.
+0️⃣ Le problème que Docker résout Imaginez une application composée de plusieurs services (un backend Spring Boot, une base de données, un frontend React) : chaque service a ses propres exigences de version (JDK, bibliothèque système, version de Node). Faire cohabiter plusieurs projets aux exigences différentes sur une même machine, sans qu’ils entrent en conflit, est parfois appelé la « matrice de l’enfer » (Matrix From Hell) : chaque nouvelle combinaison de service/version doit être revalidée manuellement, et rien ne garantit qu’un environnement reproduit fidèlement un autre.">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 7 — Conteneurisation avec Docker">
+    <meta itemprop="name" content="Docker — Dockerfile, image, bonnes pratiques :: Maintenance de logiciel">
+    <meta itemprop="description" content="Jusqu’ici, « faire fonctionner » l’application legacy supposait d’avoir installé localement le bon JDK, Maven, et parfois une base de données compatible. Docker élimine cette dépendance à l’environnement local : on décrit une seule fois, dans un Dockerfile, tout ce qu’il faut pour exécuter l’application, et cette description produit une image identique peu importe la machine qui l’exécute ensuite.
+0️⃣ Le problème que Docker résout Imaginez une application composée de plusieurs services (un backend Spring Boot, une base de données, un frontend React) : chaque service a ses propres exigences de version (JDK, bibliothèque système, version de Node). Faire cohabiter plusieurs projets aux exigences différentes sur une même machine, sans qu’ils entrent en conflit, est parfois appelé la « matrice de l’enfer » (Matrix From Hell) : chaque nouvelle combinaison de service/version doit être revalidée manuellement, et rien ne garantit qu’un environnement reproduit fidèlement un autre.">
+    <meta itemprop="wordCount" content="4810">
+    <title>Docker — Dockerfile, image, bonnes pratiques :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1791257862" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1791257862" defer></script>
+    <script src="/420-515/js/search-lunr.js?1791257862" defer></script>
+    <script src="/420-515/js/search.js?1791257862" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1791257862";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1791257862" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1791257862" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1791257862" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1791257862" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791257862" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791257862" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1791257862" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1791257862" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1791257862" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = ``;
+      window.relearn.path='\/semaine-7\/docker\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-7/docker/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-7/index.html"><span itemprop="name">Semaine 7 — Conteneurisation avec Docker</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Docker — Dockerfile, image, bonnes pratiques</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-7" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="docker--dockerfile-image-bonnes-pratiques">Docker — Dockerfile, image, bonnes pratiques</h1>
+
+<p>Jusqu&rsquo;ici, « faire fonctionner » l&rsquo;application legacy supposait d&rsquo;avoir installé localement le bon
+JDK, Maven, et parfois une base de données compatible. Docker élimine cette dépendance à
+l&rsquo;environnement local : on décrit une seule fois, dans un <code>Dockerfile</code>, tout ce qu&rsquo;il faut pour
+exécuter l&rsquo;application, et cette description produit une <strong>image</strong> identique peu importe la
+machine qui l&rsquo;exécute ensuite.</p>
+<hr>
+<h2 id="0-le-problème-que-docker-résout">0️⃣ Le problème que Docker résout</h2>
+<p>Imaginez une application composée de plusieurs services (un backend Spring Boot, une base de
+données, un frontend React) : chaque service a ses propres exigences de version (JDK, bibliothèque
+système, version de Node). Faire cohabiter plusieurs projets aux exigences différentes sur une même
+machine, sans qu&rsquo;ils entrent en conflit, est parfois appelé la <strong>« matrice de l&rsquo;enfer »</strong> (<em>Matrix
+From Hell</em>) : chaque nouvelle combinaison de service/version doit être revalidée manuellement, et
+rien ne garantit qu&rsquo;un environnement reproduit fidèlement un autre.</p>
+<p>Historiquement, cette incertitude créait une tension classique entre deux rôles :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Avant Docker</th>
+					<th>Développeur</th>
+					<th>Administrateur système</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Responsabilité</td>
+					<td>Écrit le code, configure son environnement local</td>
+					<td>Gère les serveurs, configure l&rsquo;environnement de production</td>
+			</tr>
+			<tr>
+					<td>Visibilité</td>
+					<td>Peu de visibilité sur l&rsquo;infrastructure réelle</td>
+					<td>Peu de visibilité sur le code</td>
+			</tr>
+			<tr>
+					<td>Résultat</td>
+					<td>« Ça fonctionne sur ma machine »</td>
+					<td>Erreurs découvertes seulement au déploiement</td>
+			</tr>
+	</tbody>
+</table>
+<p>Docker déplace la définition de l&rsquo;environnement <strong>dans le code lui-même</strong> (le <code>Dockerfile</code>,
+versionné comme n&rsquo;importe quel autre fichier) : la personne qui développe définit l&rsquo;environnement,
+la personne qui déploie exécute <strong>exactement</strong> la même image — l&rsquo;environnement devient reproductible
+plutôt que deviné. C&rsquo;est en bonne partie ce qui a rendu possible la culture <strong>DevOps</strong> (collaboration
+développement/exploitation, automatisation, déploiements fréquents et fiables) à grande échelle.</p>
+<hr>
+<h2 id="1-image-vs-conteneur--le-vocabulaire-de-base">1️⃣ Image vs conteneur : le vocabulaire de base</h2>
+<table>
+	<thead>
+			<tr>
+					<th>Terme</th>
+					<th>Définition</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>Image</strong></td>
+					<td>Un paquet immuable (lecture seule) contenant le code de l&rsquo;application, son runtime (ex. JRE), ses dépendances et sa configuration — un peu comme une classe en programmation orientée objet</td>
+			</tr>
+			<tr>
+					<td><strong>Conteneur</strong></td>
+					<td>Une <strong>instance en cours d&rsquo;exécution</strong> d&rsquo;une image — comme un objet instancié à partir d&rsquo;une classe. On peut démarrer plusieurs conteneurs à partir de la même image</td>
+			</tr>
+			<tr>
+					<td><strong><code>Dockerfile</code></strong></td>
+					<td>Le fichier texte qui décrit, étape par étape, comment <strong>construire</strong> une image</td>
+			</tr>
+			<tr>
+					<td><strong>Registre</strong> (<em>registry</em>)</td>
+					<td>Un serveur qui héberge des images, pour les partager et les télécharger (ex. Docker Hub, GitHub Container Registry — voir la page suivante)</td>
+			</tr>
+			<tr>
+					<td><strong>Tag</strong> (étiquette)</td>
+					<td>Un identifiant de version attaché à une image (ex. <code>mon-image:1.0</code>, <code>mon-image:latest</code>)</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 Une image ne change jamais une fois construite. Si vous modifiez le code source, vous devez
+<strong>reconstruire</strong> une nouvelle image (généralement avec un nouveau tag) — vous ne « modifiez »
+jamais une image existante.</p>
+</blockquote>
+<hr>
+<h2 id="2-anatomie-dun-dockerfile--version-naïve">2️⃣ Anatomie d&rsquo;un <code>Dockerfile</code> — version naïve</h2>
+<p>Un premier jet, qui fonctionne mais contient plusieurs problèmes qu&rsquo;on va corriger un à un :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#75715e"># Dockerfile (naïf — à ne PAS utiliser tel quel)</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> <span style="color:#e6db74">eclipse-temurin:21</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">COPY</span> . /app<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">WORKDIR</span> <span style="color:#e6db74">/app</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">RUN</span> ./mvnw clean package<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;java&#34;</span>, <span style="color:#e6db74">&#34;-jar&#34;</span>, <span style="color:#e6db74">&#34;target/spring-petclinic-rest-4.0.2.jar&#34;</span>]</span></span></code></pre></div>
+<table>
+	<thead>
+			<tr>
+					<th>Instruction</th>
+					<th>Rôle</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>FROM</code></td>
+					<td>L&rsquo;image de base sur laquelle construire (ici, une image complète avec le JDK 21)</td>
+			</tr>
+			<tr>
+					<td><code>COPY</code></td>
+					<td>Copie des fichiers de votre machine (contexte de build) vers l&rsquo;image</td>
+			</tr>
+			<tr>
+					<td><code>WORKDIR</code></td>
+					<td>Définit le répertoire de travail courant pour les instructions suivantes</td>
+			</tr>
+			<tr>
+					<td><code>RUN</code></td>
+					<td>Exécute une commande <strong>pendant la construction</strong> de l&rsquo;image</td>
+			</tr>
+			<tr>
+					<td><code>CMD</code></td>
+					<td>La commande exécutée par défaut <strong>au démarrage</strong> d&rsquo;un conteneur basé sur cette image</td>
+			</tr>
+	</tbody>
+</table>
+<p>Problèmes de cette version :</p>
+<ol>
+<li><strong>Image de base trop lourde</strong> : <code>eclipse-temurin:21</code> (JDK complet) contient des outils inutiles
+à l&rsquo;exécution (compilateur, outils de debug) — l&rsquo;image finale est beaucoup plus grosse que
+nécessaire pour simplement <em>exécuter</em> un <code>.jar</code> déjà compilé.</li>
+<li><strong>Maven est réexécuté dans l&rsquo;image</strong> : <code>./mvnw clean package</code> tourne à l&rsquo;intérieur du conteneur
+de build, ce qui oblige l&rsquo;image à contenir Maven, le JDK complet, et tout le cache de
+dépendances — alors que l&rsquo;exécution finale n&rsquo;a besoin que du <code>.jar</code> et d&rsquo;un JRE.</li>
+<li><strong>Cache Docker mal exploité</strong> : <code>COPY . /app</code> copie tout le projet (y compris le code source)
+avant d&rsquo;exécuter le build — le moindre changement dans n&rsquo;importe quel fichier invalide le cache
+de <strong>toutes</strong> les étapes suivantes, même si les dépendances Maven n&rsquo;ont pas changé.</li>
+</ol>
+<blockquote>
+<p>💡 Les Option A et B de la section suivante corrigent ce dernier point avec
+<code>COPY target/*.jar app.jar</code> : le caractère générique (<code>*</code>) tolère n&rsquo;importe quelle version du
+<code>.jar</code>, et le renommer systématiquement en <code>app.jar</code> permet d&rsquo;utiliser <code>CMD</code>/<code>ENTRYPOINT</code> avec un
+nom <strong>fixe</strong>, qui ne dépend plus jamais du numéro de version du projet.</p>
+</blockquote>
+<hr>
+<h2 id="3-instructions-courantes-dun-dockerfile">3️⃣ Instructions courantes d&rsquo;un <code>Dockerfile</code></h2>
+<p>Au-delà de <code>FROM</code>, <code>COPY</code>, <code>WORKDIR</code>, <code>RUN</code> et <code>CMD</code> déjà vus, voici les instructions les plus
+fréquentes dans un <code>Dockerfile</code> réel :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Instruction</th>
+					<th>Rôle</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>LABEL</code></td>
+					<td>Ajoute des métadonnées à l&rsquo;image (version, mainteneur, description) — utile pour l&rsquo;organisation et l&rsquo;automatisation, sans effet sur l&rsquo;exécution</td>
+			</tr>
+			<tr>
+					<td><code>ENV</code></td>
+					<td>Définit une variable d&rsquo;environnement <strong>permanente</strong>, disponible dans l&rsquo;image finale et au démarrage du conteneur</td>
+			</tr>
+			<tr>
+					<td><code>ARG</code></td>
+					<td>Définit une variable disponible <strong>seulement pendant la construction</strong> (<code>docker build --build-arg VERSION=1.2 .</code>), absente de l&rsquo;image finale une fois construite</td>
+			</tr>
+			<tr>
+					<td><code>COPY</code> vs <code>ADD</code></td>
+					<td><code>COPY</code> copie simplement des fichiers de l&rsquo;hôte vers l&rsquo;image; <code>ADD</code> fait la même chose mais ajoute des fonctionnalités (extraction automatique d&rsquo;archives <code>.tar</code>, téléchargement depuis une URL) rarement nécessaires — préférez <code>COPY</code> sauf besoin explicite</td>
+			</tr>
+			<tr>
+					<td><code>EXPOSE</code></td>
+					<td><strong>Documente</strong> le port utilisé par l&rsquo;application à l&rsquo;intérieur du conteneur — n&rsquo;ouvre <strong>aucun</strong> port réellement; l&rsquo;exposition effective se fait uniquement via <code>-p</code> au <code>docker run</code></td>
+			</tr>
+			<tr>
+					<td><code>VOLUME</code></td>
+					<td>Déclare un point de montage destiné à des données qui doivent survivre au-delà du cycle de vie du conteneur (ex. fichiers de données, base de données)</td>
+			</tr>
+	</tbody>
+</table>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#66d9ef">LABEL</span> version<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.0&#34;</span> maintainer<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;equipe@exemple.com&#34;</span> description<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;API TP1 - recherche de personnes&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">ENV</span> SPRING_PROFILES_ACTIVE<span style="color:#f92672">=</span>production
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ARG</span> BUILD_VERSION<span style="color:#f92672">=</span>dev</span></span></code></pre></div>
+<h3 id="run--enchaîner-les-commandes-plutôt-que-les-multiplier"><code>RUN</code> : enchaîner les commandes plutôt que les multiplier</h3>
+<p>Chaque instruction <code>RUN</code> crée une nouvelle <strong>couche</strong> (<em>layer</em>) dans l&rsquo;image. Multiplier les <code>RUN</code>
+pour des étapes liées gonfle inutilement le nombre de couches :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#75715e"># À éviter : trois couches distinctes, dont une qui conserve les fichiers temporaires d&#39;installation</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">RUN</span> apt-get update<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">RUN</span> apt-get install -y curl<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">RUN</span> rm -rf /var/lib/apt/lists/*</span></span></code></pre></div>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#75715e"># Préférable : une seule couche, nettoyage inclus dans la même instruction</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">RUN</span> apt-get update <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    apt-get install -y curl <span style="color:#f92672">&amp;&amp;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span>    rm -rf /var/lib/apt/lists/*</span></span></code></pre></div>
+<h3 id="cmd-vs-entrypoint"><code>CMD</code> vs <code>ENTRYPOINT</code></h3>
+<p>Les deux définissent ce qui s&rsquo;exécute au démarrage d&rsquo;un conteneur, mais avec une nuance importante :</p>
+<table>
+	<thead>
+			<tr>
+					<th></th>
+					<th><code>ENTRYPOINT</code></th>
+					<th><code>CMD</code></th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Rôle</td>
+					<td>L&rsquo;exécutable <strong>fixe</strong> du conteneur</td>
+					<td>Les arguments <strong>par défaut</strong>, remplaçables au <code>docker run</code></td>
+			</tr>
+			<tr>
+					<td>Remplaçable à l&rsquo;exécution ?</td>
+					<td>Non (sauf <code>--entrypoint</code>)</td>
+					<td>Oui — <code>docker run mon-image autre-commande</code> remplace le <code>CMD</code></td>
+			</tr>
+	</tbody>
+</table>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#66d9ef">ENTRYPOINT</span> [<span style="color:#e6db74">&#34;java&#34;</span>, <span style="color:#e6db74">&#34;-jar&#34;</span>, <span style="color:#e6db74">&#34;app.jar&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;--server.port=9966&#34;</span>]     <span style="color:#75715e"># argument par défaut, modifiable au `docker run`</span></span></span></code></pre></div>
+<p>Ici, <code>ENTRYPOINT</code> + <code>CMD</code> forment ensemble la commande exécutée : <code>java -jar app.jar --server.port=9966</code>.
+Pour la modifier, on ajoute des arguments après le nom de l&rsquo;image au <code>docker run</code> — ils <strong>remplacent</strong>
+entièrement le <code>CMD</code> (mais pas l&rsquo;<code>ENTRYPOINT</code>) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Démarre sur le port 8080 au lieu de 9966 (remplace le CMD)</span>
+</span></span><span style="display:flex;"><span>docker run mon-image --server.port<span style="color:#f92672">=</span><span style="color:#ae81ff">8080</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Commande réellement exécutée : java -jar app.jar --server.port=8080</span></span></span></code></pre></div>
+<blockquote>
+<p>⚠️ <code>EXPOSE 9966</code> dans un <code>Dockerfile</code> ne rend <strong>jamais</strong> l&rsquo;application accessible à elle seule —
+c&rsquo;est une documentation à l&rsquo;intention de la personne qui exécutera le conteneur. Sans
+<code>-p 9966:9966</code> au moment du <code>docker run</code>, aucune requête externe n&rsquo;atteint le conteneur, même si
+l&rsquo;application tourne correctement à l&rsquo;intérieur.</p>
+</blockquote>
+<hr>
+<h2 id="4-construire-limage-à-partir-du-jar--deux-approches-valables">4️⃣ Construire l&rsquo;image à partir du <code>.jar</code> : deux approches valables</h2>
+<p>Il existe deux grandes façons d&rsquo;organiser un <code>Dockerfile</code> autour de la compilation, selon qu&rsquo;un
+<strong>autre</strong> mécanisme (votre pipeline CI) a déjà produit le <code>.jar</code> ou non. Choisir la mauvaise
+approche peut mener à compiler le projet <strong>deux fois pour rien</strong> — un piège fréquent qui mérite
+d&rsquo;être compris explicitement avant de choisir.</p>
+<h3 id="option-a--dockerfile--exécution-seulement--recommandée-dans-ce-cours">Option A — Dockerfile « exécution seulement » (recommandée dans ce cours)</h3>
+<p>Votre pipeline CI (semaine 5) exécute déjà <code>./mvnw -B clean verify</code>, ce qui compile le projet,
+exécute la suite de tests, <strong>et</strong> produit le <code>.jar</code> dans <code>target/</code>. Puisque ce <code>.jar</code> existe déjà et
+a déjà été validé par les tests, le <code>Dockerfile</code> n&rsquo;a <strong>aucune raison</strong> de recompiler quoi que ce
+soit — il n&rsquo;a qu&rsquo;à l&rsquo;emballer :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#75715e"># Dockerfile — runtime seulement, aucune compilation ici</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> <span style="color:#e6db74">eclipse-temurin:21-jre-alpine</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">WORKDIR</span> <span style="color:#e6db74">/app</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">COPY</span> target/*.jar app.jar<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">EXPOSE</span> <span style="color:#e6db74">9966</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">ENTRYPOINT</span> [<span style="color:#e6db74">&#34;java&#34;</span>, <span style="color:#e6db74">&#34;-jar&#34;</span>, <span style="color:#e6db74">&#34;app.jar&#34;</span>]</span></span></code></pre></div>
+<p>Ce <code>Dockerfile</code> suppose que <code>target/*.jar</code> existe déjà <strong>avant</strong> le <code>docker build</code> — ce qui est
+précisément le cas dans un job de pipeline qui s&rsquo;exécute après (ou dans la continuité de) votre job
+de tests :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># Extrait du job build-and-push-image (voir Registres de conteneurs)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v5</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Récupérer le .jar déjà construit par le job de tests</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/download-artifact@v5</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">name</span>: <span style="color:#ae81ff">application-jar</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">path</span>: <span style="color:#ae81ff">target/</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Construire et publier l&#39;image (sans recompiler)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">docker/build-push-action@v6</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">with</span>: { <span style="color:#f92672">context</span>: <span style="color:#f92672">., push</span>: <span style="color:#f92672">true, tags</span>: <span style="color:#e6db74">&#34;...&#34;</span> }</span></span></code></pre></div>
+<blockquote>
+<p>⚠️ <strong>Un seul <code>mvn verify</code> dans tout le pipeline.</strong> Le job <code>build-and-push-image</code> <strong>réutilise</strong>
+l&rsquo;artefact <code>.jar</code> publié par <code>build-and-test</code> (semaine 5) plutôt que de reconstruire le projet —
+Maven ne s&rsquo;exécute qu&rsquo;une seule fois, dans un seul job, pour l&rsquo;ensemble du pipeline.</p>
+</blockquote>
+<h3 id="option-b--construction-multi-étapes-dockerfile-autosuffisant">Option B — Construction multi-étapes (Dockerfile autosuffisant)</h3>
+<p>À l&rsquo;inverse, si <strong>aucun</strong> autre mécanisme ne produit déjà le <code>.jar</code> (ex. un <code>docker build</code> exécuté
+directement par un développeur en local, sans passer par le pipeline CI, ou un contexte où le
+<code>Dockerfile</code> doit rester l&rsquo;unique source de vérité pour construire le projet), le <code>Dockerfile</code>
+doit alors inclure lui-même l&rsquo;étape de compilation. C&rsquo;est le rôle de la <strong>construction
+multi-étapes</strong> : une étape de construction (avec le JDK complet et Maven) dont on ne garde que le
+résultat (<code>.jar</code>), puis une étape finale beaucoup plus légère (JRE seulement) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-dockerfile" data-lang="dockerfile"><span style="display:flex;"><span><span style="color:#75715e"># Dockerfile</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"># --- Étape 1 : construction ---</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> <span style="color:#e6db74">eclipse-temurin:21-jdk-alpine</span> <span style="color:#66d9ef">AS</span> <span style="color:#e6db74">build</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">WORKDIR</span> <span style="color:#e6db74">/app</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"># Copier d&#39;abord uniquement les fichiers nécessaires au téléchargement des dépendances</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">COPY</span> mvnw .<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">COPY</span> .mvn .mvn<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">COPY</span> pom.xml .<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">RUN</span> ./mvnw dependency:go-offline -B<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"># Copier le code source seulement ensuite, puis construire le .jar</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">COPY</span> src src<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">RUN</span> ./mvnw clean package -DskipTests -B<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"># --- Étape 2 : exécution ---</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> <span style="color:#e6db74">eclipse-temurin:21-jre-alpine</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">WORKDIR</span> <span style="color:#e6db74">/app</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">COPY</span> --from<span style="color:#f92672">=</span>build /app/target/*.jar app.jar<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">EXPOSE</span> <span style="color:#e6db74">9966</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">ENTRYPOINT</span> [<span style="color:#e6db74">&#34;java&#34;</span>, <span style="color:#e6db74">&#34;-jar&#34;</span>, <span style="color:#e6db74">&#34;app.jar&#34;</span>]</span></span></code></pre></div>
+<table>
+	<thead>
+			<tr>
+					<th>Élément</th>
+					<th>Pourquoi</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>AS build</code></td>
+					<td>Nomme la première étape pour pouvoir y référer plus tard (<code>--from=build</code>)</td>
+			</tr>
+			<tr>
+					<td><code>eclipse-temurin:21-jdk-alpine</code> (étape 1)</td>
+					<td>JDK complet nécessaire pour <strong>compiler</strong>, mais basé sur Alpine Linux (très léger)</td>
+			</tr>
+			<tr>
+					<td><code>eclipse-temurin:21-jre-alpine</code> (étape 2)</td>
+					<td>Seulement le JRE (nécessaire pour <strong>exécuter</strong> un <code>.jar</code> déjà compilé) — image finale beaucoup plus petite</td>
+			</tr>
+			<tr>
+					<td><code>COPY --from=build</code></td>
+					<td>Ne copie <strong>que</strong> le <code>.jar</code> produit par l&rsquo;étape 1 dans l&rsquo;image finale — le JDK, Maven et le code source de l&rsquo;étape 1 ne font jamais partie de l&rsquo;image finale</td>
+			</tr>
+			<tr>
+					<td><code>RUN ./mvnw dependency:go-offline -B</code></td>
+					<td>Télécharge toutes les dépendances Maven déclarées dans <code>pom.xml</code> <strong>avant</strong> de copier le code source — l&rsquo;étape est mise en cache par Docker et n&rsquo;est réexécutée que si <code>pom.xml</code> change</td>
+			</tr>
+			<tr>
+					<td><code>COPY pom.xml</code> avant <code>COPY src</code></td>
+					<td>Exploite le cache Docker : tant que <code>pom.xml</code> ne change pas, l&rsquo;étape <code>dependency:go-offline</code> reste en cache, même si le code source change constamment</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>Ordre des instructions = exploitation du cache.</strong> Docker met en cache chaque instruction
+individuellement; dès qu&rsquo;une instruction change (ou qu&rsquo;un fichier qu&rsquo;elle copie change), <strong>toutes
+les instructions suivantes</strong> perdent leur cache. Placez donc les instructions les plus stables
+(dépendances) <strong>avant</strong> les plus volatiles (code source).</p>
+</blockquote>
+<blockquote>
+<p>⚠️ <strong>Piège de redondance.</strong> Si votre pipeline CI exécute <strong>déjà</strong> <code>mvn verify</code> dans un job séparé
+(comme à la semaine 5), et que le job suivant utilise un <code>Dockerfile</code> en construction
+multi-étapes, le projet est compilé <strong>deux fois</strong> : une fois par le job de tests, une seconde
+fois à l&rsquo;intérieur du conteneur de build Docker — un gaspillage de temps de pipeline (et un
+risque, en théorie, que les deux compilations produisent un résultat subtilement différent). Dans
+<strong>ce cours</strong>, préférez l&rsquo;Option A, qui élimine cette redondance.</p>
+</blockquote>
+<h3 id="quand-choisir-quoi">Quand choisir quoi</h3>
+<table>
+	<thead>
+			<tr>
+					<th>Situation</th>
+					<th>Approche recommandée</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Le pipeline CI compile déjà le projet dans un job séparé (votre cas, semaine 5 + 7)</td>
+					<td><strong>Option A</strong> — Dockerfile runtime seulement, réutilise le <code>.jar</code> déjà construit et testé</td>
+			</tr>
+			<tr>
+					<td>Le <code>Dockerfile</code> doit être exécutable de façon autonome, sans dépendre d&rsquo;un autre job (ex. build local d&rsquo;un développeur, environnement sans CI)</td>
+					<td><strong>Option B</strong> — construction multi-étapes, autosuffisante</td>
+			</tr>
+	</tbody>
+</table>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Une équipe utilise un pipeline avec un job <code>build-and-test</code> (qui exécute <code>mvn verify</code>) suivi d&rsquo;un
+job <code>build-and-push-image</code> dont le <code>Dockerfile</code> est en construction multi-étapes (Option B).
+Qu&rsquo;est-ce qui ne va pas, et comment corriger la situation ?</p>
+<p><strong>Réponse</strong> : le projet est compilé deux fois pour rien — une fois dans <code>build-and-test</code>, une
+seconde fois dans l&rsquo;étape de construction du <code>Dockerfile</code>. La correction consiste à adopter
+l&rsquo;Option A : le job <code>build-and-push-image</code> télécharge le <code>.jar</code> déjà produit et validé par
+<code>build-and-test</code> (via <code>actions/download-artifact</code>), et utilise un <code>Dockerfile</code> runtime seulement
+(sans étape de compilation), qui se contente de copier ce <code>.jar</code> existant.</p>
+</details>
+<hr>
+<h2 id="5-bonnes-pratiques-supplémentaires">5️⃣ Bonnes pratiques supplémentaires</h2>
+<h3 id="dockerignore"><code>.dockerignore</code></h3>
+<p>Tout comme <code>.gitignore</code>, un fichier <code>.dockerignore</code> à la racine du projet empêche de copier des
+fichiers inutiles (ou sensibles) dans le contexte de build :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0"><code>target/
+.git/
+.idea/
+*.log
+node_modules/</code></pre></div>
+<blockquote>
+<p>⚠️ Sans <code>.dockerignore</code>, le dossier <code>target/</code> d&rsquo;un build local précédent pourrait être copié dans
+l&rsquo;image par erreur (si une instruction <code>COPY . .</code> existe quelque part), gonflant inutilement
+l&rsquo;image ou, pire, y intégrant un <code>.jar</code> périmé plutôt que celui fraîchement construit.</p>
+</blockquote>
+<h3 id="ne-jamais-utiliser-seulement-le-tag-latest-en-production">Ne jamais utiliser seulement le tag <code>latest</code> en production</h3>
+<p><code>latest</code> est simplement le nom d&rsquo;un tag parmi d&rsquo;autres (pas un tag « spécial » techniquement) —
+rien ne garantit qu&rsquo;il pointe vers une version précise et stable. Préférez un tag explicite (numéro
+de version, SHA du commit — voir la page suivante sur les registres) pour toujours savoir <strong>quelle</strong>
+version exacte tourne en production.</p>
+<h3 id="limiter-la-portée-du-contexte-de-build">Limiter la portée du contexte de build</h3>
+<p>La commande <code>docker build .</code> envoie <strong>tout</strong> le contenu du dossier courant (sauf ce qui est exclu
+par <code>.dockerignore</code>) au démon Docker avant même de commencer à construire l&rsquo;image — un dossier
+volumineux (ex. avec un gros historique Git ou un <code>node_modules</code> non ignoré) ralentit inutilement
+chaque build.</p>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Pourquoi est-il risqué, du point de vue de la sécurité, de laisser un conteneur s&rsquo;exécuter avec
+l&rsquo;utilisateur <code>root</code> par défaut, même si l&rsquo;image elle-même ne contient aucun code malveillant ?</p>
+<p><strong>Réponse</strong> : si une vulnérabilité de l&rsquo;application (ou d&rsquo;une de ses dépendances) permettait à un
+attaquant d&rsquo;exécuter du code arbitraire à l&rsquo;intérieur du conteneur, cet utilisateur <code>root</code> aurait
+tous les privilèges disponibles dans le conteneur (et, selon la configuration de l&rsquo;hôte, parfois au
+delà). Un utilisateur applicatif dédié, sans privilèges superflus, réduit la portée des dégâts
+possibles en cas de compromission — un principe de sécurité appelé le <em>principe du moindre
+privilège</em>.</p>
+</details>
+<hr>
+<h2 id="6-construire-et-exécuter-limage-localement">6️⃣ Construire et exécuter l&rsquo;image localement</h2>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Construire l&#39;image, avec un tag explicite</span>
+</span></span><span style="display:flex;"><span>docker build -t petclinic-legacy:local .
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Démarrer un conteneur à partir de cette image, en arrière-plan (mode détaché),</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># en exposant le port 9966</span>
+</span></span><span style="display:flex;"><span>docker run -d -p 9966:9966 petclinic-legacy:local
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Valider que l&#39;application répond (toujours dans le même terminal, puisque -d</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># a rendu la main immédiatement plutôt que d&#39;occuper le terminal)</span>
+</span></span><span style="display:flex;"><span>curl http://localhost:9966/petclinic/api/vets</span></span></code></pre></div>
+<table>
+	<thead>
+			<tr>
+					<th>Option</th>
+					<th>Rôle</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>-t petclinic-legacy:local</code></td>
+					<td>Nomme et étiquette l&rsquo;image construite (<code>nom:tag</code>)</td>
+			</tr>
+			<tr>
+					<td><code>-d</code></td>
+					<td>Mode <strong>détaché</strong> (<em>detached</em>) : démarre le conteneur en arrière-plan et rend immédiatement la main, plutôt que d&rsquo;occuper le terminal avec les journaux du conteneur</td>
+			</tr>
+			<tr>
+					<td><code>-p 9966:9966</code></td>
+					<td>Relie le port 9966 de votre machine au port 9966 exposé par le conteneur (<code>hôte:conteneur</code>)</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 Sans <code>-d</code>, le terminal reste <strong>occupé</strong> par les journaux du conteneur jusqu&rsquo;à <code>Ctrl+C</code> (qui
+arrête aussi le conteneur) — il faudrait alors un second terminal pour exécuter la commande
+<code>curl</code> suivante. Avec <code>-d</code>, le conteneur continue à tourner en arrière-plan : utilisez
+<code>docker stop &lt;conteneur&gt;</code> (ou <code>docker ps</code> pour retrouver son identifiant) pour l&rsquo;arrêter.</p>
+</blockquote>
+<blockquote>
+<p>💡 Un conteneur arrêté (<code>Ctrl+C</code>, ou <code>docker stop</code>) ne perd <strong>aucune</strong> donnée de l&rsquo;image qui l&rsquo;a
+créé — seul l&rsquo;état interne du conteneur (ex. des fichiers écrits en cours d&rsquo;exécution, non
+présents dans l&rsquo;image) disparaît, sauf si un volume est explicitement monté pour le conserver.</p>
+</blockquote>
+<hr>
+<h2 id="7-commandes-docker-utiles-au-quotidien">7️⃣ Commandes Docker utiles au quotidien</h2>
+<p>Au-delà de <code>docker build</code> et <code>docker run</code>, quelques commandes reviennent constamment une fois un
+conteneur démarré :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Commande</th>
+					<th>Rôle</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>docker ps</code></td>
+					<td>Liste les conteneurs <strong>en cours d&rsquo;exécution</strong></td>
+			</tr>
+			<tr>
+					<td><code>docker ps -a</code></td>
+					<td>Liste <strong>tous</strong> les conteneurs, y compris ceux arrêtés</td>
+			</tr>
+			<tr>
+					<td><code>docker logs &lt;conteneur&gt;</code></td>
+					<td>Affiche les journaux (sortie console) d&rsquo;un conteneur</td>
+			</tr>
+			<tr>
+					<td><code>docker logs -f &lt;conteneur&gt;</code></td>
+					<td>Suit les journaux en temps réel (équivalent de <code>tail -f</code>)</td>
+			</tr>
+			<tr>
+					<td><code>docker exec -it &lt;conteneur&gt; /bin/sh</code></td>
+					<td>Ouvre un terminal interactif <strong>à l&rsquo;intérieur</strong> d&rsquo;un conteneur déjà démarré</td>
+			</tr>
+			<tr>
+					<td><code>docker stop &lt;conteneur&gt;</code></td>
+					<td>Arrête proprement un conteneur en cours d&rsquo;exécution</td>
+			</tr>
+			<tr>
+					<td><code>docker rm &lt;conteneur&gt;</code></td>
+					<td>Supprime un conteneur arrêté (<code>-f</code> pour forcer la suppression d&rsquo;un conteneur actif)</td>
+			</tr>
+			<tr>
+					<td><code>docker images</code></td>
+					<td>Liste les images présentes localement, avec leur taille</td>
+			</tr>
+			<tr>
+					<td><code>docker system prune</code></td>
+					<td>Nettoie les ressources Docker inutilisées (conteneurs arrêtés, images non taguées, caches) — utile quand l&rsquo;espace disque local se remplit</td>
+			</tr>
+	</tbody>
+</table>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Démarrer en arrière-plan (mode détaché) plutôt que d&#39;occuper le terminal</span>
+</span></span><span style="display:flex;"><span>docker run -d -p 9966:9966 --name petclinic petclinic-legacy:local
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Consulter les journaux de ce conteneur nommé</span>
+</span></span><span style="display:flex;"><span>docker logs -f petclinic
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Ouvrir un terminal à l&#39;intérieur, pour inspecter le système de fichiers de l&#39;image</span>
+</span></span><span style="display:flex;"><span>docker exec -it petclinic /bin/sh</span></span></code></pre></div>
+<blockquote>
+<p>💡 Nommer explicitement un conteneur (<code>--name petclinic</code>) évite d&rsquo;avoir à retrouver un identifiant
+généré aléatoirement à chaque commande suivante (<code>docker logs</code>, <code>docker stop</code>, etc.).</p>
+</blockquote>
+<hr>
+<h2 id="8-retour-sur-github-actions--runners-auto-hébergés-et-variables-denvironnement">8️⃣ Retour sur GitHub Actions : runners auto-hébergés et variables d&rsquo;environnement</h2>
+<p>Avant de construire le pipeline de publication (voir
+<a href="/420-515/semaine-7/registre-conteneurs/">Registres de conteneurs</a>), il faut revenir sur
+deux notions de GitHub Actions vues à la semaine 5 — le <strong>runner</strong> et les <strong>variables</strong> — car
+Docker en révèle des subtilités qui ne sautaient pas aux yeux tant qu&rsquo;on ne faisait que compiler et
+tester.</p>
+<h3 id="runners-hébergés-par-github-vs-runners-auto-hébergés">Runners hébergés par GitHub vs runners auto-hébergés</h3>
+<p>Le tableau de vocabulaire de la semaine 5 mentionnait déjà le runner comme « la machine virtuelle
+sur laquelle un job s&rsquo;exécute », en précisant qu&rsquo;elle pouvait être <code>ubuntu-latest</code> <strong>ou un runner
+auto-hébergé</strong>. Voici la différence concrète entre les deux :</p>
+<table>
+	<thead>
+			<tr>
+					<th></th>
+					<th>Runner <strong>hébergé par GitHub</strong> (<code>ubuntu-latest</code>, etc.)</th>
+					<th>Runner <strong>auto-hébergé</strong> (<em>self-hosted</em>)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Qui le fournit ?</td>
+					<td>GitHub (infrastructure cloud gérée par GitHub)</td>
+					<td>Vous (votre propre machine, serveur, VM)</td>
+			</tr>
+			<tr>
+					<td>Durée de vie</td>
+					<td><strong>Éphémère</strong> : détruite et recréée à neuf à chaque exécution de job</td>
+					<td><strong>Persistante</strong> : la même machine sert d&rsquo;un run à l&rsquo;autre</td>
+			</tr>
+			<tr>
+					<td>Docker préinstallé ?</td>
+					<td>✅ Oui — Docker Engine et Buildx sont déjà présents sur <code>ubuntu-latest</code></td>
+					<td>❌ Non — à installer et maintenir vous-même</td>
+			</tr>
+			<tr>
+					<td>Coût</td>
+					<td>Inclus (avec des minutes gratuites limitées selon le plan GitHub)</td>
+					<td>Le vôtre (électricité, matériel, maintenance)</td>
+			</tr>
+			<tr>
+					<td>Cas d&rsquo;usage typique</td>
+					<td>La grande majorité des projets, dont ce cours</td>
+					<td>Matériel spécifique (GPU, architecture ARM), réseau privé/pare-feu, ou builds très longs qui profitent d&rsquo;un cache persistant</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 C&rsquo;est justement parce qu&rsquo;<code>ubuntu-latest</code> fournit déjà Docker que les exemples de ce chapitre
+(<code>docker build</code>, <code>docker/build-push-action</code>, etc.) fonctionnent <strong>sans aucune étape
+d&rsquo;installation préalable</strong> dans le workflow.</p>
+</blockquote>
+<blockquote>
+<p>⚠️ Un runner auto-hébergé n&rsquo;est <strong>pas</strong> recréé à neuf entre deux exécutions : un fichier laissé
+par un job précédent, une variable d&rsquo;environnement exportée dans le shell, ou même une ancienne
+image Docker encore en cache peuvent <strong>fuiter</strong> d&rsquo;un run à l&rsquo;autre. C&rsquo;est un gain de rapidité
+(rien à retélécharger), mais au prix de la garantie de reproductibilité stricte qu&rsquo;offre un
+runner hébergé — une raison de plus, sur un runner auto-hébergé, de ne jamais présumer de l&rsquo;état
+initial de la machine dans un workflow.</p>
+</blockquote>
+<h3 id="créer-et-enregistrer-son-propre-runner-auto-hébergé">Créer et enregistrer son propre runner auto-hébergé</h3>
+<p>GitHub ne fournit pas de machine : c&rsquo;est au propriétaire du dépôt (ou de l&rsquo;organisation) d&rsquo;en
+préparer une (physique, VM, conteneur) et de l&rsquo;<strong>enregistrer</strong> auprès de GitHub. Les grandes étapes
+sont toujours les mêmes, peu importe l&rsquo;OS :</p>
+<ol>
+<li>
+<p>Dans le dépôt (ou l&rsquo;organisation), aller dans <strong>Settings → Actions → Runners → New self-hosted
+runner</strong>.</p>
+</li>
+<li>
+<p>Choisir le système d&rsquo;exploitation et l&rsquo;architecture de la machine qui servira de runner (Linux,
+Windows, macOS — x64 ou ARM64).</p>
+</li>
+<li>
+<p>GitHub génère alors une série de commandes <strong>propres à ce dépôt</strong> (incluant un jeton
+d&rsquo;enregistrement temporaire) à exécuter sur la machine cible, par exemple sur Linux :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 1. Télécharger le paquet du runner</span>
+</span></span><span style="display:flex;"><span>mkdir actions-runner <span style="color:#f92672">&amp;&amp;</span> cd actions-runner
+</span></span><span style="display:flex;"><span>curl -o actions-runner.tar.gz -L https://github.com/actions/runner/releases/download/v2.XXX.X/actions-runner-linux-x64-2.XXX.X.tar.gz
+</span></span><span style="display:flex;"><span>tar xzf ./actions-runner.tar.gz
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Enregistrer ce runner auprès du dépôt (URL + jeton fournis par GitHub)</span>
+</span></span><span style="display:flex;"><span>./config.sh --url https://github.com/&lt;compte&gt;/&lt;depot&gt; --token &lt;JETON_TEMPORAIRE&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Démarrer le runner (reste attaché au terminal — voir l&#39;option service ci-dessous)</span>
+</span></span><span style="display:flex;"><span>./run.sh</span></span></code></pre></div>
+</li>
+<li>
+<p>Pendant <code>./config.sh</code>, GitHub propose d&rsquo;associer une ou plusieurs <strong>étiquettes</strong> (<em>labels</em>) au
+runner (ex. <code>self-hosted</code>, <code>linux</code>, <code>gpu</code>) — ce sont ces étiquettes qui permettent ensuite de le
+cibler précisément dans un workflow :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build-and-push-image</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">self-hosted       </span> <span style="color:#75715e"># ou [self-hosted, linux, gpu] pour cibler des étiquettes précises</span></span></span></code></pre></div>
+</li>
+<li>
+<p>Pour que le runner reste actif en permanence (plutôt que seulement tant que <code>./run.sh</code> occupe un
+terminal ouvert), l&rsquo;installer comme <strong>service système</strong> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo ./svc.sh install
+</span></span><span style="display:flex;"><span>sudo ./svc.sh start</span></span></code></pre></div>
+</li>
+<li>
+<p>Le runner apparaît ensuite comme <strong>Idle</strong> (en attente) dans <strong>Settings → Actions → Runners</strong> —
+signe qu&rsquo;il est prêt à recevoir des jobs ciblant son étiquette.</p>
+</li>
+</ol>
+<blockquote>
+<p>⚠️ <strong>Ne jamais</strong> configurer un runner auto-hébergé sur un <strong>dépôt public</strong> sans restriction
+supplémentaire : n&rsquo;importe qui peut ouvrir une Pull Request depuis un fork, et son contenu (y
+compris du code arbitraire dans un <code>run:</code>) s&rsquo;exécuterait alors directement sur <strong>votre</strong> machine.
+GitHub recommande de limiter ce risque via les paramètres d&rsquo;approbation des workflows provenant
+de forks, ou de réserver les runners auto-hébergés aux dépôts privés/internes.</p>
+</blockquote>
+<h3 id="variables-denvironnement--trois-façons-de-les-définir">Variables d&rsquo;environnement : trois façons de les définir</h3>
+<p>La section 5️⃣ de la semaine 5 montrait déjà les expressions <code>${{ }}</code> et les secrets. Les
+<strong>variables d&rsquo;environnement</strong> (<code>env:</code>) sont un troisième mécanisme, complémentaire : des valeurs
+simples (non secrètes) injectées dans l&rsquo;environnement shell d&rsquo;une étape, accessibles comme
+n&rsquo;importe quelle variable d&rsquo;environnement système.</p>
+<p><code>env:</code> peut être défini à trois niveaux, du plus large au plus précis :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">env</span>:                                    <span style="color:#75715e"># (1) niveau workflow : visible par tous les jobs</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">IMAGE_NAME</span>: <span style="color:#ae81ff">petclinic</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build-and-push-image</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">env</span>:                                <span style="color:#75715e"># (2) niveau job : visible par toutes les étapes de ce job</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">REGISTRY</span>: <span style="color:#ae81ff">ghcr.io</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Afficher les variables</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">env</span>:                            <span style="color:#75715e"># (3) niveau étape : visible seulement par cette étape</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">TAG</span>: <span style="color:#ae81ff">latest</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">echo &#34;${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}&#34;</span></span></span></code></pre></div>
+<table>
+	<thead>
+			<tr>
+					<th>Niveau</th>
+					<th>Portée</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>env:</code> au niveau du <strong>workflow</strong></td>
+					<td>Toutes les étapes de tous les jobs du fichier</td>
+			</tr>
+			<tr>
+					<td><code>env:</code> au niveau du <strong>job</strong></td>
+					<td>Toutes les étapes de ce job seulement</td>
+			</tr>
+			<tr>
+					<td><code>env:</code> au niveau de la <strong>step</strong></td>
+					<td>Cette étape seulement</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 Une variable définie à un niveau plus précis (étape) <strong>masque</strong> une variable de même nom
+définie à un niveau plus large (job ou workflow) — même logique de portée qu&rsquo;une variable locale
+qui cache une variable globale dans la plupart des langages de programmation.</p>
+</blockquote>
+<h3 id="github_env--faire-passer-une-valeur-dune-étape-à-la-suivante"><code>$GITHUB_ENV</code> : faire passer une valeur d&rsquo;une étape à la suivante</h3>
+<p>Chaque étape d&rsquo;un job s&rsquo;exécute dans un processus shell <strong>distinct</strong> : une variable exportée avec
+<code>export</code> dans une étape (<code>run:</code>) <strong>ne survit pas</strong> jusqu&rsquo;à l&rsquo;étape suivante. Pour faire passer une
+valeur calculée dynamiquement (ex. le tag Docker à utiliser), GitHub Actions fournit le fichier
+spécial <code>$GITHUB_ENV</code> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Calculer le tag de l&#39;image</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">run</span>: <span style="color:#ae81ff">echo &#34;IMAGE_TAG=$(date +%Y%m%d)-${{ github.sha }}&#34; &gt;&gt; &#34;$GITHUB_ENV&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Utiliser le tag calculé</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">run</span>: <span style="color:#ae81ff">echo &#34;Construction de l&#39;image avec le tag ${{ env.IMAGE_TAG }}&#34;</span></span></span></code></pre></div>
+<p>Tout ce qui est <strong>ajouté</strong> (<code>&gt;&gt;</code>, jamais <code>&gt;</code> qui écraserait le fichier) à <code>$GITHUB_ENV</code> au format
+<code>CLÉ=valeur</code> devient disponible comme variable d&rsquo;environnement (<code>env.CLÉ</code>) dans <strong>toutes les
+étapes suivantes</strong> du même job — mais pas dans les autres jobs, chacun démarrant avec un
+environnement vide (ou hérité uniquement du <code>env:</code> déclaré au niveau du workflow).</p>
+<h3 id="variables-vars-vs-secrets-secrets--non-secret-ne-veut-pas-dire--à-coder-en-dur-">Variables (<code>vars</code>) vs secrets (<code>secrets</code>) : non-secret ne veut pas dire « à coder en dur »</h3>
+<p>GitHub distingue aussi les <strong>variables de dépôt</strong> (<em>Settings → Secrets and variables → Actions →
+Variables</em>), accessibles via le contexte <code>vars</code>, des secrets déjà vus à la semaine 5 :</p>
+<table>
+	<thead>
+			<tr>
+					<th></th>
+					<th><code>vars.*</code> (variables)</th>
+					<th><code>secrets.*</code> (secrets)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Visible en clair dans les journaux ?</td>
+					<td>Oui</td>
+					<td>Non — automatiquement masqué (<code>***</code>)</td>
+			</tr>
+			<tr>
+					<td>Cas d&rsquo;usage</td>
+					<td>Nom d&rsquo;image, région de déploiement, URL d&rsquo;un environnement — une valeur de configuration, pas sensible</td>
+					<td>Jeton d&rsquo;API, mot de passe, clé privée</td>
+			</tr>
+			<tr>
+					<td>Où le configurer</td>
+					<td><em>Settings → Secrets and variables → Actions → Variables</em></td>
+					<td><em>Settings → Secrets and variables → Actions → Secrets</em></td>
+			</tr>
+	</tbody>
+</table>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Construire l&#39;image</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">run</span>: <span style="color:#ae81ff">docker build -t ${{ vars.REGISTRY }}/${{ github.repository }}:latest .</span></span></span></code></pre></div>
+<blockquote>
+<p>⚠️ L&rsquo;intérêt de <code>vars.*</code> par rapport à une valeur codée en dur directement dans le YAML n&rsquo;est pas
+la confidentialité (ce n&rsquo;est pas un secret) mais la <strong>centralisation</strong> : changer la valeur une
+seule fois dans les paramètres du dépôt, plutôt que de modifier chaque fichier de workflow qui
+l&rsquo;utilise.</p>
+</blockquote>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Votre équipe migre son pipeline d&rsquo;un runner <code>ubuntu-latest</code> vers un runner auto-hébergé, pour
+profiter d&rsquo;un cache Docker persistant entre les exécutions et accélérer les builds. Un coéquipier
+remarque qu&rsquo;une variable <code>REGISTRY=ghcr.io</code> définie dans un ancien job de test, il y a plusieurs
+semaines, apparaît encore dans les journaux d&rsquo;un job complètement différent qui ne la définit nulle
+part. Comment est-ce possible, et ce risque existait-il avec <code>ubuntu-latest</code> ?</p>
+<p><strong>Réponse</strong> : sur un runner <strong>auto-hébergé</strong>, la machine n&rsquo;est <strong>jamais recréée à neuf</strong> entre deux
+exécutions — un export laissé dans le shell d&rsquo;un run précédent (ex. via un script appelé par
+<code>run:</code>, en dehors du mécanisme <code>env:</code>/<code>$GITHUB_ENV</code> propre à GitHub Actions) peut persister dans
+l&rsquo;environnement du processus et réapparaître dans un run ultérieur. Sur un runner <strong>hébergé par
+GitHub</strong> (<code>ubuntu-latest</code>), ce risque n&rsquo;existe pas : chaque job démarre sur une machine virtuelle
+entièrement neuve, détruite après son exécution — aucun état, variable ou fichier ne peut
+« fuiter » d&rsquo;un run à l&rsquo;autre.</p>
+</details>
+<h3 id="permissions-et-déclencheurs-par-tag--vers-les-releases-github"><code>permissions:</code> et déclencheurs par tag : vers les Releases GitHub</h3>
+<p>Deux derniers concepts GitHub Actions, utiles au-delà de Docker, complètent ce retour en arrière :</p>
+<ul>
+<li>
+<p><strong><code>permissions:</code></strong> — par défaut, le jeton <code>secrets.GITHUB_TOKEN</code> fourni automatiquement à chaque
+run n&rsquo;a que des droits limités en lecture. Certaines actions (ex. créer une Release, commenter
+une Pull Request) exigent un droit d&rsquo;écriture explicite, déclaré au niveau du job :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">release</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">permissions</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">contents</span>: <span style="color:#ae81ff">write    </span> <span style="color:#75715e"># requis, par exemple, pour que le workflow puisse créer une Release</span></span></span></code></pre></div>
+</li>
+<li>
+<p><strong>Déclencher sur un tag plutôt qu&rsquo;un <code>push</code> ordinaire</strong> — en plus de <code>branches:</code> (section 3️⃣),
+<code>on: push:</code> accepte un filtre <code>tags:</code> : le workflow ne se déclenche alors <strong>que</strong> lorsqu&rsquo;un tag
+correspondant (ex. <code>v1.2.3</code>) est poussé, jamais sur un commit ordinaire vers <code>main</code> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">tags</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#39;v*&#39;</span></span></span></code></pre></div>
+<p>Ce tag ne se crée <strong>jamais tout seul</strong> : il faut le créer puis le pousser explicitement depuis
+votre poste, séparément d&rsquo;un <code>git push</code> ordinaire de commits — c&rsquo;est cette action volontaire, et
+seulement elle, qui déclenche le workflow :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git tag v1.0.0
+</span></span><span style="display:flex;"><span>git push origin v1.0.0          <span style="color:#75715e"># déclenche le workflow — un simple &#34;git push origin main&#34; ne le ferait pas</span></span></span></code></pre></div>
+</li>
+</ul>
+<blockquote>
+<p>💡 Ces deux éléments (<code>permissions: contents: write</code> + déclencheur <code>tags:</code>) sont précisément ce
+qui permet d&rsquo;automatiser la création d&rsquo;une <strong>Release GitHub</strong> (page de version avec notes et
+fichiers joints, ex. le <code>.jar</code> compilé) à chaque tag poussé — voir l&rsquo;exemple complet dans
+<a href="/420-515/semaine-7/registre-conteneurs/">Registres de conteneurs et publication automatisée</a>,
+section « Créer une publication GitHub (<em>Release</em>) automatiquement ».</p>
+</blockquote>
+<h3 id="badge-de-statut--afficher-létat-du-pipeline-dans-le-readme">Badge de statut : afficher l&rsquo;état du pipeline dans le <code>README</code></h3>
+<p>GitHub génère automatiquement, pour chaque workflow, un <strong>badge</strong> SVG affichant son dernier statut
+(✅ réussi, ❌ échoué) — habituellement affiché tout en haut du <code>README.md</code> d&rsquo;un projet, pour que
+quiconque visite le dépôt voie immédiatement si la CI passe, sans avoir à ouvrir l&rsquo;onglet
+<strong>Actions</strong> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>![<span style="color:#f92672">CI</span>](<span style="color:#a6e22e">https://github.com/&lt;compte&gt;/&lt;depot&gt;/actions/workflows/ci.yml/badge.svg</span>)</span></span></code></pre></div>
+<table>
+	<thead>
+			<tr>
+					<th>Partie de l&rsquo;URL</th>
+					<th>Rôle</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>&lt;compte&gt;/&lt;depot&gt;</code></td>
+					<td>Le dépôt GitHub concerné</td>
+			</tr>
+			<tr>
+					<td><code>workflows/ci.yml</code></td>
+					<td>Le <strong>nom du fichier</strong> de workflow (pas son <code>name:</code> affiché dans l&rsquo;interface) dont on veut montrer le statut</td>
+			</tr>
+			<tr>
+					<td><code>badge.svg</code></td>
+					<td>Demande l&rsquo;image SVG plutôt que la page HTML de l&rsquo;exécution</td>
+			</tr>
+	</tbody>
+</table>
+<p>On peut aussi cibler une branche précise (utile si <code>main</code> et une branche de développement ont des
+statuts différents) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>![<span style="color:#f92672">CI</span>](<span style="color:#a6e22e">https://github.com/&lt;compte&gt;/&lt;depot&gt;/actions/workflows/ci.yml/badge.svg?branch=main</span>)</span></span></code></pre></div>
+<blockquote>
+<p>💡 Ce badge n&rsquo;est <strong>pas une image statique</strong> : GitHub la régénère à la volée à chaque fois qu&rsquo;elle
+est chargée, en fonction du résultat de la <strong>dernière exécution</strong> du workflow ciblé — aucune
+configuration supplémentaire n&rsquo;est nécessaire au-delà de coller ce lien Markdown dans le
+<code>README.md</code>.</p>
+</blockquote>
+<blockquote>
+<p>⚠️ Sur un dépôt <strong>privé</strong>, ce badge n&rsquo;est visible que par les personnes ayant déjà accès au
+dépôt (elles doivent être authentifiées sur GitHub dans leur navigateur) — aucune <strong>permission</strong>
+supplémentaire à configurer dans le workflow lui-même, contrairement à <code>contents: write</code> ou
+<code>packages: write</code> vus plus haut : l&rsquo;accès au badge suit simplement les permissions <strong>du dépôt</strong>,
+pas celles du <code>GITHUB_TOKEN</code>. Sur un dépôt <strong>public</strong>, le badge est visible par n&rsquo;importe qui,
+même sans compte GitHub.</p>
+</blockquote>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Le badge de statut dans le <code>README</code> de votre projet affiche ❌ (échec), mais vous venez de corriger
+le bogue et de pousser le correctif il y a 10 secondes à peine. Devriez-vous vous inquiéter ?</p>
+<p><strong>Réponse</strong> : pas nécessairement, pas encore. Le badge reflète le résultat de la <strong>dernière
+exécution terminée</strong> du workflow — si votre correctif vient tout juste d&rsquo;être poussé, le nouveau
+run est probablement encore <strong>en cours</strong> (le badge affichera temporairement l&rsquo;ancien statut jusqu&rsquo;à
+ce que ce nouveau run se termine). Il faut attendre la fin de cette nouvelle exécution avant de
+considérer le badge comme à jour.</p>
+</details>
+<hr>
+<h2 id="-références">📚 Références</h2>
+<ul>
+<li>Documentation officielle Docker — <a href="https://docs.docker.com/build/building/best-practices/" rel="external" target="_blank">Dockerfile best practices</a>.</li>
+<li>Documentation officielle Docker — <a href="https://docs.docker.com/build/building/multi-stage/" rel="external" target="_blank">Multi-stage builds</a>.</li>
+<li>Documentation officielle Docker — <a href="https://docs.docker.com/reference/dockerfile/" rel="external" target="_blank">Dockerfile reference</a>.</li>
+<li>Images officielles Eclipse Temurin — <a href="https://hub.docker.com/_/eclipse-temurin" rel="external" target="_blank">hub.docker.com/_/eclipse-temurin</a>.</li>
+<li>Documentation officielle — <a href="https://docs.github.com/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners" rel="external" target="_blank">About self-hosted runners</a>.</li>
+<li>Documentation officielle — <a href="https://docs.github.com/actions/learn-github-actions/variables" rel="external" target="_blank">Variables (vars, env, $GITHUB_ENV)</a>.</li>
+</ul>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer
+  </summary>
+  <div class="box-content">
+<p>Poursuivez avec l&rsquo;<a href="/420-515/semaine-7/exercice-docker/">exercice Docker</a> pour écrire,
+construire et exécuter votre propre <code>Dockerfile</code> sur votre projet.</p>
+  </div>
+</details>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-4/index.html"><a class="padding" href="/420-515/semaine-4/index.html">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</a><ul id="R-subsections-0a04879d58004f2299c8e47c33299b68" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-5/index.html"><a class="padding" href="/420-515/semaine-5/index.html">Semaine 5 — Tests automatisés et intégration continue</a><ul id="R-subsections-62d70e99f8941f86fbf4d8780b33e646" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-6/index.html"><a class="padding" href="/420-515/semaine-6/index.html">Semaine 6 — Réusinage (refactoring) et code smells</a><ul id="R-subsections-f67fcebe2365ce5f296a1590e7b19ab6" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-7/index.html"><a class="padding" href="/420-515/semaine-7/index.html">Semaine 7 — Conteneurisation avec Docker</a><ul id="R-subsections-46cef0e5d7909a168d728f129b96eadf" class="collapsible-menu">
+            <li class="active " data-nav-id="/420-515/semaine-7/docker/index.html"><a class="padding" href="/420-515/semaine-7/docker/index.html">Docker — Dockerfile, image, bonnes pratiques</a></li>
+            <li class="" data-nav-id="/420-515/semaine-7/exercice-docker/index.html"><a class="padding" href="/420-515/semaine-7/exercice-docker/index.html">Exercice : écrire et exécuter un Dockerfile</a></li>
+            <li class="" data-nav-id="/420-515/semaine-7/registre-conteneurs/index.html"><a class="padding" href="/420-515/semaine-7/registre-conteneurs/index.html">Registres de conteneurs et publication automatisée (CI/CD)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-7/exercice-registre-conteneurs/index.html"><a class="padding" href="/420-515/semaine-7/exercice-registre-conteneurs/index.html">Exercice : publier une image sur GitHub Container Registry</a></li>
+            <li class="" data-nav-id="/420-515/semaine-7/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-7/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1791257862" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1791257862" defer></script>
+    <script src="/420-515/js/theme.js?1791257862" defer></script>
+  </body>
+</html>

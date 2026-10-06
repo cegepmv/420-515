@@ -25,26 +25,26 @@
 🧩 Partie 1 — Le test de régression désactivé Ouvrez PetAgeValidatorTest.java et repérez le test annoté @Disabled (shouldReturnFalseWhenBirthDateIsOlderThan50Years). Retirez l’annotation @Disabled et relancez la classe de tests. Confirmez qu’il échoue bien. En équipe, décidez : faut-il corriger le test (pour refléter la vraie limite de 100 ans), le code (le message d’erreur qui ment toujours sur « 50 years »), ou les deux ? Justifiez votre choix par écrit (2-3 phrases). Appliquez votre correction, puis relancez la classe de tests jusqu’à ce qu’elle passe au vert. 📦 Partie 2 — Ajouter un test unitaire Choisissez une méthode de votre projet qui n’a aucun test actuellement. Écrivez un test unitaire pour cette méthode, en respectant la structure Arrange-Act-Assert et un nommage clair (should&lt;Résultat&gt;When&lt;Scénario&gt;). Assurez-vous que votre test échouerait si le comportement de la méthode était cassé — pour vous en convaincre, modifiez temporairement la méthode pour introduire un bogue volontaire, confirmez que votre test échoue, puis annulez la modification. 📊 Partie 3 — Couverture de code avec JaCoCo Ajoutez le plugin jacoco-maven-plugin à votre pom.xml (voir l’extrait de configuration dans les notes de cette semaine). Lancez mvn clean test et ouvrez target/site/jacoco/index.html. Identifiez une classe avec une couverture de lignes faible (&lt; 60 %) et écrivez au moins un nouveau test pour l’améliorer. Relancez mvn clean test et confirmez que la couverture de cette classe a augmenté. ❓ QuestionAprès votre nouveau test, la couverture de lignes de la classe est passée de 40 % à 90 %. Est-ce suffisant pour affirmer que la classe est maintenant bien testée ?">
     <meta itemprop="wordCount" content="495">
     <title>Exercice : tests unitaires, régression et couverture :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1790605557" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1790605557" defer></script>
-    <script src="/420-515/js/search-lunr.js?1790605557" defer></script>
-    <script src="/420-515/js/search.js?1790605557" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1791264716" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1791264716" defer></script>
+    <script src="/420-515/js/search-lunr.js?1791264716" defer></script>
+    <script src="/420-515/js/search.js?1791264716" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1790605557";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1791264716";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1790605557" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1790605557" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1790605557" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1790605557" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1791264716" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1791264716" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1791264716" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1791264716" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1790605557" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1790605557" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1790605557" rel="stylesheet">
-    <link href="/420-515/css/theme.css?1790605557" rel="stylesheet">
-    <link href="/420-515/css/format-html.css?1790605557" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791264716" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791264716" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1791264716" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1791264716" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1791264716" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -254,6 +254,7 @@ semaine, puis explique son choix à l&rsquo;équipe d&rsquo;origine.</li>
             <li class="" data-nav-id="/420-515/semaine-5/exercice-integration-continue/index.html"><a class="padding" href="/420-515/semaine-5/exercice-integration-continue/index.html">Exercice : mettre en place un pipeline CI</a></li>
             <li class="" data-nav-id="/420-515/semaine-5/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-5/activite-pratique/index.html">Activité pratique</a></li></ul></li>
             <li class="" data-nav-id="/420-515/semaine-6/index.html"><a class="padding" href="/420-515/semaine-6/index.html">Semaine 6 — Réusinage (refactoring) et code smells</a><ul id="R-subsections-f67fcebe2365ce5f296a1590e7b19ab6" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-7/index.html"><a class="padding" href="/420-515/semaine-7/index.html">Semaine 7 — Conteneurisation avec Docker</a><ul id="R-subsections-46cef0e5d7909a168d728f129b96eadf" class="collapsible-menu"></ul></li>
           </ul>
         </div>
         <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
@@ -289,8 +290,8 @@ semaine, puis explique son choix à l&rsquo;équipe d&rsquo;origine.</li>
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1790605557" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1790605557" defer></script>
-    <script src="/420-515/js/theme.js?1790605557" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1791264716" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1791264716" defer></script>
+    <script src="/420-515/js/theme.js?1791264716" defer></script>
   </body>
 </html>
