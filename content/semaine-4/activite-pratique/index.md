@@ -59,7 +59,3 @@ par 2-3 cas simples (niveau 1, sans mock), ajoutez des cas qui combinent plusieu
 vérifient une exception (niveau 2), puis terminez par un cas limite qui pourrait révéler un bogue
 caché (niveau 3).
 {{% /notice %}}
-
-> 📌 La semaine 4 est évaluée par le **Quiz 2** (3 points) — Maven (dépendances, cycle de vie,
-> exécution des tests) et les bases de JUnit (annotations, assertions, cycle de vie d'une classe de
-> test).

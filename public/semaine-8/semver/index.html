@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.166.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="Tout ce qui suit est fondé sur la spécification officielle Semantic Versioning 2.0.0, publiée par Tom Preston-Werner — voir la version française intégrale et la version originale, faisant foi. Les citations ci-dessous reprennent la numérotation des règles de la spécification.
+1️⃣ Le problème que SemVer résout La spécification introduit le problème ainsi (traduction de la version officielle) :
+« Dans le monde de la gestion des logiciels, il existe un endroit redouté appelé « l’enfer des dépendances ». […] Si les règles de dépendance sont trop strictes, vous risquez de verrouiller vos versions […]. Si les règles de dépendances sont trop lâches, vous allez inévitablement subir la promiscuité de version. » — semver.org/lang/fr">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Gestion sémantique de version (SemVer) :: Maintenance de logiciel">
+    <meta name="twitter:description" content="Tout ce qui suit est fondé sur la spécification officielle Semantic Versioning 2.0.0, publiée par Tom Preston-Werner — voir la version française intégrale et la version originale, faisant foi. Les citations ci-dessous reprennent la numérotation des règles de la spécification.
+1️⃣ Le problème que SemVer résout La spécification introduit le problème ainsi (traduction de la version officielle) :
+« Dans le monde de la gestion des logiciels, il existe un endroit redouté appelé « l’enfer des dépendances ». […] Si les règles de dépendance sont trop strictes, vous risquez de verrouiller vos versions […]. Si les règles de dépendances sont trop lâches, vous allez inévitablement subir la promiscuité de version. » — semver.org/lang/fr">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-8/semver/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Gestion sémantique de version (SemVer) :: Maintenance de logiciel">
+    <meta property="og:description" content="Tout ce qui suit est fondé sur la spécification officielle Semantic Versioning 2.0.0, publiée par Tom Preston-Werner — voir la version française intégrale et la version originale, faisant foi. Les citations ci-dessous reprennent la numérotation des règles de la spécification.
+1️⃣ Le problème que SemVer résout La spécification introduit le problème ainsi (traduction de la version officielle) :
+« Dans le monde de la gestion des logiciels, il existe un endroit redouté appelé « l’enfer des dépendances ». […] Si les règles de dépendance sont trop strictes, vous risquez de verrouiller vos versions […]. Si les règles de dépendances sont trop lâches, vous allez inévitablement subir la promiscuité de version. » — semver.org/lang/fr">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 8 — Évolution d&#39;API : versionnage et compatibilité">
+    <meta itemprop="name" content="Gestion sémantique de version (SemVer) :: Maintenance de logiciel">
+    <meta itemprop="description" content="Tout ce qui suit est fondé sur la spécification officielle Semantic Versioning 2.0.0, publiée par Tom Preston-Werner — voir la version française intégrale et la version originale, faisant foi. Les citations ci-dessous reprennent la numérotation des règles de la spécification.
+1️⃣ Le problème que SemVer résout La spécification introduit le problème ainsi (traduction de la version officielle) :
+« Dans le monde de la gestion des logiciels, il existe un endroit redouté appelé « l’enfer des dépendances ». […] Si les règles de dépendance sont trop strictes, vous risquez de verrouiller vos versions […]. Si les règles de dépendances sont trop lâches, vous allez inévitablement subir la promiscuité de version. » — semver.org/lang/fr">
+    <meta itemprop="wordCount" content="920">
+    <title>Gestion sémantique de version (SemVer) :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1792383874" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1792383874" defer></script>
+    <script src="/420-515/js/search-lunr.js?1792383874" defer></script>
+    <script src="/420-515/js/search.js?1792383874" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1792383874";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1792383874" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1792383874" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1792383874" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1792383874" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1792383874" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1792383874" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1792383874" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1792383874" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1792383874" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = ``;
+      window.relearn.path='\/semaine-8\/semver\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-8/semver/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-8/index.html"><span itemprop="name">Semaine 8 — Évolution d&#39;API : versionnage et compatibilité</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Gestion sémantique de version (SemVer)</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-8" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="gestion-sémantique-de-version-semver">Gestion sémantique de version (SemVer)</h1>
+
+<p>Tout ce qui suit est fondé sur la spécification officielle <strong>Semantic Versioning 2.0.0</strong>, publiée
+par Tom Preston-Werner — voir la <a href="https://semver.org/lang/fr/" rel="external" target="_blank">version française intégrale</a>
+et la <a href="https://semver.org/" rel="external" target="_blank">version originale, faisant foi</a>. Les citations ci-dessous reprennent
+la numérotation des règles de la spécification.</p>
+<hr>
+<h2 id="1-le-problème-que-semver-résout">1️⃣ Le problème que SemVer résout</h2>
+<p>La spécification introduit le problème ainsi (traduction de la version officielle) :</p>
+<blockquote>
+<p>« Dans le monde de la gestion des logiciels, il existe un endroit redouté appelé « l&rsquo;enfer des
+dépendances ». [&hellip;] Si les règles de dépendance sont trop strictes, vous risquez de verrouiller
+vos versions [&hellip;]. Si les règles de dépendances sont trop lâches, vous allez inévitablement
+subir la promiscuité de version. »
+— <a href="https://semver.org/lang/fr/" rel="external" target="_blank">semver.org/lang/fr</a></p>
+</blockquote>
+<p>Un numéro de version n&rsquo;est donc pas qu&rsquo;une étiquette cosmétique : c&rsquo;est un <strong>signal</strong> envoyé à
+quiconque dépend de votre logiciel (ou de votre API), qui lui permet de décider s&rsquo;il peut mettre à
+jour sans risque ou non.</p>
+<hr>
+<h2 id="2-le-format-majeurmineurcorrectif">2️⃣ Le format MAJEUR.MINEUR.CORRECTIF</h2>
+<p>La spécification résume les trois règles essentielles ainsi :</p>
+<blockquote>
+<p>« Étant donné un numéro de version MAJEUR.MINEUR.CORRECTIF, il faut incrémenter :</p>
+<ol>
+<li>le numéro de version MAJEUR quand il y a des changements non rétrocompatibles,</li>
+<li>le numéro de version MINEUR quand il y a des ajouts de fonctionnalités rétrocompatibles,</li>
+<li>le numéro de version de CORRECTIF quand il y a des corrections d&rsquo;anomalies rétrocompatibles. »
+— <a href="https://semver.org/lang/fr/" rel="external" target="_blank">semver.org/lang/fr, règles 6-8</a></li>
+</ol>
+</blockquote>
+<table>
+	<thead>
+			<tr>
+					<th>Partie</th>
+					<th>Incrémentée quand…</th>
+					<th>Remet à zéro</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>MAJEUR</strong> (X)</td>
+					<td>Un changement <strong>non rétrocompatible</strong> est introduit dans l&rsquo;API publique (règle 8)</td>
+					<td>MINEUR et CORRECTIF</td>
+			</tr>
+			<tr>
+					<td><strong>MINEUR</strong> (Y)</td>
+					<td>Une nouvelle fonctionnalité <strong>rétrocompatible</strong> est ajoutée; DOIT aussi être incrémenté si une fonctionnalité existante est marquée obsolète (règle 7)</td>
+					<td>CORRECTIF</td>
+			</tr>
+			<tr>
+					<td><strong>CORRECTIF</strong> (Z)</td>
+					<td>Seules des corrections de bogues <strong>rétrocompatibles</strong> sont introduites (règle 6)</td>
+					<td>—</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 La règle 3 de la spécification précise qu&rsquo;une fois un numéro de version publié, « le contenu
+de sa version NE DOIT PAS être modifié » — toute correction, même minime, exige un <strong>nouveau</strong>
+numéro de version, jamais une republication silencieuse sous le même numéro.</p>
+</blockquote>
+<blockquote>
+<p>⚠️ La règle 4 précise qu&rsquo;un numéro de version majeure à <strong>zéro</strong> (<code>0.y.z</code>) correspond à du
+développement initial : « Tout PEUT être modifié à tout moment. L&rsquo;API publique NE DEVRAIT PAS
+être considérée comme stable. » SemVer ne garantit donc une stabilité d&rsquo;API qu&rsquo;à partir de la
+version <code>1.0.0</code> (règle 5).</p>
+</blockquote>
+<hr>
+<h2 id="3-analyser-une-version-réelle--402">3️⃣ Analyser une version réelle : <code>4.0.2</code></h2>
+<p>Le <code>pom.xml</code> du projet utilisé dans ce cours déclare :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;artifactId&gt;</span>spring-petclinic-rest<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;version&gt;</span>4.0.2<span style="color:#f92672">&lt;/version&gt;</span></span></span></code></pre></div>
+<p>Décomposons ce numéro selon le format de la spécification (règles 6-8, voir section 2️⃣ ci-dessus) :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Segment</th>
+					<th>Valeur</th>
+					<th>Signification selon SemVer</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>MAJEUR</td>
+					<td><code>4</code></td>
+					<td>4ᵉ version majeure de ce composant</td>
+			</tr>
+			<tr>
+					<td>MINEUR</td>
+					<td><code>0</code></td>
+					<td>Aucune fonctionnalité additive publiée depuis <code>4.0.0</code></td>
+			</tr>
+			<tr>
+					<td>CORRECTIF</td>
+					<td><code>2</code></td>
+					<td>Deux corrections rétrocompatibles publiées depuis <code>4.0.0</code></td>
+			</tr>
+	</tbody>
+</table>
+<p>Si une équipe souhaitait signaler que cette version n&rsquo;est pas encore stable (par exemple une
+version de test interne avant publication), la règle 9 de la spécification permet d&rsquo;ajouter un
+<strong>identifiant de pré-publication</strong> après un trait d&rsquo;union, par exemple <code>4.0.2-beta</code> :</p>
+<blockquote>
+<p>« Un numéro de version de pré-livraison PEUT être désigné en ajoutant un trait d&rsquo;union et une
+série d&rsquo;identifiants [&hellip;] séparés par des points après la version de correctif. Les identifiants
+DOIVENT être composés uniquement de caractères alphanumériques ASCII et de traits d&rsquo;union. »
+— <a href="https://semver.org/lang/fr/" rel="external" target="_blank">semver.org/lang/fr, règle 9</a></p>
+</blockquote>
+<blockquote>
+<p>« Une version de pré-livraison indique que la version n&rsquo;est pas stable et ne satisfait pas
+forcément les exigences de compatibilité associées à une version normale. »
+— <a href="https://semver.org/lang/fr/" rel="external" target="_blank">semver.org/lang/fr, règle 9</a></p>
+</blockquote>
+<p>Le <code>pom.xml</code> actuel du projet (<code>4.0.2</code>, sans suffixe) n&rsquo;utilise pas cette possibilité — c&rsquo;est donc
+une version normale, qui doit respecter pleinement les règles de compatibilité vues sur la page
+suivante.</p>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Une équipe corrige un bogue qui faisait planter un endpoint existant, sans ajouter ni retirer
+aucun champ de l&rsquo;API. Le projet est actuellement en version <code>2.3.1</code>. Quelle doit être la
+prochaine version, selon la règle 6 de la spécification ?</p>
+<p><strong>Réponse</strong> : <code>2.3.2</code>. La règle 6 impose d&rsquo;incrémenter uniquement le numéro de CORRECTIF (Z)
+lorsque « seules des corrections rétrocompatibles sont introduites » — le MAJEUR et le MINEUR ne
+changent pas puisqu&rsquo;aucune fonctionnalité n&rsquo;a été ajoutée ni retirée de l&rsquo;API publique.</p>
+</details>
+<hr>
+<h2 id="4-calver--une-alternative-à-semver-versionner-par-date">4️⃣ CalVer : une alternative à SemVer, versionner par date</h2>
+<p>SemVer est répandu, mais ce n&rsquo;est <strong>ni le seul</strong>, ni toujours le mieux adapté. Le <em>Versionnage
+Calendaire</em> (<strong>CalVer</strong>) est une alternative réelle, utilisée par de grands projets :</p>
+<blockquote>
+<p>« CalVer est une convention de versionnage basée sur le calendrier de publication de votre
+projet [&hellip;]. Cette approche basée sur le temps s&rsquo;appelle le Versionnage Calendaire, ou <strong>CalVer</strong>
+en abrégé. »
+— <a href="https://calver.org/" rel="external" target="_blank">calver.org</a></p>
+</blockquote>
+<p>Contrairement à SemVer, où chaque segment a une <strong>signification</strong> précise (compatibilité), CalVer
+encode simplement la <strong>date</strong> de publication. Des projets réels, cités par calver.org, illustrent
+différents découpages :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Format</th>
+					<th>Exemple réel</th>
+					<th>Projet</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>YY.0M</code> (année courte . mois)</td>
+					<td><code>26.04</code></td>
+					<td>Ubuntu</td>
+			</tr>
+			<tr>
+					<td><code>YYYY.MINOR</code> (année . numéro séquentiel)</td>
+					<td><code>2026.2</code></td>
+					<td>JetBrains, Kali Linux</td>
+			</tr>
+			<tr>
+					<td><code>YYYY.0M.0D</code> (année . mois . jour)</td>
+					<td><code>2026.08.19</code></td>
+					<td>yt-dlp</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 CalVer convient bien à des projets publiés à un <strong>rythme régulier et prévisible</strong> (ex. deux
+fois par année pour Ubuntu), où la date de sortie est elle-même une information utile pour
+l&rsquo;utilisateur. Il convient moins bien à une API dont la compatibilité doit être communiquée
+explicitement à chaque changement — ce que SemVer fait par construction, mais pas CalVer.</p>
+</blockquote>
+<hr>
+<h2 id="-références">📚 Références</h2>
+<ul>
+<li>Tom Preston-Werner — <a href="https://semver.org/lang/fr/" rel="external" target="_blank">Semantic Versioning 2.0.0, version française intégrale</a>.</li>
+<li>Tom Preston-Werner — <a href="https://semver.org/" rel="external" target="_blank">Semantic Versioning 2.0.0, version originale (faisant foi)</a>.</li>
+<li><a href="https://calver.org/" rel="external" target="_blank">calver.org</a> — Calendar Versioning.</li>
+</ul>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer
+  </summary>
+  <div class="box-content">
+<p>Poursuivez avec <a href="/420-515/semaine-8/tags-releases-github/">Tags Git et publications (Releases) GitHub</a>
+pour voir comment un numéro de version se transforme en tag Git, puis en Release GitHub automatisée.</p>
+  </div>
+</details>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-4/index.html"><a class="padding" href="/420-515/semaine-4/index.html">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</a><ul id="R-subsections-0a04879d58004f2299c8e47c33299b68" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-5/index.html"><a class="padding" href="/420-515/semaine-5/index.html">Semaine 5 — Tests automatisés et intégration continue</a><ul id="R-subsections-62d70e99f8941f86fbf4d8780b33e646" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-6/index.html"><a class="padding" href="/420-515/semaine-6/index.html">Semaine 6 — Réusinage (refactoring) et code smells</a><ul id="R-subsections-f67fcebe2365ce5f296a1590e7b19ab6" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-7/index.html"><a class="padding" href="/420-515/semaine-7/index.html">Semaine 7 — Conteneurisation avec Docker</a><ul id="R-subsections-46cef0e5d7909a168d728f129b96eadf" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-8/index.html"><a class="padding" href="/420-515/semaine-8/index.html">Semaine 8 — Évolution d&#39;API : versionnage et compatibilité</a><ul id="R-subsections-6321075fd0c8050ebc7b6d32e8aeee82" class="collapsible-menu">
+            <li class="active " data-nav-id="/420-515/semaine-8/semver/index.html"><a class="padding" href="/420-515/semaine-8/semver/index.html">Gestion sémantique de version (SemVer)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-8/tags-releases-github/index.html"><a class="padding" href="/420-515/semaine-8/tags-releases-github/index.html">Tags Git et publications (Releases) GitHub</a></li>
+            <li class="" data-nav-id="/420-515/semaine-8/compatibilite-api/index.html"><a class="padding" href="/420-515/semaine-8/compatibilite-api/index.html">Compatibilité d&#39;API : changements compatibles et changements cassants</a></li>
+            <li class="" data-nav-id="/420-515/semaine-8/exercice-semver-compatibilite/index.html"><a class="padding" href="/420-515/semaine-8/exercice-semver-compatibilite/index.html">Exercice : SemVer et compatibilité d&#39;API</a></li>
+            <li class="" data-nav-id="/420-515/semaine-8/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-8/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1792383874" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1792383874" defer></script>
+    <script src="/420-515/js/theme.js?1792383874" defer></script>
+  </body>
+</html>

@@ -113,6 +113,13 @@ docker push <votre-nom-utilisateur>/<nom-de-l'image>:latest
 
 ## 4️⃣ Automatiser la publication dans le pipeline GitHub Actions
 
+> 💡 **Où est le `Dockerfile` dans tout ça ?** Les workflows ci-dessous ne recopient jamais le
+> contenu d'un `Dockerfile` — ils l'utilisent implicitement. `docker/build-push-action@v6` avec
+> `context: .` fonctionne exactement comme `docker build .` en ligne de commande : il s'attend à
+> trouver un fichier nommé `Dockerfile` à la racine de ce contexte. Ce `Dockerfile` (l'Option A vue
+> à la page précédente, [Docker]({{% relref "/semaine-7/docker" %}})) doit déjà exister, versionné
+> dans le dépôt — le pipeline ne le génère **jamais**, il se contente de l'exécuter.
+
 Deux façons valables d'organiser ce job dans votre pipeline, selon que vous privilégiez la
 simplicité ou la réutilisation stricte de la matrice de tests JDK 21/25 (semaine 5) :
 
@@ -276,28 +283,6 @@ Les éléments communs aux deux structures :
 > GHCR (contrairement à un Personal Access Token, nécessaire seulement pour une publication
 > **manuelle** depuis votre poste, comme à la section précédente).
 
-> ⚠️ **Erreur fréquente dans un dépôt d'organisation** : `denied: installation not allowed to
-> Create organization package`. Deux réglages distincts du `permissions:` du workflow peuvent en
-> être la cause, **avant** même d'envisager un blocage au niveau de l'organisation :
->
-> 1. **Au niveau du dépôt** — `Settings → Actions → General → Workflow permissions` doit être réglé
->    sur **« Read and write permissions »** (et non « Read repository contents permission only »,
->    le réglage par défaut sur de nombreux dépôts). Sans ce réglage, le `GITHUB_TOKEN` reste en
->    lecture seule, peu importe ce qui est déclaré dans `permissions:` du fichier YAML — ce dernier
->    ne peut que **restreindre** davantage les droits, jamais en accorder au-delà de ce réglage du
->    dépôt.
-> 2. **Au niveau du workflow** — `permissions: packages: write` (déjà présent dans nos deux
->    structures) doit être explicitement déclaré, sans quoi certains dépôts appliquent des
->    permissions par défaut plus restrictives que celles du point 1.
->
-> Si les deux sont corrects et que l'erreur persiste **uniquement** à la toute première publication
-> d'un package dans un dépôt d'**organisation**, le blocage vient alors d'un troisième réglage,
-> propre à l'organisation elle-même : **Organization settings → Packages** doit autoriser la
-> création de nouveaux packages par les workflows Actions. Ce réglage n'est pas accessible depuis
-> le dépôt — seul un **propriétaire de l'organisation** peut l'activer. Une fois le package créé une
-> première fois (manuellement ou après ce réglage), les publications suivantes fonctionnent
-> normalement avec le seul `GITHUB_TOKEN`.
-
 ---
 
 ## 📚 Références
@@ -309,5 +294,7 @@ Les éléments communs aux deux structures :
 
 {{% notice tip "🧪 À vous de jouer" %}}
 Poursuivez avec l'[exercice Registre de conteneurs]({{% relref "/semaine-7/exercice-registre-conteneurs" %}})
-pour publier réellement une image depuis votre propre pipeline CI.
+pour publier réellement une image depuis votre propre pipeline CI. Pour voir comment un tag Git
+déclenche aussi la création automatique d'une Release GitHub, consultez
+[Tags Git et publications (Releases) GitHub]({{% relref "/semaine-8/tags-releases-github" %}}) à la semaine 8.
 {{% /notice %}}

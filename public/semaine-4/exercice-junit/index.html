@@ -25,26 +25,26 @@
 🧩 Partie 1 — Premier test, sans mock Choisissez une classe de votre projet dont la logique ne dépend pas de Spring, d’une base de données ou d’un appel réseau (un objet du domaine avec une méthode qui calcule ou vérifie quelque chose, comme Owner.getPet(...) dans le projet du cours). Créez la classe de test correspondante au bon endroit (src/test/java/..., même package que la classe testée, nom se terminant par Test ou Tests). Écrivez au moins deux méthodes @Test : un cas où le résultat attendu est présent/vrai, et un cas où il est absent/faux (ex. un élément trouvé vs un élément non trouvé). 🔁 Partie 2 — Factoriser avec @BeforeEach Si vos deux tests répètent la même préparation d’objets, extrayez-la dans une méthode annotée @BeforeEach. Confirmez que vos deux tests passent toujours après cette factorisation. Ajoutez un troisième test qui réutilise le même état préparé par @BeforeEach, sans dupliquer sa construction. 🧪 Partie 3 — Exception, assertions groupées et test paramétré Écrivez un test avec assertThrows qui vérifie qu’une méthode de votre projet lance bien une exception dans un cas invalide (ex. argument null ou hors limites). Regroupez au moins deux assertions liées au même scénario avec assertAll, puis provoquez volontairement l’échec des deux en même temps pour confirmer qu’elles sont bien rapportées ensemble dans un seul résultat de test. Transformez un test qui vérifie plusieurs valeurs d’entrée similaires (ou écrivez-en un nouveau) en test paramétré avec @ParameterizedTest et @ValueSource ou @CsvSource. 🎭 Partie 4 — Un premier mock Repérez, dans le projet, un exemple existant de mock(...) (ex. PetAgeValidatorTest) ou de @MockitoBean (ex. OwnerRestControllerV1Tests). En équipe, expliquez à voix haute pourquoi ce mock est nécessaire ici : quelle dépendance remplace-t-il, et pourquoi serait-il difficile ou peu souhaitable d’utiliser la vraie dépendance dans ce test ? Sans nécessairement l’exécuter, identifiez une méthode de votre projet qui aurait besoin d’un mock similaire pour être testée en isolation (ex. une méthode qui appelle un service externe ou une base de données). 🧨 Partie 5 — Faire échouer un test intentionnellement Modifiez temporairement une assertion pour qu’elle échoue à coup sûr (ex. changez la valeur attendue). Lancez le test et lisez attentivement le message d’échec produit par JUnit (« expected: … but was: … »). Annulez votre modification et confirmez que le test repasse au vert. ❓ QuestionPourquoi est-il utile, en apprenant à écrire des tests, de voir volontairement un test échouer au moins une fois avant de le voir passer ?">
     <meta itemprop="wordCount" content="577">
     <title>Exercice : écrire vos premiers tests JUnit :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1791236519" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1791236519" defer></script>
-    <script src="/420-515/js/search-lunr.js?1791236519" defer></script>
-    <script src="/420-515/js/search.js?1791236519" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1792303817" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1792303817" defer></script>
+    <script src="/420-515/js/search-lunr.js?1792303817" defer></script>
+    <script src="/420-515/js/search.js?1792303817" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1791236519";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1792303817";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1791236519" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1791236519" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1791236519" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1791236519" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1792303817" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1792303817" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1792303817" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1792303817" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791236519" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791236519" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1791236519" rel="stylesheet">
-    <link href="/420-515/css/theme.css?1791236519" rel="stylesheet">
-    <link href="/420-515/css/format-html.css?1791236519" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1792303817" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1792303817" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1792303817" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1792303817" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1792303817" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -266,6 +266,7 @@ sensible au comportement qu&rsquo;il est censé vérifier.</p>
             <li class="" data-nav-id="/420-515/semaine-5/index.html"><a class="padding" href="/420-515/semaine-5/index.html">Semaine 5 — Tests automatisés et intégration continue</a><ul id="R-subsections-62d70e99f8941f86fbf4d8780b33e646" class="collapsible-menu"></ul></li>
             <li class="" data-nav-id="/420-515/semaine-6/index.html"><a class="padding" href="/420-515/semaine-6/index.html">Semaine 6 — Réusinage (refactoring) et code smells</a><ul id="R-subsections-f67fcebe2365ce5f296a1590e7b19ab6" class="collapsible-menu"></ul></li>
             <li class="" data-nav-id="/420-515/semaine-7/index.html"><a class="padding" href="/420-515/semaine-7/index.html">Semaine 7 — Conteneurisation avec Docker</a><ul id="R-subsections-46cef0e5d7909a168d728f129b96eadf" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-8/index.html"><a class="padding" href="/420-515/semaine-8/index.html">Semaine 8 — Évolution d&#39;API : versionnage et compatibilité</a><ul id="R-subsections-6321075fd0c8050ebc7b6d32e8aeee82" class="collapsible-menu"></ul></li>
           </ul>
         </div>
         <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
@@ -301,8 +302,8 @@ sensible au comportement qu&rsquo;il est censé vérifier.</p>
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1791236519" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1791236519" defer></script>
-    <script src="/420-515/js/theme.js?1791236519" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1792303817" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1792303817" defer></script>
+    <script src="/420-515/js/theme.js?1792303817" defer></script>
   </body>
 </html>

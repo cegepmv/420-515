@@ -23,28 +23,28 @@
     <meta itemprop="name" content="Registres de conteneurs et publication automatisée (CI/CD) :: Maintenance de logiciel">
     <meta itemprop="description" content="Une image construite seulement sur votre machine ne sert à personne d’autre. Un registre de conteneurs est un serveur qui héberge des images Docker, pour les partager, les versionner et les télécharger depuis n’importe quelle machine (y compris un serveur de production ou un cluster Kubernetes, vu plus tard dans le cours).
 1️⃣ Le cycle complet : Build → Push → Pull → Run Le registre s’insère entre deux moments distincts du cycle de vie d’une image : sa construction (vue à la page précédente) et son exécution ailleurs que sur la machine qui l’a construite.">
-    <meta itemprop="wordCount" content="1889">
+    <meta itemprop="wordCount" content="1758">
     <title>Registres de conteneurs et publication automatisée (CI/CD) :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1791257862" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1791257862" defer></script>
-    <script src="/420-515/js/search-lunr.js?1791257862" defer></script>
-    <script src="/420-515/js/search.js?1791257862" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1792388513" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1792388513" defer></script>
+    <script src="/420-515/js/search-lunr.js?1792388513" defer></script>
+    <script src="/420-515/js/search.js?1792388513" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1791257862";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1792388513";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1791257862" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1791257862" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1791257862" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1791257862" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1792388513" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1792388513" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1792388513" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1792388513" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791257862" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791257862" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1791257862" rel="stylesheet">
-    <link href="/420-515/css/theme.css?1791257862" rel="stylesheet">
-    <link href="/420-515/css/format-html.css?1791257862" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1792388513" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1792388513" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1792388513" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1792388513" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1792388513" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -270,10 +270,18 @@ qui indique à Docker <strong>où</strong> pousser l&rsquo;image lors du <code>d
 </span></span></span><span style="display:flex;"><span><span style="color:#e6db74">docker push &lt;votre-nom-utilisateur&gt;/&lt;nom-de-l&#39;</span>image&gt;:latest</span></span></code></pre></div>
 <hr>
 <h2 id="4-automatiser-la-publication-dans-le-pipeline-github-actions">4️⃣ Automatiser la publication dans le pipeline GitHub Actions</h2>
+<blockquote>
+<p>💡 <strong>Où est le <code>Dockerfile</code> dans tout ça ?</strong> Les workflows ci-dessous ne recopient jamais le
+contenu d&rsquo;un <code>Dockerfile</code> — ils l&rsquo;utilisent implicitement. <code>docker/build-push-action@v6</code> avec
+<code>context: .</code> fonctionne exactement comme <code>docker build .</code> en ligne de commande : il s&rsquo;attend à
+trouver un fichier nommé <code>Dockerfile</code> à la racine de ce contexte. Ce <code>Dockerfile</code> (l&rsquo;Option A vue
+à la page précédente, <a href="/420-515/semaine-7/docker/">Docker</a>) doit déjà exister, versionné
+dans le dépôt — le pipeline ne le génère <strong>jamais</strong>, il se contente de l&rsquo;exécuter.</p>
+</blockquote>
 <p>Deux façons valables d&rsquo;organiser ce job dans votre pipeline, selon que vous privilégiez la
 simplicité ou la réutilisation stricte de la matrice de tests JDK 21/25 (semaine 5) :</p>
-<p><a href="#R-image-942c4a38cac36ff5a2c0adada2a8931b" class="lightbox-link"><img alt="Où se situe la publication Docker dans le pipeline CI/CD" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-7/registre-conteneurs/images/pipeline-docker-publish.svg" style=" height: auto; width: auto;"></a>
-<a href="javascript:history.back();" class="lightbox-back" id="R-image-942c4a38cac36ff5a2c0adada2a8931b"><img alt="Où se situe la publication Docker dans le pipeline CI/CD" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-7/registre-conteneurs/images/pipeline-docker-publish.svg"></a></p>
+<p><a href="#R-image-cc4c68658a28313cc6012a62d96b5c31" class="lightbox-link"><img alt="Où se situe la publication Docker dans le pipeline CI/CD" class="lazy lightbox figure-image" loading="lazy" src="/420-515/semaine-7/registre-conteneurs/images/pipeline-docker-publish.svg" style=" height: auto; width: auto;"></a>
+<a href="javascript:history.back();" class="lightbox-back" id="R-image-cc4c68658a28313cc6012a62d96b5c31"><img alt="Où se situe la publication Docker dans le pipeline CI/CD" class="lazy lightbox lightbox-image" loading="lazy" src="/420-515/semaine-7/registre-conteneurs/images/pipeline-docker-publish.svg"></a></p>
 <h3 id="structure-a--job-unique-compile-construit-et-publie-dans-la-même-session">Structure A — Job unique (compile, construit et publie dans la même session)</h3>
 <p>La plus simple : un seul job compile le projet (une seule fois, sans matrice), puis construit et
 publie immédiatement l&rsquo;image, en utilisant un <code>Dockerfile</code> « exécution seulement » (Option A, voir
@@ -497,28 +505,6 @@ workflow — vous n&rsquo;avez rien à configurer manuellement dans les secrets 
 GHCR (contrairement à un Personal Access Token, nécessaire seulement pour une publication
 <strong>manuelle</strong> depuis votre poste, comme à la section précédente).</p>
 </blockquote>
-<blockquote>
-<p>⚠️ <strong>Erreur fréquente dans un dépôt d&rsquo;organisation</strong> : <code>denied: installation not allowed to Create organization package</code>. Deux réglages distincts du <code>permissions:</code> du workflow peuvent en
-être la cause, <strong>avant</strong> même d&rsquo;envisager un blocage au niveau de l&rsquo;organisation :</p>
-<ol>
-<li><strong>Au niveau du dépôt</strong> — <code>Settings → Actions → General → Workflow permissions</code> doit être réglé
-sur <strong>« Read and write permissions »</strong> (et non « Read repository contents permission only »,
-le réglage par défaut sur de nombreux dépôts). Sans ce réglage, le <code>GITHUB_TOKEN</code> reste en
-lecture seule, peu importe ce qui est déclaré dans <code>permissions:</code> du fichier YAML — ce dernier
-ne peut que <strong>restreindre</strong> davantage les droits, jamais en accorder au-delà de ce réglage du
-dépôt.</li>
-<li><strong>Au niveau du workflow</strong> — <code>permissions: packages: write</code> (déjà présent dans nos deux
-structures) doit être explicitement déclaré, sans quoi certains dépôts appliquent des
-permissions par défaut plus restrictives que celles du point 1.</li>
-</ol>
-<p>Si les deux sont corrects et que l&rsquo;erreur persiste <strong>uniquement</strong> à la toute première publication
-d&rsquo;un package dans un dépôt d&rsquo;<strong>organisation</strong>, le blocage vient alors d&rsquo;un troisième réglage,
-propre à l&rsquo;organisation elle-même : <strong>Organization settings → Packages</strong> doit autoriser la
-création de nouveaux packages par les workflows Actions. Ce réglage n&rsquo;est pas accessible depuis
-le dépôt — seul un <strong>propriétaire de l&rsquo;organisation</strong> peut l&rsquo;activer. Une fois le package créé une
-première fois (manuellement ou après ce réglage), les publications suivantes fonctionnent
-normalement avec le seul <code>GITHUB_TOKEN</code>.</p>
-</blockquote>
 <hr>
 <h2 id="-références">📚 Références</h2>
 <ul>
@@ -535,7 +521,9 @@ normalement avec le seul <code>GITHUB_TOKEN</code>.</p>
   </summary>
   <div class="box-content">
 <p>Poursuivez avec l&rsquo;<a href="/420-515/semaine-7/exercice-registre-conteneurs/">exercice Registre de conteneurs</a>
-pour publier réellement une image depuis votre propre pipeline CI.</p>
+pour publier réellement une image depuis votre propre pipeline CI. Pour voir comment un tag Git
+déclenche aussi la création automatique d&rsquo;une Release GitHub, consultez
+<a href="/420-515/semaine-8/tags-releases-github/">Tags Git et publications (Releases) GitHub</a> à la semaine 8.</p>
   </div>
 </details>
 
@@ -597,6 +585,7 @@ pour publier réellement une image depuis votre propre pipeline CI.</p>
             <li class="active " data-nav-id="/420-515/semaine-7/registre-conteneurs/index.html"><a class="padding" href="/420-515/semaine-7/registre-conteneurs/index.html">Registres de conteneurs et publication automatisée (CI/CD)</a></li>
             <li class="" data-nav-id="/420-515/semaine-7/exercice-registre-conteneurs/index.html"><a class="padding" href="/420-515/semaine-7/exercice-registre-conteneurs/index.html">Exercice : publier une image sur GitHub Container Registry</a></li>
             <li class="" data-nav-id="/420-515/semaine-7/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-7/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-8/index.html"><a class="padding" href="/420-515/semaine-8/index.html">Semaine 8 — Évolution d&#39;API : versionnage et compatibilité</a><ul id="R-subsections-6321075fd0c8050ebc7b6d32e8aeee82" class="collapsible-menu"></ul></li>
           </ul>
         </div>
         <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
@@ -632,8 +621,8 @@ pour publier réellement une image depuis votre propre pipeline CI.</p>
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1791257862" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1791257862" defer></script>
-    <script src="/420-515/js/theme.js?1791257862" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1792388513" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1792388513" defer></script>
+    <script src="/420-515/js/theme.js?1792388513" defer></script>
   </body>
 </html>

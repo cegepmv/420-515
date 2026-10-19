@@ -25,26 +25,26 @@
 1️⃣ Vocabulaire de base Terme Définition Workflow Un fichier YAML (.github/workflows/*.yml) décrivant une automatisation complète, déclenchée par un ou plusieurs événements Événement (event) Ce qui déclenche l’exécution d’un workflow (push, pull_request, workflow_dispatch, schedule, etc.) Job Un ensemble d’étapes exécutées séquentiellement, sur une seule machine virtuelle (runner) Step Une étape individuelle à l’intérieur d’un job : soit une commande shell (run:), soit une action réutilisable (uses:) Action Une unité de code réutilisable et partageable (souvent publiée sur le Marketplace), ex. actions/checkout@v5 Runner La machine virtuelle éphémère (neuve à chaque exécution) sur laquelle un job s’exécute (ubuntu-latest, windows-latest, etc., ou un runner auto-hébergé) Run (exécution) Une instance concrète d’exécution d’un workflow, déclenchée par un événement précis (visible sous l’onglet Actions du dépôt) 💡 Un dépôt peut contenir plusieurs fichiers de workflow dans .github/workflows/, chacun avec ses propres déclencheurs et responsabilités (ex. un pour la CI, un autre pour publier une documentation, un autre pour créer une release).">
     <meta itemprop="wordCount" content="1998">
     <title>GitHub Actions — les bases :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1791264716" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1791264716" defer></script>
-    <script src="/420-515/js/search-lunr.js?1791264716" defer></script>
-    <script src="/420-515/js/search.js?1791264716" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1792388513" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1792388513" defer></script>
+    <script src="/420-515/js/search-lunr.js?1792388513" defer></script>
+    <script src="/420-515/js/search.js?1792388513" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1791264716";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1792388513";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1791264716" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1791264716" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1791264716" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1791264716" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1792388513" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1792388513" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1792388513" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1792388513" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791264716" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791264716" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1791264716" rel="stylesheet">
-    <link href="/420-515/css/theme.css?1791264716" rel="stylesheet">
-    <link href="/420-515/css/format-html.css?1791264716" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1792388513" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1792388513" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1792388513" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1792388513" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1792388513" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -557,6 +557,7 @@ appliquer ces bases à un pipeline concret qui construit votre projet et exécut
             <li class="" data-nav-id="/420-515/semaine-5/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-5/activite-pratique/index.html">Activité pratique</a></li></ul></li>
             <li class="" data-nav-id="/420-515/semaine-6/index.html"><a class="padding" href="/420-515/semaine-6/index.html">Semaine 6 — Réusinage (refactoring) et code smells</a><ul id="R-subsections-f67fcebe2365ce5f296a1590e7b19ab6" class="collapsible-menu"></ul></li>
             <li class="" data-nav-id="/420-515/semaine-7/index.html"><a class="padding" href="/420-515/semaine-7/index.html">Semaine 7 — Conteneurisation avec Docker</a><ul id="R-subsections-46cef0e5d7909a168d728f129b96eadf" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-8/index.html"><a class="padding" href="/420-515/semaine-8/index.html">Semaine 8 — Évolution d&#39;API : versionnage et compatibilité</a><ul id="R-subsections-6321075fd0c8050ebc7b6d32e8aeee82" class="collapsible-menu"></ul></li>
           </ul>
         </div>
         <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
@@ -592,8 +593,8 @@ appliquer ces bases à un pipeline concret qui construit votre projet et exécut
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1791264716" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1791264716" defer></script>
-    <script src="/420-515/js/theme.js?1791264716" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1792388513" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1792388513" defer></script>
+    <script src="/420-515/js/theme.js?1792388513" defer></script>
   </body>
 </html>

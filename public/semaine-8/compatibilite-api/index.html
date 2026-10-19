@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.166.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="Cette page s’appuie sur deux sources : les API Improvement Proposals (AIP) de Google — guides de conception d’API publics et largement cités dans l’industrie — et le code réel du projet utilisé dans ce cours.
+1️⃣ Une API est un contrat « Les API sont fondamentalement des contrats avec les utilisateurs, et les utilisateurs écrivent souvent du code contre une API qui est ensuite déployé en production avec l’attente qu’il continue de fonctionner. » — Google AIP-180, Backwards compatibility (traduction libre)">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Compatibilité d&#39;API : changements compatibles et changements cassants :: Maintenance de logiciel">
+    <meta name="twitter:description" content="Cette page s’appuie sur deux sources : les API Improvement Proposals (AIP) de Google — guides de conception d’API publics et largement cités dans l’industrie — et le code réel du projet utilisé dans ce cours.
+1️⃣ Une API est un contrat « Les API sont fondamentalement des contrats avec les utilisateurs, et les utilisateurs écrivent souvent du code contre une API qui est ensuite déployé en production avec l’attente qu’il continue de fonctionner. » — Google AIP-180, Backwards compatibility (traduction libre)">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-8/compatibilite-api/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Compatibilité d&#39;API : changements compatibles et changements cassants :: Maintenance de logiciel">
+    <meta property="og:description" content="Cette page s’appuie sur deux sources : les API Improvement Proposals (AIP) de Google — guides de conception d’API publics et largement cités dans l’industrie — et le code réel du projet utilisé dans ce cours.
+1️⃣ Une API est un contrat « Les API sont fondamentalement des contrats avec les utilisateurs, et les utilisateurs écrivent souvent du code contre une API qui est ensuite déployé en production avec l’attente qu’il continue de fonctionner. » — Google AIP-180, Backwards compatibility (traduction libre)">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 8 — Évolution d&#39;API : versionnage et compatibilité">
+    <meta itemprop="name" content="Compatibilité d&#39;API : changements compatibles et changements cassants :: Maintenance de logiciel">
+    <meta itemprop="description" content="Cette page s’appuie sur deux sources : les API Improvement Proposals (AIP) de Google — guides de conception d’API publics et largement cités dans l’industrie — et le code réel du projet utilisé dans ce cours.
+1️⃣ Une API est un contrat « Les API sont fondamentalement des contrats avec les utilisateurs, et les utilisateurs écrivent souvent du code contre une API qui est ensuite déployé en production avec l’attente qu’il continue de fonctionner. » — Google AIP-180, Backwards compatibility (traduction libre)">
+    <meta itemprop="wordCount" content="1972">
+    <title>Compatibilité d&#39;API : changements compatibles et changements cassants :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1792383874" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1792383874" defer></script>
+    <script src="/420-515/js/search-lunr.js?1792383874" defer></script>
+    <script src="/420-515/js/search.js?1792383874" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1792383874";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1792383874" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1792383874" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1792383874" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1792383874" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1792383874" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1792383874" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1792383874" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1792383874" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1792383874" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = ``;
+      window.relearn.path='\/semaine-8\/compatibilite-api\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-8/compatibilite-api/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-8/index.html"><span itemprop="name">Semaine 8 — Évolution d&#39;API : versionnage et compatibilité</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Compatibilité d&#39;API : changements compatibles et changements cassants</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-8" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="compatibilité-dapi--changements-compatibles-et-changements-cassants">Compatibilité d&#39;API : changements compatibles et changements cassants</h1>
+
+<p>Cette page s&rsquo;appuie sur deux sources : les <strong>API Improvement Proposals (AIP)</strong> de Google —
+guides de conception d&rsquo;API publics et largement cités dans l&rsquo;industrie — et le code réel du
+projet utilisé dans ce cours.</p>
+<hr>
+<h2 id="1-une-api-est-un-contrat">1️⃣ Une API est un contrat</h2>
+<blockquote>
+<p>« Les API sont fondamentalement des contrats avec les utilisateurs, et les utilisateurs écrivent
+souvent du code contre une API qui est ensuite déployé en production avec l&rsquo;attente qu&rsquo;il
+continue de fonctionner. »
+— <a href="https://google.aip.dev/180" rel="external" target="_blank">Google AIP-180, Backwards compatibility</a> (traduction libre)</p>
+</blockquote>
+<p>Concrètement : du code écrit aujourd&rsquo;hui contre votre API doit continuer à fonctionner demain,
+même si vous publiez de nouvelles versions — à moins d&rsquo;avoir explicitement averti vos utilisateurs
+du contraire (via SemVer, voir la page précédente).</p>
+<hr>
+<h2 id="2-trois-types-de-compatibilité-aip-180">2️⃣ Trois types de compatibilité (AIP-180)</h2>
+<p>AIP-180 distingue trois formes de compatibilité à préserver :</p>
+<table>
+	<thead>
+			<tr>
+					<th>Type</th>
+					<th>Définition (AIP-180)</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>Source</strong></td>
+					<td>Du code écrit contre une version précédente doit continuer à <strong>compiler</strong> contre une nouvelle version</td>
+			</tr>
+			<tr>
+					<td><strong>Wire</strong> (protocole réseau)</td>
+					<td>Du code écrit contre une version précédente doit pouvoir <strong>communiquer correctement</strong> avec un serveur plus récent (les formats de sérialisation/désérialisation restent compatibles)</td>
+			</tr>
+			<tr>
+					<td><strong>Sémantique</strong></td>
+					<td>Du code écrit contre une version précédente doit continuer à recevoir <strong>ce à quoi un développeur raisonnable s&rsquo;attendrait</strong></td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>⚠️ AIP-180 précise aussi : « il n&rsquo;est pas toujours évident de savoir si un changement est
+compatible ou non [&hellip;] ce guide doit être traité comme indicatif, plutôt que comme une liste
+exhaustive de tous les changements possibles. » Les règles qui suivent sont donc des repères
+solides, pas une liste parfaitement complète.</p>
+</blockquote>
+<h3 id="illustrer-les-trois-types-avec-un-seul-endpoint">Illustrer les trois types avec un seul endpoint</h3>
+<p>Les trois types de compatibilité ne se chevauchent pas : un changement peut casser <strong>un seul</strong>
+des trois, sans toucher aux deux autres. Prenons <code>GET /owners/{id}</code>, qui retourne aujourd&rsquo;hui :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{ <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#ae81ff">1</span>, <span style="color:#f92672">&#34;firstName&#34;</span>: <span style="color:#e6db74">&#34;George&#34;</span>, <span style="color:#f92672">&#34;lastName&#34;</span>: <span style="color:#e6db74">&#34;Franklin&#34;</span> }</span></span></code></pre></div>
+<table>
+	<thead>
+			<tr>
+					<th>Type cassé</th>
+					<th>Changement illustratif</th>
+					<th>Pourquoi ce type précisément</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>Source</strong> seulement</td>
+					<td>Retirer un paramètre d&rsquo;une méthode Java générée par le client SDK (ex. <code>OwnerClient.getOwner(int id)</code> devient <code>getOwner(int id, boolean includePets)</code>)</td>
+					<td>Le code client existant ne <strong>compile plus</strong> (paramètre manquant), même si le JSON échangé sur le réseau n&rsquo;a pas changé</td>
+			</tr>
+			<tr>
+					<td><strong>Wire</strong> seulement</td>
+					<td>Changer le type JSON du champ <code>id</code> de nombre (<code>1</code>) à chaîne (<code>&quot;1&quot;</code>)</td>
+					<td>Le code client <strong>compile</strong> toujours (il garde la même signature), mais la <strong>désérialisation</strong> échoue à l&rsquo;exécution — le format transmis sur le réseau n&rsquo;est plus celui attendu</td>
+			</tr>
+			<tr>
+					<td><strong>Sémantique</strong> seulement</td>
+					<td>Sans changer ni structure ni type, faire en sorte que <code>lastName</code> retourne désormais le nom de jeune fille plutôt que le nom d&rsquo;usage</td>
+					<td>Le code client compile, le JSON a la même forme et les mêmes types — mais la <strong>valeur reçue ne correspond plus</strong> à ce qu&rsquo;un développeur attend raisonnablement d&rsquo;un champ nommé <code>lastName</code></td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 En pratique, un seul changement casse souvent <strong>plusieurs</strong> types à la fois (ex. retirer un
+champ casse à la fois le wire et, si du code dépendait de ce champ, le source). Les distinguer
+aide surtout à <strong>diagnostiquer</strong> pourquoi un changement qui « semble mineur » (même structure,
+même type) peut quand même casser des clients — comme dans l&rsquo;exemple sémantique ci-dessus.</p>
+</blockquote>
+<hr>
+<h2 id="3-ajouter-des-éléments--généralement-compatible-avec-des-exceptions">3️⃣ Ajouter des éléments : généralement compatible, avec des exceptions</h2>
+<p>Selon AIP-180, section <em>Adding components</em> :</p>
+<blockquote>
+<p>« En général, de nouveaux composants (interfaces, méthodes, messages, champs, énumérations) PEUVENT
+être ajoutés à des API existantes dans la même version majeure. »</p>
+</blockquote>
+<p>Mais la même section pose des conditions précises :</p>
+<ul>
+<li>« De <strong>nouveaux champs obligatoires</strong> (<em>required</em>) NE DOIVENT PAS être ajoutés à des messages de
+requête ou des ressources existants. »</li>
+<li>« Tout champ pouvant être rempli par le client DOIT avoir un comportement par défaut qui
+correspond au comportement d&rsquo;avant l&rsquo;introduction du champ. »</li>
+<li>« Tout champ précédemment rempli par le serveur DOIT continuer à l&rsquo;être. »</li>
+</ul>
+<p>Et selon la section <em>Removing or renaming components</em> :</p>
+<blockquote>
+<p>« Des composants existants NE DOIVENT PAS être retirés d&rsquo;une API existante dans la même version
+majeure. Retirer un composant est un changement non rétrocompatible. [&hellip;] Renommer un composant
+est sémantiquement équivalent à « retirer puis ajouter ». »</p>
+</blockquote>
+<table>
+	<thead>
+			<tr>
+					<th>Type de changement</th>
+					<th>Compatible selon AIP-180 ?</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Ajouter un champ <strong>optionnel</strong> à une réponse</td>
+					<td>✅ Oui</td>
+			</tr>
+			<tr>
+					<td>Ajouter un champ <strong>obligatoire</strong> à une requête existante</td>
+					<td>❌ Non — casse les clients qui ne l&rsquo;envoient pas</td>
+			</tr>
+			<tr>
+					<td>Ajouter une nouvelle route/endpoint</td>
+					<td>✅ Oui</td>
+			</tr>
+			<tr>
+					<td>Retirer un champ existant</td>
+					<td>❌ Non, explicitement cassant</td>
+			</tr>
+			<tr>
+					<td>Renommer un champ existant</td>
+					<td>❌ Non — « équivalent à retirer puis ajouter »</td>
+			</tr>
+			<tr>
+					<td>Changer le type d&rsquo;un champ existant</td>
+					<td>❌ Non (section <em>Changing the type of fields</em> : « ne doivent pas avoir leur type changé, même si le nouveau type est compatible au niveau du protocole »)</td>
+			</tr>
+	</tbody>
+</table>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Une équipe ajoute un champ <code>email</code> optionnel à la réponse JSON d&rsquo;un endpoint <code>GET /owners/{id}</code>
+existant. Les clients actuels ignorent simplement ce champ inconnu. Selon AIP-180, ce changement
+est-il compatible, et quel type d&rsquo;incrément SemVer justifie-t-il ?</p>
+<p><strong>Réponse</strong> : oui, compatible — un champ ajouté à une réponse, que les anciens clients peuvent
+ignorer sans erreur, respecte la règle « nouveaux composants PEUVENT être ajoutés ». Selon la
+règle 7 de SemVer (page précédente), l&rsquo;ajout d&rsquo;une fonctionnalité rétrocompatible justifie un
+incrément <strong>MINEUR</strong> (ex. <code>4.0.2</code> → <code>4.1.0</code>), pas un incrément MAJEUR.</p>
+</details>
+<hr>
+<h2 id="4-exemples-réels-de-lindustrie--github-et-stripe">4️⃣ Exemples réels de l&rsquo;industrie : GitHub et Stripe</h2>
+<p>Les règles d&rsquo;AIP-180 ne sont pas propres à Google : d&rsquo;autres fournisseurs d&rsquo;API largement utilisés,
+dont GitHub lui-même, publient des règles quasi identiques — et documentent publiquement de vrais
+changements classés « cassant » ou « non cassant ».</p>
+<h3 id="github-rest-api--une-liste-officielle-quasi-identique-à-aip-180">GitHub REST API : une liste officielle quasi identique à AIP-180</h3>
+<p>La documentation officielle de l&rsquo;API REST de GitHub définit, presque terme à terme, les mêmes deux
+catégories que celles vues à la section 3️⃣ :</p>
+<blockquote>
+<p>« Les changements cassants (<em>breaking changes</em>) sont des changements qui peuvent potentiellement
+briser une intégration. [&hellip;] Les changements cassants comprennent :</p>
+<ul>
+<li>Retirer une opération entière</li>
+<li>Retirer ou renommer un paramètre</li>
+<li>Retirer ou renommer un champ de réponse</li>
+<li>Ajouter un nouveau paramètre obligatoire</li>
+<li>Rendre obligatoire un paramètre auparavant optionnel</li>
+<li>Changer le type d&rsquo;un paramètre ou d&rsquo;un champ de réponse</li>
+<li>Retirer des valeurs d&rsquo;énumération</li>
+<li>Changer les exigences d&rsquo;authentification ou d&rsquo;autorisation »
+— <a href="https://docs.github.com/en/rest/about-the-rest-api/api-versions" rel="external" target="_blank">GitHub Docs, <em>API Versions</em></a></li>
+</ul>
+</blockquote>
+<blockquote>
+<p>« Tout changement additif (non cassant) sera disponible dans toutes les versions d&rsquo;API
+supportées. Les changements additifs comprennent :</p>
+<ul>
+<li>Ajouter une opération</li>
+<li>Ajouter un paramètre optionnel</li>
+<li>Ajouter un champ de réponse</li>
+<li>Ajouter des valeurs d&rsquo;énumération »
+— <a href="https://docs.github.com/en/rest/about-the-rest-api/api-versions" rel="external" target="_blank">GitHub Docs, <em>API Versions</em></a></li>
+</ul>
+</blockquote>
+<p>GitHub va même plus loin qu&rsquo;une simple classification : chaque nouvelle version de son API REST
+(nommée par date, ex. <code>2022-11-28</code>) reste <strong>supportée au moins 24 mois</strong> après la sortie d&rsquo;une
+version plus récente, et le client choisit sa version via un en-tête dédié —
+<code>X-GitHub-Api-Version: 2022-11-28</code> — exactement le même mécanisme de versionnage par en-tête que
+Stripe (<code>Stripe-Version</code>, voir section 6️⃣).</p>
+<h3 id="stripe--deux-vrais-changements-tirés-du-changelog-public">Stripe : deux vrais changements tirés du changelog public</h3>
+<p>Stripe publie un <a href="https://docs.stripe.com/changelog" rel="external" target="_blank">changelog public</a> de chaque changement
+apporté à son API, classé explicitement <strong>Breaking</strong> ou <strong>Non-breaking</strong>. En voici deux exemples
+réels, documentés tels quels par Stripe :</p>
+<p><strong>Un vrai changement cassant</strong> — renommer un paramètre <em>et</em> changer son type :</p>
+<blockquote>
+<p>« Renomme le paramètre <code>filters.countries</code> en <code>filters.country</code> et change son type d&rsquo;un tableau
+de chaînes à une seule chaîne [&hellip;]. Le paramètre <code>filters.countries</code> n&rsquo;existe plus. Si votre
+code transmet un tableau de codes de pays à <code>filters.countries</code>, vous devez le remplacer par
+<code>filters.country</code> avec une seule valeur de chaîne. Transmettre l&rsquo;ancien nom de paramètre ou une
+valeur de tableau entraîne une erreur. »
+— <a href="https://docs.stripe.com/changelog/endive/2026-09-30/rename-financial-connections-countries-filter-to-country" rel="external" target="_blank">Stripe Changelog, <em>Renames the countries filter to country</em></a></p>
+</blockquote>
+<p>Ce changement illustre <strong>à la fois</strong> deux règles vues à la section 3️⃣ : renommer un champ
+(« équivalent à retirer puis ajouter ») et changer son type — deux changements que AIP-180 qualifie
+chacun, indépendamment, de non rétrocompatibles.</p>
+<p><strong>Un vrai changement additif (classé non cassant)</strong> — ajouter des valeurs d&rsquo;énumération :</p>
+<blockquote>
+<p>« La propriété <code>account_numbers.status</code> [&hellip;] prend maintenant en charge deux nouvelles valeurs :
+<code>pending</code> et <code>expired</code>. [&hellip;] Si votre intégration utilise <code>account_numbers.status</code>, mettez-la à
+jour pour gérer ces nouvelles valeurs en plus de <code>transactable</code> et <code>deactivated</code>. »
+— <a href="https://docs.stripe.com/changelog/endive/2026-09-30/pending-and-expired-status-added-to-financial-connections-account-numbers" rel="external" target="_blank">Stripe Changelog, <em>Adds pending and expired statuses</em></a></p>
+</blockquote>
+<blockquote>
+<p>⚠️ Ce deuxième exemple illustre bien la nuance soulevée par AIP-180 à la section 2️⃣ : Stripe
+classe cet ajout comme <strong>non cassant</strong> (il respecte la règle « on PEUT ajouter de nouvelles
+valeurs d&rsquo;énumération »), tout en précisant lui-même qu&rsquo;une intégration cliente qui ne gère pas
+explicitement une valeur inconnue de ce champ devrait être mise à jour. Un changement peut donc
+être « compatible selon les règles » tout en exigeant, en pratique, une vigilance du côté client.</p>
+</blockquote>
+<hr>
+<h2 id="5-exemple-réel-du-projet--deux-versions-dun-même-endpoint">5️⃣ Exemple réel du projet : deux versions d&rsquo;un même endpoint</h2>
+<p>Le projet utilisé dans ce cours expose <strong>réellement</strong> deux versions de la liste des propriétaires,
+déclarées dans son fichier <code>openapi.yml</code> :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># openapi.yml — extrait réel du projet (src/main/resources/openapi.yml)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">/owners</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">post</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">tags</span>: [<span style="color:#ae81ff">owners]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">operationId</span>: <span style="color:#ae81ff">addOwner</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">summary</span>: <span style="color:#ae81ff">Adds a pet owner</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">get</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">tags</span>: [<span style="color:#ae81ff">owners]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">operationId</span>: <span style="color:#ae81ff">listOwners</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">summary</span>: <span style="color:#ae81ff">Lists pet owners</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">description</span>: <span style="color:#ae81ff">Returns an array of pet owners.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># ... retourne un tableau JSON brut (type: array)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">/v2/owners</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">get</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">tags</span>: [<span style="color:#ae81ff">owner-v2]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">operationId</span>: <span style="color:#ae81ff">listOwnersPage</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">summary</span>: <span style="color:#ae81ff">Lists pet owners with pagination</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">description</span>: <span style="color:#ae81ff">Returns a page of pet owners.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># ... retourne un objet paginé (page), pas un tableau brut</span></span></span></code></pre></div>
+<p>Deux contrôleurs distincts implémentent ces deux routes dans le code :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// OwnerRestControllerV1.java — GET /api/owners</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> ResponseEntity<span style="color:#f92672">&lt;</span>List<span style="color:#f92672">&lt;</span>OwnerDto<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">listOwners</span>(String lastName) {
+</span></span><span style="display:flex;"><span>    Collection<span style="color:#f92672">&lt;</span>Owner<span style="color:#f92672">&gt;</span> owners <span style="color:#f92672">=</span> (lastName <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">?</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">clinicService</span>.<span style="color:#a6e22e">findOwnerByLastName</span>(lastName)
+</span></span><span style="display:flex;"><span>        : <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">clinicService</span>.<span style="color:#a6e22e">findAllOwners</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ResponseEntity<span style="color:#f92672">&lt;&gt;</span>(ownerMapper.<span style="color:#a6e22e">toOwnerDtoCollection</span>(owners), HttpStatus.<span style="color:#a6e22e">OK</span>);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#75715e">// OwnerRestControllerV2.java — GET /api/v2/owners</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> ResponseEntity<span style="color:#f92672">&lt;</span>OwnerPageDto<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">listOwnersPage</span>(String lastName, Integer page, Integer size) {
+</span></span><span style="display:flex;"><span>    Page<span style="color:#f92672">&lt;</span>Owner<span style="color:#f92672">&gt;</span> owners <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">clinicService</span>.<span style="color:#a6e22e">findOwners</span>(
+</span></span><span style="display:flex;"><span>        lastName, PageRequest.<span style="color:#a6e22e">of</span>(page, size, Sort.<span style="color:#a6e22e">by</span>(<span style="color:#e6db74">&#34;id&#34;</span>)));
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> ResponseEntity<span style="color:#f92672">&lt;&gt;</span>(ownerMapper.<span style="color:#a6e22e">toOwnerPageDto</span>(owners), HttpStatus.<span style="color:#a6e22e">OK</span>);
+</span></span><span style="display:flex;"><span>}</span></span></code></pre></div>
+<p>Le chemin d&rsquo;URI détermine donc <strong>quelle méthode Java</strong> traite la requête : <code>listOwners</code> (V1)
+retourne directement un <code>List&lt;OwnerDto&gt;</code> sérialisé en tableau JSON, tandis que <code>listOwnersPage</code>
+(V2) retourne un <code>OwnerPageDto</code> (objet paginé avec métadonnées). La forme de la réponse (tableau
+brut vs objet paginé) est <strong>différente</strong> — un client qui attend un tableau JSON planterait en
+recevant un objet. C&rsquo;est précisément le genre de changement que la section <em>Removing or renaming
+components</em> d&rsquo;AIP-180 qualifie d&rsquo;incompatible s&rsquo;il avait été appliqué <strong>directement</strong> sur
+<code>/owners</code> : la forme de la réponse n&rsquo;est pas la même, donc d&rsquo;anciens clients cesseraient de
+fonctionner.</p>
+<p>La solution appliquée dans ce projet correspond à la recommandation d&rsquo;AIP-181
+(<em>Stability levels</em>, section <em>Major versions</em>) :</p>
+<blockquote>
+<p>« Quand des changements cassants deviennent nécessaires, le producteur de l&rsquo;API DEVRAIT créer la
+prochaine version majeure de l&rsquo;API [&hellip;]. »
+— <a href="https://google.aip.dev/181" rel="external" target="_blank">Google AIP-181</a></p>
+</blockquote>
+<p><code>/owners</code> (V1) continue de fonctionner exactement comme avant, sans aucune modification, pendant
+que <code>/v2/owners</code> (V2) introduit le nouveau format pour les clients prêts à l&rsquo;adopter.</p>
+<hr>
+<h2 id="6-comment-signaler-une-version-au-client--chemin-duri-vs-en-tête-http">6️⃣ Comment signaler une version au client : chemin d&rsquo;URI vs en-tête HTTP</h2>
+<p>Le projet du cours utilise le <strong>chemin d&rsquo;URI</strong> (<code>/v2/owners</code>) pour distinguer les versions —
+l&rsquo;approche la plus visible et la plus simple à documenter. Ce n&rsquo;est toutefois pas la seule
+pratique répandue dans l&rsquo;industrie. Stripe, par exemple, utilise un <strong>en-tête HTTP dédié</strong> :</p>
+<blockquote>
+<p>« Les requêtes faites avec curl utilisent la version d&rsquo;API par défaut de votre compte Stripe
+[&hellip;] à moins que vous ne la remplaciez en définissant l&rsquo;en-tête <code>Stripe-Version</code>. »
+— <a href="https://docs.stripe.com/api/versioning" rel="external" target="_blank">Stripe, Versioning</a></p>
+</blockquote>
+<table>
+	<thead>
+			<tr>
+					<th>Stratégie</th>
+					<th>Exemple concret</th>
+					<th>Avantage</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>Chemin d&rsquo;URI</strong></td>
+					<td><code>/v2/owners</code> (ce projet)</td>
+					<td>Visible directement dans l&rsquo;URL; simple à documenter et à tester avec <code>curl</code></td>
+			</tr>
+			<tr>
+					<td><strong>En-tête HTTP</strong></td>
+					<td><code>Stripe-Version: 2024-09-30</code></td>
+					<td>L&rsquo;URL reste identique entre versions; le client choisit sa version sans changer d&rsquo;adresse</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 Peu importe la stratégie choisie, le principe reste le même : <strong>la version précédente
+continue de fonctionner sans changement</strong>, le temps que les clients migrent vers la nouvelle.</p>
+</blockquote>
+<hr>
+<h2 id="-références">📚 Références</h2>
+<ul>
+<li>Google — <a href="https://google.aip.dev/180" rel="external" target="_blank">AIP-180: Backwards compatibility</a>.</li>
+<li>Google — <a href="https://google.aip.dev/181" rel="external" target="_blank">AIP-181: Stability levels</a>.</li>
+<li>Stripe — <a href="https://docs.stripe.com/api/versioning" rel="external" target="_blank">API Versioning</a>.</li>
+<li>GitHub Docs — <a href="https://docs.github.com/en/rest/about-the-rest-api/api-versions" rel="external" target="_blank">API Versions (REST)</a>.</li>
+<li>Stripe Changelog — <a href="https://docs.stripe.com/changelog/endive/2026-09-30/rename-financial-connections-countries-filter-to-country" rel="external" target="_blank">Renames the countries filter to country</a>.</li>
+<li>Stripe Changelog — <a href="https://docs.stripe.com/changelog/endive/2026-09-30/pending-and-expired-status-added-to-financial-connections-account-numbers" rel="external" target="_blank">Adds pending and expired statuses to Financial Connections account numbers</a>.</li>
+<li>Code source du projet du cours — <code>openapi.yml</code>, <code>OwnerRestControllerV1.java</code>, <code>OwnerRestControllerV2.java</code>.</li>
+</ul>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer
+  </summary>
+  <div class="box-content">
+<p>Poursuivez avec l&rsquo;<a href="/420-515/semaine-8/exercice-semver-compatibilite/">exercice SemVer et compatibilité</a>
+pour appliquer ces critères à des changements concrets.</p>
+  </div>
+</details>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-4/index.html"><a class="padding" href="/420-515/semaine-4/index.html">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</a><ul id="R-subsections-0a04879d58004f2299c8e47c33299b68" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-5/index.html"><a class="padding" href="/420-515/semaine-5/index.html">Semaine 5 — Tests automatisés et intégration continue</a><ul id="R-subsections-62d70e99f8941f86fbf4d8780b33e646" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-6/index.html"><a class="padding" href="/420-515/semaine-6/index.html">Semaine 6 — Réusinage (refactoring) et code smells</a><ul id="R-subsections-f67fcebe2365ce5f296a1590e7b19ab6" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-7/index.html"><a class="padding" href="/420-515/semaine-7/index.html">Semaine 7 — Conteneurisation avec Docker</a><ul id="R-subsections-46cef0e5d7909a168d728f129b96eadf" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-8/index.html"><a class="padding" href="/420-515/semaine-8/index.html">Semaine 8 — Évolution d&#39;API : versionnage et compatibilité</a><ul id="R-subsections-6321075fd0c8050ebc7b6d32e8aeee82" class="collapsible-menu">
+            <li class="" data-nav-id="/420-515/semaine-8/semver/index.html"><a class="padding" href="/420-515/semaine-8/semver/index.html">Gestion sémantique de version (SemVer)</a></li>
+            <li class="" data-nav-id="/420-515/semaine-8/tags-releases-github/index.html"><a class="padding" href="/420-515/semaine-8/tags-releases-github/index.html">Tags Git et publications (Releases) GitHub</a></li>
+            <li class="active " data-nav-id="/420-515/semaine-8/compatibilite-api/index.html"><a class="padding" href="/420-515/semaine-8/compatibilite-api/index.html">Compatibilité d&#39;API : changements compatibles et changements cassants</a></li>
+            <li class="" data-nav-id="/420-515/semaine-8/exercice-semver-compatibilite/index.html"><a class="padding" href="/420-515/semaine-8/exercice-semver-compatibilite/index.html">Exercice : SemVer et compatibilité d&#39;API</a></li>
+            <li class="" data-nav-id="/420-515/semaine-8/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-8/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1792383874" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1792383874" defer></script>
+    <script src="/420-515/js/theme.js?1792383874" defer></script>
+  </body>
+</html>

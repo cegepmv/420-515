@@ -371,6 +371,34 @@ curl http://localhost:9966/petclinic/api/vets
 > créé — seul l'état interne du conteneur (ex. des fichiers écrits en cours d'exécution, non
 > présents dans l'image) disparaît, sauf si un volume est explicitement monté pour le conserver.
 
+### Conserver des données entre les exécutions : les volumes
+
+Un **volume** est le mécanisme que Docker fournit précisément pour ce cas :
+
+> « Les volumes sont des espaces de stockage persistants pour les conteneurs, créés et gérés par
+> Docker. [...] Le contenu d'un volume existe en dehors du cycle de vie d'un conteneur donné.
+> Quand un conteneur est détruit, sa couche inscriptible est détruite avec lui. Utiliser un volume
+> garantit que les données sont conservées même si le conteneur qui les utilise est supprimé. »
+> — [Docker, *Volumes*](https://docs.docker.com/engine/storage/volumes/)
+
+Concrètement, on monte un volume au démarrage du conteneur avec l'option `-v` (ou `--mount`) :
+
+```bash
+docker run -d -v petclinic-data:/var/lib/petclinic -p 9966:9966 petclinic-legacy:local
+```
+
+`petclinic-data` est le nom du volume (Docker le crée automatiquement s'il n'existe pas encore);
+`/var/lib/petclinic` est le chemin, **à l'intérieur du conteneur**, dont le contenu sera conservé
+dans ce volume. Même après `docker stop` puis la suppression du conteneur (`docker rm`), le
+contenu de `petclinic-data` reste disponible pour un nouveau conteneur monté sur ce même volume.
+
+> ⚠️ Un volume ne protège que les données **explicitement écrites dans le chemin monté**. Pour la
+> base de données H2 en mémoire utilisée par défaut dans ce projet, les données ne sont de toute
+> façon pas persistées sur disque (voir `spring.sql.init.mode=always` dans
+> `application.properties`, qui recharge le schéma à chaque démarrage) — un volume n'y changerait
+> rien sans configuration additionnelle. Les volumes prennent tout leur sens avec une vraie base de
+> données externe (MySQL, PostgreSQL) s'exécutant elle-même dans un conteneur séparé.
+
 ---
 
 ## 7️⃣ Commandes Docker utiles au quotidien
@@ -427,17 +455,6 @@ auto-hébergé**. Voici la différence concrète entre les deux :
 | Docker préinstallé ? | ✅ Oui — Docker Engine et Buildx sont déjà présents sur `ubuntu-latest` | ❌ Non — à installer et maintenir vous-même |
 | Coût | Inclus (avec des minutes gratuites limitées selon le plan GitHub) | Le vôtre (électricité, matériel, maintenance) |
 | Cas d'usage typique | La grande majorité des projets, dont ce cours | Matériel spécifique (GPU, architecture ARM), réseau privé/pare-feu, ou builds très longs qui profitent d'un cache persistant |
-
-> 💡 C'est justement parce qu'`ubuntu-latest` fournit déjà Docker que les exemples de ce chapitre
-> (`docker build`, `docker/build-push-action`, etc.) fonctionnent **sans aucune étape
-> d'installation préalable** dans le workflow.
-
-> ⚠️ Un runner auto-hébergé n'est **pas** recréé à neuf entre deux exécutions : un fichier laissé
-> par un job précédent, une variable d'environnement exportée dans le shell, ou même une ancienne
-> image Docker encore en cache peuvent **fuiter** d'un run à l'autre. C'est un gain de rapidité
-> (rien à retélécharger), mais au prix de la garantie de reproductibilité stricte qu'offre un
-> runner hébergé — une raison de plus, sur un runner auto-hébergé, de ne jamais présumer de l'état
-> initial de la machine dans un workflow.
 
 ### Créer et enregistrer son propre runner auto-hébergé
 
@@ -523,9 +540,6 @@ jobs:
 | `env:` au niveau du **job** | Toutes les étapes de ce job seulement |
 | `env:` au niveau de la **step** | Cette étape seulement |
 
-> 💡 Une variable définie à un niveau plus précis (étape) **masque** une variable de même nom
-> définie à un niveau plus large (job ou workflow) — même logique de portée qu'une variable locale
-> qui cache une variable globale dans la plupart des langages de programmation.
 
 ### `$GITHUB_ENV` : faire passer une valeur d'une étape à la suivante
 
@@ -625,8 +639,8 @@ Deux derniers concepts GitHub Actions, utiles au-delà de Docker, complètent ce
 > 💡 Ces deux éléments (`permissions: contents: write` + déclencheur `tags:`) sont précisément ce
 > qui permet d'automatiser la création d'une **Release GitHub** (page de version avec notes et
 > fichiers joints, ex. le `.jar` compilé) à chaque tag poussé — voir l'exemple complet dans
-> [Registres de conteneurs et publication automatisée]({{% relref "/semaine-7/registre-conteneurs" %}}),
-> section « Créer une publication GitHub (*Release*) automatiquement ».
+> [Tags Git et publications (Releases) GitHub]({{% relref "/semaine-8/tags-releases-github" %}})
+> à la semaine 8.
 
 ### Badge de statut : afficher l'état du pipeline dans le `README`
 
@@ -687,6 +701,7 @@ considérer le badge comme à jour.
 - Images officielles Eclipse Temurin — [hub.docker.com/_/eclipse-temurin](https://hub.docker.com/_/eclipse-temurin).
 - Documentation officielle — [About self-hosted runners](https://docs.github.com/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners).
 - Documentation officielle — [Variables (vars, env, $GITHUB_ENV)](https://docs.github.com/actions/learn-github-actions/variables).
+- Documentation officielle Docker — [Volumes](https://docs.docker.com/engine/storage/volumes/).
 
 {{% notice tip "🧪 À vous de jouer" %}}
 Poursuivez avec l'[exercice Docker]({{% relref "/semaine-7/exercice-docker" %}}) pour écrire,

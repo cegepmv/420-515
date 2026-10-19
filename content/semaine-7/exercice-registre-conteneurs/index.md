@@ -85,6 +85,6 @@ exactement le scénario qui se produira en production.
 - [ ] Je sais expliquer la différence entre un tag mobile (`latest`) et un tag immuable (SHA).
 
 {{% notice tip "🧪 À vous de jouer" %}}
-Poursuivez avec l'[activité pratique]({{% relref "/semaine-7/activite-pratique" %}}) pour
-réinvestir l'ensemble de la chaîne (Dockerfile + publication CI/CD) sur votre équipe.
+Poursuivez avec l'[activité pratique]({{% relref "/semaine-7/activite-pratique" %}})
+pour réinvestir l'ensemble de la chaîne (Dockerfile + publication CI/CD) sur votre équipe.
 {{% /notice %}}

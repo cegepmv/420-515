@@ -7,6 +7,9 @@
     <loc>http://localhost:1313/420-515/semaine-7/docker/index.html</loc>
   </url>
   <url>
+    <loc>http://localhost:1313/420-515/semaine-8/semver/index.html</loc>
+  </url>
+  <url>
     <loc>http://localhost:1313/420-515/intro/index.html</loc>
   </url>
   <url>
@@ -23,6 +26,9 @@
   </url>
   <url>
     <loc>http://localhost:1313/420-515/semaine-5/tests-automatises/index.html</loc>
+  </url>
+  <url>
+    <loc>http://localhost:1313/420-515/semaine-8/compatibilite-api/index.html</loc>
   </url>
   <url>
     <loc>http://localhost:1313/420-515/semaine-1/cycle-de-vie/index.html</loc>
@@ -55,6 +61,9 @@
     <loc>http://localhost:1313/420-515/semaine-1/decouverte-projet/index.html</loc>
   </url>
   <url>
+    <loc>http://localhost:1313/420-515/semaine-8/exercice-semver-compatibilite/index.html</loc>
+  </url>
+  <url>
     <loc>http://localhost:1313/420-515/semaine-5/github-actions/index.html</loc>
   </url>
   <url>
@@ -71,6 +80,9 @@
   </url>
   <url>
     <loc>http://localhost:1313/420-515/semaine-2/debogage/index.html</loc>
+  </url>
+  <url>
+    <loc>http://localhost:1313/420-515/semaine-8/activite-pratique/index.html</loc>
   </url>
   <url>
     <loc>http://localhost:1313/420-515/semaine-4/exercice-junit/index.html</loc>
@@ -137,6 +149,9 @@
   </url>
   <url>
     <loc>http://localhost:1313/420-515/semaine-7/index.html</loc>
+  </url>
+  <url>
+    <loc>http://localhost:1313/420-515/semaine-8/index.html</loc>
   </url>
   <url>
     <loc>http://localhost:1313/420-515/categories/index.html</loc>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Semaine 8 — Évolution d&#39;API : versionnage et compatibilité :: Maintenance de logiciel</title>
+    <link>http://localhost:1313/420-515/semaine-8/index.html</link>
+    <description>🎯 Objectifs d’apprentissage de la semaine À la fin de cette semaine, vous devriez être capable de :&#xA;Appliquer les règles de la gestion sémantique de version (Semantic Versioning, SemVer) pour décider si un changement doit incrémenter le numéro MAJEUR, MINEUR, ou de CORRECTIF. Distinguer un changement compatible (additif) d’un changement cassant (breaking change), selon des critères reconnus dans l’industrie. Reconnaître les stratégies utilisées pour signaler aux clients d’une API quelle version ils consomment (chemin d’URI, en-tête HTTP). Faire évoluer une API REST existante en lui ajoutant une fonctionnalité, sans casser les clients qui l’utilisent déjà. Faire correspondre un changement de code à une version Git (tag) qui en reflète fidèlement la nature, en réinvestissant la technique de tag vue à la semaine 7. 🔍 Accroche « Une API, une fois publiée, devient un contrat : d’autres équipes — parfois des clients que vous ne connaissez pas — écrivent du code qui dépend de sa forme exacte. Ajouter un champ, c’est souvent sans danger. Renommer un champ, changer son type, ou le retirer, peut casser une application que vous n’avez jamais vue tourner. Cette semaine, on apprend à nommer précisément ce qui change (SemVer) et à distinguer ce qui peut être ajouté sans briser personne de ce qui exige une nouvelle version. »</description>
+    <generator>Hugo</generator>
+    <language>fr-ca</language>
+    <atom:link href="http://localhost:1313/420-515/semaine-8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gestion sémantique de version (SemVer)</title>
+      <link>http://localhost:1313/420-515/semaine-8/semver/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/420-515/semaine-8/semver/index.html</guid>
+      <description>Tout ce qui suit est fondé sur la spécification officielle Semantic Versioning 2.0.0, publiée par Tom Preston-Werner — voir la version française intégrale et la version originale, faisant foi. Les citations ci-dessous reprennent la numérotation des règles de la spécification.&#xA;1️⃣ Le problème que SemVer résout La spécification introduit le problème ainsi (traduction de la version officielle) :&#xA;« Dans le monde de la gestion des logiciels, il existe un endroit redouté appelé « l’enfer des dépendances ». […] Si les règles de dépendance sont trop strictes, vous risquez de verrouiller vos versions […]. Si les règles de dépendances sont trop lâches, vous allez inévitablement subir la promiscuité de version. » — semver.org/lang/fr</description>
+    </item>
+    <item>
+      <title>Tags Git et publications (Releases) GitHub</title>
+      <link>http://localhost:1313/420-515/semaine-8/tags-releases-github/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/420-515/semaine-8/tags-releases-github/index.html</guid>
+      <description>La spécification SemVer ne dit rien sur Git en particulier — mais dans la pratique, le numéro de version déclaré dans pom.xml (ou package.json, etc.) est presque toujours synchronisé avec un tag Git du même nom (voir SemVer) :&#xA;git tag v4.1.0 git push origin v4.1.0&#xD;💡 Faire correspondre le tag Git et le numéro de version du pom.xml (ex. tag v4.1.0 quand pom.xml déclare &lt;version&gt;4.1.0&lt;/version&gt;) permet de retrouver, à partir d’un simple git checkout v4.1.0, exactement le code source qui correspond à une version publiée — sans cette correspondance, un numéro de version devient une simple étiquette non vérifiable.</description>
+    </item>
+    <item>
+      <title>Compatibilité d&#39;API : changements compatibles et changements cassants</title>
+      <link>http://localhost:1313/420-515/semaine-8/compatibilite-api/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/420-515/semaine-8/compatibilite-api/index.html</guid>
+      <description>Cette page s’appuie sur deux sources : les API Improvement Proposals (AIP) de Google — guides de conception d’API publics et largement cités dans l’industrie — et le code réel du projet utilisé dans ce cours.&#xA;1️⃣ Une API est un contrat « Les API sont fondamentalement des contrats avec les utilisateurs, et les utilisateurs écrivent souvent du code contre une API qui est ensuite déployé en production avec l’attente qu’il continue de fonctionner. » — Google AIP-180, Backwards compatibility (traduction libre)</description>
+    </item>
+    <item>
+      <title>Exercice : SemVer et compatibilité d&#39;API</title>
+      <link>http://localhost:1313/420-515/semaine-8/exercice-semver-compatibilite/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/420-515/semaine-8/exercice-semver-compatibilite/index.html</guid>
+      <description>🎯 Objectif Appliquer les règles vues dans SemVer et Compatibilité d’API à des changements concrets.&#xA;🧩 Partie 1 — Classer des changements selon SemVer Pour chacun des changements suivants, déterminez s’il justifie un incrément MAJEUR, MINEUR ou de CORRECTIF, en citant la règle de la spécification SemVer qui justifie votre réponse (règles 6, 7 ou 8 — voir SemVer) :&#xA;Un endpoint GET /owners/{id} retournait une erreur HTTP 500 sur un propriétaire sans animal; le correctif retourne maintenant correctement la liste vide, sans changer la forme de la réponse dans les autres cas. Un nouveau champ optionnel email est ajouté à la réponse JSON de GET /owners/{id}. Le champ telephone est retiré de la réponse JSON de tous les endpoints owners. Un nouvel endpoint GET /owners/{id}/visits est ajouté, sans toucher à aucun endpoint existant. Le type du champ id passe de integer à string dans toutes les réponses JSON. 🧩 Partie 2 — Analyser l’exemple réel du projet En consultant src/main/resources/openapi.yml et les classes OwnerRestControllerV1 / OwnerRestControllerV2 du projet :</description>
+    </item>
+    <item>
+      <title>Activité pratique</title>
+      <link>http://localhost:1313/420-515/semaine-8/activite-pratique/index.html</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/420-515/semaine-8/activite-pratique/index.html</guid>
+      <description>🎯 Activité pratique (non notée) En équipe, sur votre application legacy, en réinvestissant directement SemVer et Compatibilité d’API :&#xA;Ajoutez une fonctionnalité additive à votre API REST (ex. un nouveau champ optionnel dans une réponse existante, ou un nouvel endpoint) — un changement qui, selon AIP-180 (voir Compatibilité d’API), ne casse aucun client existant.&#xA;Validez que les clients existants (vos tests automatisés de la semaine 5) continuent de passer sans aucune modification — c’est la preuve concrète que le changement est bien rétrocompatible.</description>
+    </item>
+  </channel>
+</rss>

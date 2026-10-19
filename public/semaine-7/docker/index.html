@@ -23,28 +23,28 @@
     <meta itemprop="name" content="Docker — Dockerfile, image, bonnes pratiques :: Maintenance de logiciel">
     <meta itemprop="description" content="Jusqu’ici, « faire fonctionner » l’application legacy supposait d’avoir installé localement le bon JDK, Maven, et parfois une base de données compatible. Docker élimine cette dépendance à l’environnement local : on décrit une seule fois, dans un Dockerfile, tout ce qu’il faut pour exécuter l’application, et cette description produit une image identique peu importe la machine qui l’exécute ensuite.
 0️⃣ Le problème que Docker résout Imaginez une application composée de plusieurs services (un backend Spring Boot, une base de données, un frontend React) : chaque service a ses propres exigences de version (JDK, bibliothèque système, version de Node). Faire cohabiter plusieurs projets aux exigences différentes sur une même machine, sans qu’ils entrent en conflit, est parfois appelé la « matrice de l’enfer » (Matrix From Hell) : chaque nouvelle combinaison de service/version doit être revalidée manuellement, et rien ne garantit qu’un environnement reproduit fidèlement un autre.">
-    <meta itemprop="wordCount" content="4810">
+    <meta itemprop="wordCount" content="4900">
     <title>Docker — Dockerfile, image, bonnes pratiques :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
-    <link href="/420-515/css/auto-complete/auto-complete.min.css?1791257862" rel="stylesheet">
-    <script src="/420-515/js/auto-complete/auto-complete.min.js?1791257862" defer></script>
-    <script src="/420-515/js/search-lunr.js?1791257862" defer></script>
-    <script src="/420-515/js/search.js?1791257862" defer></script>
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1792388513" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1792388513" defer></script>
+    <script src="/420-515/js/search-lunr.js?1792388513" defer></script>
+    <script src="/420-515/js/search.js?1792388513" defer></script>
     <script>
       window.relearn = window.relearn || {};
-      window.relearn.index_js_url="/420-515/searchindex.en.js?1791257862";
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1792388513";
     </script>
-    <script src="/420-515/js/lunr/lunr.min.js?1791257862" defer></script>
-    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1791257862" defer></script>
-    <script src="/420-515/js/lunr/lunr.multi.min.js?1791257862" defer></script>
-    <script src="/420-515/js/lunr/lunr.fr.min.js?1791257862" defer></script>
+    <script src="/420-515/js/lunr/lunr.min.js?1792388513" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1792388513" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1792388513" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1792388513" defer></script>
     <script>
       window.relearn = window.relearn || {};
       window.relearn.contentLangs=['fr'];
     </script>
-    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791257862" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1791257862" rel="stylesheet"></noscript>
-    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1791257862" rel="stylesheet">
-    <link href="/420-515/css/theme.css?1791257862" rel="stylesheet">
-    <link href="/420-515/css/format-html.css?1791257862" rel="stylesheet" id="R-format-style">
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1792388513" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1792388513" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1792388513" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1792388513" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1792388513" rel="stylesheet" id="R-format-style">
     <script>
       window.relearn = window.relearn || {};
       // configuration
@@ -589,6 +589,29 @@ arrête aussi le conteneur) — il faudrait alors un second terminal pour exécu
 créé — seul l&rsquo;état interne du conteneur (ex. des fichiers écrits en cours d&rsquo;exécution, non
 présents dans l&rsquo;image) disparaît, sauf si un volume est explicitement monté pour le conserver.</p>
 </blockquote>
+<h3 id="conserver-des-données-entre-les-exécutions--les-volumes">Conserver des données entre les exécutions : les volumes</h3>
+<p>Un <strong>volume</strong> est le mécanisme que Docker fournit précisément pour ce cas :</p>
+<blockquote>
+<p>« Les volumes sont des espaces de stockage persistants pour les conteneurs, créés et gérés par
+Docker. [&hellip;] Le contenu d&rsquo;un volume existe en dehors du cycle de vie d&rsquo;un conteneur donné.
+Quand un conteneur est détruit, sa couche inscriptible est détruite avec lui. Utiliser un volume
+garantit que les données sont conservées même si le conteneur qui les utilise est supprimé. »
+— <a href="https://docs.docker.com/engine/storage/volumes/" rel="external" target="_blank">Docker, <em>Volumes</em></a></p>
+</blockquote>
+<p>Concrètement, on monte un volume au démarrage du conteneur avec l&rsquo;option <code>-v</code> (ou <code>--mount</code>) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>docker run -d -v petclinic-data:/var/lib/petclinic -p 9966:9966 petclinic-legacy:local</span></span></code></pre></div>
+<p><code>petclinic-data</code> est le nom du volume (Docker le crée automatiquement s&rsquo;il n&rsquo;existe pas encore);
+<code>/var/lib/petclinic</code> est le chemin, <strong>à l&rsquo;intérieur du conteneur</strong>, dont le contenu sera conservé
+dans ce volume. Même après <code>docker stop</code> puis la suppression du conteneur (<code>docker rm</code>), le
+contenu de <code>petclinic-data</code> reste disponible pour un nouveau conteneur monté sur ce même volume.</p>
+<blockquote>
+<p>⚠️ Un volume ne protège que les données <strong>explicitement écrites dans le chemin monté</strong>. Pour la
+base de données H2 en mémoire utilisée par défaut dans ce projet, les données ne sont de toute
+façon pas persistées sur disque (voir <code>spring.sql.init.mode=always</code> dans
+<code>application.properties</code>, qui recharge le schéma à chaque démarrage) — un volume n&rsquo;y changerait
+rien sans configuration additionnelle. Les volumes prennent tout leur sens avec une vraie base de
+données externe (MySQL, PostgreSQL) s&rsquo;exécutant elle-même dans un conteneur séparé.</p>
+</blockquote>
 <hr>
 <h2 id="7-commandes-docker-utiles-au-quotidien">7️⃣ Commandes Docker utiles au quotidien</h2>
 <p>Au-delà de <code>docker build</code> et <code>docker run</code>, quelques commandes reviennent constamment une fois un
@@ -698,19 +721,6 @@ auto-hébergé</strong>. Voici la différence concrète entre les deux :</p>
 			</tr>
 	</tbody>
 </table>
-<blockquote>
-<p>💡 C&rsquo;est justement parce qu&rsquo;<code>ubuntu-latest</code> fournit déjà Docker que les exemples de ce chapitre
-(<code>docker build</code>, <code>docker/build-push-action</code>, etc.) fonctionnent <strong>sans aucune étape
-d&rsquo;installation préalable</strong> dans le workflow.</p>
-</blockquote>
-<blockquote>
-<p>⚠️ Un runner auto-hébergé n&rsquo;est <strong>pas</strong> recréé à neuf entre deux exécutions : un fichier laissé
-par un job précédent, une variable d&rsquo;environnement exportée dans le shell, ou même une ancienne
-image Docker encore en cache peuvent <strong>fuiter</strong> d&rsquo;un run à l&rsquo;autre. C&rsquo;est un gain de rapidité
-(rien à retélécharger), mais au prix de la garantie de reproductibilité stricte qu&rsquo;offre un
-runner hébergé — une raison de plus, sur un runner auto-hébergé, de ne jamais présumer de l&rsquo;état
-initial de la machine dans un workflow.</p>
-</blockquote>
 <h3 id="créer-et-enregistrer-son-propre-runner-auto-hébergé">Créer et enregistrer son propre runner auto-hébergé</h3>
 <p>GitHub ne fournit pas de machine : c&rsquo;est au propriétaire du dépôt (ou de l&rsquo;organisation) d&rsquo;en
 préparer une (physique, VM, conteneur) et de l&rsquo;<strong>enregistrer</strong> auprès de GitHub. Les grandes étapes
@@ -805,11 +815,6 @@ n&rsquo;importe quelle variable d&rsquo;environnement système.</p>
 			</tr>
 	</tbody>
 </table>
-<blockquote>
-<p>💡 Une variable définie à un niveau plus précis (étape) <strong>masque</strong> une variable de même nom
-définie à un niveau plus large (job ou workflow) — même logique de portée qu&rsquo;une variable locale
-qui cache une variable globale dans la plupart des langages de programmation.</p>
-</blockquote>
 <h3 id="github_env--faire-passer-une-valeur-dune-étape-à-la-suivante"><code>$GITHUB_ENV</code> : faire passer une valeur d&rsquo;une étape à la suivante</h3>
 <p>Chaque étape d&rsquo;un job s&rsquo;exécute dans un processus shell <strong>distinct</strong> : une variable exportée avec
 <code>export</code> dans une étape (<code>run:</code>) <strong>ne survit pas</strong> jusqu&rsquo;à l&rsquo;étape suivante. Pour faire passer une
@@ -908,8 +913,8 @@ seulement elle, qui déclenche le workflow :</p>
 <p>💡 Ces deux éléments (<code>permissions: contents: write</code> + déclencheur <code>tags:</code>) sont précisément ce
 qui permet d&rsquo;automatiser la création d&rsquo;une <strong>Release GitHub</strong> (page de version avec notes et
 fichiers joints, ex. le <code>.jar</code> compilé) à chaque tag poussé — voir l&rsquo;exemple complet dans
-<a href="/420-515/semaine-7/registre-conteneurs/">Registres de conteneurs et publication automatisée</a>,
-section « Créer une publication GitHub (<em>Release</em>) automatiquement ».</p>
+<a href="/420-515/semaine-8/tags-releases-github/">Tags Git et publications (Releases) GitHub</a>
+à la semaine 8.</p>
 </blockquote>
 <h3 id="badge-de-statut--afficher-létat-du-pipeline-dans-le-readme">Badge de statut : afficher l&rsquo;état du pipeline dans le <code>README</code></h3>
 <p>GitHub génère automatiquement, pour chaque workflow, un <strong>badge</strong> SVG affichant son dernier statut
@@ -975,6 +980,7 @@ considérer le badge comme à jour.</p>
 <li>Images officielles Eclipse Temurin — <a href="https://hub.docker.com/_/eclipse-temurin" rel="external" target="_blank">hub.docker.com/_/eclipse-temurin</a>.</li>
 <li>Documentation officielle — <a href="https://docs.github.com/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners" rel="external" target="_blank">About self-hosted runners</a>.</li>
 <li>Documentation officielle — <a href="https://docs.github.com/actions/learn-github-actions/variables" rel="external" target="_blank">Variables (vars, env, $GITHUB_ENV)</a>.</li>
+<li>Documentation officielle Docker — <a href="https://docs.docker.com/engine/storage/volumes/" rel="external" target="_blank">Volumes</a>.</li>
 </ul>
 
 <details open class=" box cstyle notices tip">
@@ -1046,6 +1052,7 @@ construire et exécuter votre propre <code>Dockerfile</code> sur votre projet.</
             <li class="" data-nav-id="/420-515/semaine-7/registre-conteneurs/index.html"><a class="padding" href="/420-515/semaine-7/registre-conteneurs/index.html">Registres de conteneurs et publication automatisée (CI/CD)</a></li>
             <li class="" data-nav-id="/420-515/semaine-7/exercice-registre-conteneurs/index.html"><a class="padding" href="/420-515/semaine-7/exercice-registre-conteneurs/index.html">Exercice : publier une image sur GitHub Container Registry</a></li>
             <li class="" data-nav-id="/420-515/semaine-7/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-7/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-8/index.html"><a class="padding" href="/420-515/semaine-8/index.html">Semaine 8 — Évolution d&#39;API : versionnage et compatibilité</a><ul id="R-subsections-6321075fd0c8050ebc7b6d32e8aeee82" class="collapsible-menu"></ul></li>
           </ul>
         </div>
         <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
@@ -1081,8 +1088,8 @@ construire et exécuter votre propre <code>Dockerfile</code> sur votre projet.</
 <div id="R-footer"></div>
       </div>
     </aside>
-    <script src="/420-515/js/clipboard/clipboard.min.js?1791257862" defer></script>
-    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1791257862" defer></script>
-    <script src="/420-515/js/theme.js?1791257862" defer></script>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1792388513" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1792388513" defer></script>
+    <script src="/420-515/js/theme.js?1792388513" defer></script>
   </body>
 </html>

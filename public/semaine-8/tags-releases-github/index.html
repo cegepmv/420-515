@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr-ca" dir="ltr" itemscope itemtype="http://schema.org/Article" data-r-output-format="html">
+  <head><script src="/420-515/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=420-515/livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="generator" content="Hugo 0.166.0">
+    <meta name="generator" content="Relearn 8.0.0+9803d5122ebb3276acea823f476e9eb44f607862">
+    <meta name="description" content="La spécification SemVer ne dit rien sur Git en particulier — mais dans la pratique, le numéro de version déclaré dans pom.xml (ou package.json, etc.) est presque toujours synchronisé avec un tag Git du même nom (voir SemVer) :
+git tag v4.1.0 git push origin v4.1.0💡 Faire correspondre le tag Git et le numéro de version du pom.xml (ex. tag v4.1.0 quand pom.xml déclare &lt;version&gt;4.1.0&lt;/version&gt;) permet de retrouver, à partir d’un simple git checkout v4.1.0, exactement le code source qui correspond à une version publiée — sans cette correspondance, un numéro de version devient une simple étiquette non vérifiable.">
+    <meta name="author" content="">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Tags Git et publications (Releases) GitHub :: Maintenance de logiciel">
+    <meta name="twitter:description" content="La spécification SemVer ne dit rien sur Git en particulier — mais dans la pratique, le numéro de version déclaré dans pom.xml (ou package.json, etc.) est presque toujours synchronisé avec un tag Git du même nom (voir SemVer) :
+git tag v4.1.0 git push origin v4.1.0💡 Faire correspondre le tag Git et le numéro de version du pom.xml (ex. tag v4.1.0 quand pom.xml déclare &lt;version&gt;4.1.0&lt;/version&gt;) permet de retrouver, à partir d’un simple git checkout v4.1.0, exactement le code source qui correspond à une version publiée — sans cette correspondance, un numéro de version devient une simple étiquette non vérifiable.">
+    <meta property="og:url" content="http://localhost:1313/420-515/semaine-8/tags-releases-github/index.html">
+    <meta property="og:site_name" content="Maintenance de logiciel">
+    <meta property="og:title" content="Tags Git et publications (Releases) GitHub :: Maintenance de logiciel">
+    <meta property="og:description" content="La spécification SemVer ne dit rien sur Git en particulier — mais dans la pratique, le numéro de version déclaré dans pom.xml (ou package.json, etc.) est presque toujours synchronisé avec un tag Git du même nom (voir SemVer) :
+git tag v4.1.0 git push origin v4.1.0💡 Faire correspondre le tag Git et le numéro de version du pom.xml (ex. tag v4.1.0 quand pom.xml déclare &lt;version&gt;4.1.0&lt;/version&gt;) permet de retrouver, à partir d’un simple git checkout v4.1.0, exactement le code source qui correspond à une version publiée — sans cette correspondance, un numéro de version devient une simple étiquette non vérifiable.">
+    <meta property="og:locale" content="fr_ca">
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Semaine 8 — Évolution d&#39;API : versionnage et compatibilité">
+    <meta itemprop="name" content="Tags Git et publications (Releases) GitHub :: Maintenance de logiciel">
+    <meta itemprop="description" content="La spécification SemVer ne dit rien sur Git en particulier — mais dans la pratique, le numéro de version déclaré dans pom.xml (ou package.json, etc.) est presque toujours synchronisé avec un tag Git du même nom (voir SemVer) :
+git tag v4.1.0 git push origin v4.1.0💡 Faire correspondre le tag Git et le numéro de version du pom.xml (ex. tag v4.1.0 quand pom.xml déclare &lt;version&gt;4.1.0&lt;/version&gt;) permet de retrouver, à partir d’un simple git checkout v4.1.0, exactement le code source qui correspond à une version publiée — sans cette correspondance, un numéro de version devient une simple étiquette non vérifiable.">
+    <meta itemprop="wordCount" content="804">
+    <title>Tags Git et publications (Releases) GitHub :: Maintenance de logiciel</title><link rel="icon" href="/420-515/images/favicon.png" type="image/png">
+    <link href="/420-515/css/auto-complete/auto-complete.min.css?1792388513" rel="stylesheet">
+    <script src="/420-515/js/auto-complete/auto-complete.min.js?1792388513" defer></script>
+    <script src="/420-515/js/search-lunr.js?1792388513" defer></script>
+    <script src="/420-515/js/search.js?1792388513" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.index_js_url="/420-515/searchindex.en.js?1792388513";
+    </script>
+    <script src="/420-515/js/lunr/lunr.min.js?1792388513" defer></script>
+    <script src="/420-515/js/lunr/lunr.stemmer.support.min.js?1792388513" defer></script>
+    <script src="/420-515/js/lunr/lunr.multi.min.js?1792388513" defer></script>
+    <script src="/420-515/js/lunr/lunr.fr.min.js?1792388513" defer></script>
+    <script>
+      window.relearn = window.relearn || {};
+      window.relearn.contentLangs=['fr'];
+    </script>
+    <link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1792388513" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="/420-515/fonts/fontawesome/css/fontawesome-all.min.css?1792388513" rel="stylesheet"></noscript>
+    <link href="/420-515/css/perfect-scrollbar/perfect-scrollbar.min.css?1792388513" rel="stylesheet">
+    <link href="/420-515/css/theme.css?1792388513" rel="stylesheet">
+    <link href="/420-515/css/format-html.css?1792388513" rel="stylesheet" id="R-format-style">
+    <script>
+      window.relearn = window.relearn || {};
+      // configuration
+      window.relearn.min = ``;
+      window.relearn.path='\/semaine-8\/tags-releases-github\/index.html';
+      window.relearn.relBasePath='..\/..';
+      window.relearn.relBaseUri='..\/..\/..';
+      window.relearn.absBaseUri='http:\/\/localhost:1313\/420-515';
+      window.relearn.disableAnchorCopy=false;
+      window.relearn.disableAnchorScrolling=false;
+      window.relearn.disableInlineCopyToClipboard=true;
+      window.relearn.enableBlockCodeWrap=true;
+      // legal
+      window.relearn.getItem = (s,n) => {return s.getItem(n)};
+      window.relearn.setItem = (s,n,v) => {return s.setItem(n,v)};
+      window.relearn.removeItem = (s,n) => {return s.removeItem(n)};
+      // translations
+      window.T_Copy_to_clipboard = `Copy to clipboard`;
+      window.T_Copied_to_clipboard = `Copied to clipboard!`;
+      window.T_Copy_link_to_clipboard = `Copy link to clipboard`;
+      window.T_Link_copied_to_clipboard = `Copied link to clipboard!`;
+      window.T_Reset_view = `Reset view`;
+      window.T_View_reset = `View reset!`;
+      window.T_No_results_found = `No results found for "{0}"`;
+      window.T_N_results_found = `{1} results found for "{0}"`;
+      // variant stuff
+      window.relearn.themevariants = [ 'green', 'relearn-light', 'relearn-dark', 'blue', 'red' ];
+      window.relearn.customvariantname = "my-custom-variant";
+      window.relearn.changeVariant = function(variant) {
+        var oldVariant = document.documentElement.dataset.rThemeVariant;
+        window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        document.documentElement.dataset.rThemeVariant = variant;
+        if (oldVariant != variant) {
+          document.dispatchEvent( new CustomEvent('themeVariantLoaded', { detail: { variant, oldVariant } }) );
+          window.relearn.markVariant();
+        }
+      }
+      window.relearn.markVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant");
+        document.querySelectorAll(".R-variantswitcher select").forEach((select) => {select.value = variant;});
+      }
+      window.relearn.initVariant = function() {
+        var variant = window.relearn.getItem(window.localStorage, window.relearn.absBaseUri + "/variant") ?? "";
+        if( variant == window.relearn.customvariantname ){
+        }else if( !variant || !window.relearn.themevariants.includes(variant) ){
+          variant = window.relearn.themevariants[0];
+          window.relearn.setItem(window.localStorage, window.relearn.absBaseUri + "/variant", variant);
+        }
+        document.documentElement.dataset.rThemeVariant = variant;
+      }
+      window.relearn.initVariant();
+      window.relearn.markVariant();
+    </script>
+  </head>
+  <body class="mobile-support html" data-url="/420-515/semaine-8/tags-releases-github/index.html">
+    <div id="R-body" class="default-animation">
+      <div id="R-body-overlay"></div>
+      <nav id="R-topbar">
+        <div class="topbar-wrapper">
+          <div class="topbar-sidebar-divider"></div>
+          <div class="topbar-area topbar-area-start" data-area="start">
+            <div class="topbar-button topbar-button-sidebar" data-content-empty="disable" data-width-s="show" data-width-m="hide" data-width-l="hide"><button class="topbar-control" onclick="toggleNav()" type="button" title="Menu (CTRL&#43;ALT&#43;n)"><i class="fa-fw fas fa-bars"></i></button>
+            </div>
+          </div>
+          <ol class="topbar-breadcrumbs breadcrumbs highlightable" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/index.html"><span itemprop="name">Maintenance de logiciel</span></a><meta itemprop="position" content="1">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><a itemprop="item" href="/420-515/semaine-8/index.html"><span itemprop="name">Semaine 8 — Évolution d&#39;API : versionnage et compatibilité</span></a><meta itemprop="position" content="2">&nbsp;>&nbsp;</li><li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement" class=""><span itemprop="name">Tags Git et publications (Releases) GitHub</span><meta itemprop="position" content="3"></li>
+          </ol>
+          <div class="topbar-area topbar-area-end" data-area="end">
+            <div class="topbar-button topbar-button-more" data-content-empty="hide" data-width-s="show" data-width-m="show" data-width-l="show"><button class="topbar-control" onclick="toggleTopbarFlyout(this)" type="button" title="More"><i class="fa-fw fas fa-ellipsis-v"></i></button>
+              <div class="topbar-content">
+                <div class="topbar-content-wrapper">
+                  <div class="topbar-area topbar-area-more" data-area="more">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="R-main-overlay"></div>
+      <main id="R-body-inner" class="highlightable semaine-8" tabindex="-1">
+        <div class="flex-block-wrapper">
+<article class="default">
+  <header class="headline">
+  </header>
+
+<h1 id="tags-git-et-publications-releases-github">Tags Git et publications (Releases) GitHub</h1>
+
+<p>La spécification SemVer ne dit rien sur Git en particulier — mais dans la pratique, le numéro de
+version déclaré dans <code>pom.xml</code> (ou <code>package.json</code>, etc.) est presque toujours <strong>synchronisé</strong> avec
+un <strong>tag Git</strong> du même nom (voir <a href="/420-515/semaine-8/semver/">SemVer</a>) :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git tag v4.1.0
+</span></span><span style="display:flex;"><span>git push origin v4.1.0</span></span></code></pre></div>
+<blockquote>
+<p>💡 Faire correspondre le tag Git et le numéro de version du <code>pom.xml</code> (ex. tag <code>v4.1.0</code> quand
+<code>pom.xml</code> déclare <code>&lt;version&gt;4.1.0&lt;/version&gt;</code>) permet de retrouver, à partir d&rsquo;un simple
+<code>git checkout v4.1.0</code>, exactement le code source qui correspond à une version publiée — sans
+cette correspondance, un numéro de version devient une simple étiquette non vérifiable.</p>
+</blockquote>
+<p>Voici comment ce tag devient, concrètement, une <strong>Release GitHub</strong> publique — manuellement, puis
+automatiquement avec GitHub Actions (voir le pipeline de publication Docker à la
+<a href="/420-515/semaine-7/registre-conteneurs/">semaine 7</a>).</p>
+<hr>
+<h2 id="1-la-release-github-sappuie-directement-sur-un-tag-git">1️⃣ La Release GitHub s&rsquo;appuie directement sur un tag Git</h2>
+<p>Une <strong>Release GitHub</strong> n&rsquo;est pas un concept indépendant d&rsquo;un tag Git : elle s&rsquo;<strong>appuie
+directement</strong> dessus. La documentation officielle le confirme, au sujet de la création manuelle
+d&rsquo;une Release depuis l&rsquo;interface GitHub :</p>
+<blockquote>
+<p>« Pour choisir un tag pour la release, utilisez le menu déroulant <strong>Choose a tag</strong>. Pour utiliser
+un tag existant, cliquez sur le tag. Pour créer un nouveau tag, saisissez un numéro de version
+pour votre release, puis cliquez sur <strong>Create new tag</strong>. »
+— <a href="https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository" rel="external" target="_blank">GitHub Docs, <em>Managing releases in a repository</em></a></p>
+</blockquote>
+<p>Et surtout :</p>
+<blockquote>
+<p>« Si vous ne sélectionnez pas [<em>Set as latest release</em>], l&rsquo;étiquette de dernière version (<em>latest
+release</em>) sera automatiquement attribuée en fonction du versionnage sémantique. »
+— <a href="https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository" rel="external" target="_blank">GitHub Docs, <em>Managing releases in a repository</em></a></p>
+</blockquote>
+<p>Ce comportement signifie que le tag détermine la Release : GitHub compare les tags <code>vX.Y.Z</code>
+existants selon les règles SemVer (voir <a href="/420-515/semaine-8/semver/">SemVer, section 2️⃣</a>)
+pour déterminer automatiquement quel Release afficher comme « <em>Latest</em> » — d&rsquo;où l&rsquo;importance de
+tagger chaque version avec un nom qui respecte strictement ce format.</p>
+<hr>
+<h2 id="2-automatiser-la-création-de-la-release-avec-un-tag">2️⃣ Automatiser la création de la Release avec un tag</h2>
+<p>La séquence complète, du code au fichier publié sur la page <strong>Releases</strong> du dépôt :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 1. Mettre à jour le numéro de version (ex. dans pom.xml), puis committer ce changement</span>
+</span></span><span style="display:flex;"><span>git add pom.xml
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#e6db74">&#34;Bump version to 1.2.3&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Créer le tag correspondant, PUIS le pousser explicitement</span>
+</span></span><span style="display:flex;"><span>git tag v1.2.3
+</span></span><span style="display:flex;"><span>git push origin v1.2.3</span></span></code></pre></div>
+<p>Côté workflow, deux éléments (déjà vus à la section « Retour sur GitHub Actions » de
+<a href="/420-515/semaine-7/docker/">Docker</a>) suffisent à déclencher la création automatique de la
+Release <strong>uniquement</strong> quand un tag de ce format est poussé :</p>
+<div class="highlight wrap-code" dir="auto"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># .github/workflows/release.yml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">Release</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">tags</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#e6db74">&#39;v*.*.*&#39;</span>        <span style="color:#75715e"># ne se déclenche que sur un tag comme v1.2.3, jamais sur un push ordinaire</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">release</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">permissions</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">contents</span>: <span style="color:#ae81ff">write  </span> <span style="color:#75715e"># requis pour que l&#39;action puisse créer une Release et y joindre des fichiers</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Checkout repository</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v5</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Set up JDK 21</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/setup-java@v5</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">java-version</span>: <span style="color:#e6db74">&#39;21&#39;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">distribution</span>: <span style="color:#e6db74">&#39;temurin&#39;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">cache</span>: <span style="color:#ae81ff">maven</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build with Maven</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">./mvnw -B package -DskipTests</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Create GitHub Release</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">softprops/action-gh-release@v3</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">files</span>: <span style="color:#ae81ff">target/*.jar</span></span></span></code></pre></div>
+<table>
+	<thead>
+			<tr>
+					<th>Élément</th>
+					<th>Rôle</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><code>on: push: tags: 'v*.*.*'</code></td>
+					<td>Déclenche le workflow <strong>seulement</strong> sur un tag correspondant à ce motif</td>
+			</tr>
+			<tr>
+					<td><code>permissions: contents: write</code></td>
+					<td>Sans cette ligne, l&rsquo;action échoue : le <code>GITHUB_TOKEN</code> par défaut n&rsquo;a pas le droit de créer une Release</td>
+			</tr>
+			<tr>
+					<td><code>softprops/action-gh-release@v3</code></td>
+					<td>Action tierce la plus utilisée pour créer une Release depuis un workflow — reprend <strong>automatiquement</strong> le nom du tag poussé comme nom de la Release, sans configuration additionnelle</td>
+			</tr>
+			<tr>
+					<td><code>with: files: target/*.jar</code></td>
+					<td>Joint le <code>.jar</code> compilé comme fichier téléchargeable sur la page de la Release</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>💡 Par défaut, <code>softprops/action-gh-release</code> utilise le tag ayant déclenché le workflow (ex.
+<code>v1.2.3</code>) à la fois comme <strong>nom du tag</strong> et comme <strong>titre</strong> de la Release — exactement le
+comportement manuel décrit plus haut, mais automatisé. Le champ <code>name:</code> de l&rsquo;action permet de
+personnaliser ce titre si désiré, sans changer le tag lui-même.</p>
+</blockquote>
+<blockquote>
+<p>💡 Rien n&rsquo;empêche de combiner ce workflow avec celui de la <a href="/420-515/semaine-7/registre-conteneurs/">semaine 7</a>
+qui publie l&rsquo;image Docker : les deux se déclenchent sur le même tag <code>vX.Y.Z</code>, l&rsquo;un publiant
+l&rsquo;image sur GHCR, l&rsquo;autre créant la Release — un même tag peut ainsi piloter plusieurs publications
+en parallèle.</p>
+</blockquote>
+<details>
+<summary>🤔 Testez-vous</summary>
+<p>Une équipe pousse un tag <code>release-2024</code> (sans respecter le format <code>vX.Y.Z</code>) sur un dépôt dont le
+workflow est configuré avec <code>on: push: tags: ['v*.*.*']</code>. Le workflow de Release se déclenche-t-il ?</p>
+<p><strong>Réponse</strong> : non. Le filtre <code>tags: ['v*.*.*']</code> n&rsquo;accepte que les tags qui correspondent <strong>exactement</strong>
+à ce motif (ex. <code>v1.0.0</code>, <code>v2.3.1</code>) — <code>release-2024</code> ne commence pas par <code>v</code> suivi de trois segments
+numériques séparés par des points, donc le workflow ne se déclenche pas du tout.</p>
+</details>
+<hr>
+<h2 id="-références">📚 Références</h2>
+<ul>
+<li>Documentation officielle GitHub — <a href="https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository" rel="external" target="_blank">Managing releases in a repository</a>.</li>
+<li>Action tierce — <a href="https://github.com/softprops/action-gh-release" rel="external" target="_blank">softprops/action-gh-release</a>.</li>
+</ul>
+
+<details open class=" box cstyle notices tip">
+  <summary class="box-label" tabindex="-1">
+    <i class="fa-fw fas fa-lightbulb"></i> 
+    🧪 À vous de jouer
+  </summary>
+  <div class="box-content">
+<p>Poursuivez avec <a href="/420-515/semaine-8/compatibilite-api/">Compatibilité d&rsquo;API : changements compatibles et changements cassants</a>
+pour apprendre à reconnaître, concrètement, ce qui justifie une nouvelle version MAJEURE, MINEURE ou CORRECTIF.</p>
+  </div>
+</details>
+
+  <footer class="footline">
+  </footer>
+</article>
+        </div>
+      </main>
+    </div>
+    <aside id="R-sidebar" class="default-animation">
+      <div id="R-header-topbar" class="default-animation"></div>
+      <div id="R-header-wrapper" class="default-animation">
+        <div id="R-header" class="default-animation">
+          <a id="R-logo" class="R-default" href="/420-515/index.html">
+            <div class="logo-title">Maintenance de logiciel</div>
+          </a>
+        </div>
+        <search><form action="/420-515/search/index.html" method="get">
+          <div class="searchbox default-animation">
+            <button class="search-detail" type="submit" title="Search (CTRL+ALT+f)"><i class="fas fa-search"></i></button>
+            <label class="a11y-only" for="R-search-by">Search</label>
+            <input data-search-input id="R-search-by" name="search-by" class="search-by" type="search" placeholder="Search...">
+            <button class="search-clear" type="button" data-search-clear="" title="Clear search"><i class="fas fa-times" title="Clear search"></i></button>
+          </div>
+        </form></search>
+      </div>
+      <div id="R-homelinks" class="default-animation">
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-homelinks">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-headercontrols">
+          <ul class="">
+          </ul>
+        </div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+      </div>
+      <div id="R-content-wrapper" class="highlightable">
+        <div class="R-sidebarmenu R-shortcutmenu-main">
+          <ul class="enlarge morespace collapsible-menu">
+            <li class="" data-nav-id="/420-515/intro/index.html"><a class="padding" href="/420-515/intro/index.html">Intro</a></li>
+            <li class="" data-nav-id="/420-515/semaine-1/index.html"><a class="padding" href="/420-515/semaine-1/index.html">Semaine 1 — Bienvenue en maintenance logicielle</a><ul id="R-subsections-323125f7d0e5bb3e105c681ed48f255f" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-2/index.html"><a class="padding" href="/420-515/semaine-2/index.html">Semaine 2 — Lire le code des autres</a><ul id="R-subsections-4341b434a57997fb2a04b29087ade2bb" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-3/index.html"><a class="padding" href="/420-515/semaine-3/index.html">Semaine 3 — Débogage outillé et Maven</a><ul id="R-subsections-ad2d2fead1732f6d31483fe1d67ddae5" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-4/index.html"><a class="padding" href="/420-515/semaine-4/index.html">Semaine 4 — Maven (2/2) et introduction aux tests automatisés</a><ul id="R-subsections-0a04879d58004f2299c8e47c33299b68" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-5/index.html"><a class="padding" href="/420-515/semaine-5/index.html">Semaine 5 — Tests automatisés et intégration continue</a><ul id="R-subsections-62d70e99f8941f86fbf4d8780b33e646" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-6/index.html"><a class="padding" href="/420-515/semaine-6/index.html">Semaine 6 — Réusinage (refactoring) et code smells</a><ul id="R-subsections-f67fcebe2365ce5f296a1590e7b19ab6" class="collapsible-menu"></ul></li>
+            <li class="" data-nav-id="/420-515/semaine-7/index.html"><a class="padding" href="/420-515/semaine-7/index.html">Semaine 7 — Conteneurisation avec Docker</a><ul id="R-subsections-46cef0e5d7909a168d728f129b96eadf" class="collapsible-menu"></ul></li>
+            <li class="parent " data-nav-id="/420-515/semaine-8/index.html"><a class="padding" href="/420-515/semaine-8/index.html">Semaine 8 — Évolution d&#39;API : versionnage et compatibilité</a><ul id="R-subsections-6321075fd0c8050ebc7b6d32e8aeee82" class="collapsible-menu">
+            <li class="" data-nav-id="/420-515/semaine-8/semver/index.html"><a class="padding" href="/420-515/semaine-8/semver/index.html">Gestion sémantique de version (SemVer)</a></li>
+            <li class="active " data-nav-id="/420-515/semaine-8/tags-releases-github/index.html"><a class="padding" href="/420-515/semaine-8/tags-releases-github/index.html">Tags Git et publications (Releases) GitHub</a></li>
+            <li class="" data-nav-id="/420-515/semaine-8/compatibilite-api/index.html"><a class="padding" href="/420-515/semaine-8/compatibilite-api/index.html">Compatibilité d&#39;API : changements compatibles et changements cassants</a></li>
+            <li class="" data-nav-id="/420-515/semaine-8/exercice-semver-compatibilite/index.html"><a class="padding" href="/420-515/semaine-8/exercice-semver-compatibilite/index.html">Exercice : SemVer et compatibilité d&#39;API</a></li>
+            <li class="" data-nav-id="/420-515/semaine-8/activite-pratique/index.html"><a class="padding" href="/420-515/semaine-8/activite-pratique/index.html">Activité pratique</a></li></ul></li>
+          </ul>
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-shortcuts">
+          <ul class="space collapsible-menu">
+          </ul>
+        </div>
+        <div id="R-footer-margin"></div>
+        <div class="R-menu-divider default-animation">
+          <hr class="padding">
+        </div>
+        <div class="R-sidebarmenu R-shortcutmenu-footercontrols">
+          <ul class="">
+            <li class="R-variantswitcher">
+              <div class="padding menu-control">
+                <i class="fa-fw fas fa-paint-brush"></i>
+                <span>&nbsp;</span>
+                <div class="control-style">
+                  <label class="a11y-only" for="R-select-variant">Theme</label>
+                  <select id="R-select-variant">
+                    <option id="R-select-variant-green" value="green" selected>Green</option>
+                    <option id="R-select-variant-relearn-light" value="relearn-light">Relearn Light</option>
+                    <option id="R-select-variant-relearn-dark" value="relearn-dark">Relearn Dark</option>
+                    <option id="R-select-variant-blue" value="blue">Blue</option>
+                    <option id="R-select-variant-red" value="red">Red</option>
+                  </select>
+                </div>
+                <div class="clear"></div>
+              </div>
+              <script>window.relearn.markVariant();</script>
+            </li>
+          </ul>
+        </div>
+<div id="R-footer"></div>
+      </div>
+    </aside>
+    <script src="/420-515/js/clipboard/clipboard.min.js?1792388513" defer></script>
+    <script src="/420-515/js/perfect-scrollbar/perfect-scrollbar.min.js?1792388513" defer></script>
+    <script src="/420-515/js/theme.js?1792388513" defer></script>
+  </body>
+</html>
