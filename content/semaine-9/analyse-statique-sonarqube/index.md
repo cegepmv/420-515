@@ -54,16 +54,6 @@ trois **qualités logicielles** suivantes, selon la documentation officielle :
 | **Fiabilité** | Ce code est-il manifestement erroné, ou plus probablement erroné que non ? | Bug |
 | **Maintenabilité** | Ce n'est ni un bug, ni une vulnérabilité, mais... | *Code smell* |
 
-> 💡 La documentation précise que les quatre **types** historiques (bug, vulnérabilité, *code
-> smell*, *security hotspot*) sont **dépréciés** au profit des qualités logicielles ci-dessus :
-> « Les types et les sévérités de type sont dépréciés. Utilisez les qualités logicielles et leurs
-> sévérités pour classer et prioriser vos *issues*. » Les deux vocabulaires coexistent cependant
-> dans l'interface actuelle de SonarCloud — vous verrez les deux.
-
-Parmi ces quatre types, le ***security hotspot*** mérite une mention à part : ce n'est pas une
-anomalie confirmée, mais du code **sensible** à la sécurité qui nécessite une **revue humaine**
-avant d'être qualifié de vulnérabilité réelle ou de faux positif.
-
 **Exemples concrets, un par qualité logicielle** (le genre de code que SonarQube signalerait
 réellement dans un projet Java comme celui du cours) :
 
