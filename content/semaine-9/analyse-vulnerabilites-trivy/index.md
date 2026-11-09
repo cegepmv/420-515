@@ -11,7 +11,7 @@ Tout ce qui suit est fondé sur la documentation officielle du projet open sourc
 
 > 💡 Contrairement à SonarCloud (page précédente), Trivy est un outil **entièrement open source et
 > gratuit**, sans compte, sans organisation et sans distinction entre dépôt public ou privé —
-> aucune licence n'est requise, peu importe la visibilité de votre dépôt de TP.
+> aucune licence n'est requise, peu importe la visibilité de votre dépôt.
 
 ---
 
