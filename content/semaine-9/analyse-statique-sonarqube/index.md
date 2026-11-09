@@ -136,13 +136,11 @@ SonarQube Cloud fournit trois profils intégrés, chacun avec un niveau de rigue
 | **Sonar way extended** | Intermédiaire | Équipe déjà à l'aise avec SonarQube, qui veut plus de rigueur |
 | **Sonar way comprehensive** | Maximale | Équipe expérimentée, ou évaluation complète des capacités de l'outil |
 
-> 💡 Les profils intégrés s'alignent aussi sur des référentiels de sécurité externes reconnus
-> (OWASP Top 10, CWE Top 25, OWASP ASVS, entre autres) — une règle SonarQube n'est donc pas un
-> critère arbitraire inventé par l'outil, mais traçable jusqu'à des standards de l'industrie.
-
 **Exemple concret** : le projet `spring-petclinic-rest` du cours est analysé en Java. Par défaut,
-c'est donc le profil **Sonar way core (Java)** qui est actif — visible dans SonarCloud sous
-*Project Settings* → *Quality Profile*. Si une équipe bascule plutôt vers **Sonar way extended**,
+c'est donc le profil **Sonar way core (Java)** qui est actif — visible dans SonarCloud en ouvrant
+le projet, soit sous le panneau **Project Information**, soit sous le menu **Policies** →
+**Quality Profiles** (profil assigné par langue). Si une équipe bascule plutôt vers **Sonar way
+extended**,
 des règles de fiabilité auparavant ignorées (sévérité *Low*) deviennent actives : du code qui
 passait inaperçu jusque-là peut soudainement générer de nouvelles *issues*, et potentiellement
 faire échouer un quality gate qui passait auparavant — sans qu'une seule ligne de code n'ait
@@ -183,10 +181,20 @@ Ce ratio est ensuite traduit en une note de **A à E**, affichée directement su
 > — [Understanding measures and metrics — Maintainability rating](https://docs.sonarsource.com/sonarqube-cloud/managing-your-projects/metric-definitions)
 
 > ⚠️ Une note **globale** flatteuse peut masquer un problème récent : exactement comme pour la
-> couverture JaCoCo (section 8️⃣), SonarQube calcule **deux** valeurs distinctes pour la plupart de
+> couverture JaCoCo (section 9️⃣), SonarQube calcule **deux** valeurs distinctes pour la plupart de
 > ses métriques — une pour le code global, une pour le « nouveau code » — précisément parce qu'un
 > projet legacy avec une dette ancienne importante ne doit pas servir d'excuse pour accepter de la
 > **nouvelle** dette.
+
+**Où trouver ces chiffres dans SonarCloud** :
+
+1. Ouvrez votre projet → onglet **Overview** : la note A-E de maintenabilité et le ratio y sont
+   déjà affichés en résumé.
+2. Pour le détail chiffré : onglet **Reporting** → **Measures** → domaine **Maintainability** →
+   vous y trouverez la **Technical Debt** (en minutes/jours), le **Technical Debt Ratio** (le %)
+   et la **Maintainability Rating** (la note A-E).
+3. Pour le détail *issue par issue* qui compose cette dette : onglet **Issues**, filtré par type
+   `Code Smell`.
 
 ---
 
@@ -245,7 +253,78 @@ bas.
 
 ---
 
-## 6️⃣ Intégration réelle au projet du cours
+## 6️⃣ Configurer SonarCloud pour votre propre projet
+
+### Créer un compte et une organisation
+
+SonarCloud utilise une **connexion GitHub** plutôt qu'un mot de passe distinct, et structure tout
+son fonctionnement autour d'une **organisation** liée à votre compte ou à votre organisation GitHub :
+
+> « Chaque organisation SonarQube Cloud correspond un-à-un à une organisation GitHub ou à un compte
+> personnel. »
+> — [docs.sonarsource.com — Getting started with GitHub](https://docs.sonarsource.com/sonarqube-cloud/getting-started/github.md)
+
+1. Allez sur [sonarcloud.io](https://sonarcloud.io) et connectez-vous **avec GitHub**.
+2. Installez l'application GitHub SonarQube Cloud sur votre compte ou votre organisation GitHub
+   (celle du dépôt de votre équipe).
+3. Choisissez un plan, puis sélectionnez **Create organization** — l'organisation SonarCloud est
+   créée, liée un-à-un à votre compte/organisation GitHub.
+4. Importez votre dépôt comme projet (un dépôt = un projet SonarCloud).
+
+> ⚠️ **Erreur fréquente** : à l'import, SonarCloud active par défaut l'**Automatic Analysis**
+> (analyse automatique depuis GitHub, sans passer par votre pipeline CI). Cette méthode est
+> **incompatible** avec l'analyse CI décrite plus bas (section 7️⃣) : si les deux sont actives en
+> même temps, l'exécution Maven échoue avec `You are running CI analysis while Automatic Analysis
+> is enabled`. Désactivez-la dès l'import : ouvrez le **projet** (pas l'organisation) → onglet
+> **Administration** → **Analysis Method** → décochez **Automatic Analysis**.
+
+### Choisir le bon plan : Free vs OSS
+
+Deux plans gratuits existent, avec une différence importante pour une équipe de plusieurs
+personnes :
+
+| Plan | Membres max | Dépôts privés |
+|---|---|---|
+| **Free** | **5** | jusqu'à 50k lignes de code |
+| **OSS** (*open source*) | **illimité** | aucun |
+
+> « Nombre maximal de membres de l'organisation : 5 (Free) [...] Illimité (Team/Enterprise). »
+> — [SonarQube Cloud — Subscription plans](https://docs.sonarsource.com/sonarqube-cloud/administering-sonarcloud/managing-subscription/subscription-plans.md)
+
+Pour une équipe du cours (dépôts **publics**, plus de 5 personnes possibles sur une même
+organisation GitHub) : sélectionnez **« Get SonarQube for OSS »** au moment de la création de
+l'organisation — ce choix n'est **pas automatique** du simple fait que les dépôts soient publics,
+il doit être fait explicitement à cette étape. Une organisation déjà créée en plan Free doit être
+migrée manuellement vers OSS; rien ne bascule d'elle-même.
+
+### Générer un jeton d'analyse (`SONAR_TOKEN`)
+
+1. Menu du compte (en haut à droite) → **My account** → onglet **Access Tokens**.
+2. Sous **Generate Tokens** : donnez un nom (ex. `github-actions-ci`) et choisissez une durée
+   d'expiration.
+3. Cliquez **Generate Token** — la valeur s'affiche **une seule fois** :
+
+> « Copiez-le immédiatement en sélectionnant l'outil de copie devant la valeur. [...] Les jetons
+> sans date d'expiration sont automatiquement supprimés après 60 jours d'inactivité. »
+> — [SonarQube Cloud — Managing personal access tokens](https://docs.sonarsource.com/sonarqube-cloud/managing-your-account/managing-tokens.md)
+
+### Ajouter le jeton comme secret GitHub
+
+Dans le dépôt GitHub (pas dans le code, jamais commité) : `Settings` → `Secrets and variables` →
+`Actions` → `New repository secret` → nom `SONAR_TOKEN`, valeur collée depuis l'étape précédente.
+Un **repository secret** suffit ici (plutôt qu'un *environment secret*) : l'analyse SonarCloud
+tourne sur chaque Pull Request et chaque push, sans notion de déploiement vers un environnement
+particulier — contrairement à un déploiement Kubernetes en production (semaines 11-12), où un
+environnement avec approbation manuelle aura davantage de sens.
+
+> ⚠️ Ce jeton est un **jeton personnel**, lié au compte qui l'a généré : si cette personne quitte
+> l'équipe ou supprime son compte, le jeton est révoqué et le pipeline cesse de fonctionner. À
+> partir du plan Team, SonarCloud propose des *Scoped Organization Tokens*, non liés à une
+> personne précise — non disponibles sur les plans Free/OSS utilisés dans ce cours.
+
+---
+
+## 7️⃣ Intégration réelle au projet du cours
 
 Le dépôt upstream `spring-petclinic-rest` déclenche une analyse SonarCloud directement depuis
 Maven, dans son pipeline GitHub Actions (vu en référence à la semaine 5, déclenchement manuel dans
@@ -283,9 +362,115 @@ Le `pom.xml` du même projet déclare les propriétés correspondantes :
 > conséquence ici parce qu'un seul des deux est actif, illustre bien pourquoi une configuration
 > dupliquée à deux endroits est elle-même un *code smell* à surveiller.
 
+### Exemple : intégrer `verify` + SonarCloud dans un pipeline Docker existant
+
+Un cas fréquent dans les projets d'équipe de ce cours : un workflow qui construisait déjà une image
+Docker avec `mvn package -DskipTests` (tests ignorés pour aller vite), auquel on veut ajouter
+l'analyse SonarCloud **sans pousser une image non testée**. La solution consiste à ajouter un
+**job séparé** qui s'exécute en premier, et à faire dépendre le job de build via `needs:` :
+
+```yaml
+jobs:
+  test-and-analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          # nécessaire pour que l'analyse SonarCloud puisse comparer avec l'historique (New Code)
+          fetch-depth: 0
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build, tests et analyse SonarCloud
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./mvnw -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+
+  build-and-push:
+    needs: test-and-analyze   # <- n'exécute ce job QUE si test-and-analyze a réussi
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Build with Maven
+        run: ./mvnw -B package -DskipTests
+      # ... (étapes de build/push Docker)
+```
+
+ Points importants :
+- **`fetch-depth: 0`** : par défaut, `actions/checkout` ne récupère que le **dernier commit** (clone
+  superficiel) pour aller plus vite. SonarCloud a besoin de **tout l'historique Git** pour calculer
+  le **blame** (quel auteur/commit a introduit chaque ligne) et le **New Code period** (comparaison
+  avec une version de référence, voir section 5️⃣). Sans `fetch-depth: 0`, l'analyse fonctionne
+  quand même mais affiche un avertissement *"Shallow clone detected"* et perd l'information
+  d'auteur/date sur les *issues*.
+
+> ℹ️ **Pratique par défaut dans l'industrie** : la documentation officielle recommande en fait de
+> garder `sonar.organization` **et** `sonar.projectKey` directement dans le `pom.xml` versionné
+> pour un projet unique — ce ne sont pas des identifiants secrets, et un paramètre de ligne de
+> commande n'est utile que si la valeur **varie réellement selon le pipeline/l'environnement**.
+>
+> « Pour un seul projet SonarQube Cloud, gardez `sonar.organization` et `sonar.projectKey` dans le
+> `pom.xml` versionné. [...] Utilisez des paramètres CI quand ces valeurs varient selon
+> l'environnement, le dépôt ou le pipeline. [...] Gardez le jeton Sonar dans votre gestionnaire de
+> secrets CI, pas dans le POM. »
+> — [SonarQube Cloud — Project analysis](https://docs.sonarsource.com/sonarqube-cloud/managing-your-projects/project-analysis.md)
+>
+> Le passage par `vars.SONAR_PROJECT_KEY` ci-dessus reste pertinent dans **ce cours** : chaque
+> équipe travaille sur son propre fork avec sa propre organisation/clé SonarCloud, donc la valeur
+> varie bel et bien d'un dépôt à l'autre — exactement le cas d'usage que la documentation reconnaît
+> comme légitime pour une surcharge CI.
+
+**Plan de secours : rendre un paramètre optionnel sans écraser le `pom.xml`**
+
+Un paramètre `-D...` écrase toujours la valeur du `pom.xml`, même avec une chaîne vide. Si vous
+voulez garder une valeur par défaut dans le `pom.xml` (ex. `sonar.organization`) et ne l'écraser
+**que** si une variable GitHub existe, il faut construire la commande conditionnellement dans le
+`run:` plutôt que d'insérer directement `-Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}` :
+
+```yaml
+run: |
+  ARGS="-Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}"
+  if [ -n "${{ vars.SONAR_ORGANIZATION }}" ]; then
+    ARGS="$ARGS -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}"
+  fi
+  ./mvnw -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar $ARGS
+```
+
+- Si `SONAR_ORGANIZATION` existe : le flag est ajouté → écrase le `pom.xml`.
+- Si elle est absente (chaîne vide) : le flag n'est **jamais construit**, donc jamais passé →
+  Maven retombe sur `<sonar.organization>` défini dans le `pom.xml`.
+
+### Faire échouer le build si le quality gate échoue
+
+Par défaut, `sonar-maven-plugin:sonar` envoie l'analyse à SonarCloud de façon **asynchrone** et ne
+bloque **pas** le build Maven, même si le quality gate échoue — il confirme seulement l'envoi des
+résultats. Pour que votre job `test-and-analyze` (et donc `build-and-push`, via `needs:`) échoue
+réellement quand le quality gate échoue, ajoutez `-Dsonar.qualitygate.wait=true` :
+
+```bash
+./mvnw -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+  -Dsonar.projectKey=... -Dsonar.qualitygate.wait=true
+```
+
+Le scanner attend alors le résultat du quality gate (300 secondes par défaut — ajustable avec
+`-Dsonar.qualitygate.timeout=<secondes>`) avant de terminer, ce qui **rallonge le pipeline**. C'est
+un mécanisme différent — et complémentaire — de la décoration de Pull Request (section 8️⃣) : la
+décoration bloque la **fusion** via les status checks GitHub (si une règle de protection de branche
+l'exige), alors que `sonar.qualitygate.wait=true` fait échouer le **job CI lui-même**, peu importe
+que des règles de protection de branche soient configurées ou non.
+
 ---
 
-## 7️⃣ Décoration des Pull Requests
+## 8️⃣ Décoration des Pull Requests
 
 SonarCloud n'attend pas qu'une Pull Request soit fusionnée pour l'analyser. C'est même l'un des
 trois points d'intégration mis en avant par la documentation :
@@ -344,7 +529,7 @@ précisément ce qui rend cette seconde question visible **sans quitter GitHub**
 
 ---
 
-## 8️⃣ Fournir la couverture de tests à SonarCloud : JaCoCo
+## 9️⃣ Fournir la couverture de tests à SonarCloud : JaCoCo
 
 SonarCloud ne mesure pas lui-même la couverture de tests (semaine 4) : il **lit** un rapport déjà
 produit par un autre outil, **JaCoCo**, et l'intègre à son analyse. Le `pom.xml` du projet
@@ -411,22 +596,6 @@ configure ce plugin avec deux exécutions Maven distinctes :
 Cette double configuration illustre une idée importante : un **quality gate** peut combiner des
 métriques de **plusieurs outils** (ici, les règles SonarQube elles-mêmes **et** la couverture
 JaCoCo) pour décider si un changement est acceptable.
-
-<details>
-<summary>🤔 Testez-vous</summary>
-
-Une Pull Request ajoute une nouvelle méthode non testée dans une classe existante. Le reste du
-projet est entièrement couvert. SonarCloud affiche un quality gate **Failed** sur cette PR
-précisément à cause du « nouveau code ». Pourquoi le quality gate peut-il échouer **même si** la
-couverture globale du projet reste au-dessus de 85 % ?
-
-**Réponse** : la quality gate par défaut de SonarCloud applique ses conditions non seulement au
-code existant, mais surtout au **nouveau code** introduit par la PR (« New Code »). Une méthode
-neuve, non testée, peut donc faire échouer la quality gate sur cette PR précise, même si elle ne
-fait presque pas bouger la moyenne globale du projet — l'objectif est justement d'empêcher que de
-la nouvelle dette technique s'accumule, peu importe l'état historique du reste du code.
-</details>
-
 ---
 
 ## 📚 Références
@@ -444,6 +613,9 @@ la nouvelle dette technique s'accumule, peu importe l'état historique du reste 
 - Projet `spring-petclinic-rest` —
   [`.github/workflows/maven-build-master.yml`](https://github.com/spring-petclinic/spring-petclinic-rest/blob/main/.github/workflows/maven-build-master.yml)
   et [`pom.xml`](https://github.com/spring-petclinic/spring-petclinic-rest/blob/main/pom.xml).
+- [SonarQube Cloud — Project analysis](https://docs.sonarsource.com/sonarqube-cloud/managing-your-projects/project-analysis.md)
+  — où déclarer `sonar.organization`/`sonar.projectKey` (pom.xml vs paramètres CI), et le paramètre
+  `sonar.qualitygate.wait` pour faire échouer le build sur un quality gate en échec.
 
 {{% notice tip "🧪 À vous de jouer" %}}
 Poursuivez avec [Analyse de vulnérabilités avec Trivy]({{% relref "/semaine-9/analyse-vulnerabilites-trivy" %}})

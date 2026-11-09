@@ -4,7 +4,7 @@ weight = 4
 draft = false
 +++
 
-## 🎯 Activité pratique (non notée, prépare le TP3)
+## 🎯 Activité pratique
 
 En équipe, sur votre application legacy, en réinvestissant directement
 [Analyse statique avec SonarQube / SonarCloud]({{% relref "/semaine-9/analyse-statique-sonarqube" %}})
