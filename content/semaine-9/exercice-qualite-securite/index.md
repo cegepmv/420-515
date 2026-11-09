@@ -71,6 +71,8 @@ répondre à **chacune** des exigences suivantes, séparément :
    n'est encore disponible.
 3. Les résultats doivent être consultables dans l'onglet **Security** du dépôt GitHub, même si le
    scan fait échouer le pipeline.
+4. Le fichier `trivy-results.sarif` brut doit rester consultable après coup (ex. pour déboguer un
+   problème de format), même si l'onglet Security n'affiche que les alertes déjà interprétées.
 
 Pour l'exigence 3, précisez également la permission GitHub Actions requise, en plus des options
 `with:` de l'action Trivy elle-même.
@@ -120,6 +122,10 @@ Pour l'exigence 3, précisez également la permission GitHub Actions requise, en
    `github/codeql-action/upload-sarif@v4` avec `sarif_file: 'trivy-results.sarif'` et
    `if: always()` (pour téléverser même en cas d'échec). Permission requise au niveau du job :
    `permissions: security-events: write` (en plus de `contents: read`).
+4. Une étape `actions/upload-artifact@v4` avec `path: trivy-results.sarif` et `if: always()`. Sans
+   cette étape, le fichier brut n'est jamais conservé : il est produit sur le système de fichiers
+   éphémère du runner, lu par `upload-sarif`, puis disparaît avec le runner à la fin du job — seul
+   le contenu interprété (les alertes) reste visible dans l'onglet Security.
 </details>
 
 ---

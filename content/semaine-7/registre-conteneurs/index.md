@@ -283,6 +283,15 @@ Les éléments communs aux deux structures :
 > GHCR (contrairement à un Personal Access Token, nécessaire seulement pour une publication
 > **manuelle** depuis votre poste, comme à la section précédente).
 
+> ⚠️ **Cas particulier** : `GITHUB_TOKEN` ne peut publier que dans le namespace GHCR **du
+> propriétaire du dépôt** (votre compte ou votre organisation). Si votre workflow pousse
+> explicitement vers un **autre** compte/namespace (ex. `ghcr.io/un-autre-compte/image`, un cas qui
+> arrive si le dépôt appartient à une organisation mais que vous publiez sous votre compte
+> personnel), `GITHUB_TOKEN` échoue avec `denied: denied` même si `permissions: packages: write`
+> est bien présent — ce n'est pas un problème de permission du workflow, mais une limite
+> d'autorisation **du compte cible**. Il faut alors revenir à un Personal Access Token (classique,
+> scope `write:packages`) appartenant à ce compte cible, passé comme secret du dépôt.
+
 ---
 
 ## 📚 Références

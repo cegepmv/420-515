@@ -94,6 +94,40 @@ L'exemple officiel de l'action `trivy-action`, utilisé tel quel dans un pipelin
 > échoue (semaine 4), ou qu'un quality gate SonarCloud en `Failed` (page précédente). Sans cette
 > option, l'étape Trivy réussirait **toujours**, peu importe ce qu'elle trouve.
 
+### Adapter l'exemple si vous utilisez `docker/build-push-action` (Buildx)
+
+L'exemple officiel ci-dessus construit l'image avec la commande `docker build` (semaine 7, CLI
+classique). Si votre pipeline construit plutôt l'image avec l'action `docker/build-push-action`
+(Buildx — souvent combinée à `docker/setup-buildx-action`), l'adaptation est la suivante :
+
+```yaml
+- name: Build and push Docker image
+  uses: docker/build-push-action@v6
+  with:
+    context: .
+    push: ${{ github.event_name != 'pull_request' }}
+    load: true   # requis pour que Trivy puisse scanner l'image juste après
+    tags: ghcr.io/mon-organisation/mon-app:latest
+
+- name: Run Trivy vulnerability scanner
+  uses: aquasecurity/trivy-action@v0.36.0
+  with:
+    image-ref: 'ghcr.io/mon-organisation/mon-app:latest'
+    format: 'table'
+    exit-code: '1'
+    ignore-unfixed: true
+    vuln-type: 'os,library'
+    severity: 'CRITICAL,HIGH'
+```
+
+> 💡 Par défaut, Buildx construit l'image dans un cache de build **isolé**, invisible du démon
+> Docker du runner tant qu'elle n'est ni poussée (`push: true`) ni explicitement chargée. Sur une
+> Pull Request, `push` est habituellement désactivé (on ne veut pas publier une image qui n'a pas
+> encore été fusionnée) — sans `load: true`, l'image n'existerait alors **nulle part** sur le
+> runner, et l'étape Trivy échouerait faute de trouver `image-ref`. `load: true` charge l'image
+> dans le démon Docker **du runner GitHub Actions** (pas votre machine locale) pour la durée du
+> job seulement; une fois le job terminé, le runner — et l'image chargée avec lui — est détruit.
+
 ---
 
 ## 4️⃣ Publier les résultats dans l'onglet Security de GitHub (SARIF)
@@ -149,6 +183,26 @@ Deux détails essentiels :
 > dans l'onglet Security, pendant qu'une seconde étape, en mode `table` avec `exit-code: '1'`,
 > bloque réellement le pipeline. Chaque étape a un rôle distinct : **visibilité** pour la première,
 > **porte bloquante** pour la seconde.
+
+### Où retrouver le fichier `trivy-results.sarif` lui-même ?
+
+Le fichier `trivy-results.sarif` n'est **pas conservé automatiquement**. Il est écrit sur le
+système de fichiers éphémère du runner, lu immédiatement par `upload-sarif`, puis disparaît avec le
+runner à la fin du job — seul son contenu **interprété** (les alertes individuelles) reste visible
+dans l'onglet Security. Pour inspecter le fichier brut (par exemple pour déboguer un problème de
+format), ajoutez une étape supplémentaire qui le conserve comme artefact téléchargeable :
+
+```yaml
+- name: Upload SARIF as artifact
+  uses: actions/upload-artifact@v4
+  if: always()
+  with:
+    name: trivy-results
+    path: trivy-results.sarif
+```
+
+L'artefact apparaît alors dans l'onglet **Actions** du dépôt, sur la page du run concerné (section
+*Artifacts*, en bas du résumé), téléchargeable sous forme de `.zip`.
 
 <details>
 <summary>🤔 Testez-vous</summary>
