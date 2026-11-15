@@ -18,7 +18,7 @@ draft = false
 - Décrire, dans leurs grandes lignes, les rôles du **control plane** et des **nœuds** dans un
   cluster Kubernetes.
 - Expliquer ce qu'est un **namespace** et pourquoi ce cloisonnement est utile dans un cluster
-  Kubernetes, même si votre équipe travaille seule sur le sien pendant ce cours.
+  Kubernetes, même si vous travaillez seul sur le vôtre pendant ce cours.
 - Lire et écrire un manifeste **Deployment** simple (réplicas, image, port), et expliquer ce que
   signifie « auto-guérison » (*self-healing*) dans ce contexte.
 - Lire et écrire un manifeste **Service** simple, et expliquer la différence entre `ClusterIP` et

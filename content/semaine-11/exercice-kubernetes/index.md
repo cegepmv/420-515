@@ -20,7 +20,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: petclinic
-  namespace: equipe-07
+  namespace: etu1234
 spec:
   replicas: 3
   selector:
@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: petclinic
-          image: ghcr.io/equipe-07/petclinic:v1.4.0
+          image: ghcr.io/etu1234/petclinic:v1.4.0
           ports:
             - containerPort: 9966
 ---
@@ -41,7 +41,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: petclinic-service
-  namespace: equipe-07
+  namespace: etu1234
 spec:
   type: ClusterIP
   selector:
@@ -52,14 +52,15 @@ spec:
       targetPort: 9966
 ```
 
-1. À quoi sert le champ `namespace: equipe-07` sur ces deux manifestes ? Dans ce cours, chaque
-   équipe a son propre cluster AKS — ce champ est-il donc inutile ici ? Expliquez dans quelle
+1. À quoi sert le champ `namespace: etu1234` sur ces deux manifestes ? Dans ce cours, chaque
+   étudiant a son propre cluster AKS — ce champ est-il donc inutile ici ? Expliquez dans quelle
    situation (pas nécessairement celle de ce cours) ce champ deviendrait indispensable.
 2. Un des trois pods créés par ce Deployment plante. Combien de temps, selon vous, le Service
    reste-t-il fonctionnel, et pourquoi n'a-t-il besoin d'aucune reconfiguration manuelle ?
-3. Ce Service est de type `ClusterIP`. Un coéquipier essaie d'y accéder depuis son navigateur, à la
-   maison, et ça ne fonctionne pas. Expliquez pourquoi, et quel changement de **type** de Service
-   serait nécessaire pour que ça fonctionne (en supposant que le cluster utilisé le permette).
+3. Ce Service est de type `ClusterIP`. Un camarade de classe essaie d'y accéder depuis son
+   navigateur, à la maison, et ça ne fonctionne pas. Expliquez pourquoi, et quel changement de
+   **type** de Service serait nécessaire pour que ça fonctionne (en supposant que le cluster
+   utilisé le permette).
 4. Le `selector` du Service et les `matchLabels` du Deployment utilisent la même valeur
    (`app: petclinic`). Que se passerait-il si on changeait l'étiquette dans `template.metadata.labels`
    du Deployment sans changer le `selector` du Service ?
@@ -74,10 +75,10 @@ Pour chacune des situations suivantes, indiquez la bonne action à prendre (et l
 
 1. Un étudiant termine sa session de travail sur AKS pour la soirée. Que devrait-il faire avant de
    fermer son ordinateur, et avec quelle commande ?
-2. Une équipe doit reprendre son travail le lendemain matin, après avoir arrêté son cluster la
-   veille. Avec quelle commande redémarre-t-elle le cluster, et combien de temps doit-elle prévoir
+2. Un étudiant doit reprendre son travail le lendemain matin, après avoir arrêté son cluster la
+   veille. Avec quelle commande redémarre-t-il le cluster, et combien de temps doit-il prévoir
    avant de pouvoir relancer immédiatement un arrêt si nécessaire ?
-3. Une équipe a déjà dépensé 95 $ de son crédit Azure (sur 100 $) à mi-session, en laissant son
+3. Un étudiant a déjà dépensé 95 $ de son crédit Azure (sur 100 $) à mi-session, en laissant son
    cluster actif en continu depuis le début. Quelle pratique, décrite dans les notes, aurait permis
    d'éviter cette situation ?
 4. Un étudiant exécute `az aks stop`, puis tente immédiatement `az aks start` quelques secondes
@@ -90,7 +91,7 @@ Pour chacune des situations suivantes, indiquez la bonne action à prendre (et l
 
 1. Le `namespace` cloisonne les ressources à l'intérieur d'un cluster : les noms de ressources
    (`petclinic`, `petclinic-service`) ne sont uniques **qu'à l'intérieur** d'un namespace, pas à
-   l'échelle du cluster entier. Dans ce cours, puisque chaque équipe possède déjà son propre
+   l'échelle du cluster entier. Dans ce cours, puisque chaque étudiant possède déjà son propre
    cluster, ce champ n'évite aucun conflit réel — personne d'autre ne travaille sur votre cluster.
    Il deviendrait indispensable dès que **plusieurs équipes ou projets** partageraient le **même**
    cluster (la situation normale en entreprise) : sans cette isolation, deux projets qui déploient

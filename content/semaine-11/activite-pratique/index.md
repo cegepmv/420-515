@@ -6,7 +6,7 @@ draft = false
 
 ## 🎯 Activité pratique
 
-En équipe, en réinvestissant directement
+Individuellement, en réinvestissant directement
 [Kubernetes fondamentaux]({{% relref "/semaine-11/kubernetes-fondamentaux" %}}) et
 [Azure Kubernetes Service (AKS)]({{% relref "/semaine-11/azure-kubernetes-service" %}}) :
 
@@ -18,12 +18,12 @@ En équipe, en réinvestissant directement
    suivant les étapes de
    [Azure Kubernetes Service (AKS)]({{% relref "/semaine-11/azure-kubernetes-service" %}})
    (création du compte, groupe de ressources, `az aks create`).
-2. *(Optionnel, pour pratiquer)* **Créez un namespace** pour votre équipe — pas strictement
-   nécessaire puisque vous êtes seuls sur votre cluster, mais utile à pratiquer :
+2. *(Optionnel, pour pratiquer)* **Créez un namespace** personnel — pas strictement
+   nécessaire puisque vous êtes seul sur votre cluster, mais utile à pratiquer :
 
    ```shell
-   kubectl create namespace equipe-<votre-numero>
-   kubectl config set-context --current --namespace=equipe-<votre-numero>
+   kubectl create namespace etu<votre-numero>
+   kubectl config set-context --current --namespace=etu<votre-numero>
    ```
 
 3. **Vérifiez l'accès à votre image GHCR** : si le *package* `petclinic` publié à la semaine 7 est

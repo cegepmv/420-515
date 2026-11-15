@@ -15,19 +15,21 @@ Microsoft Azure, financé par votre crédit étudiant.
 Ce cluster AKS est payé à même le **crédit étudiant Azure**, offert gratuitement aux étudiants à
 temps plein :
 
-> « Azure for Students [...] Available only to full-time university students* [...] No credit card
-> required [...] Access to full catalog of services up to free amounts and $100 credit. »
-> — [Microsoft Azure — Azure for Students](https://azure.microsoft.com/free/students/)
+> « Azure for Students [...] Disponible uniquement pour les étudiants universitaires à plein
+> temps* [...] Aucune carte de crédit requise [...] Accès au catalogue complet de services
+> jusqu'à des montants gratuits et un crédit de 100 USD. »
+> — [Microsoft Azure — Azure for Students](https://azure.microsoft.com/fr-ca/free/students/)
 
-**Avant de pouvoir créer quoi que ce soit sur AKS**, chaque équipe doit créer son propre compte
+**Avant de pouvoir créer quoi que ce soit sur AKS**, chaque étudiant doit créer son propre compte
 **Azure for Students**, avec un courriel institutionnel du collège, à partir de la page
-[azure.microsoft.com/free/students](https://azure.microsoft.com/free/students/) — c'est ce compte
-qui active le crédit de 100 $ utilisé pour provisionner le cluster AKS de l'équipe.
+[azure.microsoft.com/fr-ca/free/students](https://azure.microsoft.com/fr-ca/free/students/) —
+c'est ce compte qui active le crédit de 100 $ utilisé pour provisionner **votre propre** cluster
+AKS, personnel.
 
 Pourquoi un **abonnement** : quelqu'un doit payer les machines, et Azure doit savoir qui. Un
-abonnement (*subscription*) est le compte auquel la facture est rattachée. Chaque équipe a le sien,
-avec son crédit Azure for Students — c'est pour cela qu'un cluster ne peut pas être « à tout le
-monde » : il appartient à un seul abonnement.
+abonnement (*subscription*) est le compte auquel la facture est rattachée. Chaque étudiant a le
+sien, avec son propre crédit Azure for Students — c'est pour cela qu'un cluster ne peut pas être
+« à tout le monde » : il appartient à un seul abonnement, celui de la personne qui l'a créé.
 
 ---
 
@@ -35,14 +37,14 @@ monde » : il appartient à un seul abonnement.
 
 ### Une convention de nommage, à adopter dès le départ
 
-Chaque équipe choisit un identifiant court, unique, en minuscules, sans accent (ex. `equipe04`).
-Tous les noms Azure de l'équipe en découlent :
+Choisissez un identifiant court, unique, en minuscules, sans accent, basé sur votre matricule ou
+votre nom d'utilisateur GitHub (ex. `etu1234`). Tous vos noms Azure en découlent :
 
-| Ressource | Modèle | Exemple rempli (`equipe04`) |
+| Ressource | Modèle | Exemple rempli (`etu1234`) |
 |---|---|---|
-| Groupe de ressources | `rg-<id>` | `rg-equipe04` |
-| Cluster AKS | `aks-<id>` | `aks-equipe04` |
-| Image GHCR (semaine 7) | `ghcr.io/<compte-github>/petclinic:v1` | `ghcr.io/equipe04/petclinic:v1` |
+| Groupe de ressources | `rg-<id>` | `rg-etu1234` |
+| Cluster AKS | `aks-<id>` | `aks-etu1234` |
+| Image GHCR (semaine 7) | `ghcr.io/<compte-github>/petclinic:v1` | `ghcr.io/etu1234/petclinic:v1` |
 
 Pourquoi regrouper les ressources : un projet crée vite un fouillis — un cluster ici, un disque
 ailleurs — et à la fin, on ne sait plus quoi supprimer sans risque. Le **groupe de ressources**
@@ -53,7 +55,7 @@ en une seule commande.
 ### Créer le groupe de ressources, puis le cluster
 
 La création d'un cluster prend 10 à 15 minutes d'attente — prévoyez ce délai avant votre première
-séance de travail plutôt que de l'absorber en classe. Remplacez `equipe04` par votre propre
+séance de travail plutôt que de l'absorber en classe. Remplacez `etu1234` par votre propre
 identifiant dans toutes les commandes suivantes :
 
 ```shell
@@ -61,26 +63,26 @@ az login
 az account set --subscription "Azure for Students"
 
 # 1. Le groupe de ressources qui contiendra tout
-az group create --name rg-equipe04 --location canadacentral
+az group create --name rg-etu1234 --location canadacentral
 
 # 2. Le cluster : un seul nœud, petit, pour limiter le coût (10-15 min)
 az aks create \
-  --resource-group rg-equipe04 \
-  --name aks-equipe04 \
+  --resource-group rg-etu1234 \
+  --name aks-etu1234 \
   --node-count 1 \
   --node-vm-size Standard_B2s \
   --generate-ssh-keys
 
 # 3. Récupérer les identifiants d'accès au cluster
 az aks get-credentials \
-  --resource-group rg-equipe04 \
-  --name aks-equipe04
+  --resource-group rg-etu1234 \
+  --name aks-etu1234
 
 # 4. Preuve que ça fonctionne
 kubectl get nodes
 ```
 
-— [Microsoft Learn — Create an AKS cluster](https://learn.microsoft.com/azure/aks/learn/quick-kubernetes-deploy-cli)
+— [Microsoft Learn — Créer un cluster AKS](https://learn.microsoft.com/fr-ca/azure/aks/learn/quick-kubernetes-deploy-cli)
 
 Résultat attendu à l'étape 4 : une ligne affichant votre nœud avec le statut `Ready`. Si la région
 `canadacentral` refuse la création (capacité insuffisante), refaites l'étape 1 avec `--location
@@ -101,9 +103,9 @@ d'autre que vous ne peut le télécharger, pas même votre propre cluster AKS. S
 mais chaque Pod restera bloqué en `ImagePullBackOff` : AKS refuse de tirer une image à laquelle il
 n'a pas accès.
 
-> « A Kubernetes cluster uses the Secret of `kubernetes.io/dockerconfigjson` type to authenticate
-> with a container registry to pull a private image. »
-> — [Kubernetes — Pull an Image from a Private Registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
+> « Un cluster Kubernetes utilise un Secret de type `kubernetes.io/dockerconfigjson` pour
+> s'authentifier auprès d'un registre de conteneurs afin de tirer une image privée. »
+> — [Kubernetes — Tirer une image depuis un registre privé](https://kubernetes.io/fr/docs/tasks/configure-pod-container/pull-image-private-registry/)
 
 Deux façons de régler le problème — choisissez-en **une seule** :
 
@@ -121,7 +123,7 @@ Deux façons de régler le problème — choisissez-en **une seule** :
     --docker-password=<votre-PAT-read:packages>
   ```
 
-  — [Kubernetes — Create a Secret by providing credentials on the command line](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-secret-by-providing-credentials-on-the-command-line)
+  — [Kubernetes — Créer un Secret en fournissant des identifiants en ligne de commande](https://kubernetes.io/fr/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-secret-by-providing-credentials-on-the-command-line)
 
   Puis référencez ce secret dans votre Deployment, au même niveau que `containers` :
 
@@ -139,45 +141,46 @@ Deux façons de régler le problème — choisissez-en **une seule** :
 ## 4️⃣ Gérer le crédit : arrêter le cluster quand vous ne travaillez pas
 
 > ⚠️ Un cluster AKS **actif** est facturé en continu, à l'heure, tant qu'il tourne — même si
-> personne de l'équipe ne l'utilise activement. Avec seulement 100 $ de crédit pour toute la
-> session, laisser un cluster tourner en continu (le soir, la nuit, entre deux séances de travail)
-> peut épuiser tout le crédit de l'équipe bien avant la fin de la session.
+> personne ne l'utilise activement. Avec seulement 100 $ de crédit pour toute la session, laisser
+> un cluster tourner en continu (le soir, la nuit, entre deux séances de travail) peut épuiser
+> tout votre crédit bien avant la fin de la session.
 
 La documentation officielle Azure recommande précisément d'arrêter un cluster AKS inutilisé pour
 réduire ces coûts :
 
-> « You may not need to continuously run your Azure Kubernetes Service (AKS) workloads. [...] To
-> better optimize your costs during these periods, you can turn off, or stop, your cluster. This
-> action stops your control plane and agent nodes, allowing you to save on all the compute costs,
-> while maintaining all objects except standalone pods. The cluster state is stored for when you
-> start it again, allowing you to pick up where you left off. »
-> — [Microsoft Learn — Stop and start an Azure Kubernetes Service (AKS) cluster](https://learn.microsoft.com/azure/aks/start-stop-cluster)
+> « Il se peut que vous n'ayez pas besoin d'exécuter en continu vos charges de travail Azure
+> Kubernetes Service (AKS). [...] Pour mieux optimiser vos coûts pendant ces périodes, vous pouvez
+> désactiver, ou arrêter, votre cluster. Cette action arrête votre plan de contrôle et les nœuds de
+> l'agent, ce qui vous permet d'économiser sur tous les coûts de calcul, tout en conservant
+> l'ensemble de vos objets, à l'exception des pods autonomes. L'état du cluster est conservé pour
+> que vous puissiez le redémarrer plus tard et reprendre là où vous vous étiez arrêté. »
+> — [Microsoft Learn — Arrêter et démarrer un cluster Azure Kubernetes Service (AKS)](https://learn.microsoft.com/fr-ca/azure/aks/start-stop-cluster)
 
 Pour arrêter le cluster, à la toute fin de **chaque** session de travail (pas seulement le
 vendredi) :
 
 ```shell
-az aks stop --name aks-equipe04 --resource-group rg-equipe04
+az aks stop --name aks-etu1234 --resource-group rg-etu1234
 ```
 
-> « Use the `az aks stop` command to stop a running AKS cluster, including the nodes and control
-> plane. »
-> — [Microsoft Learn — Stop and start an Azure Kubernetes Service (AKS) cluster](https://learn.microsoft.com/azure/aks/start-stop-cluster)
+> « Utilisez la commande `az aks stop` pour arrêter un cluster AKS en cours d'exécution, y compris
+> les nœuds et le plan de contrôle. »
+> — [Microsoft Learn — Arrêter et démarrer un cluster Azure Kubernetes Service (AKS)](https://learn.microsoft.com/fr-ca/azure/aks/start-stop-cluster)
 
 Et pour le redémarrer, au début de votre prochaine séance de travail :
 
 ```shell
-az aks start --name aks-equipe04 --resource-group rg-equipe04
+az aks start --name aks-etu1234 --resource-group rg-etu1234
 ```
 
-> « Use the `az aks start` command to start a stopped AKS cluster. The cluster restarts with the
-> previous control plane state and number of agent nodes. »
-> — [Microsoft Learn — Stop and start an Azure Kubernetes Service (AKS) cluster](https://learn.microsoft.com/azure/aks/start-stop-cluster)
+> « Utilisez la commande `az aks start` pour démarrer un cluster AKS arrêté. Le cluster redémarre
+> avec l'état précédent de son plan de contrôle et le même nombre de nœuds d'agent. »
+> — [Microsoft Learn — Arrêter et démarrer un cluster Azure Kubernetes Service (AKS)](https://learn.microsoft.com/fr-ca/azure/aks/start-stop-cluster)
 
-> 💡 Après un `az aks stop`, la documentation officielle précise qu'il faut attendre « 15-30
+> 💡 Après un `az aks stop`, la documentation officielle précise qu'il faut attendre « 15 à 30
 > minutes » avant de redémarrer le cluster, le temps que l'arrêt se termine complètement —
 > relancer trop vite peut perturber l'arrêt en cours
-> ([Microsoft Learn — Stop and start an AKS cluster](https://learn.microsoft.com/azure/aks/start-stop-cluster)).
+> ([Microsoft Learn — Arrêter et démarrer un cluster AKS](https://learn.microsoft.com/fr-ca/azure/aks/start-stop-cluster)).
 > Prenez l'habitude d'arrêter votre cluster **dès que vous fermez votre session de travail**, même
 > pour une pause de quelques heures : c'est le seul moyen fiable de ne pas brûler votre crédit
 > étudiant avant la fin de la session.
@@ -187,17 +190,17 @@ tout ce qu'il contient — cluster inclus — disparaît en une seule commande, 
 s'arrête complètement.
 
 ```shell
-az group delete --name rg-equipe04 --yes --no-wait
+az group delete --name rg-etu1234 --yes --no-wait
 ```
 
 ---
 
 ## 📚 Références
 
-- Microsoft Azure — [Azure for Students](https://azure.microsoft.com/free/students/)
-- Microsoft Learn — [Create an Azure Kubernetes Service (AKS) cluster](https://learn.microsoft.com/azure/aks/learn/quick-kubernetes-deploy-cli)
-- Documentation officielle Kubernetes — [Pull an Image from a Private Registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
-- Documentation officielle Microsoft — [Stop and start an Azure Kubernetes Service (AKS) cluster](https://learn.microsoft.com/azure/aks/start-stop-cluster)
+- Microsoft Azure — [Azure for Students](https://azure.microsoft.com/fr-ca/free/students/)
+- Microsoft Learn — [Créer un cluster Azure Kubernetes Service (AKS)](https://learn.microsoft.com/fr-ca/azure/aks/learn/quick-kubernetes-deploy-cli)
+- Documentation officielle Kubernetes — [Tirer une image depuis un registre privé](https://kubernetes.io/fr/docs/tasks/configure-pod-container/pull-image-private-registry/)
+- Documentation officielle Microsoft — [Arrêter et démarrer un cluster Azure Kubernetes Service (AKS)](https://learn.microsoft.com/fr-ca/azure/aks/start-stop-cluster)
 
 {{% notice tip "🧪 À vous de jouer" %}}
 Poursuivez avec l'[exercice Kubernetes]({{% relref "/semaine-11/exercice-kubernetes" %}}) pour
