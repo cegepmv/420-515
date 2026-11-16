@@ -91,25 +91,28 @@ séparation :
 > — [Kubernetes — Composants de Kubernetes](https://kubernetes.io/fr/docs/concepts/overview/components/),
 > image sous licence [CC BY 4.0](https://github.com/kubernetes/website#creative-commons)
 
-Le plan de contrôle **« gère l'état global du cluster »** et se compose de cinq pièces :
+Le plan de contrôle **« gère l'état global du cluster »**. En clair : c'est lui qui prend
+toutes les décisions (quoi lancer, où, et que faire si ça casse), mais qui ne fait jamais
+tourner vos conteneurs lui-même. Il se compose de cinq pièces :
 
-| Composant du plan de contrôle | Rôle (traduit de la documentation officielle) |
-|---|---|
-| **kube-apiserver** | « Le serveur principal qui expose l'API HTTP de Kubernetes » — le seul point d'entrée pour `kubectl` |
-| **etcd** | « Un magasin de clés-valeurs cohérent et hautement disponible pour toutes les données du serveur API » — la mémoire du cluster |
-| **kube-scheduler** | « Recherche les Pods qui ne sont pas encore liés à un nœud et attribue chaque Pod à un nœud approprié » |
-| **kube-controller-manager** | « Exécute des contrôleurs pour mettre en œuvre le comportement de l'API Kubernetes » — c'est lui qui, en continu, compare l'état réel à l'état désiré (ex. `replicas: 2` d'un Deployment, section 3️⃣) et corrige l'écart |
-| **cloud-controller-manager** (optionnel) | « S'intègre aux fournisseurs de cloud sous-jacents » — ici Azure : c'est ce composant qui, par exemple, demande à Azure de créer l'adresse IP publique d'un Service `LoadBalancer` (section 4️⃣) |
+| Composant | En une phrase simple | Rôle détaillé (traduit de la documentation officielle) |
+|---|---|---|
+| **kube-apiserver** | La porte d'entrée du cluster | « Le serveur principal qui expose l'API HTTP de Kubernetes » : c'est le **seul** point de contact pour `kubectl` (et pour tous les autres composants ci-dessous) — rien n'entre ou ne sort du cluster sans passer par lui |
+| **etcd** | La mémoire du cluster | « Un magasin de clés-valeurs cohérent et hautement disponible pour toutes les données du serveur API » : il conserve l'état désiré et l'état actuel de **tout** (Deployments, Services, Secrets, etc.) — si `etcd` perd ses données, le cluster oublie tout ce qu'il devait faire tourner |
+| **kube-scheduler** | Le répartiteur de tâches | « Recherche les Pods qui ne sont pas encore liés à un nœud et attribue chaque Pod à un nœud approprié » : chaque fois qu'un nouveau Pod doit démarrer, c'est lui qui choisit *sur quel nœud* (selon les ressources disponibles — CPU, mémoire) |
+| **kube-controller-manager** | Le surveillant qui corrige les écarts | « Exécute des contrôleurs pour mettre en œuvre le comportement de l'API Kubernetes » : en continu, il compare l'état réel à l'état désiré (ex. « il devrait y avoir `replicas: 2` Pods », section 3️⃣) et relance automatiquement un Pod si l'un d'eux meurt |
+| **cloud-controller-manager** *(optionnel)* | Le pont vers le fournisseur cloud | « S'intègre aux fournisseurs de cloud sous-jacents » : ici Azure — c'est ce composant qui demande concrètement à Azure de créer l'adresse IP publique d'un Service `LoadBalancer` (section 4️⃣) |
 
+— [Kubernetes — Composants de Kubernetes](https://kubernetes.io/fr/docs/concepts/overview/components/)
 
-Chaque **nœud**, de son côté, fait tourner le logiciel nécessaire pour réellement exécuter vos
-conteneurs :
+Chaque **nœud**, de son côté, ne décide rien — il **exécute** ce que le plan de contrôle lui
+confie, grâce à trois logiciels installés dessus :
 
-| Composant d'un nœud | Rôle (traduit de la documentation officielle) |
-|---|---|
-| **kubelet** | « Veille à ce que les Pods s'exécutent, y compris leurs conteneurs » — l'agent qui, sur chaque nœud, fait réellement démarrer vos conteneurs |
-| **kube-proxy** | « Maintient les règles réseau sur les nœuds pour mettre en œuvre les Services » (optionnel) |
-| **Runtime de conteneur** | Le logiciel qui exécute concrètement vos conteneurs (ex. containerd) |
+| Composant | En une phrase simple | Rôle détaillé (traduit de la documentation officielle) |
+|---|---|---|
+| **kubelet** | L'agent qui fait réellement démarrer vos conteneurs | « Veille à ce que les Pods s'exécutent, y compris leurs conteneurs » : il tourne sur chaque nœud, reçoit les instructions du plan de contrôle (via le kube-apiserver) et s'assure que les conteneurs demandés sont bel et bien en vie sur *sa* machine |
+| **kube-proxy** *(optionnel)* | Le gestionnaire du réseau local | « Maintient les règles réseau sur les nœuds pour mettre en œuvre les Services » : c'est lui qui fait en sorte qu'un appel vers un Service (section 4️⃣) soit redirigé vers le bon Pod, même si ce Pod est sur un autre nœud |
+| **Runtime de conteneur** | Le moteur qui exécute vos images | Le logiciel qui télécharge vos images (ex. depuis le GHCR, section 4️⃣ de la page AKS) et lance concrètement les conteneurs — par exemple `containerd` |
 
 — [Kubernetes — Composants de Kubernetes](https://kubernetes.io/fr/docs/concepts/overview/components/)
 
