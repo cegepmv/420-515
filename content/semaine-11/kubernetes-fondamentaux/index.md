@@ -7,7 +7,7 @@ draft = false
 Tout ce qui suit est fondé sur la documentation officielle **Kubernetes**, en français —
 [kubernetes.io/fr/docs/concepts](https://kubernetes.io/fr/docs/concepts/) — appliquée à
 l'application legacy `petclinic` déjà conteneurisée à la semaine 7 (image publiée sur GHCR, port
-`9966`, endpoint `/petclinic/api/vets`).
+`9966`).
 
 ---
 
@@ -101,10 +101,6 @@ Le plan de contrôle **« gère l'état global du cluster »** et se compose de 
 | **kube-controller-manager** | « Exécute des contrôleurs pour mettre en œuvre le comportement de l'API Kubernetes » — c'est lui qui, en continu, compare l'état réel à l'état désiré (ex. `replicas: 2` d'un Deployment, section 3️⃣) et corrige l'écart |
 | **cloud-controller-manager** (optionnel) | « S'intègre aux fournisseurs de cloud sous-jacents » — ici Azure : c'est ce composant qui, par exemple, demande à Azure de créer l'adresse IP publique d'un Service `LoadBalancer` (section 4️⃣) |
 
-`kube-controller-manager` et `cloud-controller-manager` ne font **pas** la même chose : le premier
-exécute la logique générique de Kubernetes (indépendante du fournisseur de cloud), le second relie
-spécifiquement cette logique à Azure — vous ne les manipulerez jamais directement dans ce cours,
-mais c'est grâce à eux que vos Deployments et Services « agissent tout seuls ».
 
 Chaque **nœud**, de son côté, fait tourner le logiciel nécessaire pour réellement exécuter vos
 conteneurs :
