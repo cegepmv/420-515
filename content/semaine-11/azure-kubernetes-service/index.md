@@ -95,7 +95,41 @@ eastus` et gardez cette même région pour la suite de la session.
 
 ---
 
-## 3️⃣ Donner à AKS l'accès à votre image GHCR (si elle est privée)
+## 3️⃣ Créer son namespace et s'assurer d'y travailler
+
+`az aks get-credentials` (étape précédente) configure `kubectl` pour parler à votre cluster, mais
+vous arrivez par défaut dans le namespace `default` — voir
+[Kubernetes 1/2 : namespace, Deployment, Service]({{% relref "/semaine-11/kubernetes-fondamentaux" %}})
+pour une explication complète du concept. Même si, dans ce cours, un cluster `default` suffirait
+techniquement (votre cluster vous appartient entièrement), **créez et utilisez systématiquement
+votre propre namespace** : c'est le réflexe professionnel à prendre dès maintenant, celui que vous
+devrez impérativement avoir sur un cluster d'entreprise partagé entre plusieurs équipes.
+
+```shell
+# 1. Créer le namespace (remplacez etu1234 par votre identifiant, voir section 2️⃣)
+kubectl create namespace etu1234
+
+# 2. Basculer le contexte courant vers ce namespace, pour NE PLUS JAMAIS
+#    déployer accidentellement dans "default"
+kubectl config set-context --current --namespace=etu1234
+
+# 3. Preuve que vous n'êtes plus dans "default"
+kubectl config view --minify | grep namespace:
+# namespace: etu1234
+```
+
+— [Kubernetes — Namespaces, Définir la préférence de namespace](https://kubernetes.io/fr/docs/concepts/overview/working-with-objects/namespaces/#setting-the-namespace-preference)
+
+> ⚠️ Toutes les commandes `kubectl` qui suivent (secret, Deployment, Service) s'appliquent au
+> namespace **courant** de votre contexte — celui que vous venez de fixer à l'étape 2. Si vous
+> ouvrez un nouveau terminal plus tard et que `kubectl get pods` revient vide alors que vous êtes
+> certain d'avoir déployé votre application, vérifiez d'abord votre contexte avec la commande de
+> l'étape 3 : vous êtes probablement repassé dans `default` sans vous en rendre compte (par
+> exemple après un nouveau `az aks get-credentials`).
+
+---
+
+## 4️⃣ Donner à AKS l'accès à votre image GHCR (si elle est privée)
 
 Par défaut, un *package* publié sur **GHCR** (GitHub Container Registry) est **privé** — personne
 d'autre que vous ne peut le télécharger, pas même votre propre cluster AKS. Si votre image
@@ -111,34 +145,121 @@ Deux façons de régler le problème — choisissez-en **une seule** :
 
 - **Option A — rendre le package public** (le plus simple pour ce cours) : dans GitHub, allez dans
   les paramètres du *package* `petclinic` (lié à votre dépôt, semaine 7) et changez sa visibilité
-  à *Public*. Aucune commande Kubernetes n'est alors nécessaire.
+  à *Public*. Aucune commande Kubernetes n'est alors nécessaire — passez directement à la
+  section 5️⃣.
 - **Option B — garder le package privé**, et donner explicitement à AKS la permission de le tirer,
   avec un [jeton d'accès personnel (PAT)](https://docs.github.com/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
-  limité au droit `read:packages` :
+  limité au droit `read:packages`. Le Secret doit exister **dans le même namespace** que votre
+  Deployment (`etu1234`, fixé comme contexte courant à la section 3️⃣) — sans `--namespace`
+  explicite, il est créé dans le namespace courant du contexte, donc déjà le bon :
 
   ```shell
   kubectl create secret docker-registry ghcr-secret \
+    --namespace=etu1234 \
     --docker-server=ghcr.io \
     --docker-username=<votre-compte-github> \
     --docker-password=<votre-PAT-read:packages>
+
+  # Validation : le secret doit apparaître dans VOTRE namespace
+  kubectl get secrets --namespace=etu1234
   ```
 
   — [Kubernetes — Créer un Secret en fournissant des identifiants en ligne de commande](https://kubernetes.io/fr/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-secret-by-providing-credentials-on-the-command-line)
 
-  Puis référencez ce secret dans votre Deployment, au même niveau que `containers` :
+  Créer le Secret ne suffit pas : rien ne dit encore à Kubernetes de **l'utiliser** pour tirer
+  l'image de `petclinic`. C'est le rôle du champ `imagePullSecrets`, à ajouter dans votre
+  `deployment.yaml`, **avant** de l'appliquer (section 5️⃣) :
+
+  > « Vous pouvez créer un Pod qui utilise un Secret `kubernetes.io/dockerconfigjson` [...] en
+  > ajoutant une section `imagePullSecrets` à la définition du Pod. »
+  > — [Kubernetes — Tirer une image depuis un registre privé](https://kubernetes.io/fr/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-pod-that-uses-your-secret)
 
   ```yaml
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: petclinic
+    labels:
+      app: petclinic
   spec:
-    imagePullSecrets:
-      - name: ghcr-secret
-    containers:
-      - name: petclinic
-        image: ghcr.io/<votre-compte>/petclinic:latest
+    replicas: 2
+    selector:
+      matchLabels:
+        app: petclinic
+    template:
+      metadata:
+        labels:
+          app: petclinic
+      spec:
+        imagePullSecrets:
+          - name: ghcr-secret
+        containers:
+          - name: petclinic
+            image: ghcr.io/<votre-compte>/petclinic:latest
+            ports:
+              - containerPort: 9966
   ```
+
+  | Champ | Rôle |
+  |---|---|
+  | `spec.template.spec.imagePullSecrets` | Liste des Secrets que **kubelet** doit présenter au registre pour tirer l'image — ici, le Secret `ghcr-secret` créé ci-dessus |
+  | `imagePullSecrets[0].name` | Doit correspondre **exactement** au nom donné à `kubectl create secret` (`ghcr-secret`) et exister dans le **même namespace** que le Deployment (`etu1234`, section 3️⃣) |
+
+  > ⚠️ `imagePullSecrets` se place au niveau de `spec.template.spec` (la spécification du **Pod**,
+  > à l'intérieur du Deployment), **au même niveau que `containers`** — pas à côté de
+  > `spec.replicas` ou de `spec.selector`, qui appartiennent au Deployment lui-même. C'est l'erreur
+  > la plus fréquente : un `imagePullSecrets` mal indenté est silencieusement ignoré par Kubernetes
+  > (`kubectl apply` ne signale aucune erreur), et les Pods restent en `ImagePullBackOff` comme si
+  > le Secret n'existait pas.
+
+  Si vous avez choisi l'**Option A** (package public), n'ajoutez **pas** `imagePullSecrets` : ce
+  champ est inutile — et sans effet néfaste — pour une image publique, mais il est inutile de le
+  laisser traîner dans votre manifeste s'il ne sert à rien.
 
 ---
 
-## 4️⃣ Gérer le crédit : arrêter le cluster quand vous ne travaillez pas
+## 5️⃣ Déployer l'application : Deployment, Service, puis trouver l'adresse externe
+
+Avec le namespace prêt (section 3️⃣) et, au besoin, le Secret GHCR en place (section 4️⃣), appliquez
+dans l'ordre les deux manifestes décrits et expliqués en détail sur la page
+[Kubernetes 1/2 : namespace, Deployment, Service]({{% relref "/semaine-11/kubernetes-fondamentaux" %}}) :
+
+```shell
+# 1. Le Deployment : crée les Pods et les maintient en vie (auto-guérison)
+kubectl apply -f deployment.yaml
+
+# 2. Vérifier que les réplicas désirés sont bien disponibles avant de continuer
+kubectl get deployments
+# NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+# petclinic   2/2     2            2           18s
+
+# 3. Le Service : expose le Deployment, en LoadBalancer pour une IP publique
+kubectl apply -f service.yaml
+
+# 4. Trouver l'adresse externe : la colonne EXTERNAL-IP démarre à <pending>,
+#    puis Azure lui attribue une IP publique après quelques dizaines de secondes.
+#    --watch rafraîchit l'affichage en continu, sans avoir à relancer la commande.
+kubectl get service petclinic-service --watch
+# NAME                 TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)          AGE
+# petclinic-service    LoadBalancer   10.0.123.45    <pending>       9966:31xxx/TCP   5s
+# petclinic-service    LoadBalancer   10.0.123.45    20.123.45.67    9966:31xxx/TCP   47s
+
+# 5. Ctrl+C pour quitter le mode --watch une fois l'IP obtenue, puis tester
+curl http://20.123.45.67:9966/petclinic/api/vets
+```
+
+> 💡 Toutes ces commandes agissent sur le namespace courant de votre contexte (`etu1234`, fixé à
+> la section 3️⃣) : pas besoin de répéter `--namespace` à chaque fois. Si vous préférez être
+> explicite (ou si vous travaillez depuis un terminal dont vous n'êtes pas sûr du contexte),
+> ajoutez `--namespace=etu1234` à chacune de ces commandes.
+
+> ⚠️ Si `kubectl get service` reste bloqué sur `<pending>` plus de quelques minutes, ou si les
+> Pods du Deployment restent en `ImagePullBackOff` (`kubectl get pods`), retournez à la
+> section 4️⃣ : c'est généralement un problème d'accès à l'image GHCR, pas un problème de Service.
+
+---
+
+## 6️⃣ Gérer le crédit : arrêter le cluster quand vous ne travaillez pas
 
 > ⚠️ Un cluster AKS **actif** est facturé en continu, à l'heure, tant qu'il tourne — même si
 > personne ne l'utilise activement. Avec seulement 100 $ de crédit pour toute la session, laisser
