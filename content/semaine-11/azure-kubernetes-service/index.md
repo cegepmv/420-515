@@ -15,11 +15,6 @@ Microsoft Azure, financé par votre crédit étudiant.
 Ce cluster AKS est payé à même le **crédit étudiant Azure**, offert gratuitement aux étudiants à
 temps plein :
 
-> « Azure for Students [...] Disponible uniquement pour les étudiants universitaires à plein
-> temps* [...] Aucune carte de crédit requise [...] Accès au catalogue complet de services
-> jusqu'à des montants gratuits et un crédit de 100 USD. »
-> — [Microsoft Azure — Azure for Students](https://azure.microsoft.com/fr-ca/free/students/)
-
 **Avant de pouvoir créer quoi que ce soit sur AKS**, chaque étudiant doit créer son propre compte
 **Azure for Students**, avec un courriel institutionnel du collège, à partir de la page
 [azure.microsoft.com/fr-ca/free/students](https://azure.microsoft.com/fr-ca/free/students/) —
