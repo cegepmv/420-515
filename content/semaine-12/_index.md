@@ -39,5 +39,5 @@ invisible depuis l'extérieur du cluster — et un `LoadBalancer` ouvre un port,
 d'hôte ni routage par chemin. Cette semaine ferme ces trois angles morts, puis règle un quatrième
 problème, plus structurel : copier-coller le même YAML pour chaque équipe ou chaque mise à jour
 ne passe pas à l'échelle. **Helm** répond à ce dernier problème — et sert de point d'appui pour la
-remise la plus importante de la session, le **TP4 (15 %)** : déployer une mise à jour réelle de
+remise la plus importante de la session : déployer une mise à jour réelle de
 l'application, via Helm, **sans interruption de service**. »

@@ -8,10 +8,8 @@ Tout ce qui suit est fondé sur la documentation officielle de Kubernetes
 (`kubernetes.io`). Les exemples YAML réutilisent le Deployment/Service `petclinic` introduit à la
 semaine 11 ([Kubernetes fondamentaux]({{% relref "/semaine-11/kubernetes-fondamentaux" %}})).
 
-> 💡 **Rappel (semaine 11)** : aucun des manifestes ci-dessous n'indique de champ
-> `metadata.namespace` explicite — exactement comme le Deployment et le Service de la semaine 11.
-> Ils s'appliquent donc tous dans le namespace **courant de votre contexte**
-> (`etu1234` ou `equipe-NN`, selon la façon dont vous l'avez fixé avec
+> 💡 **Rappel** : comme à la semaine 11, tout ce qui suit s'applique dans le namespace
+> **courant de votre contexte** (`etu1234` ou `equipe-NN`, selon la façon dont vous l'avez fixé avec
 > `kubectl config set-context --current --namespace=...`, voir
 > [Azure Kubernetes Service (AKS), section 3️⃣]({{% relref "/semaine-11/azure-kubernetes-service" %}})).
 > Si une commande `kubectl get` semble vide, vérifiez d'abord ce contexte
@@ -51,25 +49,27 @@ kind: ConfigMap
 metadata:
   name: petclinic-config
 data:
-  DATASOURCE_URL: "jdbc:mysql://petclinic-db:3306/petclinic"
-  SPRING_PROFILES_ACTIVE: "mysql"
+  DATASOURCE_URL: "jdbc:h2:mem:petclinic"
+  SPRING_PROFILES_ACTIVE: "h2"
 ```
 
 ### Rappel : qu'est-ce qu'une variable d'environnement ?
 
 Avant d'aller plus loin, précisons ce concept — central dans tout ce qui suit. Une **variable
-d'environnement** est une paire clé-valeur (ex. `SPRING_PROFILES_ACTIVE=mysql`) transmise à un
+d'environnement** est une paire clé-valeur (ex. `SPRING_PROFILES_ACTIVE=h2`) transmise à un
 programme **au moment où il démarre**, séparément de son code : une étiquette remise au programme
 à son démarrage, pour reprendre l'analogie déjà vue en classe. Spring Boot (le framework de
 `petclinic`) lit certaines de ces variables **automatiquement** pour se configurer, sans aucun
 code supplémentaire — c'est exactement ce que fait `SPRING_PROFILES_ACTIVE`.
 
-> 💡 **Le lien avec la semaine 7** : `docker run -e SPRING_PROFILES_ACTIVE=mysql petclinic`
-> faisait déjà exactement ça — injecter une variable d'environnement dans le conteneur au
-> démarrage, sans modifier l'image. Ici, c'est le Deployment qui déclare, une fois pour toutes
-> dans son YAML, quelles variables injecter (`env` + `configMapKeyRef`, ci-dessous) — et
-> Kubernetes s'en charge pour **chaque** pod recréé, y compris ceux de l'auto-guérison
-> (semaine 11), sans jamais retaper la commande.
+> 💡 **Le lien avec la semaine 7** : le Dockerfile de `petclinic` utilisait déjà `ENV
+> SPRING_PROFILES_ACTIVE=production` ([Docker]({{% relref "/semaine-7/docker" %}}), section 3️⃣)
+> pour définir cette même variable — mais **figée dans l'image**, identique pour tous les
+> environnements. Ici, le Deployment déclare la variable **hors de l'image**, dans son YAML
+> (`env` + `configMapKeyRef`, ci-dessous) : la même image `petclinic` peut ainsi recevoir une
+> valeur différente selon l'environnement, sans jamais être reconstruite — et Kubernetes s'en
+> charge pour **chaque** pod recréé, y compris ceux de l'auto-guérison (semaine 11), sans jamais
+> retaper une commande.
 
 ### Monter un ConfigMap dans le Deployment de la semaine 11
 
@@ -121,7 +121,7 @@ Appliquer d'abord le ConfigMap, puis le Deployment, et vérifier que la variable
 kubectl apply -f configmap.yaml
 kubectl apply -f deployment.yaml
 kubectl exec -it <nom-du-pod> -- env | grep SPRING_PROFILES_ACTIVE
-# SPRING_PROFILES_ACTIVE=mysql
+# SPRING_PROFILES_ACTIVE=h2
 ```
 
 > ⚠️ **Piège fréquent** : modifier un ConfigMap déjà appliqué (`kubectl apply -f configmap.yaml`
@@ -155,16 +155,32 @@ clair par quiconque a accès à l'objet. Un `Secret` existe précisément pour c
 >
 > Les valeurs d'un Secret sont encodées en **base64** — un simple changement de représentation,
 > pas un algorithme de chiffrement : n'importe qui peut décoder du base64 sans aucune clé
-> (`echo "<valeur>" | base64 -d`). C'est exactement la distinction déjà posée à la semaine 10
-> entre **signer** et **chiffrer** un fichier : signer un paquet Debian garantit son authenticité,
-> pas sa confidentialité ([Distribution de mises à jour et sécurité]({{% relref "/semaine-10/distribution-maj-securite" %}}))
-> — un Secret Kubernetes, par défaut, ne garantit ni l'une ni l'autre face à quelqu'un qui a déjà
-> accès au cluster. La documentation recommande d'ailleurs explicitement d'activer un chiffrement
-> au repos (*Encryption at Rest*) et des règles RBAC restrictives pour un usage réellement sûr en
-> production.
+> (`echo "<valeur>" | base64 -d`). Un Secret Kubernetes, par défaut, ne garantit ni l'authenticité
+> ni la confidentialité face à quelqu'un qui a déjà accès au cluster.
+
+> 💡 **Alors, un Secret reste-t-il le bon choix pour un mot de passe ?** Oui — jamais un
+> ConfigMap. La limite ci-dessus ne veut pas dire « n'utilisez pas Secret », mais « Secret seul ne
+> suffit pas en production ». La documentation Kubernetes donne 4 étapes pour l'utiliser
+> **en sécurité** :
+>
+> > « Pour utiliser les Secrets de façon sécuritaire, suivez au moins les étapes suivantes : (1)
+> > Activez le chiffrement au repos (*Encryption at Rest*) pour les Secrets. (2) Activez ou
+> > configurez des règles RBAC avec un accès à privilège minimal aux Secrets. (3) Restreignez
+> > l'accès aux Secrets à des conteneurs spécifiques. (4) Envisagez d'utiliser des fournisseurs de
+> > magasins de secrets externes. »
+> > — [kubernetes.io — Secrets](https://kubernetes.io/docs/concepts/configuration/secret/)
+>
+> Dans ce cours, l'étape (2) est déjà en place : chaque équipe travaille dans **son propre
+> namespace** (semaine 11), ce qui limite déjà qui peut y lire un Secret. Les étapes (1) et (4)
+> (chiffrement au repos, magasin de secrets externe) sont des renforcements supplémentaires, hors
+> du programme de ce cours — mais bon à savoir si vous les rencontrez en entreprise.
 
 Exemple de Secret pour le mot de passe de la base de données `petclinic` (la valeur est déjà
 encodée en base64, pas chiffrée) :
+
+> 💡 Le profil `h2` actuellement utilisé par `petclinic` ne requiert aucun mot de passe (base en
+> mémoire, sans serveur séparé) — cet exemple illustre tout de même le mécanisme `Secret`, pour le
+> jour où l'équipe passera à une base de données externe nécessitant une authentification.
 
 ```yaml
 apiVersion: v1
@@ -277,7 +293,7 @@ spec:
 | Donnée | ConfigMap | Secret |
 |---|---|---|
 | URL de la base de données | ✅ | — |
-| Nom de profil Spring (`mysql`, `postgres`) | ✅ | — |
+| Nom de profil Spring (`h2`, `mysql`, `postgres`) | ✅ | — |
 | Mot de passe de la base de données | ❌ | ✅ |
 | Jeton d'API externe | ❌ | ✅ |
 | Donnée confidentielle, mais chiffrement requis en production | ❌ (ne chiffre rien) | ⚠️ seulement combiné à *Encryption at Rest* + RBAC |
@@ -302,12 +318,97 @@ règles RBAC restreintes, en plus d'utiliser un Secret plutôt qu'un ConfigMap.
 
 ---
 
-## 📚 Références
+## 🔎 Pour aller plus loin (hors programme) : Azure Key Vault
+
+Le point faible identifié plus haut — un Secret non chiffré, protégé seulement par RBAC — a une
+réponse spécifique à Azure. Le fournisseur **Azure Key Vault pour Secrets Store CSI Driver**
+permet à un pod AKS de lire une valeur directement depuis un **Key Vault** Azure (chiffré,
+journalisé, avec ses propres permissions), plutôt que depuis un `Secret` Kubernetes stocké dans
+etcd :
+
+> « Le fournisseur Azure Key Vault pour Secrets Store Container Storage Interface (CSI) Driver
+> permet l'intégration d'un Azure Key Vault comme magasin de secrets avec un cluster Azure
+> Kubernetes Service (AKS), via un volume CSI. »
+> — [Microsoft Learn — Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver)
+
+### Activer le fournisseur sur un cluster AKS existant
+
+```bash
+az aks enable-addons \
+  --addons azure-keyvault-secrets-provider \
+  --name <nom-cluster> \
+  --resource-group <nom-groupe-ressources>
+```
+
+> 💡 Cette commande crée automatiquement une **identité managée** (ex.
+> `azurekeyvaultsecretsprovider-<nom-cluster>`) que le cluster utilise pour s'authentifier auprès
+> du Key Vault — sans mot de passe stocké nulle part.
+
+### Créer le Key Vault et y déposer un secret
+
+```bash
+az keyvault create --name <nom-coffre> --resource-group <nom-groupe-ressources> --enable-rbac-authorization
+az keyvault secret set --vault-name <nom-coffre> --name DbPassword --value "<mot-de-passe-reel>"
+```
+
+Il faut ensuite donner à l'identité managée créée plus haut la permission de **lire** ce secret
+(rôle Azure RBAC `Key Vault Secrets User`, limité au seul Key Vault concerné), avant que le pod
+puisse y accéder.
+
+### Monter le secret dans un pod, et le synchroniser comme un vrai `Secret` Kubernetes
+
+```yaml
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: petclinic-keyvault
+spec:
+  provider: azure
+  secretObjects:                      # optionnel : synchronise la valeur lue dans un vrai Secret Kubernetes
+    - secretName: petclinic-db-secret
+      type: Opaque
+      data:
+        - objectName: DbPassword
+          key: DATASOURCE_PASSWORD
+  parameters:
+    keyvaultName: "<nom-coffre>"
+    tenantId: "<tenant-id-azure>"
+    objects: |
+      array:
+        - |
+          objectName: DbPassword
+          objectType: secret
+```
+
+```yaml
+# Dans le Deployment : le volume CSI déclenche la lecture ET la synchronisation ci-dessus
+volumes:
+  - name: petclinic-kv
+    csi:
+      driver: secrets-store.csi.k8s.io
+      readOnly: true
+      volumeAttributes:
+        secretProviderClass: "petclinic-keyvault"
+```
+
+> ⚠️ D'après la documentation officielle : « Les secrets ne se synchronisent qu'au moment où un
+> pod montant ces secrets démarre. » — le volume CSI (monté dans le pod) est donc **obligatoire**
+> pour que la synchronisation avec un `Secret` Kubernetes se produise; on ne peut pas s'appuyer
+> uniquement sur `secretObjects` sans jamais monter le volume.
+> — [secrets-store-csi-driver.sigs.k8s.io — Sync as Kubernetes Secret](https://secrets-store-csi-driver.sigs.k8s.io/topics/sync-as-kubernetes-secret.html)
+
+Une fois synchronisé, le `Secret` `petclinic-db-secret` ci-dessus s'utilise **exactement** comme
+celui de la section 2️⃣ (même `secretKeyRef` dans le Deployment) — Key Vault ne change que
+**l'origine** de la valeur, jamais la façon de la consommer dans l'application.
+
+---
 
 - [kubernetes.io — ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/)
 - [kubernetes.io — Secrets](https://kubernetes.io/docs/concepts/configuration/secret/)
 - [kubernetes.io — kubectl logs](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_logs/)
 - [kubernetes.io — Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
+- [Microsoft Learn — Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver)
+- [secrets-store-csi-driver.sigs.k8s.io — Sync as Kubernetes Secret](https://secrets-store-csi-driver.sigs.k8s.io/topics/sync-as-kubernetes-secret.html)
 
 {{% notice tip "🧪 À vous de jouer" %}}
 Poursuivez avec [Helm et déploiement continu]({{% relref "/semaine-12/helm-deploiement-continu" %}})

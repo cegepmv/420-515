@@ -1,10 +1,10 @@
 +++
-title = "Activité pratique — TP4 (15 %)"
+title = "Activité pratique"
 weight = 4
 draft = false
 +++
 
-## 🎯 TP4 : déploiement via Helm, avec rolling update
+## 🎯 Déploiement via Helm, avec rolling update
 
 En équipe, en réinvestissant directement
 [ConfigMap, Secrets, logs, Ingress]({{% relref "/semaine-12/configuration-kubernetes" %}}) et
@@ -12,10 +12,10 @@ En équipe, en réinvestissant directement
 partir du Deployment/Service `petclinic` déjà déployé à l'
 [activité pratique de la semaine 11]({{% relref "/semaine-11/activite-pratique" %}}) :
 
-> ⚠️ **C'est une remise notée — 15 % de la note finale.** Réalisable sur votre cluster **AKS**
+> ⚠️ **C'est une remise à soumettre.** Réalisable sur votre cluster **AKS**
 > (voir [Azure Kubernetes Service (AKS)]({{% relref "/semaine-11/azure-kubernetes-service" %}})).
 > Pensez à arrêter votre cluster AKS (`az aks stop`) entre vos sessions de travail pour préserver
-> votre crédit étudiant d'ici la fin du TP.
+> votre crédit étudiant.
 
 ### Étapes
 
@@ -84,4 +84,4 @@ partir du Deployment/Service `petclinic` déjà déployé à l'
   - la boucle de requêtes continues, démontrant qu'aucune requête n'a échoué pendant la mise à
     jour.
 - La confirmation que vous avez arrêté votre cluster AKS (`az aks stop`) à la fin de votre dernière
-  session de travail sur ce TP.
+  session de travail.

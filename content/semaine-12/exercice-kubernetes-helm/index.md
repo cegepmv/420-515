@@ -51,8 +51,8 @@ Pour chacune des données suivantes utilisées par `petclinic`, indiquez s'il fa
 **ConfigMap** ou un **Secret**, en justifiant à l'aide de
 [ConfigMap, Secrets, logs, Ingress]({{% relref "/semaine-12/configuration-kubernetes" %}}) :
 
-1. Le nom du profil Spring actif (`SPRING_PROFILES_ACTIVE=mysql`).
-2. Le mot de passe de connexion à la base de données MySQL.
+1. Le nom du profil Spring actif (`SPRING_PROFILES_ACTIVE=h2`).
+2. Le mot de passe de connexion à la base de données (si votre profil en exige un).
 3. Le jeton d'API utilisé pour appeler un service tiers de géocodage d'adresses.
 4. Le niveau de verbosité des logs de l'application (`INFO`, `DEBUG`).
 
@@ -139,6 +139,6 @@ Rest*) et des règles RBAC restreignant qui peut lire les Secrets.
       la nouvelle version échoue, et je connais le drapeau qui déclenche un rollback automatique.
 
 {{% notice tip "🧪 À vous de jouer" %}}
-Poursuivez avec le [TP4]({{% relref "/semaine-12/activite-pratique" %}}) pour déployer réellement
+Poursuivez avec l'[activité pratique]({{% relref "/semaine-12/activite-pratique" %}}) pour déployer réellement
 une mise à jour de votre application, via Helm, sans interruption de service.
 {{% /notice %}}
