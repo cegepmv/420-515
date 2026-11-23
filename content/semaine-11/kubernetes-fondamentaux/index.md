@@ -170,23 +170,13 @@ mélangent, s'appelle le **namespace** :
 
 Dans ce cours, **chaque étudiant possède son propre cluster AKS, à lui seul** (voir
 [Azure Kubernetes Service (AKS)]({{% relref "/semaine-11/azure-kubernetes-service" %}})) : vous
-n'avez donc personne avec qui partager le vôtre, et travailler dans le namespace `default` suffit
-amplement. Mais comprendre le mot est indispensable : dès que vous partagerez un cluster en
-entreprise (où plusieurs équipes et projets cohabitent sur les mêmes machines), la toute première
-question à vous poser sera « dans quel namespace suis-je? ».
-
-Créer un namespace et y diriger vos commandes `kubectl`, si vous souhaitez tout de même pratiquer
-(remplacez `etu1234` par votre propre identifiant, le même que celui utilisé à la page
-[Azure Kubernetes Service (AKS)]({{% relref "/semaine-11/azure-kubernetes-service" %}})) :
-
-```shell
-kubectl create namespace etu1234
-kubectl config set-context --current --namespace=etu1234
-# Validation :
-kubectl config view --minify | grep namespace:
-```
-
-— [Kubernetes — Namespaces, Définir la préférence de namespace](https://kubernetes.io/fr/docs/concepts/overview/working-with-objects/namespaces/#setting-the-namespace-preference)
+n'avez donc personne avec qui partager le vôtre, et techniquement, rien ne vous empêcherait de
+tout faire dans le namespace `default`. **Ce cours vous demande néanmoins de créer et d'utiliser
+systématiquement votre propre namespace dès le départ** (détails et commandes complètes à la page
+[Azure Kubernetes Service (AKS), section 3️⃣]({{% relref "/semaine-11/azure-kubernetes-service" %}})) :
+c'est le réflexe professionnel que vous devrez impérativement avoir sur un cluster d'entreprise
+partagé entre plusieurs équipes, et il vaut mieux l'automatiser tout de suite que de devoir vous en
+souvenir plus tard.
 
 > ⚠️ La documentation officielle est explicite : « Pour un cluster de production, envisagez de ne
 > pas utiliser le namespace `default`. »
@@ -385,7 +375,8 @@ curl http://<ip-externe>:9966/petclinic/api/vets
 > 3. Le **Service** cible ces mêmes Pods via leur étiquette (`app: petclinic`) et répartit le
 >    trafic entrant entre elles, sans jamais exposer leurs adresses IP individuelles (éphémères)
 >    à l'extérieur.
-> 4. Le **namespace** (`default`, dans ce cours) cloisonne tout cela à l'intérieur du cluster.
+> 4. Le **namespace** (le vôtre, créé en section 2️⃣ — pas `default`) cloisonne tout cela à
+>    l'intérieur du cluster.
 
 ---
 

@@ -89,44 +89,108 @@ Pour chacune des situations suivantes, indiquez la bonne action à prendre (et l
 <details>
 <summary>❓ Corrigé — Partie 1</summary>
 
-1. Le `namespace` cloisonne les ressources à l'intérieur d'un cluster : les noms de ressources
-   (`petclinic`, `petclinic-service`) ne sont uniques **qu'à l'intérieur** d'un namespace, pas à
-   l'échelle du cluster entier. Dans ce cours, puisque chaque étudiant possède déjà son propre
-   cluster, ce champ n'évite aucun conflit réel — personne d'autre ne travaille sur votre cluster.
-   Il deviendrait indispensable dès que **plusieurs équipes ou projets** partageraient le **même**
-   cluster (la situation normale en entreprise) : sans cette isolation, deux projets qui déploient
-   chacun un Deployment `petclinic` dans `default` entreraient directement en conflit.
-2. Le Service reste fonctionnel en tout temps, sans aucune reconfiguration : le Deployment détecte
-   immédiatement que l'état réel (2 pods vivants) ne correspond plus à l'état désiré
-   (`replicas: 3`) et en recrée un nouveau (auto-guérison). Le `selector` du Service cible
-   l'étiquette `app: petclinic`, pas des pods précis par IP ou par nom — dès que le pod de
-   remplacement porte la même étiquette, il est automatiquement inclus dans la répartition de
-   charge.
-3. `ClusterIP` n'expose le Service qu'**à l'intérieur** du cluster — aucune IP externe n'est
-   attribuée. Pour qu'un navigateur, depuis l'extérieur du cluster (la maison du coéquipier),
-   puisse s'y connecter, il faudrait un type `LoadBalancer` (ou un Ingress, vu à la semaine 12),
-   qui expose le Service via une adresse externe/un load balancer.
-4. Le Service ne trouverait plus **aucun** pod à cibler : son `selector` (`app: petclinic`) ne
-   correspondrait plus aux nouvelles étiquettes des pods créés par le Deployment modifié. Le
-   Service existerait toujours, mais router aucune requête vers aucun pod (liste de endpoints
-   vide) — un bris de service silencieux, sans erreur explicite à l'application du YAML.
+1. Le `namespace` cloisonne les ressources à l'intérieur d'un cluster : la documentation
+   officielle est précise sur ce point — « les noms des ressources doivent être uniques dans un
+   namespace, mais pas à travers les namespaces ». Concrètement, cela veut dire que
+   `kubectl get deployment petclinic` ne renvoie **qu'un seul** résultat possible à l'intérieur
+   d'un namespace donné, mais que rien n'empêche l'existence d'un autre Deployment nommé
+   `petclinic` dans un namespace voisin, sur le **même** cluster, sans le moindre conflit — un peu
+   comme deux immeubles différents peuvent chacun avoir un appartement « 301 » sans confusion,
+   parce que l'adresse complète inclut le nom de l'immeuble.
+
+   Dans ce cours, ce champ n'évite **aucun conflit réel**, puisque chaque étudiant possède son
+   propre cluster, à lui seul : il n'y a personne d'autre avec qui partager `etu1234`, donc même en
+   supprimant complètement le champ `namespace` (et en travaillant dans `default`), rien de
+   fâcheux ne se produirait techniquement.
+
+   Ce champ deviendrait **indispensable** dès que plusieurs équipes ou projets partageraient le
+   **même** cluster — la situation normale en entreprise. Exemple concret : imaginez un cluster
+   d'entreprise partagé par l'équipe « Facturation » et l'équipe « Inventaire ». Si les deux
+   équipes déploient chacune, indépendamment, un Deployment nommé `api` et un Service nommé
+   `api-service` dans le namespace `default`, la seconde équipe à exécuter `kubectl apply`
+   **écrasera silencieusement** les ressources de la première (même nom = même ressource aux yeux
+   de l'API Kubernetes) : les pods de la Facturation disparaissent, remplacés par ceux de
+   l'Inventaire, sans le moindre message d'erreur. Avec des namespaces distincts
+   (`facturation` et `inventaire`), les deux équipes peuvent nommer leurs ressources `api` et
+   `api-service` sans jamais se marcher sur les pieds — exactement le scénario décrit par la
+   documentation officielle : « les namespaces sont un moyen de diviser les ressources du cluster
+   entre plusieurs utilisateurs ».
+
+2. Le Service reste fonctionnel **en tout temps**, sans aucune reconfiguration manuelle — c'est
+   précisément le mécanisme de réconciliation vu en section 1️⃣ de
+   [Kubernetes fondamentaux]({{% relref "/semaine-11/kubernetes-fondamentaux" %}}). Déroulons la
+   séquence concrète : (1) un pod `petclinic-7d4f9c6b8d-x2k9p` plante (ex. erreur mémoire); (2) le
+   `kube-controller-manager`, qui compare en continu l'état réel à l'état désiré, détecte en
+   quelques secondes que seulement 2 pods tournent au lieu des 3 demandés (`replicas: 3`); (3) il
+   demande au `kube-scheduler` de placer un nouveau pod sur un nœud disponible; (4) ce nouveau pod,
+   par exemple nommé `petclinic-7d4f9c6b8d-m8w2q`, reçoit **automatiquement** l'étiquette
+   `app: petclinic` héritée du `template.metadata.labels` du Deployment — jamais écrite à la main.
+
+   Pendant toute cette séquence (quelques secondes à quelques dizaines de secondes), le Service
+   `petclinic-service` n'a **rien à faire** : son `selector` (`app: petclinic`) ne cible pas des
+   pods précis par IP ou par nom — qui changeraient de toute façon à chaque remplacement — mais une
+   **étiquette**. Kubernetes maintient en coulisses une liste d'« Endpoints » (les IP des pods
+   portant l'étiquette ciblée) mise à jour automatiquement : dès que le nouveau pod devient
+   `Ready`, son IP est ajoutée à cette liste, et le Service recommence à lui envoyer une partie du
+   trafic, sans redémarrage ni modification de son propre manifeste YAML.
+
+3. `ClusterIP` — la valeur par défaut d'un Service — n'expose le Service qu'**à l'intérieur** du
+   cluster : aucune adresse IP publique, aucun port ouvert vers Internet. Concrètement, un
+   `ClusterIP` ressemble à `10.0.123.45` — une adresse qui n'existe que dans le réseau privé du
+   cluster Azure, totalement injoignable depuis la maison du camarade de classe, même en
+   connaissant cette adresse par cœur : son fournisseur Internet ne sait tout simplement pas
+   comment router un paquet vers `10.0.123.45`, qui n'a de sens que *dans* le réseau interne
+   d'Azure.
+
+   Pour que l'accès fonctionne depuis l'extérieur, il faudrait changer `spec.type` à
+   `LoadBalancer` : Azure (le fournisseur de cloud sous-jacent, via le
+   `cloud-controller-manager` — voir [Kubernetes fondamentaux]({{% relref "/semaine-11/kubernetes-fondamentaux" %}}))
+   provisionnerait alors un **équilibreur de charge réel**, avec une adresse IP **publique** (ex.
+   `20.123.45.67`), cette fois joignable depuis n'importe quel navigateur sur Internet — exactement
+   la configuration utilisée pour `petclinic` dans
+   [Azure Kubernetes Service (AKS)]({{% relref "/semaine-11/azure-kubernetes-service" %}}).
+
+4. Le Service **perdrait tous ses pods cibles**, d'un coup. Exemple concret : si
+   `template.metadata.labels` passe de `app: petclinic` à `app: petclinic-v2` (par exemple lors
+   d'un renommage maladroit), les trois nouveaux pods recréés par le Deployment porteront
+   l'étiquette `app: petclinic-v2` — mais le `selector` du Service, lui, continue de chercher
+   `app: petclinic`. Résultat : la liste d'Endpoints du Service devient **vide** — `kubectl get
+   endpoints petclinic-service` afficherait `<none>` — alors que `kubectl get pods` montrerait
+   bel et bien 3 pods `Running`. Le Service existe toujours, répond toujours sur son port, mais ne
+   route plus **aucune** requête vers aucun pod : un navigateur qui tente d'y accéder resterait en
+   attente indéfiniment, sans message d'erreur explicite du côté de Kubernetes — un bris de
+   service silencieux, souvent difficile à diagnostiquer pour qui ne pense pas immédiatement à
+   comparer `selector` et `labels`.
 </details>
 
 <details>
 <summary>❓ Corrigé — Partie 2</summary>
 
 1. Il devrait arrêter son cluster AKS avec `az aks stop --name <nom-cluster> --resource-group
-   <nom-groupe>`, pour éviter que la facturation à l'heure ne continue de s'appliquer pendant la
-   nuit, même si personne ne travaille activement dessus.
+   <nom-groupe>`. Concrètement : un cluster AKS actif facture en continu les machines virtuelles
+   (les **nœuds**) qui le composent, à l'heure, **même si zéro pod n'y tourne activement** — un
+   cluster oublié allumé pendant un week-end complet (environ 60 heures) peut facilement
+   représenter plusieurs dollars de crédit étudiant, dépensés pour rien. `az aks stop` désalloue
+   complètement ces machines virtuelles : la facturation de calcul s'arrête, et seul le stockage
+   résiduel (minime) continue d'être facturé.
 2. `az aks start --name <nom-cluster> --resource-group <nom-groupe>`. La documentation officielle
-   recommande d'attendre 15 à 30 minutes après un arrêt avant de redémarrer le cluster, le temps
-   que l'opération d'arrêt se termine complètement.
+   recommande d'attendre **15 à 30 minutes** après un arrêt avant de redémarrer le cluster — le
+   temps que l'opération d'arrêt (désallocation des machines virtuelles) se termine complètement
+   côté Azure. Démarrer immédiatement après un arrêt (sans attendre) est précisément le scénario
+   couvert à la question 4.
 3. Arrêter systématiquement le cluster (`az aks stop`) à la fin de **chaque** session de travail,
-   plutôt que de le laisser tourner en continu — un cluster actif est facturé à l'heure, que
-   quelqu'un l'utilise ou non.
-4. Il risque de perturber l'arrêt en cours : la documentation officielle précise qu'il faut
-   attendre 15 à 30 minutes après un `az aks stop` avant de redémarrer, le temps que l'arrêt se
-   termine complètement.
+   plutôt que de le laisser tourner en continu entre deux séances. Exemple concret : avec 100 $ de
+   crédit pour toute la session, et en supposant un coût approximatif de l'ordre de 0,10 $–0,15 $
+   l'heure pour un petit cluster à un seul nœud, laisser tourner le cluster 24 h/24 pendant
+   7 semaines (environ 1 175 heures) épuiserait le crédit bien avant la fin de la session — alors
+   que l'arrêter chaque soir et chaque fin de semaine (en ne le laissant actif que pendant les
+   quelques heures réellement travaillées par semaine) réduit cette facture d'un facteur de 5 à 10.
+4. Il risque que la commande `az aks start` échoue ou se comporte de façon imprévisible, parce que
+   l'opération d'arrêt précédente (`az aks stop`) n'est pas encore terminée côté Azure : la
+   documentation officielle précise qu'il faut attendre 15 à 30 minutes entre les deux commandes.
+   Dans les faits, Azure retourne généralement une erreur explicite indiquant qu'une opération est
+   déjà en cours sur la ressource — la bonne pratique reste donc d'attendre plutôt que de réessayer
+   en boucle immédiatement.
 </details>
 
 ---

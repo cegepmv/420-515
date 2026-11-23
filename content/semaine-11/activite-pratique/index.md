@@ -18,8 +18,8 @@ Individuellement, en réinvestissant directement
    suivant les étapes de
    [Azure Kubernetes Service (AKS)]({{% relref "/semaine-11/azure-kubernetes-service" %}})
    (création du compte, groupe de ressources, `az aks create`).
-2. *(Optionnel, pour pratiquer)* **Créez un namespace** personnel — pas strictement
-   nécessaire puisque vous êtes seul sur votre cluster, mais utile à pratiquer :
+2. **Créez votre propre namespace et basculez-y votre contexte** — ce n'est **pas optionnel** dans
+   ce cours (voir [Kubernetes fondamentaux, section 2️⃣]({{% relref "/semaine-11/kubernetes-fondamentaux" %}})) :
 
    ```shell
    kubectl create namespace etu<votre-numero>
