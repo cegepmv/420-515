@@ -282,7 +282,7 @@ résout précisément ce problème :
 >     - name: petclinic-gateway   # référence un objet Gateway existant
 >   rules:
 >     - backendRefs:
->         - name: petclinic
+>         - name: petclinic-service
 >           port: 9966
 > ```
 >
@@ -316,7 +316,7 @@ kubectl get service ingress-nginx-controller -n ingress-nginx
 → ex. `petclinic-etu1234.canadacentral.cloudapp.azure.com` — à mettre comme `host:` dans
 l'Ingress ci-dessous.
 
-Exemple minimal pour exposer le Service `petclinic` (semaine 11) via ce nom d'hôte :
+Exemple minimal pour exposer le Service `petclinic-service` (semaine 11) via ce nom d'hôte :
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -324,6 +324,7 @@ kind: Ingress
 metadata:
   name: petclinic-ingress
 spec:
+  ingressClassName: nginx   # précise quel contrôleur traite cet Ingress
   rules:
     - host: petclinic-etu1234.canadacentral.cloudapp.azure.com
       http:
@@ -332,10 +333,15 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: petclinic
+                name: petclinic-service
                 port:
                   number: 9966
 ```
+
+> 💡 `ingressClassName: nginx` indique explicitement quel contrôleur Ingress doit traiter cette
+> ressource (ici, celui installé plus haut avec Helm, dont la classe par défaut est `nginx`) —
+> utile dès qu'il y a plus d'un contrôleur Ingress dans le cluster, ou pour ne pas dépendre d'une
+> classe « par défaut » implicite.
 
 > 💡 Pour un vrai nom de domaine personnalisé (ex. `petclinic.monentreprise.com` plutôt que le
 > suffixe `cloudapp.azure.com`), il faudrait un domaine enregistré séparément (chez un registraire)

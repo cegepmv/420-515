@@ -39,6 +39,7 @@ petclinic/
 ├── templates/          # Manifestes Kubernetes paramétrés
 │   ├── deployment.yaml
 │   ├── service.yaml
+│   ├── ingress.yaml
 │   ├── configmap.yaml
 │   └── secret.yaml
 ```
@@ -102,6 +103,9 @@ replicaCount: 2
 service:
   type: LoadBalancer
   port: 9966
+ingress:
+  className: nginx
+  host: petclinic-etu1234.canadacentral.cloudapp.azure.com
 ```
 
 Et le template de Deployment correspondant, qui **référence** ces valeurs plutôt que de les
@@ -132,6 +136,34 @@ spec:
 
 > ⚠️ C'est exactement ce mécanisme qui permettra, en section 3️⃣, de changer **uniquement** le
 > tag d'image lors d'une mise à jour — sans retoucher ni dupliquer le reste du Deployment.
+
+De la même façon, le template d'Ingress (voir
+[Configuration Kubernetes]({{% relref "/semaine-12/configuration-kubernetes" %}})) référence
+`ingress.className` et `ingress.host` plutôt que de les coder en dur :
+
+```yaml
+# templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: petclinic-ingress
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: petclinic-service
+                port:
+                  number: {{ .Values.service.port }}
+```
+
+> 💡 Chaque équipe (ou étudiant) n'a qu'à changer `ingress.host` dans son propre `values.yaml`
+> (ex. `petclinic-etu1234...`) — le template, lui, ne change jamais.
 
 Déployer ce chart pour la première fois (`helm install`), puis vérifier :
 
