@@ -307,10 +307,18 @@ helm upgrade --install ingress-nginx ingress-nginx \
   seul nom plutôt que de la découper).
 
 Cette commande crée un `Service ingress-nginx-controller` (nom de la release + `-controller`) de
-type `LoadBalancer`. Récupérer le domaine généré :
+type `LoadBalancer`. Vérifier qu'une IP publique a été attribuée :
 
 ```shell
 kubectl get service ingress-nginx-controller -n ingress-nginx
+```
+
+→ affiche l'`EXTERNAL-IP`, mais **pas** le nom de domaine (FQDN) — c'est une ressource Azure,
+pas Kubernetes. Récupérer le FQDN généré :
+
+```shell
+az network public-ip list \
+  --query "[?dnsSettings.domainNameLabel=='petclinic-etu1234'].dnsSettings.fqdn" -o tsv
 ```
 
 → ex. `petclinic-etu1234.canadacentral.cloudapp.azure.com` — à mettre comme `host:` dans
