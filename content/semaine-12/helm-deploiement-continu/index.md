@@ -340,9 +340,14 @@ sont possibles :
 > l'utilisateur. »
 > — [Microsoft Learn — Authenticate to Azure from GitHub Actions by OpenID Connect](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure-openid-connect)
 
-Ce cours utilise l'OIDC. L'identité créée s'appelle un **principal de service** (*service
-principal*) ; le rôle qui lui est assigné détermine ce qu'il peut toucher — ici, limité au **seul**
-groupe de ressources du cluster utilisé par votre équipe.
+Ce cours utilise l'OIDC, via une **identité managée affectée par l'utilisateur**
+(*user-assigned managed identity*) plutôt qu'une application Microsoft Entra : créer cette
+dernière exige un rôle **administrateur du tenant Microsoft Entra** (ex. *Application
+Administrator*), souvent indisponible sur un compte étudiant ou un tenant scolaire. La création
+d'une identité managée, elle, ne requiert que le rôle **Contributeur** sur le groupe de ressources
+— un droit que vous avez déjà sur votre propre abonnement Azure. Le rôle assigné à cette identité
+détermine ce qu'elle peut toucher — ici, limité au **seul** groupe de ressources du cluster
+utilisé par votre équipe.
 
 > ⚠️ **Qui fait cette configuration, une seule fois ?** Le cluster AKS utilisé pour l'activité pratique
 > appartient au compte Azure **personnel** d'un membre de l'équipe (voir
@@ -352,40 +357,38 @@ groupe de ressources du cluster utilisé par votre équipe.
 > sont ensuite stockés dans le dépôt de l'équipe, pas sur son compte personnel.
 
 Mettre en place cette autorisation (à exécuter une seule fois, idéalement depuis le
-[Azure Cloud Shell](https://shell.azure.com/), en remplaçant `rg-etu1234`, `app-github-etu1234`
+[Azure Cloud Shell](https://shell.azure.com/), en remplaçant `rg-etu1234`, `id-github-etu1234`
 et `MON-COMPTE/MON-DEPOT` par vos propres valeurs) :
 
 ```bash
 RG=rg-etu1234
-APP_NAME=app-github-etu1234
+IDENTITY_NAME=id-github-etu1234
 REPO="MON-COMPTE/MON-DEPOT"
 SUB=$(az account show --query id -o tsv)
 TENANT=$(az account show --query tenantId -o tsv)
 
-# 1. Créer l'identité qu'utilisera GitHub
-az ad app create --display-name $APP_NAME
-APP_ID=$(az ad app list --display-name $APP_NAME --query "[0].appId" -o tsv)
-az ad sp create --id $APP_ID
+# 1. Créer l'identité managée qu'utilisera GitHub (uniquement du RBAC, pas de droit Entra requis)
+az identity create --name $IDENTITY_NAME --resource-group $RG
+CLIENT_ID=$(az identity show --name $IDENTITY_NAME --resource-group $RG --query clientId -o tsv)
+PRINCIPAL_ID=$(az identity show --name $IDENTITY_NAME --resource-group $RG --query principalId -o tsv)
 
 # 2. Lui donner le rôle Contributeur, UNIQUEMENT sur le groupe de ressources du cluster
 az role assignment create \
-  --assignee $APP_ID \
+  --assignee $PRINCIPAL_ID \
   --role Contributor \
   --scope /subscriptions/$SUB/resourceGroups/$RG
 
 # 3. Déclarer la fédération : seul CE dépôt, branche main, peut se présenter avec cette identité
-cat > federated.json <<EOF
-{
-  "name": "github-main",
-  "issuer": "https://token.actions.githubusercontent.com",
-  "subject": "repo:$REPO:ref:refs/heads/main",
-  "audiences": ["api://AzureADTokenExchange"]
-}
-EOF
-az ad app federated-credential create --id $APP_ID --parameters federated.json
+az identity federated-credential create \
+  --name github-main \
+  --identity-name $IDENTITY_NAME \
+  --resource-group $RG \
+  --issuer https://token.actions.githubusercontent.com \
+  --subject repo:$REPO:ref:refs/heads/main \
+  --audiences api://AzureADTokenExchange
 
 # 4. Les trois valeurs à recopier dans GitHub (dépôt → Settings → Secrets and variables → Actions)
-echo "AZURE_CLIENT_ID = $APP_ID"
+echo "AZURE_CLIENT_ID = $CLIENT_ID"
 echo "AZURE_TENANT_ID = $TENANT"
 echo "AZURE_SUBSCRIPTION_ID = $SUB"
 ```
