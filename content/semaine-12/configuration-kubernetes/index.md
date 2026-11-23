@@ -342,6 +342,28 @@ spec:
 > et une zone **Azure DNS** pour le pointer vers cette même IP publique — hors du cadre de ce
 > cours, mais bon à savoir si vous déployez un jour un vrai site en production.
 
+> ⚠️ **Dépannage : erreur 504 à travers l'Ingress**. Le *load balancer* Azure sonde
+> régulièrement le `Service ingress-nginx-controller` pour savoir s'il peut lui envoyer du
+> trafic ; si cette sonde (*health probe*) échoue, Azure considère le backend en panne et coupe
+> le trafic, ce qui produit un **504** côté navigateur même si l'application fonctionne. Le
+> correctif est l'annotation `service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path`,
+> qui indique le chemin à sonder :
+>
+> ```shell
+> kubectl annotate service ingress-nginx-controller -n ingress-nginx \
+>   service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path="/healthz" --overwrite
+> ```
+>
+> - `kubectl annotate service ... -n ingress-nginx` : modifie une annotation sur le Service déjà
+>   créé par Helm (pas besoin de réinstaller).
+> - `azure-load-balancer-health-probe-request-path="/healthz"` : le chemin que le load balancer
+>   Azure doit appeler pour vérifier la santé du backend — `/healthz` est l'endpoint exposé par
+>   le contrôleur ingress-nginx à cette fin.
+> - `--overwrite` : requis par `kubectl annotate` dès que l'annotation existe déjà (même mise à
+>   la même valeur), sinon la commande refuse de l'écraser.
+>
+> — [cloud-provider-azure — LoadBalancer annotations](https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/)
+
 ---
 
 ## 📊 ConfigMap vs Secret : quand utiliser lequel
