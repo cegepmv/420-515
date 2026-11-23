@@ -49,6 +49,49 @@ petclinic/
 > combinés aux valeurs, génèreront des manifestes Kubernetes valides. »
 > — [Helm — Charts, The Chart File Structure](https://helm.sh/docs/topics/charts/)
 
+### Le fichier `Chart.yaml`
+
+`Chart.yaml` est **obligatoire** pour tout chart — il identifie le chart lui-même (pas
+l'application qu'il déploie). Un exemple minimal pour `petclinic` :
+
+```yaml
+# Chart.yaml
+apiVersion: v2
+name: petclinic
+description: Chart Helm pour déployer l'application petclinic sur Kubernetes
+type: application
+version: 1.0.0
+appVersion: "4.0.2"
+```
+
+Ligne par ligne, selon la documentation officielle Helm :
+
+- **`apiVersion: v2`** — la version du format `Chart.yaml` compris par Helm. `v2` est la version
+  courante (utilisée par Helm 3+); `v1` n'existe que pour les charts écrits pour Helm 2, une
+  version obsolète.
+- **`name: petclinic`** — le nom du chart. Par convention, il correspond au nom du répertoire qui
+  le contient (`petclinic/Chart.yaml`).
+- **`description`** — une phrase résumant ce que fait le chart, affichée par `helm search` et
+  `helm show chart`. Champ optionnel, mais utile dès qu'un chart est partagé avec d'autres
+  personnes.
+- **`type: application`** — indique que ce chart déploie une application directement installable
+  (par opposition à `library`, un chart réutilisé comme dépendance par d'autres charts, sans
+  installation directe possible).
+- **`version: 1.0.0`** — la version **du chart lui-même**, selon SemVer : elle doit changer
+  chaque fois que la structure du chart change (ex. ajout d'un nouveau template, modification des
+  clés de `values.yaml`) — **jamais** uniquement parce que l'image de l'application a changé.
+- **`appVersion: "4.0.2"`** — la version de **l'application** empaquetée par ce chart (ici,
+  `petclinic`). Contrairement à `version`, elle n'a pas besoin de suivre SemVer, et change
+  typiquement à chaque nouvelle image déployée (ex. `4.0.3`) — **sans** nécessairement faire
+  bouger `version`, puisque la structure du chart, elle, n'a pas changé. Notez les guillemets :
+  Helm exige une chaîne de caractères ici, pour éviter qu'un numéro comme `4.0` soit interprété
+  comme un nombre décimal par le parseur YAML.
+
+> 💡 Cette distinction `version`/`appVersion` est exactement ce qui est testé à la partie 1 de
+> l'[exercice]({{% relref "/semaine-12/exercice-kubernetes-helm" %}}) de cette semaine.
+
+### Le fichier `values.yaml`
+
 Un `values.yaml` minimal pour `petclinic` :
 
 ```yaml
@@ -265,12 +308,12 @@ limité au **seul** groupe de ressources du cluster utilisé par votre équipe, 
 > sont ensuite stockés dans le dépôt de l'équipe, pas sur son compte personnel.
 
 Mettre en place cette autorisation (à exécuter une seule fois, idéalement depuis le
-[Azure Cloud Shell](https://shell.azure.com/), en remplaçant `rg-equipeNN`, `app-github-equipeNN`
+[Azure Cloud Shell](https://shell.azure.com/), en remplaçant `rg-etu1234`, `app-github-etu1234`
 et `MON-COMPTE/MON-DEPOT` par vos propres valeurs) :
 
 ```bash
-RG=rg-equipeNN
-APP_NAME=app-github-equipeNN
+RG=rg-etu1234
+APP_NAME=app-github-etu1234
 REPO="MON-COMPTE/MON-DEPOT"
 SUB=$(az account show --query id -o tsv)
 TENANT=$(az account show --query tenantId -o tsv)
@@ -336,11 +379,11 @@ jobs:
       - name: Viser le cluster AKS de l'équipe
         uses: azure/aks-set-context@v4
         with:
-          resource-group: rg-equipeNN
-          cluster-name: aks-equipeNN
+          resource-group: rg-etu1234
+          cluster-name: aks-etu1234
 
       - name: Se placer dans le bon namespace
-        run: kubectl config set-context --current --namespace=equipe-NN
+        run: kubectl config set-context --current --namespace=etu1234
 
       - name: Déployer la nouvelle image avec Helm
         run: |

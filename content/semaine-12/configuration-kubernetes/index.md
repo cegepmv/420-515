@@ -9,7 +9,7 @@ Tout ce qui suit est fondé sur la documentation officielle de Kubernetes
 semaine 11 ([Kubernetes fondamentaux]({{% relref "/semaine-11/kubernetes-fondamentaux" %}})).
 
 > 💡 **Rappel** : comme à la semaine 11, tout ce qui suit s'applique dans le namespace
-> **courant de votre contexte** (`etu1234` ou `equipe-NN`, selon la façon dont vous l'avez fixé avec
+> **courant de votre contexte** (`etu1234`, fixé avec
 > `kubectl config set-context --current --namespace=...`, voir
 > [Azure Kubernetes Service (AKS), section 3️⃣]({{% relref "/semaine-11/azure-kubernetes-service" %}})).
 > Si une commande `kubectl get` semble vide, vérifiez d'abord ce contexte
@@ -265,7 +265,58 @@ résout précisément ce problème :
 > la ressource la plus répandue en pratique, mais gardez ce détail en tête si vous explorez plus
 > loin que ce qui est couvert ici.
 
-Exemple minimal pour exposer le Service `petclinic` (semaine 11) via un nom d'hôte :
+> 💡 **Pour aller plus loin (hors programme) : à quoi ressemble l'API Gateway ?** Même objectif
+> qu'Ingress (router le trafic HTTP externe vers des Services internes), mais découpé en **3**
+> ressources distinctes plutôt qu'une seule `Ingress` : `GatewayClass` (quel contrôleur gère le
+> trafic — équivalent du contrôleur Ingress installé ci-dessous), `Gateway` (l'infrastructure
+> réseau concrète — équivalent du `LoadBalancer` et de son IP publique), et `HTTPRoute` (les
+> règles de routage elles-mêmes — équivalent des `rules`/`paths` d'un Ingress) :
+>
+> ```yaml
+> apiVersion: gateway.networking.k8s.io/v1
+> kind: HTTPRoute
+> metadata:
+>   name: petclinic-route
+> spec:
+>   parentRefs:
+>     - name: petclinic-gateway   # référence un objet Gateway existant
+>   rules:
+>     - backendRefs:
+>         - name: petclinic
+>           port: 9966
+> ```
+>
+> — [kubernetes.io — Gateway API](https://kubernetes.io/docs/concepts/services-networking/gateway/)
+
+### Installer le contrôleur Ingress et obtenir un nom de domaine, avec Helm
+
+```shell
+helm upgrade --install ingress-nginx ingress-nginx \
+  --repo https://kubernetes.github.io/ingress-nginx \
+  --namespace ingress-nginx --create-namespace \
+  --set controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"=petclinic-etu1234
+```
+
+- `helm upgrade --install` : installe si absent, met à jour sinon — une seule commande réutilisable.
+- `ingress-nginx ingress-nginx` : nom de la release, puis nom du chart.
+- `--repo ...` : dépôt officiel du chart (pas besoin de le cloner).
+- `--namespace ingress-nginx --create-namespace` : installe dans son propre namespace, créé s'il n'existe pas.
+- `--set controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"=petclinic-etu1234` :
+  ajoute l'annotation Azure qui publie un nom de domaine gratuit. Les `\.` empêchent Helm
+  d'interpréter les points de cette clé comme des séparateurs de structure (il la traite comme un
+  seul nom plutôt que de la découper).
+
+Cette commande crée un `Service ingress-nginx-controller` (nom de la release + `-controller`) de
+type `LoadBalancer`. Récupérer le domaine généré :
+
+```shell
+kubectl get service ingress-nginx-controller -n ingress-nginx
+```
+
+→ ex. `petclinic-etu1234.canadacentral.cloudapp.azure.com` — à mettre comme `host:` dans
+l'Ingress ci-dessous.
+
+Exemple minimal pour exposer le Service `petclinic` (semaine 11) via ce nom d'hôte :
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -274,7 +325,7 @@ metadata:
   name: petclinic-ingress
 spec:
   rules:
-    - host: petclinic.votre-domaine.exemple
+    - host: petclinic-etu1234.canadacentral.cloudapp.azure.com
       http:
         paths:
           - path: /
@@ -285,6 +336,11 @@ spec:
                 port:
                   number: 9966
 ```
+
+> 💡 Pour un vrai nom de domaine personnalisé (ex. `petclinic.monentreprise.com` plutôt que le
+> suffixe `cloudapp.azure.com`), il faudrait un domaine enregistré séparément (chez un registraire)
+> et une zone **Azure DNS** pour le pointer vers cette même IP publique — hors du cadre de ce
+> cours, mais bon à savoir si vous déployez un jour un vrai site en production.
 
 ---
 
@@ -409,6 +465,7 @@ celui de la section 2️⃣ (même `secretKeyRef` dans le Deployment) — Key Va
 - [kubernetes.io — Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 - [Microsoft Learn — Azure Key Vault provider for Secrets Store CSI Driver](https://learn.microsoft.com/azure/aks/csi-secrets-store-driver)
 - [secrets-store-csi-driver.sigs.k8s.io — Sync as Kubernetes Secret](https://secrets-store-csi-driver.sigs.k8s.io/topics/sync-as-kubernetes-secret.html)
+- [Microsoft Learn — Use a static IP with a load balancer in AKS](https://learn.microsoft.com/azure/aks/static-ip)
 
 {{% notice tip "🧪 À vous de jouer" %}}
 Poursuivez avec [Helm et déploiement continu]({{% relref "/semaine-12/helm-deploiement-continu" %}})
