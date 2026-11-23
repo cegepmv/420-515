@@ -199,6 +199,12 @@ il démarre un nouveau pod, attend qu'il soit prêt, **puis seulement** retire u
 Service (semaine 11), dont le `selector` cible l'étiquette `app: petclinic` et non des pods
 précis, continue de router le trafic vers les pods disponibles tout au long de l'opération.
 
+> 💡 **Et avec `replicas: 1` ?** Les pourcentages par défaut (25 % / 25 %) sont arrondis :
+> `maxUnavailable` vers le bas (25 % de 1 → **0**), `maxSurge` vers le haut (25 % de 1 → **1**).
+> Avec `maxUnavailable: 0`, aucune indisponibilité n'est tolérée : Kubernetes doit donc créer le
+> nouveau pod **avant** de supprimer l'ancien (grâce à `maxSurge: 1`) — il y a brièvement 2 pods
+> en même temps, même avec un seul replica désiré.
+
 Suivre un rollout en cours :
 
 ```shell
@@ -316,21 +322,27 @@ la chercher et la déploie sur le cluster. Dans ce cours, cette dernière étape
 `helm upgrade`, exactement la commande de la section 3️⃣, mais exécutée par GitHub Actions plutôt
 que depuis votre terminal.
 
-### Qui autorise GitHub à toucher à votre cluster Azure ?
+### Authentification du pipeline auprès d'Azure (OIDC)
 
-Le pipeline s'exécute sur les machines de GitHub, pas sur votre poste : pour appliquer un
-`helm upgrade` sur votre cluster AKS, il doit d'abord prouver à Azure qu'il en a le droit. Copier
-un mot de passe permanent de votre compte Azure dans un secret GitHub *fonctionnerait*, mais ce
-mot de passe pourrait fuir (capture d'écran, journal de pipeline trop bavard) et n'expire jamais
-de lui-même — l'équivalent d'une copie de clé d'appartement laissée chez un tiers, pour toujours.
+Le pipeline s'exécute sur les serveurs de GitHub, pas sur votre poste : avant d'exécuter
+`helm upgrade` sur le cluster AKS, il doit d'abord s'authentifier auprès d'Azure. Deux approches
+sont possibles :
 
-La méthode recommandée aujourd'hui est l'**OIDC** (*OpenID Connect*) : aucun mot de passe n'est
-stocké dans GitHub. À chaque exécution, GitHub présente à Azure un badge temporaire, valable
-seulement quelques minutes, prouvant « je suis ce dépôt précis, cette branche précise » — et Azure
-ne l'accepte que parce que vous avez déclaré **à l'avance** (une **fédération**) que ce dépôt-là,
-et aucun autre, peut se présenter ainsi. L'identité qui reçoit ce badge s'appelle un **principal de
-service** (*service principal*), et le rôle qu'on lui donne détermine ce qu'il peut toucher — ici,
-limité au **seul** groupe de ressources du cluster utilisé par votre équipe, jamais plus.
+- **Secret statique** (identifiant + mot de passe d'un compte de service, stockés dans GitHub) :
+  fonctionne, mais ce secret est permanent et doit être stocké, transmis et éventuellement révoqué
+  manuellement.
+- **OIDC** (*OpenID Connect*) : aucun mot de passe stocké. GitHub émet, à chaque exécution, un
+  jeton temporaire prouvant l'identité du dépôt et de la branche ; Azure ne l'accepte que pour un
+  dépôt déclaré à l'avance (une **fédération**).
+
+> « Pour utiliser [l'action Azure Login] avec OIDC, vous devez configurer un identifiant de
+> fédération sur une application Microsoft Entra ou une identité managée affectée par
+> l'utilisateur. »
+> — [Microsoft Learn — Authenticate to Azure from GitHub Actions by OpenID Connect](https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure-openid-connect)
+
+Ce cours utilise l'OIDC. L'identité créée s'appelle un **principal de service** (*service
+principal*) ; le rôle qui lui est assigné détermine ce qu'il peut toucher — ici, limité au **seul**
+groupe de ressources du cluster utilisé par votre équipe.
 
 > ⚠️ **Qui fait cette configuration, une seule fois ?** Le cluster AKS utilisé pour l'activité pratique
 > appartient au compte Azure **personnel** d'un membre de l'équipe (voir
