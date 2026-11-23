@@ -360,6 +360,31 @@ Mettre en place cette autorisation (à exécuter une seule fois, idéalement dep
 [Azure Cloud Shell](https://shell.azure.com/), en remplaçant `rg-etu1234`, `id-github-etu1234`
 et `MON-COMPTE/MON-DEPOT` par vos propres valeurs) :
 
+> 💡 **Connaître le `subject` exact avant de créer la fédération (recommandé)**. Le `subject`
+> se construit normalement comme `repo:ORG/DEPOT:ref:refs/heads/main`, mais si l'organisation ou
+> le dépôt a déjà été renommé, GitHub y ajoute des IDs numériques stables — impossibles à deviner
+> depuis Git seul. Pour l'obtenir à coup sûr, ajoutez temporairement ce job de diagnostic (pas
+> besoin qu'Azure soit déjà configuré) :
+>
+> ```yaml
+> jobs:
+>   verifier-subject:
+>     runs-on: ubuntu-latest
+>     permissions:
+>       id-token: write
+>       contents: read
+>     steps:
+>       - name: Afficher le subject du jeton OIDC
+>         run: |
+>           curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+>             "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange" \
+>           | jq -r '.value' | cut -d. -f2 | base64 -d 2>/dev/null | jq .
+> ```
+>
+> Lancez le workflow une fois, lisez le champ `sub` affiché dans le log, copiez-le tel quel dans
+> `--subject` à l'étape 3 ci-dessous, puis retirez ce job de diagnostic — il n'est utile
+> qu'une seule fois, pas à chaque exécution.
+
 ```bash
 RG=rg-etu1234
 IDENTITY_NAME=id-github-etu1234
@@ -386,6 +411,8 @@ az identity federated-credential create \
   --issuer https://token.actions.githubusercontent.com \
   --subject repo:$REPO:ref:refs/heads/main \
   --audiences api://AzureADTokenExchange
+# ⚠️ si votre org/dépôt GitHub a déjà été renommé, ce subject ne suffira pas — voir le
+# dépannage AADSTS700213 juste après ce bloc.
 
 # 4. Les trois valeurs à recopier dans GitHub (dépôt → Settings → Secrets and variables → Actions)
 echo "AZURE_CLIENT_ID = $CLIENT_ID"
@@ -396,6 +423,24 @@ echo "AZURE_SUBSCRIPTION_ID = $SUB"
 > 💡 Aucune de ces trois valeurs (`AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`)
 > n'est un mot de passe — ce sont de simples identifiants, sans valeur si quelqu'un les lit sans
 > avoir la fédération déclarée à l'étape 3. C'est **elle** qui protège réellement l'accès.
+
+> ⚠️ **Dépannage : `AADSTS700213` (« No matching federated identity record found »)**. Si
+> l'organisation ou le dépôt GitHub a déjà été renommé, le `subject` réellement envoyé par
+> GitHub contient l'ID numérique stable de chacun (ex.
+> `repo:org@123456/depot@789012:ref:refs/heads/main`) au lieu du simple `repo:ORG/DEPOT:...`
+> utilisé à l'étape 3 — l'authentification échoue alors même si tout semble correct. Pour
+> corriger : relancer le workflow une première fois (il échouera), copier le `subject claim`
+> exact affiché dans les logs de l'étape `azure/login`, puis :
+>
+> ```bash
+> az identity federated-credential update \
+>   --name github-main \
+>   --identity-name $IDENTITY_NAME \
+>   --resource-group $RG \
+>   --issuer https://token.actions.githubusercontent.com \
+>   --subject "<subject claim copié depuis les logs>" \
+>   --audiences api://AzureADTokenExchange
+> ```
 
 ### Le job de déploiement, ajouté au pipeline CI
 
